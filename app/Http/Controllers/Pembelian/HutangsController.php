@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Pembelian;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Pembelian\Hutang;
+use App\Pembelian\Pembayaran;
 
 class HutangsController extends Controller
 {
@@ -14,7 +16,8 @@ class HutangsController extends Controller
      */
     public function index()
     {
-        //
+        $hutangs = Hutang::all();
+        return view('pembelian.hutang.hutang', compact('hutangs'));
     }
 
     /**

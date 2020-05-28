@@ -4,6 +4,10 @@ namespace App\Http\Controllers\Pembelian;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Pembelian\Permintaan;
+use App\Stock\Barang;
+use App\Stock\Gudang;
+use App\Pembelian\Pemasok;
 
 class PermintaansController extends Controller
 {
@@ -14,7 +18,8 @@ class PermintaansController extends Controller
      */
     public function index()
     {
-        //
+        $permintaans = Permintaan::all();
+        return view('pembelian.pembelian.permintaan.permintaan', compact('permintaans'));
     }
 
     /**
@@ -24,7 +29,11 @@ class PermintaansController extends Controller
      */
     public function create()
     {
-        //
+        return view('pembelian.pembelian.permintaan.permintaaninsert', [
+            'pemasoks' => Pemasok::all(),
+            // 'barangs' => Barang::all(),
+            // 'gudangs' => Gudang::all()
+        ]);
     }
 
     /**
@@ -35,16 +44,34 @@ class PermintaansController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $permintaan = Permintaan::create([
+            'kode_permintaan' => $request->kode_permintaan,
+            'pemasok_id' => $request->pemasok_id,
+            'gudang' => $request->gudang,
+            'tanggal' => $request->tanggal,
+            'diskon' => $request->diskon,
+            'biaya_lain' => $request->biaya_lain,
+            'total_jenis_barang' => 3,
+            'total_harga' => 1000,
+        ]);
+
+        foreach ($request->barang_id as $index => $id) {
+
+            $permintaan->barangs()->attach($id, [
+                'jumlah_barang' => $request->jumlah_barang[$index],
+                'harga' => $request->harga[$index]
+            ]);
+        }
+        return redirect('/permintaans');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int  Permintaan $permintaan
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Permintaan $permintaan)
     {
         //
     }
@@ -52,34 +79,61 @@ class PermintaansController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int  Permintaan $permintaan
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Permintaan $permintaan)
     {
-        //
+        return view('pembelian.pembelian.permintaan.permintaanedit', [
+            'permintaan' => $permintaan,
+            'pemasoks' => Pemasok::all(),
+            // 'barangs' => Barang::all(),
+            // 'gudangs' => Gudang::all()
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  Permintaan $permintaan
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Permintaan $permintaan)
     {
-        //
+        Permintaan::where('id', $permintaan->id)
+            ->update([
+                'kode_permintaan' => $request->kode_permintaan,
+                'pemasok_id' => $request->pemasok_id,
+                'gudang' => $request->gudang,
+                'tanggal' => $request->tanggal,
+                'diskon' => $request->diskon,
+                'biaya_lain' => $request->biaya_lain,
+                'total_jenis_barang' => 3,
+                'total_harga' => 1000,
+            ]);
+        foreach ($request->barang_id as $index => $id) {
+            $permintaan->barangs()->detach($id, [
+                'jumlah_barang' => $request->jumlah_barang[$index],
+                'harga' => $request->harga[$index]
+            ]);
+            $permintaan->barangs()->attach($id, [
+                'jumlah_barang' => $request->jumlah_barang[$index],
+                'harga' => $request->harga[$index]
+            ]);
+        }
+        return redirect('/permintaans');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int  Permintaan $permintaan
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Permintaan $permintaan)
     {
-        //
+        Permintaan::destroy($permintaan->id);
+        return redirect('/permintaans');
     }
 }

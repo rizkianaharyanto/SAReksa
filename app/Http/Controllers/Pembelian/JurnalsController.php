@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Pembelian;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Pembelian\Jurnal;
 
 class JurnalsController extends Controller
 {
@@ -14,7 +15,8 @@ class JurnalsController extends Controller
      */
     public function index()
     {
-        //
+        $jurnals = Jurnal::all();
+        return view('pembelian.jurnal', compact('jurnals'));
     }
 
     /**

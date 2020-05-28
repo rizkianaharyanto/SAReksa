@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Pembelian;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Pembelian\Pengirim;
+use App\Pembelian\Pemasok;
 
 class PengirimsController extends Controller
 {
@@ -14,7 +16,11 @@ class PengirimsController extends Controller
      */
     public function index()
     {
-        //
+        $pengirims = Pengirim::all();
+        return view('pembelian.manajemendata.pengirim', [
+            'pengirims' => $pengirims,
+            'pemasoks' => Pemasok::all()
+        ]);
     }
 
     /**
@@ -35,27 +41,35 @@ class PengirimsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $pengirim = new Pengirim;
+        $pengirim->kode_pengirim = $request->kode_pengirim;
+        $pengirim->nama_pengirim = $request->nama_pengirim;
+        $pengirim->telp_pengirim = $request->telp_pengirim;
+        $pengirim->email_pengirim = $request->email_pengirim;
+        $pengirim->pemasok_id = $request->pemasok_id;
+        $pengirim->save();
+        return redirect('/pengirims');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int  Pengirim $pengirim
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Pengirim $pengirim)
     {
-        //
+        $pengirim = Pengirim::find($pengirim);
+        return $pengirim;
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int  Pengirim $pengirim
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Pengirim $pengirim)
     {
         //
     }
@@ -64,22 +78,31 @@ class PengirimsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  Pengirim $pengirim
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Pengirim $pengirim)
     {
-        //
+        Pengirim::where('id', $pengirim->id)
+            ->update([
+                'nama_pengirim' => $request->nama_pengirim,
+                'telp_pengirim' => $request->telp_pengirim,
+                'email_pengirim' => $request->email_pengirim,
+                'pemasok_id' => $request->pemasok_id,
+            ]);
+
+        return redirect('/pengirims');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int  Pengirim $pengirim
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Pengirim $pengirim)
     {
-        //
+        Pengirim::destroy($pengirim->id);
+        return redirect('/pengirims');
     }
 }

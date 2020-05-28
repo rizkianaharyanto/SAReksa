@@ -4,6 +4,11 @@ namespace App\Http\Controllers\Pembelian;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Pembelian\Penerimaan;
+use App\Pembelian\Pemesanan;
+use App\Stock\Barang;
+use App\Stock\Gudang;
+use App\Pembelian\Pemasok;
 
 class PenerimaansController extends Controller
 {
@@ -14,7 +19,8 @@ class PenerimaansController extends Controller
      */
     public function index()
     {
-        //
+        $penerimaans = Penerimaan::all();
+        return view('pembelian.pembelian.penerimaan.penerimaan', compact('penerimaans'));
     }
 
     /**
@@ -24,7 +30,12 @@ class PenerimaansController extends Controller
      */
     public function create()
     {
-        //
+        return view('pembelian.pembelian.penerimaan.penerimaaninsert', [
+            'pemasoks' => Pemasok::all(),
+            'pemesanans' => Pemesanan::all(),
+            // 'barangs' => Barang::all(),
+            // 'gudangs'=> Gudang::all()
+        ]);
     }
 
     /**
@@ -35,16 +46,34 @@ class PenerimaansController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $penerimaan = Penerimaan::create([
+            'kode_penerimaan' => $request->kode_penerimaan,
+            'pemasok_id' => $request->pemasok_id,
+            'gudang' => $request->gudang,
+            'tanggal' => $request->tanggal,
+            'diskon' => $request->diskon,
+            'biaya_lain' => $request->biaya_lain,
+            'total_jenis_barang' => 3,
+            'total_harga' => 1000,
+        ]);
+
+        foreach ($request->barang_id as $index => $id) {
+
+            $penerimaan->barangs()->attach($id, [
+                'jumlah_barang' => $request->jumlah_barang[$index],
+                'harga' => $request->harga[$index]
+            ]);
+        }
+        return redirect('/penerimaans');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int  Penerimaan $penerimaan
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Penerimaan $penerimaan)
     {
         //
     }
@@ -52,34 +81,61 @@ class PenerimaansController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int  Penerimaan $penerimaan
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Penerimaan $penerimaan)
     {
-        //
+        return view('pembelian.pembelian.penerimaan.penerimaanedit', [
+            'penerimaan' => $penerimaan,
+            'pemasoks' => Pemasok::all(),
+            // 'barangs' => Barang::all(),
+            // 'gudangs'=> Gudang::all()
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  Penerimaan $penerimaan
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Penerimaan $penerimaan)
     {
-        //
+        Penerimaan::where('id', $penerimaan->id)
+        ->update([
+            'kode_penerimaan' => $request->kode_penerimaan,
+            'pemasok_id' => $request->pemasok_id,
+            'gudang' => $request->gudang,
+            'tanggal' => $request->tanggal,
+            'diskon' => $request->diskon,
+            'biaya_lain' => $request->biaya_lain,
+            'total_jenis_barang' => 3,
+            'total_harga' => 1000,
+        ]);
+    foreach ($request->barang_id as $index => $id) {
+        $penerimaan->barangs()->detach($id, [
+            'jumlah_barang' => $request->jumlah_barang[$index],
+            'harga' => $request->harga[$index]
+        ]);
+        $penerimaan->barangs()->attach($id, [
+            'jumlah_barang' => $request->jumlah_barang[$index],
+            'harga' => $request->harga[$index]
+        ]);
+    }
+    return redirect('/penerimaans');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int  Penerimaan $penerimaan
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Penerimaan $penerimaan)
     {
-        //
+        Penerimaan::destroy($penerimaan->id);
+        return redirect('/penerimaans');
     }
 }

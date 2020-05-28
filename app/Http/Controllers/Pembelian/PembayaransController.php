@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Pembelian;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Pembelian\Pembayaran;
 
 class PembayaransController extends Controller
 {
@@ -14,7 +15,8 @@ class PembayaransController extends Controller
      */
     public function index()
     {
-        //
+        $pembayarans = Pembayaran::all();
+        return view('pembelian.hutang.pembayaran', compact('pembayarans'));
     }
 
     /**
@@ -41,10 +43,10 @@ class PembayaransController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int  Pembayaran $pembayaran
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Pembayaran $pembayaran)
     {
         //
     }
@@ -52,10 +54,10 @@ class PembayaransController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int  Pembayaran $pembayaran
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Pembayaran $pembayaran)
     {
         //
     }
@@ -64,10 +66,10 @@ class PembayaransController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  Pembayaran $pembayaran
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Pembayaran $pembayaran)
     {
         //
     }
@@ -75,10 +77,10 @@ class PembayaransController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int  Pembayaran $pembayaran
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Pembayaran $pembayaran)
     {
         //
     }

@@ -4,6 +4,12 @@ namespace App\Http\Controllers\Pembelian;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Pembelian\Retur;
+use App\Pembelian\Faktur;
+use App\Stock\Barang;
+use App\Stock\Gudang;
+use App\Pembelian\Pemasok;
+// use App\Pembelian\Akun;
 
 class RetursController extends Controller
 {
@@ -14,7 +20,8 @@ class RetursController extends Controller
      */
     public function index()
     {
-        //
+        $returs = Retur::all();
+        return view('pembelian.pembelian.retur.retur', compact('returs'));
     }
 
     /**
@@ -24,7 +31,13 @@ class RetursController extends Controller
      */
     public function create()
     {
-        //
+        return view('pembelian.pembelian.retur.returinsert', [
+            'pemasoks' => Pemasok::all(),
+            'fakturs' => Faktur::all(),
+            // 'barangs' => Barang::all(),
+            // 'gudangs'=> Gudang::all(),
+            // 'akuns'=> Akun::all(),
+        ]);
     }
 
     /**
@@ -41,10 +54,10 @@ class RetursController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int  Retur $retur
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Retur $retur)
     {
         //
     }
@@ -52,22 +65,29 @@ class RetursController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int  Retur $retur
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Retur $retur)
     {
-        //
+        return view('pembelian.pembelian.retur.returedit', [
+            'retur' => $retur,
+            'pemasoks' => Pemasok::all(),
+            'fakturs' => Faktur::all(),
+            // 'barangs' => Barang::all(),
+            // 'gudangs'=> Gudang::all(),
+            // 'akuns'=> Akun::all()
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  Retur $retur
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Retur $retur)
     {
         //
     }
@@ -75,11 +95,12 @@ class RetursController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int  Retur $retur
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Retur $retur)
     {
-        //
+        Retur::destroy($retur->id);
+        return redirect('/returs');
     }
 }
