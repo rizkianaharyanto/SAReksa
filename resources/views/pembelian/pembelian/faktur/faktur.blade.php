@@ -52,8 +52,6 @@ $delete = "delete-".$faktur->id
         <x-pembelian.faktur-delete :id="$faktur->id" />
     </x-slot>
 </x-modal>
-
-
 @endforeach
 
 @endsection
