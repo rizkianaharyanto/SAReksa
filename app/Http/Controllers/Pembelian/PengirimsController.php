@@ -48,11 +48,11 @@ class PengirimsController extends Controller
         $pengirim->email_pengirim = $request->email_pengirim;
         $pengirim->pemasok_id = $request->pemasok_id;
         $pengirim->save();
-        return redirect('/pengirims');
+        return redirect('/pembelian/pengirims');
     }
 
     /**
-     * Display the specified resource.
+     * Display the  specified resource.
      *
      * @param  int  Pengirim $pengirim
      * @return \Illuminate\Http\Response
@@ -91,7 +91,7 @@ class PengirimsController extends Controller
                 'pemasok_id' => $request->pemasok_id,
             ]);
 
-        return redirect('/pengirims');
+        return redirect('/pembelian/pengirims');
     }
 
     /**
@@ -103,6 +103,6 @@ class PengirimsController extends Controller
     public function destroy(Pengirim $pengirim)
     {
         Pengirim::destroy($pengirim->id);
-        return redirect('/pengirims');
+        return redirect('/pembelian/pengirims');
     }
 }

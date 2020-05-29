@@ -38,7 +38,7 @@ class PemasoksController extends Controller
     public function store(Request $request)
     {
         Pemasok::create($request->all());
-        return redirect('/pemasoks');
+        return redirect('/pembelian/pemasoks');
     }
 
     /**
@@ -49,7 +49,8 @@ class PemasoksController extends Controller
      */
     public function show(Pemasok $pemasok)
     {
-        //
+        $pemasok = Pemasok::find($pemasok);
+        return $pemasok;
     }
 
     /**
@@ -80,7 +81,7 @@ class PemasoksController extends Controller
                 'alamat_pemasok' => $request->alamat_pemasok
             ]);
 
-        return redirect('/pemasoks');
+        return redirect('/pembelian/pemasoks');
     }
 
     /**
@@ -92,6 +93,6 @@ class PemasoksController extends Controller
     public function destroy(Pemasok $pemasok)
     {
         Pemasok::destroy($pemasok->id);
-        return redirect('/pemasoks');
+        return redirect('/pembelian/pemasoks');
     }
 }

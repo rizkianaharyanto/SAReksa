@@ -101,6 +101,6 @@ class FaktursController extends Controller
     public function destroy(Faktur $faktur)
     {
         Faktur::destroy($faktur->id);
-        return redirect('/fakturs');
+        return redirect('/pembelian/fakturs');
     }
 }

@@ -62,7 +62,7 @@ class PermintaansController extends Controller
                 'harga' => $request->harga[$index]
             ]);
         }
-        return redirect('/permintaans');
+        return redirect('/pembelian/permintaans');
     }
 
     /**
@@ -122,7 +122,7 @@ class PermintaansController extends Controller
                 'harga' => $request->harga[$index]
             ]);
         }
-        return redirect('/permintaans');
+        return redirect('/pembelian/permintaans');
     }
 
     /**
@@ -134,6 +134,6 @@ class PermintaansController extends Controller
     public function destroy(Permintaan $permintaan)
     {
         Permintaan::destroy($permintaan->id);
-        return redirect('/permintaans');
+        return redirect('/pembelian/permintaans');
     }
 }

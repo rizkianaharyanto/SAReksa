@@ -62,7 +62,7 @@ endsection -->
         var ini = $(this).data("id");
         console.log(ini);
         $.get("/pembelian/pemasoks/" + ini, function(datanya) {
-            //     console.log(datanya[0].nama_pemasok);
+                console.log(datanya);
             //     $('#nama_pemasok').html("pemasok" + datanya[0].nama_pemasok);
             // });
             if (id == "details") {

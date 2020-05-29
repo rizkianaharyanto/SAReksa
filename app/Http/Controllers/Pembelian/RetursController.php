@@ -101,6 +101,6 @@ class RetursController extends Controller
     public function destroy(Retur $retur)
     {
         Retur::destroy($retur->id);
-        return redirect('/returs');
+        return redirect('/pembelian/returs');
     }
 }

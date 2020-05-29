@@ -65,7 +65,7 @@ class PemesanansController extends Controller
                 'harga' => $request->harga[$index]
             ]);
         }
-        return redirect('/pemesanans');
+        return redirect('/pembelian/pemesanans');
     }
 
     /**
@@ -126,7 +126,7 @@ class PemesanansController extends Controller
                 'harga' => $request->harga[$index]
             ]);
         }
-        return redirect('/pemesanans');
+        return redirect('/pembelian/pemesanans');
     }
 
     /**
@@ -138,6 +138,6 @@ class PemesanansController extends Controller
     public function destroy(Pemesanan $pemesanan)
     {
         Pemesanan::destroy($pemesanan->id);
-        return redirect('/pemesanans');
+        return redirect('/pembelian/pemesanans');
     }
 }
