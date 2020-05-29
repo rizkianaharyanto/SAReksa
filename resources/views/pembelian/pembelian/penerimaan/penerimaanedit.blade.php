@@ -1,4 +1,4 @@
-@extends('template.template')
+@extends('pembelian.template.template')
 
 @section('judul', 'edit')
 
@@ -33,19 +33,19 @@
             </div>
         </div>
         <div class="bs-stepper-content">
-            <form method="POST" action="/penerimaans/{{$penerimaan->id}}">
+            <form method="POST" action="/pembelian/penerimaans/{{$penerimaan->id}}">
                 @method('put')
                 @csrf
                 <div id="test-l-1" class="content">
                     <input type="hidden" id="kode_penerimaan" name="kode_penerimaan" placeholder="" value="{{$penerimaan->kode_penerimaan}}">
                     <div style="height: 58vh;overflow: auto; color:black" class="mt-2">
                         <div class="form-group row mx-5 mb-5">
-                            <label class="col-sm-3 col-form-label" for="supplier_id">Supplier</label>
+                            <label class="col-sm-3 col-form-label" for="pemasok_id">pemasok</label>
                             <div class="col-sm-9">
-                                <select class="form-control" id="supplier_id" name="supplier_id">
-                                    <option value="">--- Pilih Supplier ---</option>
-                                    @foreach ($suppliers as $supplier)
-                                    <option value="{{$supplier->id}}" {{$supplier->id == "$penerimaan->supplier_id" ? "selected" : "" }}>{{ $supplier->nama_supplier }}</option>
+                                <select class="form-control" id="pemasok_id" name="pemasok_id">
+                                    <option value="">--- Pilih pemasok ---</option>
+                                    @foreach ($pemasoks as $pemasok)
+                                    <option value="{{$pemasok->id}}" {{$pemasok->id == "$penerimaan->pemasok_id" ? "selected" : "" }}>{{ $pemasok->nama_pemasok }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -78,7 +78,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <a href="/penerimaans">
+                        <a href="/pembelian/penerimaans">
                             <button type="button" class="btn btn-secondary">Batal</button>
                         </a>
                         <a class="btn" style="background-color:#00BFA6; color:white" onclick="stepper.next()">Selanjutnya</a>
@@ -148,7 +148,7 @@
                                 <input style="width:26vw" type="number" name="total_harga_barang" id="total_harga_barang" disabled>
                             </div>
                         </div>
-                        <a href="/penerimaans">
+                        <a href="/pembelian/penerimaans">
                             <button type="button" class="btn btn-secondary">Batal</button>
                         </a>
                         <a class="btn" style="background-color:#00BFA6; color:white" onclick="stepper.previous()">Sebelumnya</a>
@@ -201,7 +201,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <a href="/penerimaans">
+                        <a href="/pembelian/penerimaans">
                             <button type="button" class="btn btn-secondary">Batal</button>
                         </a>
                         <a class="btn" style="background-color:#00BFA6; color:white" onclick="stepper.previous()">Sebelumnya</a>

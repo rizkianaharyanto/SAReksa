@@ -1,4 +1,4 @@
-@extends('template.table')
+@extends('pembelian.template.table')
 
 @section('judul', 'Retur Pembelian')
 
@@ -7,7 +7,7 @@
 @section('thead')
 <tr>
     <th>Kode Retur</th>
-    <th>Supplier</th>
+    <th>pemasok</th>
     <th>Tanggal</th>
     <th>Total</th>
     <th style="column-width: 80px">Aksi</th>
@@ -18,16 +18,16 @@
 @foreach ($returs as $retur)
 <tr>
     <td>{{ $retur->kode_retur }}</td>
-    <td>Supplier</td>
+    <td>pemasok</td>
     <td>{{ $retur->tanggal }}</td>
     <td>{{ $retur->total_harga }}</td>
     <td class="d-flex justify-content-between">
-        <a id="details" href="/returs/create">
+        <a id="details" href="/pembelian/returs/create">
             <i style="cursor: pointer; " class="fas fa-info-circle">
                 <span></span>
             </i>
         </a>
-        <a id="edit" href="/returs/{{$retur->id}}/edit">
+        <a id="edit" href="/pembelian/returs/{{$retur->id}}/edit">
             <i style="cursor: pointer;" class="fas fa-edit">
                 <span></span>
             </i>
@@ -49,7 +49,7 @@ $delete = "delete-".$retur->id
         <h5 class="align-self-center">Hapus retur {{$retur->kode_retur}}</h5>
     </x-slot>
     <x-slot name="body">
-        <x-retur-delete :id="$retur->id" />
+        <x-pembelian.retur-delete :id="$retur->id" />
     </x-slot>
 </x-modal>
 
@@ -58,7 +58,7 @@ $delete = "delete-".$retur->id
 
 
 @section('tambah')
-<a href="/returs/create">
+<a href="/pembelian/returs/create">
     <i class="fas fa-plus mr-4" style="font-size:30px;color:#00BFA6; cursor: pointer;">
         <span></span>
     </i>

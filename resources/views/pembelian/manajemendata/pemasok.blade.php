@@ -1,41 +1,41 @@
-@extends('template.table')
+@extends('pembelian.template.table')
 
-@section('judul', 'Supplier')
+@section('judul', 'pemasok')
 
-@section('halaman', 'Supplier')
+@section('halaman', 'pemasok')
 
 <!-- section('isi')
-<a href="/supplier/create">Tambah Supplier</a>
+<a href="/pembelian/pemasok/create">Tambah pemasok</a>
 
 endsection -->
 
 @section('thead')
 <tr>
-    <th>Kode Supplier</th>
-    <th>Nama Supplier</th>
+    <th>Kode pemasok</th>
+    <th>Nama pemasok</th>
     <th>Telp</th>
     <th style="column-width: 80px">Aksi</th>
 </tr>
 @endsection
 
 @section('tbody')
-@foreach ($suppliers as $supplier)
+@foreach ($pemasoks as $pemasok)
 <tr>
-    <td>{{ $supplier->kode_supplier }}</td>
-    <td>{{ $supplier->nama_supplier }}</td>
-    <td>{{ $supplier->telp_supplier }}</td>
+    <td>{{ $pemasok->kode_pemasok }}</td>
+    <td>{{ $pemasok->nama_pemasok }}</td>
+    <td>{{ $pemasok->telp_pemasok }}</td>
     <td class="d-flex justify-content-between">
-        <a id="details" data-toggle="modal" data-target="#modal" data-id="{{ $supplier->id }}">
+        <a id="details" data-toggle="modal" data-target="#modal" data-id="{{ $pemasok->id }}">
             <i onmouseover="tulisan()" style="cursor: pointer;" class="fas fa-info-circle">
                 <span></span>
             </i>
         </a>
-        <a id="edit" data-toggle="modal" data-target="#modal" data-id="{{ $supplier->id }}">
+        <a id="edit" data-toggle="modal" data-target="#modal" data-id="{{ $pemasok->id }}">
             <i onmouseover="tulisan()" style="cursor: pointer;" class="fas fa-edit">
                 <span></span>
             </i>
         </a>
-        <a id="delete" data-toggle="modal" data-target="#modal" data-id="{{ $supplier->id }}">
+        <a id="delete" data-toggle="modal" data-target="#modal" data-id="{{ $pemasok->id }}">
             <i onmouseover="tulisan()" style="cursor: pointer;" class="fas fa-trash">
                 <span></span>
             </i>
@@ -48,9 +48,9 @@ endsection -->
     $("a").click(function() {
         var ini = $(this).data("id");
         console.log(ini);
-        $.get("/suppliers/"+ini, function(data) {
+        $.get("/pembelian/pemasoks/"+ini, function(data) {
             // console.log(data);
-            $('#nama_supplier').html("HELLO HELLO");
+            $('#nama_pemasok').html("HELLO HELLO");
         });
     })
 </script> -->
@@ -61,31 +61,31 @@ endsection -->
         console.log(id);
         var ini = $(this).data("id");
         console.log(ini);
-        $.get("/suppliers/" + ini, function(datanya) {
-            //     console.log(datanya[0].nama_supplier);
-            //     $('#nama_supplier').html("Supplier" + datanya[0].nama_supplier);
+        $.get("/pembelian/pemasoks/" + ini, function(datanya) {
+            //     console.log(datanya[0].nama_pemasok);
+            //     $('#nama_pemasok').html("pemasok" + datanya[0].nama_pemasok);
             // });
             if (id == "details") {
                 $('#lebarmodal').removeClass('modal-xl');
                 $('#footermodal').addClass('modal-footer');
                 $('#judulmodal').html(
                     '<i class="fas fa-user-circle mr-4" style="font-size:50px;color:#00BFA6;"></i> ' +
-                    '<h5 id = "nama_supplier" class = "align-self-center"> Supplier ' + datanya[0].nama_supplier + '</h5>'
+                    '<h5 id = "nama_pemasok" class = "align-self-center"> pemasok ' + datanya[0].nama_pemasok + '</h5>'
                 );
                 $('#bodymodal').html(
                     '<form>' +
                     '<fieldset class="detail-modal" disabled>' +
                     '<div class="form-group">' +
-                    '<label for="telp_supplier">Telp</label>' +
-                    '<input type="number" class="form-control" id="telp_supplier" name="telp_supplier" placeholder="' + datanya[0].telp_supplier + '">' +
+                    '<label for="telp_pemasok">Telp</label>' +
+                    '<input type="number" class="form-control" id="telp_pemasok" name="telp_pemasok" placeholder="' + datanya[0].telp_pemasok + '">' +
                     '</div>' +
                     '<div class="form-group">' +
-                    '<label for="email_supplier">Email</label>' +
-                    '<input type="email" class="form-control" id="email_supplier" name="email_supplier" placeholder="' + datanya[0].email_supplier + '">' +
+                    '<label for="email_pemasok">Email</label>' +
+                    '<input type="email" class="form-control" id="email_pemasok" name="email_pemasok" placeholder="' + datanya[0].email_pemasok + '">' +
                     '</div>' +
                     '<div class="form-group">' +
-                    '<label for="alamat_supplier">Alamat</label>' +
-                    '<input type="text" class="form-control" id="alamat_supplier" name="alamat_supplier" placeholder="' + datanya[0].alamat_supplier + '">' +
+                    '<label for="alamat_pemasok">Alamat</label>' +
+                    '<input type="text" class="form-control" id="alamat_pemasok" name="alamat_pemasok" placeholder="' + datanya[0].alamat_pemasok + '">' +
                     '</div>' +
                     '</fieldset>' +
                     '</form>'
@@ -97,27 +97,27 @@ endsection -->
                 $('#lebarmodal').removeClass('modal-xl');
                 $('#footermodal').empty();
                 $('#judulmodal').html(
-                    '<h5 class="align-self-center">Edit Supplier ' + datanya[0].nama_supplier + '</h5>'
+                    '<h5 class="align-self-center">Edit pemasok ' + datanya[0].nama_pemasok + '</h5>'
                 );
                 $('#bodymodal').html(
-                    '<form method="POST" action="/suppliers/' + datanya[0].id + '">' +
+                    '<form method="POST" action="/pembelian/pemasoks/' + datanya[0].id + '">' +
                     '@method("patch")' +
                     '@csrf' +
                     '<div class="form-group">' +
-                    '<label for="nama_supplier">Nama</label>' +
-                    '<input type="text" class="form-control" id="nama_supplier" value="' + datanya[0].nama_supplier + '" name="nama_supplier">' +
+                    '<label for="nama_pemasok">Nama</label>' +
+                    '<input type="text" class="form-control" id="nama_pemasok" value="' + datanya[0].nama_pemasok + '" name="nama_pemasok">' +
                     '</div>' +
                     '<div class="form-group">' +
-                    '<label for="telp_supplier">Telp</label>' +
-                    '<input type="number" class="form-control" id="telp_supplier" value="' + datanya[0].telp_supplier + '" name="telp_supplier">' +
+                    '<label for="telp_pemasok">Telp</label>' +
+                    '<input type="number" class="form-control" id="telp_pemasok" value="' + datanya[0].telp_pemasok + '" name="telp_pemasok">' +
                     '</div>' +
                     '<div class="form-group">' +
-                    '<label for="email_supplier">Email</label>' +
-                    '<input type="email" class="form-control" id="email_supplier" value="' + datanya[0].email_supplier + '" name="email_supplier">' +
+                    '<label for="email_pemasok">Email</label>' +
+                    '<input type="email" class="form-control" id="email_pemasok" value="' + datanya[0].email_pemasok + '" name="email_pemasok">' +
                     '</div>' +
                     '<div class="form-group">' +
-                    '<label for="alamat_supplier">Alamat</label>' +
-                    '<input type="text" class="form-control" id="alamat_supplier" value="' + datanya[0].alamat_supplier + '" name="alamat_supplier">' +
+                    '<label for="alamat_pemasok">Alamat</label>' +
+                    '<input type="text" class="form-control" id="alamat_pemasok" value="' + datanya[0].alamat_pemasok + '" name="alamat_pemasok">' +
                     '</div>' +
                     '<div class="form-group modal-footer">' +
                     '<button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>' +
@@ -129,14 +129,14 @@ endsection -->
                 $('#lebarmodal').removeClass('modal-xl');
                 $('#footermodal').addClass('modal-footer');
                 $('#judulmodal').html(
-                    '<h5 class="align-self-center">Hapus Supplier</h5>'
+                    '<h5 class="align-self-center">Hapus pemasok</h5>'
                 );
                 $('#bodymodal').html(
-                    '<p>Apakah kamu yakin ingin menghapus Supplier ' + datanya[0].nama_supplier + ' ?</p>'
+                    '<p>Apakah kamu yakin ingin menghapus pemasok ' + datanya[0].nama_pemasok + ' ?</p>'
                 );
                 $('#footermodal').html(
                     '<button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>' +
-                    '<form method="POST" action="/suppliers/' + datanya[0].id + '">' +
+                    '<form method="POST" action="/pembelian/pemasoks/' + datanya[0].id + '">' +
                     '@method("delete")' +
                     '@csrf' +
                     '<button type="submit" class="btn btn-danger">Hapus</button>' +
@@ -158,33 +158,33 @@ endsection -->
 @endsection
 
 @section('judulTambah')
-<h5 class="align-self-center">Tambah Supplier</h5>
+<h5 class="align-self-center">Tambah pemasok</h5>
 @endsection
 
 @section('bodyTambah')
 
-<form method="POST" action="/suppliers">
+<form method="POST" action="/pembelian/pemasoks">
     @csrf
     <div class="form-group d-inline-flex">
         <i class="fas fa-user-circle mr-4" style="font-size:50px;color:#00BFA6;"></i>
         <input type="file" class="form-control-file align-self-center" id="foto">
     </div>
-    <input type="hidden" id="kode_supplier" name="kode_supplier" placeholder="" value="SUP">
+    <input type="hidden" id="kode_pemasok" name="kode_pemasok" placeholder="" value="SUP">
     <div class="form-group">
-        <label for="nama_supplier">Nama Supplier</label>
-        <input type="text" class="form-control" id="nama_supplier" name="nama_supplier" placeholder="">
+        <label for="nama_pemasok">Nama pemasok</label>
+        <input type="text" class="form-control" id="nama_pemasok" name="nama_pemasok" placeholder="">
     </div>
     <div class="form-group">
-        <label for="telp_supplier">Telp</label>
-        <input type="number" class="form-control" id="telp_supplier" name="telp_supplier" placeholder="">
+        <label for="telp_pemasok">Telp</label>
+        <input type="number" class="form-control" id="telp_pemasok" name="telp_pemasok" placeholder="">
     </div>
     <div class="form-group">
-        <label for="email_supplier">Email</label>
-        <input type="email" class="form-control" id="email_supplier" name="email_supplier" placeholder="">
+        <label for="email_pemasok">Email</label>
+        <input type="email" class="form-control" id="email_pemasok" name="email_pemasok" placeholder="">
     </div>
     <div class="form-group">
-        <label for="alamat_supplier">Alamat</label>
-        <input type="text" class="form-control" id="alamat_supplier" name="alamat_supplier" placeholder="">
+        <label for="alamat_pemasok">Alamat</label>
+        <input type="text" class="form-control" id="alamat_pemasok" name="alamat_pemasok" placeholder="">
     </div>
 
     @endsection

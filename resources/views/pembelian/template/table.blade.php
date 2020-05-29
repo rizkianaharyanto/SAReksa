@@ -1,4 +1,4 @@
-@extends('template.template')
+@extends('pembelian.template.template')
 @section('isi')
 @parent
 <div class="d-flex justify-content-center" style="position: relative; color:black; margin-top:2vw;">

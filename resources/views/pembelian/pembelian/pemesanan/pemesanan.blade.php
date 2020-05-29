@@ -1,4 +1,4 @@
-@extends('template.table')
+@extends('pembelian.template.table')
 
 @section('judul', 'pemesanan')
 
@@ -7,7 +7,7 @@
 @section('thead')
 <tr>
     <th>Kode Pemesanan</th>
-    <th>Supplier</th>
+    <th>pemasok</th>
     <th>Tanggal</th>
     <th>Total</th>
     <th style="column-width: 80px">Aksi</th>
@@ -18,16 +18,16 @@
 @foreach ($pemesanans as $pemesanan)
 <tr>
     <td>{{ $pemesanan->kode_pemesanan }}</td>
-    <td>{{ $pemesanan->supplier->nama_supplier }}</td>
+    <td>{{ $pemesanan->pemasok->nama_pemasok }}</td>
     <td>{{ $pemesanan->tanggal }}</td>
     <td>{{ $pemesanan->total_harga }}</td>
     <td class="d-flex justify-content-between">
-        <a id="details" href="/pemesanans/create">
+        <a id="details" href="/pembelian/pemesanans/create">
             <i style="cursor: pointer; " class="fas fa-info-circle">
                 <span></span>
             </i>
         </a>
-        <a id="edit" href="/pemesanans/{{$pemesanan->id}}/edit">
+        <a id="edit" href="/pembelian/pemesanans/{{$pemesanan->id}}/edit">
             <i style="cursor: pointer;" class="fas fa-edit">
                 <span></span>
             </i>
@@ -49,7 +49,7 @@ $delete = "delete-".$pemesanan->id
         <h5 class="align-self-center">Hapus pesanan {{$pemesanan->kode_pemesanan}}</h5>
     </x-slot>
     <x-slot name="body">
-        <x-pemesanan-delete :id="$pemesanan->id" />
+        <x-pembelian.pemesanan-delete :id="$pemesanan->id" />
     </x-slot>
 </x-modal>
 
@@ -57,7 +57,7 @@ $delete = "delete-".$pemesanan->id
 @endsection
 
 @section('tambah')
-<a href="/pemesanans/create">
+<a href="/pembelian/pemesanans/create">
     <i class="fas fa-plus mr-4" style="font-size:30px;color:#00BFA6; cursor: pointer;">
         <span></span>
     </i>

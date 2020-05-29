@@ -1,4 +1,4 @@
-@extends('template.table')
+@extends('pembelian.template.table')
 
 @section('judul', 'Gudang')
 

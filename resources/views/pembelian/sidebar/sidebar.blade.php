@@ -1,5 +1,5 @@
 <div class="side">
-    <!-- @include('sidebar.bar') -->
+    <!-- include('sidebar.bar') -->
     <div id="nav" class="nav">
         <!-- <div class="item" onclick="collapseNav()">
                 <i class="fas fa-pizza-slice"></i>
@@ -8,7 +8,7 @@
         <div class="item">
             <i onclick="collapseNav()" class="fas fa-th-large"></i>
             <span>
-                <a href="/">Dashboard</a>
+                <a href="/pembelian/">Dashboard</a>
             </span>
         </div>
         <div class="item">
@@ -19,22 +19,22 @@
                 </a>
                 <ul class="collapse list-unstyled" id="drop">
                         <li class="pt-2">
-                            <a href="/suppliers">Data Supplier</a>
+                            <a href="/pembelian/pemasoks">Data Pemasok</a>
                         </li>
                         <li class="pt-2">
-                            <a href="/pengirims">Data Pengirim</a>
+                            <a href="/pembelian/pengirims">Data Pengirim</a>
                         </li>
                         <li class="pt-2">
-                            <a href="/barangs">Data Barang</a>
+                            <a href="/pembelian/barangs">Data Barang</a>
                         </li>
                         <li class="pt-2">
-                            <a href="/gudangs">Data Gudang</a>
+                            <a href="/pembelian/gudangs">Data Gudang</a>
                         </li>
                         <li class="pt-2">
-                            <a href="/akuns">Data Akun</a>
+                            <a href="/pembelian/akuns">Data Akun</a>
                         </li>
                         <li class="pt-2">
-                            <a href="/pajaks">Data Pajak</a>
+                            <a href="/pembelian/pajaks">Data Pajak</a>
                         </li>
                 </ul>
             </span>
@@ -42,49 +42,49 @@
         <div class="item">
             <i onclick="collapseNav()" class="fas fa-envelope-open-text"></i>
             <span>
-                <a href="/permintaans">Permintaan Penawaran Harga</a>
+                <a href="/pembelian/permintaans">Permintaan Penawaran Harga</a>
             </span>
         </div>
         <div class="item">
             <i onclick="collapseNav()" class="fas fa-boxes"></i>
             <span>
-                <a href="/pemesanans">Pemesanan</a>
+                <a href="/pembelian/pemesanans">Pemesanan</a>
             </span>
         </div>
         <div class="item">
             <i onclick="collapseNav()" class="fas fa-shipping-fast"></i>
             <span>
-                <a href="/penerimaans">Penerimaan Barang</a>
+                <a href="/pembelian/penerimaans">Penerimaan Barang</a>
             </span>
         </div>
         <div class="item">
             <i onclick="collapseNav()" class="fas fa-clipboard-check"></i>
             <span>
-                <a href="/fakturs">Faktur</a>
+                <a href="/pembelian/fakturs">Faktur</a>
             </span>
         </div>
         <div class="item">
             <i onclick="collapseNav()" class="fas fa-exchange-alt"></i>
             <span>
-                <a href="/returs">Retur Pembelian</a>
+                <a href="/pembelian/returs">Retur Pembelian</a>
             </span>
         </div>
         <div class="item">
             <i onclick="collapseNav()" class="fas fa-file-invoice-dollar"></i>
             <span>
-                <a href="/hutangs">Hutang</a>
+                <a href="/pembelian/hutangs">Hutang</a>
             </span>
         </div>
         <div class="item">
             <i onclick="collapseNav()" class="fas fa-hand-holding-usd"></i>
             <span>
-                <a href="/pembayarans">Pembayaran Hutang</a>
+                <a href="/pembelian/pembayarans">Pembayaran Hutang</a>
             </span>
         </div>
         <div class="item">
             <i onclick="collapseNav()" class="fas fa-file-alt"></i>
             <span>
-                <a href="/jurnals">Jurnal</a>
+                <a href="/pembelian/jurnals">Jurnal</a>
             </span>
         </div>
     </div>

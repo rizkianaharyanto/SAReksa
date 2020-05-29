@@ -1,4 +1,4 @@
-@extends('template.template')
+@extends('pembelian.template.template')
 
 @section('judul', 'edit')
 
@@ -36,11 +36,11 @@
             <div id="test-l-1" class="content">
                 <form style="height: 58vh;overflow: auto; color:black" class="mt-2">
                     <div class="form-group row mx-5 mb-5">
-                        <label class="col-sm-3 col-form-label" for="nama_supplier">Supplier</label>
+                        <label class="col-sm-3 col-form-label" for="nama_pemasok">pemasok</label>
                         <div class="col-sm-9">
-                            <select class="form-control" id="nama_supplier">
-                                @foreach ($suppliers as $supplier)
-                                <option>{{ $supplier->nama_supplier }}</option>
+                            <select class="form-control" id="nama_pemasok">
+                                @foreach ($pemasoks as $pemasok)
+                                <option>{{ $pemasok->nama_pemasok }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -72,7 +72,7 @@
                     </div>
                 </form>
                 <div class="modal-footer">
-                    <a href="/fakturs">
+                    <a href="/pembelian/fakturs">
                         <button type="button" class="btn btn-secondary">Batal</button>
                     </a>
                     <button class="btn" style="background-color:#00BFA6; color:white" onclick="stepper.next()">Selanjutnya</button>
@@ -155,8 +155,8 @@
                                 <input type="date" class="form-control" id="tanggal_penerimaan" disabled>
                             </div>
                             <div class="form-group col-md-3">
-                                <label for="nama_supplier">Supplier</label>
-                                <input type="text" class="form-control" id="nama_supplier" disabled>
+                                <label for="nama_pemasok">pemasok</label>
+                                <input type="text" class="form-control" id="nama_pemasok" disabled>
                             </div>
                             <div class="form-group col-md-3">
                                 <label for="total">Total</label>
@@ -191,7 +191,7 @@
                             <input style="width:26vw" type="number" name="total_harga_penerimaan" id="total_harga_penerimaan" disabled>
                         </div>
                     </div>
-                    <a href="/fakturs">
+                    <a href="/pembelian/fakturs">
                         <button type="button" class="btn btn-secondary">Batal</button>
                     </a>
                     <button class="btn" style="background-color:#00BFA6; color:white" onclick="stepper.previous()">Sebelumnya</button>
@@ -264,7 +264,7 @@
                         <input class="ml-4 mt-2" type="checkbox" onclick="checkLunas(this)" />
                         <h5 class="ml-2">Lunas</h5>
                     </div>
-                    <a href="/fakturs">
+                    <a href="/pembelian/fakturs">
                         <button type="button" class="btn btn-secondary">Batal</button>
                     </a>
                     <button class="btn" style="background-color:#00BFA6; color:white" onclick="stepper.previous()">Sebelumnya</button>

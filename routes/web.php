@@ -19,23 +19,23 @@ Route::get('/', function () {
 
 Route::prefix('pembelian')->group(function () {
     Route::get('/', function () {
-        return view('dashboard');
+        return view('pembelian.dashboard');
     });
     
-    Route::get('/ambilgudang', 'GudangsController@ambil');
-    Route::get('/ambilbarang', 'BarangsController@ambil');
-    Route::post('/savebarang', 'PermintaansController@savebarang');
+    Route::get('/ambilgudang', 'Pembelian\GudangsController@ambil');
+    Route::get('/ambilbarang', 'Pembelian\BarangsController@ambil');
+    Route::post('/savebarang', 'Pembelian\PermintaansController@savebarang');
     
     Route::resources([
-        'pemasoks' => 'PemasoksController',
-        'pengirims' => 'PengirimsController',
-        'jurnals' => 'JurnalsController',
-        'pemesanans' => 'PemesanansController',
-        'penerimaans' => 'PenerimaansController',
-        'permintaans' => 'PermintaansController',
-        'fakturs' => 'FaktursController',
-        'returs' => 'RetursController',
-        'hutangs' => 'HutangsController',
-        'pembayarans' => 'PembayaransController',
+        'pemasoks' => 'Pembelian\PemasoksController',
+        'pengirims' => 'Pembelian\PengirimsController',
+        'jurnals' => 'Pembelian\JurnalsController',
+        'pemesanans' => 'Pembelian\PemesanansController',
+        'penerimaans' => 'Pembelian\PenerimaansController',
+        'permintaans' => 'Pembelian\PermintaansController',
+        'fakturs' => 'Pembelian\FaktursController',
+        'returs' => 'Pembelian\RetursController',
+        'hutangs' => 'Pembelian\HutangsController',
+        'pembayarans' => 'Pembelian\PembayaransController',
     ]);
 });

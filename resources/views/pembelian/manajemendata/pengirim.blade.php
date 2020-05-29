@@ -1,17 +1,17 @@
-@extends('template.table')
+@extends('pembelian.template.table')
 
 @section('judul', 'Pengirim')
 
 @section('halaman', 'Pengirim')
 
 <!-- section('isi')
-<a href="/pengirim/create">Tambah Pengirim</a>
+<a href="/pembelian/pengirim/create">Tambah Pengirim</a>
 endsection -->
 
 @section('thead')
 <tr>
     <th>Kode Pengirim</th>
-    <th>Supplier</th>
+    <th>pemasok</th>
     <th>Nama Pengirim</th>
     <th>Telp</th>
     <th style="column-width: 80px">Aksi</th>
@@ -22,16 +22,16 @@ endsection -->
 @foreach ($pengirims as $pengirim)
 <tr>
     <td>{{ $pengirim->kode_pengirim }}</td>
-    <td>{{ $pengirim->supplier->nama_supplier }}</td>
+    <td>{{ $pengirim->pemasok->nama_pemasok }}</td>
     <td>{{ $pengirim->nama_pengirim }}</td>
     <td>{{ $pengirim->telp_pengirim }}</td>
     <td class="d-flex justify-content-between">
-        <a id="details" data-toggle="modal" data-target="#modal" data-id="{{ $pengirim->id }}" data-sup="{{ $pengirim->supplier->nama_supplier }}">
+        <a id="details" data-toggle="modal" data-target="#modal" data-id="{{ $pengirim->id }}" data-sup="{{ $pengirim->pemasok->nama_pemasok }}">
             <i style="cursor: pointer;" class="fas fa-info-circle">
                 <span></span>
             </i>
         </a>
-        <a id="edit" data-toggle="modal" data-target="#modal" data-id="{{ $pengirim->id }}" data-sup="{{ $pengirim->supplier->nama_supplier }}">
+        <a id="edit" data-toggle="modal" data-target="#modal" data-id="{{ $pengirim->id }}" data-sup="{{ $pengirim->pemasok->nama_pemasok }}">
             <i style="cursor: pointer;" class="fas fa-edit">
                 <span></span>
             </i>
@@ -53,7 +53,7 @@ endsection -->
         var sup = $(this).data('sup')
         var ini = $(this).data("id");
         console.log(sup);
-        $.get("/pengirims/" + ini, function(datanya) {
+        $.get("/pembelian/pengirims/" + ini, function(datanya) {
             console.log(datanya);
             if (datanya.length == 2) {
                 var kecil = datanya[0].id
@@ -66,7 +66,7 @@ endsection -->
             } else {
                 index = 0
             }
-            var sup_id = datanya[index].supplier_id
+            var sup_id = datanya[index].pemasok_id
             // var supson = JSON.parse(sup_id)
             console.log(sup_id.toString())
             if (id == "details") {
@@ -88,8 +88,8 @@ endsection -->
                     '<input type="email" class="form-control" id="email_pengirim" name="email_pengirim" placeholder="' + datanya[index].email_pengirim + '">' +
                     '</div>' +
                     '<div class="form-group">' +
-                    '<label for="nama_supplier">Supplier</label>' +
-                    '<input type="text" class="form-control" id="nama_supplier" name="nama_supplier" placeholder="' + sup + '">' +
+                    '<label for="nama_pemasok">pemasok</label>' +
+                    '<input type="text" class="form-control" id="nama_pemasok" name="nama_pemasok" placeholder="' + sup + '">' +
                     '</div>' +
                     '</fieldset>' +
                     '</form>'
@@ -104,7 +104,7 @@ endsection -->
                     '<h5 class="align-self-center">Edit Pengirim ' + datanya[index].nama_pengirim + '</h5>'
                 );
                 $('#bodymodal').html(
-                    '<form method="POST" action="/pengirims/' + datanya[index].id + '">' +
+                    '<form method="POST" action="/pembelian/pengirims/' + datanya[index].id + '">' +
                     '@method("patch")' +
                     '@csrf' +
                     '<div class="form-group">' +
@@ -120,11 +120,11 @@ endsection -->
                     '<input type="email" class="form-control" id="email_pengirim" name="email_pengirim" value="' + datanya[index].email_pengirim + '">' +
                     '</div>' +
                     '<div class="form-group">' +
-                    '<label for="nama_supplier">Supplier</label>' +
-                    '<select class="form-control" id="nama_supplier"  name="supplier_id">' +
-                    '<option value="">--- Pilih Supplier ---</option>' +
-                    '@foreach ($suppliers as $supplier)' +
-                    '<option value="{{$supplier->id}}" {{$supplier->id == "'+sup_id.toString()+'" ? "selected" : ""}} >{{$supplier->nama_supplier}}</option>' +
+                    '<label for="nama_pemasok">pemasok</label>' +
+                    '<select class="form-control" id="nama_pemasok"  name="pemasok_id">' +
+                    '<option value="">--- Pilih pemasok ---</option>' +
+                    '@foreach ($pemasoks as $pemasok)' +
+                    '<option value="{{$pemasok->id}}" {{$pemasok->id == "'+sup_id.toString()+'" ? "selected" : ""}} >{{$pemasok->nama_pemasok}}</option>' +
                     '@endforeach' +
                     '</select>' +
                     '</div>' +
@@ -146,7 +146,7 @@ endsection -->
 
                 $('#footermodal').html(
                     '<button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>' +
-                    '<form method="POST" action="/pengirims/' + datanya[index].id + '">' +
+                    '<form method="POST" action="/pembelian/pengirims/' + datanya[index].id + '">' +
                     '@method("delete")' +
                     '@csrf' +
                     '<button type="submit" class="btn btn-danger">Hapus</button>' +
@@ -175,7 +175,7 @@ endsection -->
 
 @section('bodyTambah')
 
-<form method="POST" action="/pengirims">
+<form method="POST" action="/pembelian/pengirims">
     @csrf
     <div class="form-group d-inline-flex">
         <i class="fas fa-user-circle mr-4" style="font-size:50px;color:#00BFA6;"></i>
@@ -195,11 +195,11 @@ endsection -->
         <input type="email" class="form-control" id="email_pengirim" name="email_pengirim" placeholder="">
     </div>
     <div class="form-group">
-        <label for="nama_supplier">Supplier</label>
-        <select class="form-control" id="nama_supplier" name="supplier_id">
-            <option value="">--- Pilih Supplier ---</option>
-            @foreach ($suppliers as $supplier)
-            <option value="{{$supplier->id}}">{{ $supplier->nama_supplier }}</option>
+        <label for="nama_pemasok">pemasok</label>
+        <select class="form-control" id="nama_pemasok" name="pemasok_id">
+            <option value="">--- Pilih pemasok ---</option>
+            @foreach ($pemasoks as $pemasok)
+            <option value="{{$pemasok->id}}">{{ $pemasok->nama_pemasok }}</option>
             @endforeach
         </select>
     </div>

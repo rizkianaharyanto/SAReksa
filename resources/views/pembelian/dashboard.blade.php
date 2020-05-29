@@ -1,4 +1,4 @@
-@extends('template.template')
+@extends('pembelian.template.template')
 
 @section('judul', 'dashboard')
 
