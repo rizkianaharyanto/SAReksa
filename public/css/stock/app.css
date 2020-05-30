@@ -1,0 +1,323 @@
+@import url(https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap);body {
+  font-family: "Montserrat", sans-serif;
+  margin: 0;
+  height: 100%;
+  background-color: #393E46;
+  color: white;
+}
+
+body .sidebar {
+  transition: all 0.25s ease;
+  margin: 0;
+  padding: 1.5em;
+  top: 0;
+  min-width: 17vw;
+  max-width: 17vw;
+  height: 100%;
+  background-color: #222831;
+  color: white;
+  display: block;
+  text-decoration: none;
+  -webkit-text-decoration-style: none;
+          text-decoration-style: none;
+  position: fixed;
+}
+
+body .sidebar h1 {
+  transition: inherit;
+  text-align: center;
+}
+
+body .sidebar .logo {
+  transition: inherit;
+  text-align: center;
+  font-weight: bold;
+  justify-self: center;
+  font-size: 0.75rem;
+  vertical-align: middle;
+  margin: 3em auto;
+  line-height: 120px;
+  width: 120px;
+  height: 120px;
+  background-color: #0DD3DC;
+  border-radius: 50%;
+}
+
+body .sidebar ul {
+  font-family: inherit;
+  transition: initial;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  height: 70vh;
+  margin: 1.75em 0 0 1.7em;
+  position: relative;
+  padding: 0;
+  list-style-type: none;
+  font-size: 0.9rem;
+}
+
+body .sidebar ul #logout {
+  margin-right: 0;
+  text-align: end;
+  bottom: 0;
+  position: absolute;
+}
+
+body .sidebar ul a {
+  font-family: inherit;
+  margin: 0 0;
+}
+
+body .sidebar ul a .menu-icon {
+  color: white;
+  float: right;
+  font-size: 1.5em;
+  margin-top: -1.9em;
+  margin-right: 1.75em;
+}
+
+body .sidebar ul a .menu-icon .fa-sign-out-alt {
+  margin-left: 3em;
+}
+
+body .sidebar ul li {
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: inherit;
+  text-decoration: none;
+  color: white;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  border-radius: 25px;
+  padding: 1.25em 3em 1.25em 1.25em;
+  position: relative;
+}
+
+body .sidebar ul ul {
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  padding: 0;
+  color: black;
+  margin: 0 1em;
+  display: none;
+}
+
+body .sidebar ul ul li {
+  margin: 0 0;
+  font-size: 14px;
+  margin-left: 2.2em;
+  padding: 0em 1.5em 1em;
+}
+
+body .sidebar ul ul li a {
+  text-decoration: none;
+  color: white;
+}
+
+body .sidebar ul ul li:hover {
+  cursor: pointer;
+}
+
+body .sidebar ul .menu-icon {
+  float: right;
+  font-size: 1.5em;
+  margin-left: 1em;
+}
+
+body .sidebar ul .arrows {
+  padding-top: 0.25rem;
+  right: 20px;
+  color: white;
+  position: absolute;
+}
+
+body .sidebar ul .active:after {
+  content: "";
+  display: block;
+  padding-top: 0.5em;
+  border-bottom: solid 2px #0DD3DC;
+  text-decoration: underline;
+}
+
+body .sidebar ul li:hover {
+  background-color: #333c4b;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
+body .sidebar.collapsed {
+  transition: all 0.25s ease;
+  min-width: 4.59vw;
+  max-width: 4.59vw;
+}
+
+body .sidebar.collapsed h1 {
+  text-transform: uppercase;
+  font-size: 1.2rem;
+  transition: initial;
+  -webkit-writing-mode: vertical-lr;
+      -ms-writing-mode: tb-lr;
+          writing-mode: vertical-lr;
+  -webkit-text-orientation: upright;
+          text-orientation: upright;
+}
+
+body .sidebar.collapsed .logo {
+  transition: inherit;
+  display: none;
+}
+
+body .sidebar.collapsed ul {
+  margin: 2em 1em;
+  transition: inherit;
+}
+
+body .sidebar.collapsed ul ul li {
+  display: none;
+}
+
+body .sidebar.collapsed ul a {
+  justify-content: center;
+}
+
+body .sidebar.collapsed ul a .menu-icon {
+  text-align: center;
+  float: none;
+  padding: 0.5em auto;
+  margin: 1em auto;
+}
+
+body .sidebar.collapsed ul a .menu-icon:hover li {
+  display: contents;
+}
+
+body .sidebar.collapsed ul a li {
+  transition: inherit;
+  display: none;
+}
+
+body .content.collapsed {
+  transition: all 0.25s ease;
+  margin-left: 12vw;
+}
+
+body .content {
+  line-height: 2rem;
+  margin: 1.5em 1em 1.3em 19vw;
+  padding: 1.5em 1em;
+  transition: all 0.25s ease;
+}
+
+body .content .top-menu {
+  margin: 0 0 2em 0;
+  font-size: 2em;
+  height: auto;
+  color: white;
+}
+
+body .content .top-menu h3 {
+  display: inline;
+  padding: 0 0.5em;
+}
+
+body .content .top-menu a {
+  text-decoration: none;
+}
+
+body .content .top-menu a i {
+  color: white;
+}
+
+body .content .top-menu .user-info {
+  text-align: right;
+  float: right;
+  margin-right: 1.75em;
+}
+
+body .content .top-menu .user-info h3 {
+  font-size: 1.25rem;
+}
+
+body .content .top-menu .user-info p {
+  margin: -0.5rem 2.5em;
+  font-size: 1rem;
+}
+
+body .content .top-menu .user-info i {
+  right: 0;
+}
+
+body .content .chart-container {
+  padding: 2em;
+  background-color: #464D57;
+  border-radius: 20px;
+  position: relative;
+  color: white;
+  margin: 0 3.5em;
+  height: 30vh;
+  width: 70vw;
+}
+
+body .content .rank-table {
+  background-color: #464D57;
+  display: inline-block;
+  border-radius: 20px;
+  color: white;
+  margin: 3.5em 3.5em;
+  padding: 1.2em 1em;
+  width: 30vw;
+}
+
+body .content .rank-table h3 {
+  text-align: center;
+}
+
+body .content .rank-table table {
+  padding: 0 2.7em;
+}
+
+body .content .rank-table table th,
+body .content .rank-table table td {
+  padding: 0.75em 2.2em;
+}
+
+body .content .rank-table table tr:first-of-type td {
+  border: none;
+  background-color: #0DD3DC;
+  color: black;
+}
+
+body .content .right-table {
+  display: inline-block;
+  background-color: #464D57;
+  display: inline-block;
+  border-radius: 20px;
+  color: white;
+  margin: 3.5em 3.5em 3.5em 2em;
+  padding: 1.2em 1em;
+  width: 35vw;
+}
+
+body .content .right-table h3 {
+  text-align: center;
+}
+
+body .content .right-table table {
+  padding: 0 5em;
+}
+
+body .content .right-table table th,
+body .content .right-table table td {
+  padding: 0.75em 2.5em;
+}
+
+body .content .right-table table tr:first-of-type td {
+  border: none;
+  background-color: #0DD3DC;
+  color: black;
+}
+

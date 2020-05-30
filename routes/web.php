@@ -39,3 +39,40 @@ Route::prefix('pembelian')->group(function () {
         'pembayarans' => 'Pembelian\PembayaransController',
     ]);
 });
+
+Route::prefix('stok')->group(function () {
+    Route::get('/', function () {
+        return view('stock.dashboard');
+    });
+    
+    Route::get('/config', 'Stock\ConfigController@index');
+    Route::get('/config/getrolepermissions/{id}', 'Stock\ConfigController@getRolePermissions');
+    
+    Route::post('/updatepermissions', 'Stock\ConfigController@updatePermissions');
+    Route::post('/rolebaru', 'Stock\ConfigController@addRole');
+    
+    Route::prefix('/Management-Data')->group(function () {
+        Route::resources([
+            'kategori-barang' => "Stock\ItemCategoryController",
+            'barang'          => "Stock\ItemResourceController",
+            'satuan-unit'     => "Stock\UnitsResourceController",
+            'gudang'          => "Stock\WarehouseController",
+            'pemasok'         => "Stock\SuppliersResourceController",
+            'pajak'           => "Stock\TaxResourceController",
+            'coa-master'      => "Stock\COAMasterController",
+            'coa-type'        => "Stock\COATypeController",
+            
+        ]);
+    });
+    Route::post('/stock-opname/posting/{id}', 'Stock\StockOpnameController@posting');
+    Route::resources([
+            'transfer-stock'    => 'StockTransferController',
+            'stock-opname'      => 'StockOpnameController',
+            'penyesuaian-stock' => 'StockAdjustmentController',
+            'pembelian'         => 'ItemPurchaseTransactionController',
+        ]);
+        
+    Route::get('/token', function () {
+        return csrf_token();
+    });
+});

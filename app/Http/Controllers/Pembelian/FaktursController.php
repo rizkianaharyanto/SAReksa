@@ -9,8 +9,8 @@ use App\Pembelian\Penerimaan;
 use App\Stock\Barang;
 use App\Stock\Gudang;
 use App\Pembelian\Pemasok;
-// use App\Pembelian\Akun;
 
+// use App\Pembelian\Akun;
 class FaktursController extends Controller
 {
     /**
