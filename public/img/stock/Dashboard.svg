@@ -1,0 +1,151 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <clipPath id="clip-path">
+      <rect width="150" height="26" fill="none"/>
+    </clipPath>
+    <clipPath id="clip-Dashboard">
+      <rect width="1920" height="1080"/>
+    </clipPath>
+  </defs>
+  <g id="Dashboard" clip-path="url(#clip-Dashboard)">
+    <rect width="1920" height="1080" fill="#fff"/>
+    <ellipse id="Ellipse_5" data-name="Ellipse 5" cx="210" cy="192" rx="210" ry="192" transform="translate(1576 -192)" fill="#c7c7c7"/>
+    <circle id="Ellipse_6" data-name="Ellipse 6" cx="191" cy="191" r="191" transform="translate(1661 1028)" fill="#c7c7c7"/>
+    <circle id="Ellipse_15" data-name="Ellipse 15" cx="191" cy="191" r="191" transform="translate(1786 837)" fill="#c7c7c7"/>
+    <g id="Rectangle_1" data-name="Rectangle 1" fill="#fff" stroke="#707070" stroke-width="1">
+      <rect width="372" height="1080" stroke="none"/>
+      <rect x="0.5" y="0.5" width="371" height="1079" fill="none"/>
+    </g>
+    <g id="Group_1" data-name="Group 1" transform="translate(-50 135)">
+      <g id="Repeat_Grid_1" data-name="Repeat Grid 1" transform="translate(151 295)" clip-path="url(#clip-path)">
+        <g transform="translate(-151 -295)">
+          <text id="Manajemen_data" data-name="Manajemen data" transform="translate(226 316)" font-size="20" font-family="Roboto-Medium, Roboto" font-weight="500"><tspan x="-74.917" y="0">Manajemen data</tspan></text>
+        </g>
+      </g>
+      <text id="Penyesuaian_stok" data-name="Penyesuaian stok" transform="translate(229 391)" font-size="20" font-family="Roboto-Medium, Roboto" font-weight="500"><tspan x="-78.95" y="0">Penyesuaian stok</tspan></text>
+      <text id="Transfer_Stok" data-name="Transfer Stok" transform="translate(210 465)" font-size="20" font-family="Roboto-Medium, Roboto" font-weight="500"><tspan x="-60.298" y="0">Transfer Stok</tspan></text>
+      <text id="Stok_Opname" data-name="Stok Opname" transform="translate(211 540)" font-size="20" font-family="Roboto-Medium, Roboto" font-weight="500"><tspan x="-60.19" y="0">Stok Opname</tspan></text>
+      <text id="Laporan" transform="translate(187 614)" font-size="20" font-family="Roboto-Medium, Roboto" font-weight="500"><tspan x="-36.484" y="0">Laporan</tspan></text>
+      <text id="Dashboard-2" data-name="Dashboard" transform="translate(198 242)" font-size="20" font-family="Roboto-Regular, Roboto"><tspan x="-48.438" y="0">Dashboard</tspan></text>
+    </g>
+    <text id="IMS_System" data-name="IMS System" transform="translate(187 83)" font-size="20" font-family="Roboto-Bold, Roboto" font-weight="700"><tspan x="-54.063" y="0">IMS System</tspan></text>
+    <g id="Group_2" data-name="Group 2" transform="translate(-21 44)">
+      <g id="Ellipse_1" data-name="Ellipse 1" transform="translate(135 88)" fill="#fff" stroke="#707070" stroke-width="2">
+        <circle cx="73.5" cy="73.5" r="73.5" stroke="none"/>
+        <circle cx="73.5" cy="73.5" r="72.5" fill="none"/>
+      </g>
+      <text id="Logo" transform="translate(179 171)" font-size="29" font-family="SegoeUI, Segoe UI"><tspan x="0" y="0">Logo</tspan></text>
+    </g>
+    <path id="Icon_open-account-logout" data-name="Icon open-account-logout" d="M11.625,0V3.875h15.5V23.25h-15.5v3.875H31V0ZM7.75,7.75,0,13.563l7.75,5.813V15.5h15.5V11.625H7.75Z" transform="translate(271 982.375)"/>
+    <g id="Group_3" data-name="Group 3" transform="translate(7 52)">
+      <path id="Icon_ionic-ios-arrow-down" data-name="Icon ionic-ios-arrow-down" d="M15.685,18.83l7.179-7.185a1.351,1.351,0,0,1,1.916,0,1.368,1.368,0,0,1,0,1.922L20.261,18.09l-3.615,3.618a1.354,1.354,0,0,1-1.871.04l-2.6-2.595-5.591-5.58A1.357,1.357,0,0,1,8.5,11.651Z" transform="translate(269.813 376.754)"/>
+      <path id="Icon_ionic-ios-arrow-down-2" data-name="Icon ionic-ios-arrow-down" d="M15.685,18.83l7.179-7.185a1.351,1.351,0,0,1,1.916,0,1.368,1.368,0,0,1,0,1.922L20.261,18.09l-3.615,3.618a1.354,1.354,0,0,1-1.871.04l-2.6-2.595-5.591-5.58A1.357,1.357,0,0,1,8.5,11.651Z" transform="translate(269.813 450.754)"/>
+      <path id="Icon_ionic-ios-arrow-down-3" data-name="Icon ionic-ios-arrow-down" d="M15.685,18.83l7.179-7.185a1.351,1.351,0,0,1,1.916,0,1.368,1.368,0,0,1,0,1.922L20.261,18.09l-3.615,3.618a1.354,1.354,0,0,1-1.871.04l-2.6-2.595-5.591-5.58A1.357,1.357,0,0,1,8.5,11.651Z" transform="translate(269.813 523.754)"/>
+      <path id="Icon_ionic-ios-arrow-down-4" data-name="Icon ionic-ios-arrow-down" d="M15.685,18.83l7.179-7.185a1.351,1.351,0,0,1,1.916,0,1.368,1.368,0,0,1,0,1.922L20.261,18.09l-3.615,3.618a1.354,1.354,0,0,1-1.871.04l-2.6-2.595-5.591-5.58A1.357,1.357,0,0,1,8.5,11.651Z" transform="translate(269.813 676.754)"/>
+    </g>
+    <text id="Logout" transform="translate(101 1005)" font-size="22" font-family="OpenSans-Regular, Open Sans"><tspan x="0" y="0">Logout</tspan></text>
+    <g id="Group_4" data-name="Group 4" transform="translate(29 45)">
+      <g id="Rectangle_2" data-name="Rectangle 2" transform="translate(522 148)" fill="#fff" stroke="#707070" stroke-width="3">
+        <rect width="1203" height="431" rx="34" stroke="none"/>
+        <rect x="1.5" y="1.5" width="1200" height="428" rx="32.5" fill="none"/>
+      </g>
+      <g id="Group_5" data-name="Group 5" transform="translate(558 210.961)">
+        <g id="Rectangle_3" data-name="Rectangle 3" transform="translate(0 137.039)" fill="#fff" stroke="#707070" stroke-width="3">
+          <path d="M32,0h5A32,32,0,0,1,69,32V230a1,1,0,0,1-1,1H0a0,0,0,0,1,0,0V32A32,32,0,0,1,32,0Z" stroke="none"/>
+          <path d="M32,1.5h5A30.5,30.5,0,0,1,67.5,32V229a.5.5,0,0,1-.5.5H3A1.5,1.5,0,0,1,1.5,228V32A30.5,30.5,0,0,1,32,1.5Z" fill="none"/>
+        </g>
+        <g id="Rectangle_3-2" data-name="Rectangle 3" transform="translate(95 63.039)" fill="#fff" stroke="#707070" stroke-width="3">
+          <path d="M32,0H44A32,32,0,0,1,76,32V305a0,0,0,0,1,0,0H0a0,0,0,0,1,0,0V32A32,32,0,0,1,32,0Z" stroke="none"/>
+          <path d="M32,1.5H44A30.5,30.5,0,0,1,74.5,32V302a1.5,1.5,0,0,1-1.5,1.5H3A1.5,1.5,0,0,1,1.5,302V32A30.5,30.5,0,0,1,32,1.5Z" fill="none"/>
+        </g>
+        <g id="Rectangle_3-3" data-name="Rectangle 3" transform="translate(190 7.039)" fill="#fff" stroke="#707070" stroke-width="3">
+          <path d="M32,0H44A32,32,0,0,1,76,32V361a0,0,0,0,1,0,0H0a0,0,0,0,1,0,0V32A32,32,0,0,1,32,0Z" stroke="none"/>
+          <path d="M32,1.5H44A30.5,30.5,0,0,1,74.5,32V358a1.5,1.5,0,0,1-1.5,1.5H3A1.5,1.5,0,0,1,1.5,358V32A30.5,30.5,0,0,1,32,1.5Z" fill="none"/>
+        </g>
+        <g id="Rectangle_3-4" data-name="Rectangle 3" transform="translate(286 215.039)" fill="#fff" stroke="#707070" stroke-width="3">
+          <path d="M32,0H44A32,32,0,0,1,76,32V153a0,0,0,0,1,0,0H0a0,0,0,0,1,0,0V32A32,32,0,0,1,32,0Z" stroke="none"/>
+          <path d="M32,1.5H44A30.5,30.5,0,0,1,74.5,32V150a1.5,1.5,0,0,1-1.5,1.5H3A1.5,1.5,0,0,1,1.5,150V32A30.5,30.5,0,0,1,32,1.5Z" fill="none"/>
+        </g>
+        <g id="Rectangle_3-5" data-name="Rectangle 3" transform="translate(382 54.039)" fill="#fff" stroke="#707070" stroke-width="3">
+          <path d="M32,0H43A32,32,0,0,1,75,32V314a0,0,0,0,1,0,0H0a0,0,0,0,1,0,0V32A32,32,0,0,1,32,0Z" stroke="none"/>
+          <path d="M32,1.5H43A30.5,30.5,0,0,1,73.5,32V311a1.5,1.5,0,0,1-1.5,1.5H3A1.5,1.5,0,0,1,1.5,311V32A30.5,30.5,0,0,1,32,1.5Z" fill="none"/>
+        </g>
+        <g id="Rectangle_3-6" data-name="Rectangle 3" transform="translate(478 108.039)" fill="#fff" stroke="#707070" stroke-width="3">
+          <path d="M32,0H43A32,32,0,0,1,75,32V260a0,0,0,0,1,0,0H0a0,0,0,0,1,0,0V32A32,32,0,0,1,32,0Z" stroke="none"/>
+          <path d="M32,1.5H43A30.5,30.5,0,0,1,73.5,32V257a1.5,1.5,0,0,1-1.5,1.5H3A1.5,1.5,0,0,1,1.5,257V32A30.5,30.5,0,0,1,32,1.5Z" fill="none"/>
+        </g>
+        <g id="Rectangle_3-7" data-name="Rectangle 3" transform="translate(574 0.039)" fill="#fff" stroke="#707070" stroke-width="3">
+          <path d="M32,0H43A32,32,0,0,1,75,32V368a0,0,0,0,1,0,0H0a0,0,0,0,1,0,0V32A32,32,0,0,1,32,0Z" stroke="none"/>
+          <path d="M32,1.5H43A30.5,30.5,0,0,1,73.5,32V365a1.5,1.5,0,0,1-1.5,1.5H3A1.5,1.5,0,0,1,1.5,365V32A30.5,30.5,0,0,1,32,1.5Z" fill="none"/>
+        </g>
+        <g id="Rectangle_3-8" data-name="Rectangle 3" transform="translate(670 99.039)" fill="#fff" stroke="#707070" stroke-width="3">
+          <path d="M32,0H44A32,32,0,0,1,76,32V269a0,0,0,0,1,0,0H0a0,0,0,0,1,0,0V32A32,32,0,0,1,32,0Z" stroke="none"/>
+          <path d="M32,1.5H44A30.5,30.5,0,0,1,74.5,32V266a1.5,1.5,0,0,1-1.5,1.5H3A1.5,1.5,0,0,1,1.5,266V32A30.5,30.5,0,0,1,32,1.5Z" fill="none"/>
+        </g>
+        <g id="Rectangle_3-9" data-name="Rectangle 3" transform="translate(766 343.039)" fill="#fff" stroke="#707070" stroke-width="3">
+          <path d="M25,0H51A25,25,0,0,1,76,25v0a0,0,0,0,1,0,0H0a0,0,0,0,1,0,0v0A25,25,0,0,1,25,0Z" stroke="none"/>
+          <path d="M22.469,1.5H53.531A20.969,20.969,0,0,1,74.5,22.469v0A1.031,1.031,0,0,1,73.469,23.5H2.531A1.031,1.031,0,0,1,1.5,22.469v0A20.969,20.969,0,0,1,22.469,1.5Z" fill="none"/>
+        </g>
+        <g id="Rectangle_3-10" data-name="Rectangle 3" transform="translate(862 63.039)" fill="#fff" stroke="#707070" stroke-width="3">
+          <path d="M32,0H44A32,32,0,0,1,76,32V305a0,0,0,0,1,0,0H0a0,0,0,0,1,0,0V32A32,32,0,0,1,32,0Z" stroke="none"/>
+          <path d="M32,1.5H44A30.5,30.5,0,0,1,74.5,32V302a1.5,1.5,0,0,1-1.5,1.5H3A1.5,1.5,0,0,1,1.5,302V32A30.5,30.5,0,0,1,32,1.5Z" fill="none"/>
+        </g>
+        <g id="Rectangle_3-11" data-name="Rectangle 3" transform="translate(957 63.039)" fill="#fff" stroke="#707070" stroke-width="3">
+          <path d="M32,0H43A32,32,0,0,1,75,32V305a0,0,0,0,1,0,0H0a0,0,0,0,1,0,0V32A32,32,0,0,1,32,0Z" stroke="none"/>
+          <path d="M32,1.5H43A30.5,30.5,0,0,1,73.5,32V302a1.5,1.5,0,0,1-1.5,1.5H3A1.5,1.5,0,0,1,1.5,302V32A30.5,30.5,0,0,1,32,1.5Z" fill="none"/>
+        </g>
+        <g id="Rectangle_3-12" data-name="Rectangle 3" transform="translate(1054 63.039)" fill="#fff" stroke="#707070" stroke-width="3">
+          <path d="M32,0H43A32,32,0,0,1,75,32V305a0,0,0,0,1,0,0H0a0,0,0,0,1,0,0V32A32,32,0,0,1,32,0Z" stroke="none"/>
+          <path d="M32,1.5H43A30.5,30.5,0,0,1,73.5,32V302a1.5,1.5,0,0,1-1.5,1.5H3A1.5,1.5,0,0,1,1.5,302V32A30.5,30.5,0,0,1,32,1.5Z" fill="none"/>
+        </g>
+      </g>
+    </g>
+    <g id="Group_6" data-name="Group 6" transform="translate(0 -21)">
+      <g id="Rectangle_8" data-name="Rectangle 8" transform="translate(551 734)" fill="#fff" stroke="#707070" stroke-width="3">
+        <rect width="660" height="248" rx="27" stroke="none"/>
+        <rect x="1.5" y="1.5" width="657" height="245" rx="25.5" fill="none"/>
+      </g>
+      <text id="The_most_selling_products" data-name="The most selling products" transform="translate(881 786)" font-size="22" font-family="Roboto-Regular, Roboto"><tspan x="-126.897" y="0">The most selling products</tspan></text>
+    </g>
+    <g id="Group_8" data-name="Group 8" transform="translate(813 -21)">
+      <g id="Rectangle_8-2" data-name="Rectangle 8" transform="translate(551 734)" fill="none" stroke="#707070" stroke-width="3">
+        <rect width="387" height="283" rx="27" stroke="none"/>
+        <rect x="1.5" y="1.5" width="384" height="280" rx="25.5" fill="none"/>
+      </g>
+      <g id="Group_9" data-name="Group 9" transform="translate(772 831.389)">
+        <text id="Full" transform="translate(130 27.611)" font-size="11" font-family="Roboto-Regular, Roboto"><tspan x="0" y="0">Full</tspan></text>
+        <text id="Empty" transform="translate(0 27.611)" font-size="11" font-family="Roboto-Regular, Roboto"><tspan x="0" y="0">Empty</tspan></text>
+        <g id="Rectangle_9" data-name="Rectangle 9" transform="translate(6 -0.389)" fill="#7e857e" stroke="#707070" stroke-width="1">
+          <rect width="133" height="17" rx="8.5" stroke="none"/>
+          <rect x="0.5" y="0.5" width="132" height="16" rx="8" fill="none"/>
+        </g>
+      </g>
+      <text id="List_Gudang" data-name="List Gudang" transform="translate(745 781)" font-size="22" font-family="Roboto-Regular, Roboto"><tspan x="-58.561" y="0">List Gudang</tspan></text>
+    </g>
+    <text id="_1._Warehouse" data-name="1. Warehouse" transform="translate(1405 794)" font-size="20" font-family="Roboto-Regular, Roboto"><tspan x="0" y="21">1. Warehouse</tspan></text>
+    <text id="_2._Manufacturing" data-name="2. Manufacturing" transform="translate(1405 851)" font-size="20" font-family="Roboto-Regular, Roboto"><tspan x="0" y="21">2. Manufacturing</tspan></text>
+    <text id="_2._Production" data-name="2. Production" transform="translate(1405 908)" font-size="20" font-family="Roboto-Regular, Roboto"><tspan x="0" y="21">2. Production</tspan></text>
+    <g id="Group_10" data-name="Group 10" transform="translate(17 53)">
+      <g id="Rectangle_9-2" data-name="Rectangle 9" transform="translate(1576 802)" fill="#7e857e" stroke="#707070" stroke-width="1">
+        <rect width="133" height="17" rx="8.5" stroke="none"/>
+        <rect x="0.5" y="0.5" width="132" height="16" rx="8" fill="none"/>
+      </g>
+      <text id="Full-2" data-name="Full" transform="translate(1700 830)" font-size="11" font-family="Roboto-Regular, Roboto"><tspan x="0" y="0">Full</tspan></text>
+      <text id="Empty-2" data-name="Empty" transform="translate(1570 830)" font-size="11" font-family="Roboto-Regular, Roboto"><tspan x="0" y="0">Empty</tspan></text>
+    </g>
+    <g id="Group_11" data-name="Group 11" transform="translate(17 106)">
+      <g id="Rectangle_9-3" data-name="Rectangle 9" transform="translate(1576 802)" fill="#7e857e" stroke="#707070" stroke-width="1">
+        <rect width="133" height="17" rx="8.5" stroke="none"/>
+        <rect x="0.5" y="0.5" width="132" height="16" rx="8" fill="none"/>
+      </g>
+      <text id="Full-3" data-name="Full" transform="translate(1700 830)" font-size="11" font-family="Roboto-Regular, Roboto"><tspan x="0" y="0">Full</tspan></text>
+      <text id="Empty-3" data-name="Empty" transform="translate(1570 830)" font-size="11" font-family="Roboto-Regular, Roboto"><tspan x="0" y="0">Empty</tspan></text>
+    </g>
+    <path id="Icon_material-person" data-name="Icon material-person" d="M25,25a9.5,9.5,0,1,0-9.5-9.5A9.5,9.5,0,0,0,25,25Zm0,4.75c-6.341,0-19,3.183-19,9.5V44H44V39.25C44,32.933,31.341,29.75,25,29.75Z" transform="translate(1795 54)"/>
+    <text id="Arya_Gamas" data-name="Arya Gamas" transform="translate(1680 76)" font-size="20" font-family="Roboto-Bold, Roboto" font-weight="700"><tspan x="0" y="0">Arya Gamas</tspan></text>
+    <text id="Warehouse_operator" data-name="Warehouse operator" transform="translate(1642 96)" font-size="16" font-family="Roboto-Regular, Roboto"><tspan x="0" y="0">Warehouse operator</tspan></text>
+    <path id="Icon_material-menu" data-name="Icon material-menu" d="M4.5,35.5H37.306V31.083H4.5Zm0-11.042H37.306V20.042H4.5ZM4.5,9v4.417H37.306V9Z" transform="translate(456.4 45)"/>
+    <text id="Info_Maintenance_barang" data-name="Info Maintenance barang" transform="translate(900 154)" font-size="45" font-family="Roboto-Bold, Roboto" font-weight="700"><tspan x="0" y="0">Info Maintenance barang</tspan></text>
+    <line id="Line_1" data-name="Line 1" x2="105" transform="translate(100.5 388.5)" fill="none" stroke="#000" stroke-width="3"/>
+  </g>
+</svg>

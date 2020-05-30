@@ -1,0 +1,141 @@
+$accent : #0DD3DC;
+
+#tambah-data{
+    display: inline;
+    position: absolute;
+    right: 1em;
+    padding: 1em 2em;
+    margin: 3em 6em 2.3em 0;
+}
+.placeholder{
+    background-color: #555C68;
+    min-height: 75vh;
+    padding: 2.5em 2em 4em 2em;
+    border-radius: 60px;
+    input{
+        padding-left: 1.2em;
+        color: white;
+    }
+}
+
+table {
+    min-width: 75vw;
+    color: white;
+    td{
+        justify-content: center;
+        text-align: center;
+        .dropright .dropdown-menu a{
+            // font-weight: bold;
+            color: black;
+        }
+        .btn-secondary{
+            border: none;
+            background-color: inherit;
+        }
+        .btn-secondary.dropdown-toggle:after{
+          display: none;
+      }
+    }
+    th,td{
+        padding: 1.3em;
+        border-bottom: solid 1px white;
+    }
+    
+}
+
+#options{
+    font-weight: bold;
+}
+#edit-opt{
+    a{
+        color: $accent;
+    }
+}
+#delete-opt{
+    a{
+        color: rgb(231, 149, 149);
+    }
+}
+h5{
+    color: black;
+     margin-bottom: 0.5rem;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+.modal-footer button[type="submit"]{
+    color: white;
+    background-color: var(--accent);
+    font-weight: 600;
+}
+  
+#table_id_length{
+    display: none;
+}
+#table_id{
+    font-size: 1rem;
+    min-width: 72vw;
+
+  }
+#table_id_info{
+    font-weight: bold;
+    color: $accent;
+    margin: 2em 2em;
+}
+#table_id_wrapper{
+    align-self: center;
+    justify-content: center;
+    margin: 1.5em 1em 0 0;
+    padding: 1em;
+}
+input[type=search]{
+    background-color: rgb(66, 72, 82);
+    padding-right: 4em;
+    margin: 1.5em 1.5em;
+    border: 2px solid $accent;
+    border-radius: 50px;
+}   
+#table_id_paginate{
+    display: inline-block;
+    position: absolute;
+    padding: 0 2em;
+    margin-right: 2em;
+    right: 4.5em;
+    a{
+        margin-left: 1.5em;
+        cursor: pointer;
+    }
+    a:hover{
+        border-bottom: solid 1px white;
+    }
+    .previous, #table_id_paginate .next{
+        font-weight: bold;
+        color: $accent;
+    }
+    .current{
+        padding: 0.6em 1em;
+        color: black;
+        border-radius: 45px;
+        background-color: white;
+    }
+}   
+
+#tambah-data{
+    font-weight: bolder;
+    background-color: $accent;
+  
+}
+.modal{
+    min-height: 25vh;
+    color: black;
+    input{
+        color: black;
+    }
+}
+.submit{
+    margin: 1em 1em ;
+    float: right;
+  
+  }
+
+
+  

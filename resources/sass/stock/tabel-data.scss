@@ -1,0 +1,13 @@
+table{
+    min-width: 75vw;
+    color: white;
+    th,td{
+
+        padding: 1.1em;
+        border-bottom: solid 1px white;
+    }
+    td{
+        justify-content: center;
+        text-align: center;
+    }
+}
