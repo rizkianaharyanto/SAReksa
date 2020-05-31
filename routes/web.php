@@ -26,6 +26,8 @@ Route::prefix('pembelian')->group(function () {
     Route::get('/ambilbarang', 'Pembelian\BarangsController@ambil');
     Route::post('/savebarang', 'Pembelian\PermintaansController@savebarang');
     
+
+    // Route::get('/barangs', )
     Route::resources([
         'pemasoks' => 'Pembelian\PemasoksController',
         'pengirims' => 'Pembelian\PengirimsController',

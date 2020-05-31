@@ -33,8 +33,8 @@ class PemesanansController extends Controller
         return view('pembelian.pembelian.pemesanan.pemesananinsert', [
             'pemasoks' => Pemasok::all(),
             'permintaans' => Permintaan::all(),
-            // 'barangs' => Barang::all(),
-            // 'gudangs'=> Gudang::all()
+            'barangs' => Barang::all(),
+            'gudangs'=> Gudang::all()
         ]);
     }
 
@@ -91,8 +91,8 @@ class PemesanansController extends Controller
             'pemesanan' => $pemesanan,
             'pemasoks' => Pemasok::all(),
             'permintaans' => Permintaan::all(),
-            // 'barangs' => Barang::all(),
-            // 'gudangs'=> Gudang::all()
+            'barangs' => Barang::all(),
+            'gudangs'=> Gudang::all()
         ]);
     }
 

@@ -34,8 +34,8 @@ class FaktursController extends Controller
         return view('pembelian.pembelian.faktur.fakturinsert', [
             'penerimaans' => Penerimaan::all(),
             'pemasoks' => Pemasok::all(),
-            // 'barangs' => Barang::all(),
-            // 'gudangs'=> Gudang::all(),
+            'barangs' => Barang::all(),
+            'gudangs'=> Gudang::all(),
             // 'akuns'=> Akun::all()
         ]);
     }
@@ -74,8 +74,8 @@ class FaktursController extends Controller
             'faktur' => $faktur,
             'penerimaans' => Penerimaan::all(),
             'pemasoks' => Pemasok::all(),
-            // 'barangs' => Barang::all(),
-            // 'gudangs'=> Gudang::all(),
+            'barangs' => Barang::all(),
+            'gudangs'=> Gudang::all(),
             // 'akuns'=> Akun::all()
         ]);
     }

@@ -35,8 +35,8 @@ class RetursController extends Controller
         return view('pembelian.pembelian.retur.returinsert', [
             'pemasoks' => Pemasok::all(),
             'fakturs' => Faktur::all(),
-            // 'barangs' => Barang::all(),
-            // 'gudangs'=> Gudang::all(),
+            'barangs' => Barang::all(),
+            'gudangs'=> Gudang::all(),
             // 'akuns'=> Akun::all(),
         ]);
     }
@@ -75,8 +75,8 @@ class RetursController extends Controller
             'retur' => $retur,
             'pemasoks' => Pemasok::all(),
             'fakturs' => Faktur::all(),
-            // 'barangs' => Barang::all(),
-            // 'gudangs'=> Gudang::all(),
+            'barangs' => Barang::all(),
+            'gudangs'=> Gudang::all(),
             // 'akuns'=> Akun::all()
         ]);
     }

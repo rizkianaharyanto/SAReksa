@@ -55,7 +55,7 @@
                                 <select class="form-control" id="gudang" name="gudang">
                                     <option value="">--- Pilih Gudang ---</option>
                                     @foreach ($gudangs as $gudang)
-                                    <option value="{{$gudang->id}}">{{ $gudang->nama_gudang }}</option>
+                                    <option value="{{$gudang->id}}">{{ $gudang->kode_gudang }}</option>
                                     @endforeach
                                 </select>
                             </div>

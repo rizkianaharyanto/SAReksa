@@ -29,10 +29,11 @@ class PermintaansController extends Controller
      */
     public function create()
     {
+        // dd(Gudang::all());
         return view('pembelian.pembelian.permintaan.permintaaninsert', [
             'pemasoks' => Pemasok::all(),
-            // 'barangs' => Barang::all(),
-            // 'gudangs' => Gudang::all()
+            'barangs' => Barang::all(),
+            'gudangs' => Gudang::all()
         ]);
     }
 
@@ -87,8 +88,8 @@ class PermintaansController extends Controller
         return view('pembelian.pembelian.permintaan.permintaanedit', [
             'permintaan' => $permintaan,
             'pemasoks' => Pemasok::all(),
-            // 'barangs' => Barang::all(),
-            // 'gudangs' => Gudang::all()
+            'barangs' => Barang::all(),
+            'gudangs' => Gudang::all()
         ]);
     }
 

@@ -33,8 +33,8 @@ class PenerimaansController extends Controller
         return view('pembelian.pembelian.penerimaan.penerimaaninsert', [
             'pemasoks' => Pemasok::all(),
             'pemesanans' => Pemesanan::all(),
-            // 'barangs' => Barang::all(),
-            // 'gudangs'=> Gudang::all()
+            'barangs' => Barang::all(),
+            'gudangs'=> Gudang::all()
         ]);
     }
 
@@ -89,8 +89,8 @@ class PenerimaansController extends Controller
         return view('pembelian.pembelian.penerimaan.penerimaanedit', [
             'penerimaan' => $penerimaan,
             'pemasoks' => Pemasok::all(),
-            // 'barangs' => Barang::all(),
-            // 'gudangs'=> Gudang::all()
+            'barangs' => Barang::all(),
+            'gudangs'=> Gudang::all()
         ]);
     }
 
