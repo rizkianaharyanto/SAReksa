@@ -17,6 +17,41 @@ class ItemService
         $this->model->save($data);
         return $this->model;
     }
+    public function getAllStocksQty()
+    {
+        $b = Barang::with(['warehouseStocks:stk_stok_gudang.id,kuantitas'])->get();
+        $this->c = $b->map(function ($item, $key) {
+            $this->total = 0;
+            $d = $item->warehouseStocks->map(function ($item, $key) {
+                $this->total += $item->kuantitas;
+                $item->total = $this->total;
+                return $item->total;
+            })->toArray();
+            return(end($d));
+        })->toArray();
+        $data = $b->map(function ($item, $key) {
+            return collect([
+                "id" => $item->id,
+                "kode_barang" => $item->kode_barang,
+                "kategori_barang" => $item->kategori_barang,
+                "nama_barang" => $item->nama_barang,
+                "jenis_barang" => $item->jenis_barang,
+                "satuan_unit" => $item->unit->nama_satuan,
+                "harga_retail" => $item->harga_retail,
+                "harga_grosir" => $item->harga_grosir,
+                "item_image" => $item->item_image,
+                "akun_hpp" => $item->akun_hpp,
+                "akun_persediaan" => $item->akun_persediaan,
+                "akun_penjualan" => $item->akun_penjualan,
+                "akun_pembelian" => $item->akun_pembelian,
+                "pajak_id" => $item->kode_barang,
+                "supplier_id" => $item->supplier_id,
+                "nilai_barang" => $item->nilai_barang,
+                "kuantitas_total" => $this->c[$key],
+            ]);
+        });
+        return $data;
+    }
     public function getStocksQty($itemId)
     {
         $theItem = Barang::find($itemId);
