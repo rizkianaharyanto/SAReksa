@@ -56,6 +56,11 @@ class ItemResourceController extends Controller
         return redirect()->back()->withSuccess($message);
     }
 
+    public function test(ItemService $itmSrv)
+    {
+        return $itmSrv->getStocksQty();
+    }
+
     /**p
      * Display the specified resource.
      *
