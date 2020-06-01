@@ -23,23 +23,23 @@ class ItemResourceController extends Controller
         return view('stock.Management-Data/barang', ['data'=>$allItem]);
     }
     
-    public function indexpembelian(ItemService $item)
+    public function indexpembelian(ItemService $itmSrv)
     {
         // $allItem = $item->all();
-        $b = Barang::with('warehouseStocks:stk_stok_gudang.id,kuantitas')->get();
-        $c = $b->map(function ($item, $key) {
-            $this->total = 0;
-            $d = $item->warehouseStocks->map(function ($item, $key) {
-                $this->total += $item->kuantitas;
-                $item->total = $this->total;
-                return $item->total;
-            })->toArray();
-            return(end($d));
-        })->toArray();
-        // return $c;
-        // return $allItem;
-        // dd($b,$c);
-        return view('pembelian.manajemendata.barang', ['data'=>$b, 'stok'=>$c]);
+        // $b = Barang::with('warehouseStocks:stk_stok_gudang.id,kuantitas')->get();
+        // $c = $b->map(function ($item, $key) {
+        //     $this->total = 0;
+        //     $d = $item->warehouseStocks->map(function ($item, $key) {
+        //         $this->total += $item->kuantitas;
+        //         $item->total = $this->total;
+        //         return $item->total;
+        //     })->toArray();
+        //     return(end($d));
+        // })->toArray();
+        // return view('pembelian.manajemendata.barang', ['data'=>$b, 'stok'=>$c]);
+        $allDataBarang = $itmSrv->getAllStocksQty();
+        // dd($allDataBarang);
+        return view('pembelian.manajemendata.barang', ['data'=>$allDataBarang]);
     }
 
     /**

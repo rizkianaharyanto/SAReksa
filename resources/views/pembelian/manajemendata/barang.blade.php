@@ -22,7 +22,7 @@
     <td>{{ $barang->nama_barang }}</td>
     <td>{{ $barang->harga_retail }}</td>
     <td>{{ $barang->harga_grosir }}</td>
-    <td>{{ $stok[$index] !=null ? $stok[$index] : 'kosong' }}</td>
+    <td>{{ $barang->kuantitas_total !=null ? $barang->kuantitas_total : 'kosong' }}</td>
     <td class="d-flex justify-content-between">
         <a id="details" data-toggle="modal" data-target="#modal" data-id="{{ $barang->id }}">
             <i onmouseover="tulisan()" style="cursor: pointer;" class="fas fa-info-circle">
