@@ -30,7 +30,7 @@ class ItemService
             return(end($d));
         })->toArray();
         $data = $b->map(function ($item, $key) {
-            return collect([
+            return ([
                 "id" => $item->id,
                 "kode_barang" => $item->kode_barang,
                 "kategori_barang" => $item->kategori_barang,
