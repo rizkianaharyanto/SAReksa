@@ -66,7 +66,7 @@
     <body>
         <a href="/pembelian">pembelian</a>
         <a href="/penjualan">penjualan</a>
-        <a href="/stock">stock</a>
+        <a href="/stok">stock</a>
         <a href="/kepegawaian">kepegawaian</a>
         <a href="/akuntansi">akuntansi</a>
     </body>

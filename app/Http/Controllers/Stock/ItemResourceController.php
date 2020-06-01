@@ -24,6 +24,15 @@ class ItemResourceController extends Controller
         // dd($allItem->unit);
         return view('stock.Management-Data/barang', ['data'=>$allItem]);
     }
+    
+    public function indexpembelian(ItemService $item)
+    {
+        // $allItem = $item->all();
+        $allItem = Barang::with('unit:id,nama_satuan')->get();
+        // return $allItem;
+        // dd($allItem->unit);
+        return view('pembelian.manajemendata.barang', ['data'=>$allItem]);
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -55,7 +64,8 @@ class ItemResourceController extends Controller
      */
     public function show($id)
     {
-        //
+        $barang = Barang::with('unit:id,nama_satuan')->find($id);
+        return $barang;
     }
 
     /**

@@ -25,16 +25,16 @@
                             <a href="/pembelian/pengirims">Data Pengirim</a>
                         </li>
                         <li class="pt-2">
-                            <a href="/pembelian/barangs">Data Barang</a>
+                            <a href="/stok/barangs">Data Barang</a>
                         </li>
                         <li class="pt-2">
-                            <a href="/pembelian/gudangs">Data Gudang</a>
+                            <a href="/stok/gudangs">Data Gudang</a>
                         </li>
                         <li class="pt-2">
-                            <a href="/pembelian/akuns">Data Akun</a>
+                            <a href="/stok/akuns">Data Akun</a>
                         </li>
                         <li class="pt-2">
-                            <a href="/pembelian/pajaks">Data Pajak</a>
+                            <a href="/stok/pajaks">Data Pajak</a>
                         </li>
                 </ul>
             </span>
