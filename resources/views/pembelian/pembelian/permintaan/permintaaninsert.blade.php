@@ -100,11 +100,11 @@
                                 <label for="jumlah_barang">QTY</label>
                                 <input type="number" class="form-control" id="jumlah_barang" name="jumlah_barang[]" placeholder="-">
                             </div>
-                            <div class="form-group col-md-1">
+                            <div class="form-group col-md-2">
                                 <label for="satuan_unit">Unit</label>
                                 <input type="number" class="form-control" id="unit" name="unit_barang[]" disabled>
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-2">
                                 <label for="harga">Harga Satuan</label>
                                 <div class="input-group mb-2">
                                     <div class="input-group-prepend">
@@ -254,8 +254,7 @@
             data: {},
             success: function(data) {
                 console.log(data)
-                var unit = $(x).parent().parent().parent().children().children().children('#unit')
-                $(unit).val(data.unit.nama_satuan)
+                var unit = $(x).parent().parent().parent().children().children().children('#unit').attr('placeholder', data.unit.nama_satuan)
                 console.log(unit)
             }
         })

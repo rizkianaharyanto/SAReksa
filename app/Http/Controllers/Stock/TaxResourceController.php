@@ -25,6 +25,14 @@ class TaxResourceController extends Controller
         return $allData;
         // return view('Management-Data/pajak',compact("allData"));
     }
+    public function indexpembelian()
+    {
+        //
+      
+        $allData = $this->model->all();
+        // return $allData;
+        return view('pembelian.manajemendata.pajak',compact("allData"));
+    }
     public function store(CreateTaxRequest $request)
     {
         $input = $request->input();

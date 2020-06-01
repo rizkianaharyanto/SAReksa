@@ -25,7 +25,6 @@ class ItemResourceController extends Controller
     
     public function indexpembelian(ItemService $itmSrv)
     {
-        // $allItem = $item->all();
         // $b = Barang::with('warehouseStocks:stk_stok_gudang.id,kuantitas')->get();
         // $c = $b->map(function ($item, $key) {
         //     $this->total = 0;
@@ -39,7 +38,7 @@ class ItemResourceController extends Controller
         // return view('pembelian.manajemendata.barang', ['data'=>$b, 'stok'=>$c]);
         $allDataBarang = $itmSrv->getAllStocksQty();
         // dd($allDataBarang);
-        return view('pembelian.manajemendata.barang', ['data'=>$allDataBarang]);
+        return view('pembelian.manajemendata.barang', ['data' => $allDataBarang]);
     }
 
     /**

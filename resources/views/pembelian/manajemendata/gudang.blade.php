@@ -7,32 +7,32 @@
 @section('thead')
 <tr>
     <th>Kode Gudang</th>
-    <th>Nama Gudang</th>
+    <th>Alamat</th>
     <th>Telp</th>
     <th>Status</th>
-    <th style="column-width: 80px">Aksi</th>
+    <!-- <th style="column-width: 80px">Aksi</th> -->
 </tr>
 @endsection
 
 @section('tbody')
-@foreach ($gudangs as $gudang)
+@foreach ($allData as $gudang)
 <tr>
     <td>{{ $gudang->kode_gudang }}</td>
-    <td>{{ $gudang->nama_gudang }}</td>
-    <td>{{ $gudang->telp_gudang }}</td>
-    <td>{{ $gudang->status_gudang }}</td>
-    <td class="d-flex justify-content-between">
+    <td>{{ $gudang->alamat }}</td>
+    <td>{{ $gudang->no_telp }}</td>
+    <td>{{ $gudang->status }}</td>
+    <!-- <td class="d-flex justify-content-between">
         <a id="details" data-toggle="modal" data-target="#modal" data-id="{{ $gudang->id }}">
             <i onmouseover="tulisan()" style="cursor: pointer;" class="fas fa-info-circle">
                 <span></span>
             </i>
         </a>
-    </td>
+    </td> -->
 </tr>
 @endforeach
 
 
-<script>
+<!-- <script>
     $("a").click(function() {
         var id = $(this).attr("id");
         console.log(id);
@@ -76,5 +76,5 @@
             });
         }
     })
-</script>
+</script> -->
 @endsection

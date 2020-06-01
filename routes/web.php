@@ -48,6 +48,8 @@ Route::prefix('stok')->group(function () {
     });
 
     Route::get('/barangs', 'Stock\ItemResourceController@indexpembelian');
+    Route::get('/gudangs', 'Stock\WarehouseController@indexpembelian');
+    Route::get('/pajaks', 'Stock\TaxResourceController@indexpembelian');
     
     Route::get('/ello', "Stock\ItemResourceController@test");
 

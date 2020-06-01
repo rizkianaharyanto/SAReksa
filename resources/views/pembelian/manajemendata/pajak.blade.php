@@ -6,30 +6,28 @@
 
 @section('thead')
 <tr>
-    <th>Kode Pajak</th>
     <th>Nama Pajak</th>
     <th>Presentase</th>
-    <th style="column-width: 80px">Aksi</th>
+    <!-- <th style="column-width: 80px">Aksi</th> -->
 </tr>
 @endsection
 
 @section('tbody')
-@foreach ($pajaks as $pajak)
+@foreach ($allData as $pajak)
 <tr>
-    <td>{{ $pajak->kode_pajak }}</td>
-    <td>{{ $pajak->nama_pajak }}</td>
-    <td>{{ $pajak->pajak }}</td>
-    <td class="d-flex justify-content-between">
+    <td>{{ $pajak->nama }}</td>
+    <td>{{ $pajak->rate }}</td>
+    <!-- <td class="d-flex justify-content-between">
         <a id="details" data-toggle="modal" data-target="#modal" data-id="{{ $pajak->id }}">
             <i onmouseover="tulisan()" style="cursor: pointer;" class="fas fa-info-circle">
                 <span></span>
             </i>
         </a>
-    </td>
+    </td> -->
 </tr>
 @endforeach
 
-<script>
+<!-- <script>
     $("a").click(function() {
         var id = $(this).attr("id");
         console.log(id);
@@ -61,5 +59,5 @@
             });
         }
     })
-</script>
+</script> -->
 @endsection
