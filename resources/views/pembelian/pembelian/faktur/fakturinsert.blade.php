@@ -36,9 +36,9 @@
             <div id="test-l-1" class="content">
                 <form style="height: 58vh;overflow: auto; color:black" class="mt-2">
                     <div class="form-group row mx-5 mb-5">
-                        <label class="col-sm-3 col-form-label" for="nama_pemasok">pemasok</label>
+                        <label class="col-sm-3 col-form-label" for="pemasok_id">pemasok</label>
                         <div class="col-sm-9">
-                            <select class="form-control" id="nama_pemasok">
+                            <select class="form-control" id="pemasok_id">
                                 @foreach ($pemasoks as $pemasok)
                                 <option>{{ $pemasok->nama_pemasok }}</option>
                                 @endforeach
@@ -72,7 +72,7 @@
                     </div>
                 </form>
                 <div class="modal-footer">
-                    <a href="/pembelian/fakturs">
+                    <a href="/fakturs">
                         <button type="button" class="btn btn-secondary">Batal</button>
                     </a>
                     <button class="btn" style="background-color:#00BFA6; color:white" onclick="stepper.next()">Selanjutnya</button>
@@ -83,7 +83,7 @@
                 <div class="d-flex justify-content-center">
                     <p class="mr-5">Buat Faktur berdasarkan : </p>
                     <input class="mx-2" type="radio" name="radio" onclick="checkBarang(this)" />
-                    <h5 class="mr-5">Barang</h5>
+                    <h5 class="mr-5">Pemesanan</h5>
                     <input class="mx-2" type="radio" name="radio" onclick="checkPenerimaan(this)" />
                     <h5 class="mr-3">Penerimaan</h5>
                 </div>
@@ -191,7 +191,7 @@
                             <input style="width:26vw" type="number" name="total_harga_penerimaan" id="total_harga_penerimaan" disabled>
                         </div>
                     </div>
-                    <a href="/pembelian/fakturs">
+                    <a href="/fakturs">
                         <button type="button" class="btn btn-secondary">Batal</button>
                     </a>
                     <button class="btn" style="background-color:#00BFA6; color:white" onclick="stepper.previous()">Sebelumnya</button>
@@ -264,7 +264,7 @@
                         <input class="ml-4 mt-2" type="checkbox" onclick="checkLunas(this)" />
                         <h5 class="ml-2">Lunas</h5>
                     </div>
-                    <a href="/pembelian/fakturs">
+                    <a href="/fakturs">
                         <button type="button" class="btn btn-secondary">Batal</button>
                     </a>
                     <button class="btn" style="background-color:#00BFA6; color:white" onclick="stepper.previous()">Sebelumnya</button>

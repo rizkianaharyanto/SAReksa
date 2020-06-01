@@ -28,10 +28,20 @@ class ItemResourceController extends Controller
     public function indexpembelian(ItemService $item)
     {
         // $allItem = $item->all();
-        $allItem = Barang::with('unit:id,nama_satuan')->get();
+        $b = Barang::with('warehouseStocks:stk_stok_gudang.id,kuantitas')->get();
+        $c = $b->map(function ($item, $key) {
+            $this->total = 0;
+            $d = $item->warehouseStocks->map(function ($item, $key) {
+                $this->total += $item->kuantitas;
+                $item->total = $this->total;
+                return $item->total;
+            })->toArray();
+            return(end($d));
+        })->toArray();
+        // return $c;
         // return $allItem;
-        // dd($allItem->unit);
-        return view('pembelian.manajemendata.barang', ['data'=>$allItem]);
+        // dd($b,$c);
+        return view('pembelian.manajemendata.barang', ['data'=>$b, 'stok'=>$c]);
     }
 
     /**

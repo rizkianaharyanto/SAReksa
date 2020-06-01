@@ -86,10 +86,10 @@
 
                 <div id="test-l-2" class="content">
                     <div style="overflow: auto; height: 52vh;" id="formbarang">
-                        <div class="form-row mx-5" id="isiformbarang0">
+                        <div class="form-row mx-5" id="isiformbarang">
                             <div class="form-group col-md-3">
                                 <label for="nama_barang" id="lbl">Barang</label>
-                                <select class="form-control" id="nama_barang" name="barang_id[]">
+                                <select class="form-control" onchange="isi(this)" id="nama_barang" name="barang_id[]">
                                     <option value="">--- Pilih Barang ---</option>
                                     @foreach ($barangs as $barang)
                                     <option value="{{$barang->id}}">{{ $barang->nama_barang }}</option>
@@ -233,7 +233,7 @@
     var i = 0;
     $('#tambahbarang').click(function() {
         // console.log(i)
-        $("#formbarang").append($("#isiformbarang" + i).clone().attr('id', 'isiformbarang' + (i + 1)));
+        $("#formbarang").append($("#isiformbarang").clone().attr('id', 'isiformbarang' + (i + 1)));
         $(document.querySelectorAll("#isiformbarang1")).children().children().children().css({
             'color': 'black',
             'cursor': 'pointer'
@@ -241,9 +241,24 @@
     });
 
     function hapus(x) {
-        if ($(x).parent().parent().attr('id') != 'isiformbarang0') {
+        if ($(x).parent().parent().attr('id') != 'isiformbarang') {
             $(x).parent().parent().remove();
         }
+    }
+
+    function isi(x) {
+        console.log('isi')
+        $.ajax({
+            url: '/stok/Management-Data/barang/' + $(x).val(),
+            type: 'get',
+            data: {},
+            success: function(data) {
+                console.log(data)
+                var unit = $(x).parent().parent().parent().children().children().children('#unit')
+                $(unit).val(data.unit.nama_satuan)
+                console.log(unit)
+            }
+        })
     }
 </script>
 

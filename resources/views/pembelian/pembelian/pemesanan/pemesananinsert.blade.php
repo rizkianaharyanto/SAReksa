@@ -33,7 +33,7 @@
             </div>
         </div>
         <div class="bs-stepper-content">
-            <form method="POST" action="/pembelian/pemesanans">
+            <form method="POST" action="/pemesanans">
                 @csrf
                 <div id="test-l-1" class="content">
                     <input type="hidden" id="kode_pemesanan" name="kode_pemesanan" placeholder="" value="PEM">
@@ -79,9 +79,9 @@
                             </div>
                         </div>
                         <div class="form-group row mx-5 mb-5">
-                            <label class="col-sm-3 col-form-label" for="mata-uang">Mata Uang</label>
+                            <label class="col-sm-3 col-form-label" for="mata_uang">Mata Uang</label>
                             <div class="col-sm-9">
-                                <select class="form-control" id="mata-uang" name="mata_uang">
+                                <select class="form-control" id="mata_uang" name="mata_uang">
                                     <option value="">--- Pilih Mata Uang ---</option>
                                     <option value="">IDR</option>
                                 </select>
@@ -89,7 +89,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <a href="/pembelian/pemesanans">
+                        <a href="/pemesanans">
                             <button type="button" class="btn btn-secondary">Batal</button>
                         </a>
                         <a class="btn" style="background-color:#00BFA6; color:white" onclick="stepper.next()">Selanjutnya</a>
@@ -100,8 +100,8 @@
                     <div style="overflow: auto; height: 52vh;" id="formbarang">
                         <div class="form-row mx-5" id="isiformbarang0">
                             <div class="form-group col-md-3">
-                                <label for="nama_barang" id="lbl">Barang</label>
-                                <select class="form-control" id="nama_barang" name="barang_id[]">
+                                <label for="barang_id" id="lbl">Barang</label>
+                                <select class="form-control" id="barang_id" name="barang_id[]">
                                     <option value="">--- Pilih Barang ---</option>
                                     @foreach ($barangs as $barang)
                                     <option value="{{$barang->id}}">{{ $barang->nama_barang }}</option>
@@ -157,7 +157,7 @@
                                 <input style="width:26vw" type="number" name="total_harga_barang" id="total_harga_barang" disabled>
                             </div>
                         </div>
-                        <a href="/pembelian/pemesanans">
+                        <a href="/pemesanans">
                             <button type="button" class="btn btn-secondary">Batal</button>
                         </a>
                         <a class="btn" style="background-color:#00BFA6; color:white" onclick="stepper.previous()">Sebelumnya</a>
@@ -210,7 +210,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <a href="/pembelian/pemesanans">
+                        <a href="/pemesanans">
                             <button type="button" class="btn btn-secondary">Batal</button>
                         </a>
                         <a class="btn" style="background-color:#00BFA6; color:white" onclick="stepper.previous()">Sebelumnya</a>
@@ -263,6 +263,57 @@
             $(x).parent().parent().remove();
         }
     }
+
+    $("#permintaan_id").change(function() {
+        $.ajax({
+            url: '/permintaans/' + $(this).val(),
+            type: 'get',
+            data: {},
+            success: function(data) {
+                if (data.success == true) {
+                    console.log(data)
+                    console.log(data.permintaan)
+                    console.log(data.barangs[0].pivot.jumlah_barang)
+                    $('#pemasok_id').val(data.permintaan.pemasok_id)
+                    $('#gudang').val(data.permintaan.gudang)
+                    $('#tanggal').val(data.permintaan.tanggal)
+                    $('#mata_uang').val(data.permintaan.mata_uang)
+                    $('#diskon').val(data.permintaan.diskon)
+                    $('#biaya_lain').val(data.permintaan.biaya_lain)
+                    $('#barang_id').val(data.barangs[0].id)
+                    $('#jumlah_barang').val(data.barangs[0].pivot.jumlah_barang)
+                    $('#harga').val(data.barangs[0].pivot.harga)
+                    for (var i = 1; i <= data.barangs.length - 1; i++) {
+                        $("#formbarang").append($("#isiformbarang0").clone().attr('id', 'isiformbarang' + i));
+                        $("#isiformbarang" + i).children().children('select').attr('id', 'barang_id' + i)
+                        $('#barang_id' + i).val(data.barangs[i].id)
+                        $("#isiformbarang" + i).children().children('input').attr('id', 'jumlah_barang' + i)
+                        $('#jumlah_barang' + i).val(data.barangs[i].pivot.jumlah_barang)
+                        // $("#isiformbarang" + i).children().children('input').attr('id', 'unit' + i)
+                        // $('#unit' + i).val(data.barangs[i].pivot.unit)
+                        $("#isiformbarang" + i).children().children('input').attr('id', 'harga' + i)
+                        $('#harga' + i).val(data.barangs[i].pivot.harga)
+                        // $("#isiformbarang" + i).children().children('input').attr('id', 'total' + i)
+                        // $('#total' + i).val(data.barangs[i].pivot.unit)
+                    }
+                    var c = data.barangs.length
+                    console.log(c)
+                } else {
+                    console.log(c)
+                    $('#pemasok_id').val('')
+                    $('#gudang').val('')
+                    $('#tanggal').val('')
+                    $('#mata_uang').val('')
+                    $('#diskon').val('')
+                    $('#biaya_lain').val('')
+                    // for (var b = 1; b <= c; b++) {
+                    //     $(document.querySelectorAll("#isiformbarang" + b)).remove()
+                    // }
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {}
+        });
+    });
 </script>
 
 @endsection

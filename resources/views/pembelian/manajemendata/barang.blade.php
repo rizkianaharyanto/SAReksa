@@ -10,17 +10,19 @@
     <th>Nama Barang</th>
     <th>Harga Retail</th>
     <th>Harga Grosir</th>
+    <th>Stok Tersedia</th>
     <th style="column-width: 80px">Aksi</th>
 </tr>
 @endsection
 
 @section('tbody')
-@foreach ($data as $barang)
+@foreach ($data as $index => $barang)
 <tr>
     <td>{{ $barang->kode_barang }}</td>
     <td>{{ $barang->nama_barang }}</td>
     <td>{{ $barang->harga_retail }}</td>
     <td>{{ $barang->harga_grosir }}</td>
+    <td>{{ $stok[$index] !=null ? $stok[$index] : 'kosong' }}</td>
     <td class="d-flex justify-content-between">
         <a id="details" data-toggle="modal" data-target="#modal" data-id="{{ $barang->id }}">
             <i onmouseover="tulisan()" style="cursor: pointer;" class="fas fa-info-circle">
@@ -40,7 +42,7 @@
         console.log(ini);
         if (id == "details") {
             $.get("/stok/Management-Data/barang/" + ini, function(datanya) {
-                console.log(datanya.jenis_barang)
+                console.log(datanya)
                 $('#lebarmodal').removeClass('modal-xl');
                 $('#judulmodal').html(
                     '<i class="fas fa-user-circle mr-4" style="font-size:50px;color:#00BFA6;"></i>' +

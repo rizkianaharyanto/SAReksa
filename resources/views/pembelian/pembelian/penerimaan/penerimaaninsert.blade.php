@@ -33,11 +33,24 @@
             </div>
         </div>
         <div class="bs-stepper-content">
-            <form method="POST" action="/pembelian/penerimaans">
+            <form method="POST" action="/penerimaans">
                 @csrf
                 <div id="test-l-1" class="content">
                     <input type="hidden" id="kode_penerimaan" name="kode_penerimaan" placeholder="" value="PEN">
-                    <div style="height: 58vh;overflow: auto; color:black" class="mt-2">
+                    <!-- <input type="hidden" id="pemesanan_id" name="pemesanan_id" placeholder="" value=""> -->
+                    <div class="d-flex justify-content-center">
+                        <label class="col-sm-4 col-form-label" for="pemesanan_id">Buat Penerimaan Berdasarkan pemesanan</label>
+                        <div class="col-sm-4">
+                            <select class="form-control" id="pemesanan_id" name="pemesanan_id">
+                                <option value="">--- Pilih pemesanan ---</option>
+                                @foreach ($pemesanans as $pemesanan)
+                                <option id="pemesanan_data" value="{{$pemesanan->id}}">{{ $pemesanan->kode_pemesanan }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <hr>
+                    <div style="height: 48vh;overflow: auto; color:black" class="mt-2">
                         <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="pemasok_id">pemasok</label>
                             <div class="col-sm-9">
@@ -77,7 +90,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <a href="/pembelian/penerimaans">
+                        <a href="/penerimaans">
                             <button type="button" class="btn btn-secondary">Batal</button>
                         </a>
                         <a class="btn" style="background-color:#00BFA6; color:white" onclick="stepper.next()">Selanjutnya</a>
@@ -88,8 +101,8 @@
                     <div style="overflow: auto; height: 52vh;" id="formbarang">
                         <div class="form-row mx-5" id="isiformbarang0">
                             <div class="form-group col-md-3">
-                                <label for="nama_barang" id="lbl">Barang</label>
-                                <select class="form-control" id="nama_barang" name="barang_id[]">
+                                <label for="barang_id" id="lbl">Barang</label>
+                                <select class="form-control" id="barang_id" name="barang_id[]">
                                     <option value="">--- Pilih Barang ---</option>
                                     @foreach ($barangs as $barang)
                                     <option value="{{$barang->id}}">{{ $barang->nama_barang }}</option>
@@ -145,7 +158,7 @@
                                 <input style="width:26vw" type="number" name="total_harga_barang" id="total_harga_barang" disabled>
                             </div>
                         </div>
-                        <a href="/pembelian/penerimaans">
+                        <a href="/penerimaans">
                             <button type="button" class="btn btn-secondary">Batal</button>
                         </a>
                         <a class="btn" style="background-color:#00BFA6; color:white" onclick="stepper.previous()">Sebelumnya</a>
@@ -198,7 +211,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <a href="/pembelian/penerimaans">
+                        <a href="/penerimaans">
                             <button type="button" class="btn btn-secondary">Batal</button>
                         </a>
                         <a class="btn" style="background-color:#00BFA6; color:white" onclick="stepper.previous()">Sebelumnya</a>
@@ -251,6 +264,58 @@
             $(x).parent().parent().remove();
         }
     }
+
+    $("#pemesanan_id").change(function() {
+        $.ajax({
+            url: '/pemesanans/' + $(this).val(),
+            type: 'get',
+            data: {},
+            success: function(data) {
+                if (data.success == true) {
+                    console.log(data)
+                    console.log(data.pemesanan)
+                    console.log(data.barangs)
+                    $('#pemasok_id').val(data.pemesanan.pemasok_id)
+                    $('#gudang').val(data.pemesanan.gudang)
+                    $('#tanggal').val(data.pemesanan.tanggal)
+                    $('#mata_uang').val(data.pemesanan.mata_uang)
+                    $('#diskon').val(data.pemesanan.diskon)
+                    $('#biaya_lain').val(data.pemesanan.biaya_lain)
+                    $('#barang_id').val(data.barangs[0].id)
+                    $('#jumlah_barang').val(data.barangs[0].pivot.jumlah_barang)
+                    $('#harga').val(data.barangs[0].pivot.harga)
+                    // $('#pemesanan_id').val(data.barangs.pemesanan_id)
+                    for (var i = 1; i <= data.barangs.length - 1; i++) {
+                        $("#formbarang").append($("#isiformbarang0").clone().attr('id', 'isiformbarang' + i));
+                        $("#isiformbarang" + i).children().children('select').attr('id', 'barang_id' + i)
+                        $('#barang_id' + i).val(data.barangs[i].id)
+                        $("#isiformbarang" + i).children().children('input').attr('id', 'jumlah_barang' + i)
+                        $('#jumlah_barang' + i).val(data.barangs[i].pivot.jumlah_barang)
+                        // $("#isiformbarang" + i).children().children('input').attr('id', 'unit' + i)
+                        // $('#unit' + i).val(data.barangs[i].pivot.unit)
+                        $("#isiformbarang" + i).children().children('input').attr('id', 'harga' + i)
+                        $('#harga' + i).val(data.barangs[i].pivot.harga)
+                        // $("#isiformbarang" + i).children().children('input').attr('id', 'total' + i)
+                        // $('#total' + i).val(data.barangs[i].pivot.unit)
+                    }
+                    var c = data.barangs.length
+                    console.log(c)
+                } else {
+                    console.log(c)
+                    $('#pemasok_id').val('')
+                    $('#gudang').val('')
+                    $('#tanggal').val('')
+                    $('#mata_uang').val('')
+                    $('#diskon').val('')
+                    $('#biaya_lain').val('')
+                    // for (var b = 1; b <= c; b++) {
+                    //     $(document.querySelectorAll("#isiformbarang" + b)).remove()
+                    // }
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {}
+        });
+    });
 </script>
 
 @endsection
