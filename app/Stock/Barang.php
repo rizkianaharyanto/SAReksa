@@ -41,7 +41,7 @@ class Barang extends Model
     }
     public function warehouseStocks()
     {
-        return $this->belongsToMany('App\Stock\StokGudang', 'stok_gudang', 'barang_id', 'gudang_id')
+        return $this->belongsToMany('App\Stock\Gudang', 'stk_stok_gudang', 'barang_id', 'gudang_id')
         ->withPivot('kuantitas');
     }
     public function tax()
