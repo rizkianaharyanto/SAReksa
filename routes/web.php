@@ -46,7 +46,8 @@ Route::prefix('stok')->group(function () {
     Route::get('/', function () {
         return view('stock.dashboard');
     });
-    
+    Route::get('/ello', "Stock\ItemResourceController@test");
+
     Route::get('/config', 'Stock\ConfigController@index');
     Route::get('/config/getrolepermissions/{id}', 'Stock\ConfigController@getRolePermissions');
     
