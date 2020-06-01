@@ -20,8 +20,6 @@ class ItemResourceController extends Controller
     {
         // $allItem = $item->all();
         $allItem = Barang::with('unit:id,nama_satuan')->get();
-        // return $allItem;
-        // dd($allItem->unit);
         return view('stock.Management-Data/barang', ['data'=>$allItem]);
     }
     
@@ -68,7 +66,8 @@ class ItemResourceController extends Controller
 
     public function test(ItemService $itmSrv)
     {
-        return $itmSrv->getStocksQty();
+        $allDataBarang = $itmSrv->getAllStocksQty();
+        dd($allDataBarang);
     }
 
     /**p
