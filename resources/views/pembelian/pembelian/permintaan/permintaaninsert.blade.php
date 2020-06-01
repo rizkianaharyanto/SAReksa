@@ -87,33 +87,33 @@
                 <div id="test-l-2" class="content">
                     <div style="overflow: auto; height: 52vh;" id="formbarang">
                         <div class="form-row mx-5" id="isiformbarang">
-                            <div class="form-group col-md-3">
-                                <label for="nama_barang" id="lbl">Barang</label>
-                                <select class="form-control" onchange="isi(this)" id="nama_barang" name="barang_id[]">
+                            <div class="col-md-3">
+                                <label for="barang_id" id="lbl">Barang</label>
+                                <select class="form-control" onchange="isi(this)" id="barang_id" name="barang_id[]">
                                     <option value="">--- Pilih Barang ---</option>
                                     @foreach ($barangs as $barang)
                                     <option value="{{$barang->id}}">{{ $barang->nama_barang }}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group col-md-1">
+                            <div class="col-md-1">
                                 <label for="jumlah_barang">QTY</label>
-                                <input type="number" class="form-control" id="jumlah_barang" name="jumlah_barang[]" placeholder="-">
+                                <input type="number" class="form-control" id="jumlah_barang" name="jumlah_barang[]" onfocus="startCalc(this);" onblur="stopCalc();" placeholder="-">
                             </div>
-                            <div class="form-group col-md-2">
+                            <div class="col-md-2">
                                 <label for="satuan_unit">Unit</label>
                                 <input type="number" class="form-control" id="unit" name="unit_barang[]" disabled>
                             </div>
-                            <div class="form-group col-md-2">
+                            <div class="col-md-2">
                                 <label for="harga">Harga Satuan</label>
                                 <div class="input-group mb-2">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" class="form-control" id="harga" name="harga[]" placeholder="-">
+                                    <input type="number" class="form-control" id="harga" name="harga[]" onfocus="startCalc(this);" onblur="stopCalc();" placeholder="-">
                                 </div>
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="col-md-3">
                                 <label for="total">Total</label>
                                 <div class="input-group mb-2">
                                     <div class="input-group-prepend">
@@ -122,7 +122,7 @@
                                     <input type="number" class="form-control" id="total" name="total[]" disabled>
                                 </div>
                             </div>
-                            <div class="form-group col-md-1">
+                            <div class="col-md-1">
                                 <p style="color: transparent">#</p>
                                 <a onclick="hapus(this)">
                                     <i style="color:grey;" class="fas fa-trash"></i>
@@ -161,7 +161,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">%</div>
                                     </div>
-                                    <input type="number" class="form-control" id="diskon" name="diskon" placeholder="-">
+                                    <input type="number" class="form-control" id="diskon" onchange="disc();" name="diskon" placeholder="-">
                                 </div>
                             </div>
                         </div>
@@ -172,7 +172,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" class="form-control" name="biaya_lain" id="biaya_lain" placeholder="-">
+                                    <input type="number" class="form-control" name="biaya_lain" onchange="disc();" id="biaya_lain" placeholder="-">
                                 </div>
                             </div>
                         </div>
@@ -192,7 +192,8 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input style="width:26vw" type="number" name="total_harga_keseluruhan" id="total_harga_keseluruhan" disabled>
+                                    <input style="width:26vw" type="number" id="total_harga_kes" disabled>
+                                    <input type="hidden" name="total_harga_keseluruhan" id="total_harga_keseluruhan">
                                 </div>
                             </div>
                         </div>
@@ -246,6 +247,58 @@
         }
     }
 
+    function disc() {
+        dis = $('#diskon').val() / 100;
+        biy = parseInt($('#biaya_lain').val());
+        akhir = parseInt($('#total_harga_barang').val())
+        akhir1 = akhir - (akhir * dis)
+        akhir2 = akhir1 + biy
+        if (akhir2) {
+            $('#total_harga_kes').val(akhir2)
+            $('#total_harga_keseluruhan').val(akhir2)
+        } else {
+            $('#total_harga_kes').val(akhir1)
+            $('#total_harga_keseluruhan').val(akhir1)
+        }
+    }
+
+
+    function startCalc(x) {
+        if ($(x).attr('id') == 'jumlah_barang') {
+            a = x
+            b = $(x).parent().parent().children().children().children('#harga')
+            c = $(x).parent().parent().children().children().children('#total')
+            interval = setInterval(function() {
+                qty = $(a).val();
+                harga = $(b).val();
+                total = qty * harga
+                $(c).val(total)
+            }, 1);
+        } else if ($(x).attr('id') == 'harga') {
+            a = $(x).parent().parent().parent().children().children('#jumlah_barang')
+            b = x
+            c = $(x).parent().parent().parent().children().children().children('#total')
+            interval = setInterval(function() {
+                qty = $(a).val();
+                harga = $(b).val();
+                total = qty * harga
+                $(c).val(total)
+            }, 1);
+        }
+    }
+
+    function stopCalc() {
+        clearInterval(interval);
+        var arr = document.getElementsByName('total[]');
+        var tot = 0;
+        for (var i = 0; i < arr.length; i++) {
+            if (parseInt(arr[i].value))
+                tot += parseInt(arr[i].value);
+        }
+        document.getElementById('total_harga_barang').value = tot;
+        document.getElementById('total_harga_keseluruhan').value = tot;
+    }
+
     function isi(x) {
         console.log('isi')
         $.ajax({
@@ -254,7 +307,7 @@
             data: {},
             success: function(data) {
                 console.log(data)
-                var unit = $(x).parent().parent().parent().children().children().children('#unit').attr('placeholder', data.unit.nama_satuan)
+                var unit = $(x).parent().parent().children().children('#unit').attr('placeholder', data.unit.nama_satuan)
                 console.log(unit)
             }
         })

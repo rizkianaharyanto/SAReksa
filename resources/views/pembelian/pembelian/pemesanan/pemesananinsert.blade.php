@@ -266,7 +266,7 @@
 
     $("#permintaan_id").change(function() {
         $.ajax({
-            url: '/permintaans/' + $(this).val(),
+            url: '/pembelian/permintaans/' + $(this).val(),
             type: 'get',
             data: {},
             success: function(data) {

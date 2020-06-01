@@ -45,6 +45,7 @@ class PermintaansController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
         $permintaan = Permintaan::create([
             'kode_permintaan' => $request->kode_permintaan,
             'pemasok_id' => $request->pemasok_id,
@@ -53,7 +54,7 @@ class PermintaansController extends Controller
             'diskon' => $request->diskon,
             'biaya_lain' => $request->biaya_lain,
             'total_jenis_barang' => 3,
-            'total_harga' => 1000,
+            'total_harga' => $request->total_harga_keseluruhan,
         ]);
 
         foreach ($request->barang_id as $index => $id) {
@@ -72,9 +73,12 @@ class PermintaansController extends Controller
      * @param  int  Permintaan $permintaan
      * @return \Illuminate\Http\Response
      */
-    public function show(Permintaan $permintaan)
+    public function show($id)
     {
-        //
+        $permintaan = Permintaan::find($id);
+        $barangs = $permintaan->barangs;
+        return response()
+        ->json(['success'=> true, 'permintaan' => $permintaan, 'barangs' => $barangs ]);
     }
 
     /**

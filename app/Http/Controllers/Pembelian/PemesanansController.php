@@ -74,9 +74,12 @@ class PemesanansController extends Controller
      * @param  int  Pemesanan $pemesanan
      * @return \Illuminate\Http\Response
      */
-    public function show(Pemesanan $pemesanan)
+    public function show($id)
     {
-        //
+        $pemesanan = Pemesanan::find($id);
+        $barangs = $pemesanan->barangs;
+        return response()
+        ->json(['success'=> true, 'pemesanan' => $pemesanan, 'barangs' => $barangs ]);
     }
 
     /**
