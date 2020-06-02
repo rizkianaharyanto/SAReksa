@@ -77,8 +77,9 @@ class PermintaansController extends Controller
     {
         $permintaan = Permintaan::find($id);
         $barangs = $permintaan->barangs;
+        // $unit = $barangs->unit;
         return response()
-        ->json(['success'=> true, 'permintaan' => $permintaan, 'barangs' => $barangs ]);
+        ->json(['success'=> true, 'permintaan' => $permintaan, 'barangs' => $barangs]);
     }
 
     /**

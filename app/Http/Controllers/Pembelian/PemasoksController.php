@@ -47,10 +47,19 @@ class PemasoksController extends Controller
      * @param  int  Pemasok $pemasok
      * @return \Illuminate\Http\Response
      */
-    public function show(Pemasok $pemasok)
+    public function show($id)
     {
-        $pemasok = Pemasok::find($pemasok);
-        return $pemasok;
+        $pemasok = Pemasok::find($id);
+        $permintaans = $pemasok->permintaans;
+        $pemesanans = $pemasok->pemesanans;
+        $penerimaans = $pemasok->penerimaans;
+        return response()
+        ->json([
+            'pemasok' => $pemasok, 
+            'permintaans' => $permintaans, 
+            'pemesanans' => $pemesanans, 
+            'penerimaans'=> $penerimaans
+        ]);
     }
 
     /**

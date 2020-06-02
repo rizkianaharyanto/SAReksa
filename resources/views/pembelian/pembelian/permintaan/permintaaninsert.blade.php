@@ -262,7 +262,6 @@
         }
     }
 
-
     function startCalc(x) {
         if ($(x).attr('id') == 'jumlah_barang') {
             a = x

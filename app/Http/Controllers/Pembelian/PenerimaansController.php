@@ -48,13 +48,14 @@ class PenerimaansController extends Controller
     {
         $penerimaan = Penerimaan::create([
             'kode_penerimaan' => $request->kode_penerimaan,
+            'pemesanan_id' => $request->pemesanan_id,
             'pemasok_id' => $request->pemasok_id,
             'gudang' => $request->gudang,
             'tanggal' => $request->tanggal,
             'diskon' => $request->diskon,
             'biaya_lain' => $request->biaya_lain,
             'total_jenis_barang' => 3,
-            'total_harga' => 1000,
+            'total_harga' => $request->total_harga_keseluruhan,
         ]);
 
         foreach ($request->barang_id as $index => $id) {
@@ -73,9 +74,12 @@ class PenerimaansController extends Controller
      * @param  int  Penerimaan $penerimaan
      * @return \Illuminate\Http\Response
      */
-    public function show(Penerimaan $penerimaan)
+    public function show($id)
     {
-        //
+        $penerimaan = Penerimaan::find($id);
+        $barangs = $penerimaan->barangs;
+        return response()
+        ->json(['success'=> true, 'penerimaan' => $penerimaan, 'barangs' => $barangs]);
     }
 
     /**

@@ -54,7 +54,7 @@ class PemesanansController extends Controller
             'diskon' => $request->diskon,
             'biaya_lain' => $request->biaya_lain,
             'total_jenis_barang' => 3,
-            'total_harga' => 1000,
+            'total_harga' => $request->total_harga_keseluruhan,
             'permintaan_id' => $request->permintaan_id,
         ]);
 
@@ -78,8 +78,9 @@ class PemesanansController extends Controller
     {
         $pemesanan = Pemesanan::find($id);
         $barangs = $pemesanan->barangs;
+        $penerimaans = $pemesanan->penerimaans;
         return response()
-        ->json(['success'=> true, 'pemesanan' => $pemesanan, 'barangs' => $barangs ]);
+        ->json(['success'=> true, 'pemesanan' => $pemesanan, 'barangs' => $barangs, 'penerimaans' => $penerimaans ]);
     }
 
     /**

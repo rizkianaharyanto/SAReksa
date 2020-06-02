@@ -9,6 +9,7 @@ class Faktur extends Model
 {
     use SoftDeletes;
     protected $table = 'pbl_fakturs';
+    protected $guarded = ['id'];
     public function jurnal()
     {
         return $this->belongsTo('App\Pembelian\Jurnal');

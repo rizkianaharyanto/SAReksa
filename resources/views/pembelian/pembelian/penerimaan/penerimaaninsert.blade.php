@@ -33,24 +33,11 @@
             </div>
         </div>
         <div class="bs-stepper-content">
-            <form method="POST" action="/penerimaans">
+            <form method="POST" action="/pembelian/penerimaans">
                 @csrf
                 <div id="test-l-1" class="content">
                     <input type="hidden" id="kode_penerimaan" name="kode_penerimaan" placeholder="" value="PEN">
-                    <!-- <input type="hidden" id="pemesanan_id" name="pemesanan_id" placeholder="" value=""> -->
-                    <div class="d-flex justify-content-center">
-                        <label class="col-sm-4 col-form-label" for="pemesanan_id">Buat Penerimaan Berdasarkan pemesanan</label>
-                        <div class="col-sm-4">
-                            <select class="form-control" id="pemesanan_id" name="pemesanan_id">
-                                <option value="">--- Pilih pemesanan ---</option>
-                                @foreach ($pemesanans as $pemesanan)
-                                <option id="pemesanan_data" value="{{$pemesanan->id}}">{{ $pemesanan->kode_pemesanan }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <hr>
-                    <div style="height: 48vh;overflow: auto; color:black" class="mt-2">
+                    <div style="height: 58vh;overflow: auto; color:black" class="mt-2">
                         <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="pemasok_id">pemasok</label>
                             <div class="col-sm-9">
@@ -62,13 +49,21 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="form-group row mx-5 mb-5" id="pemesanan_form" style="display: none;">
+                            <label class="col-sm-3 col-form-label" for="pemesanan_id">Pemesanan</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" id="pemesanan_id" name="pemesanan_id">
+                                    <option value="">--- Pilih pemesanan ---</option>'
+                                </select>
+                            </div>
+                        </div>
                         <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="gudang">Gudang</label>
                             <div class="col-sm-9">
                                 <select class="form-control" id="gudang" name="gudang">
                                     <option value="">--- Pilih Gudang ---</option>
                                     @foreach ($gudangs as $gudang)
-                                    <option value="{{$gudang->id}}">{{ $gudang->nama_gudang }}</option>
+                                    <option value="{{$gudang->id}}">{{ $gudang->kode_gudang }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -90,7 +85,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <a href="/penerimaans">
+                        <a href="/pembelian/penerimaans">
                             <button type="button" class="btn btn-secondary">Batal</button>
                         </a>
                         <a class="btn" style="background-color:#00BFA6; color:white" onclick="stepper.next()">Selanjutnya</a>
@@ -102,7 +97,7 @@
                         <div class="form-row mx-5" id="isiformbarang0">
                             <div class="form-group col-md-3">
                                 <label for="barang_id" id="lbl">Barang</label>
-                                <select class="form-control" id="barang_id" name="barang_id[]">
+                                <select class="form-control" id="barang_id" onchange="isi(this)" name="barang_id[]">
                                     <option value="">--- Pilih Barang ---</option>
                                     @foreach ($barangs as $barang)
                                     <option value="{{$barang->id}}">{{ $barang->nama_barang }}</option>
@@ -111,7 +106,7 @@
                             </div>
                             <div class="form-group col-md-1">
                                 <label for="jumlah_barang">QTY</label>
-                                <input type="number" class="form-control" id="jumlah_barang" name="jumlah_barang[]" placeholder="-">
+                                <input type="number" class="form-control" id="jumlah_barang" name="jumlah_barang[]" onfocus="startCalc(this);" onblur="stopCalc();" placeholder="-">
                             </div>
                             <div class="form-group col-md-1">
                                 <label for="satuan_unit">Unit</label>
@@ -123,7 +118,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" class="form-control" id="harga" name="harga[]" placeholder="-">
+                                    <input type="number" class="form-control" id="harga" name="harga[]" onfocus="startCalc(this);" onblur="stopCalc();" placeholder="-">
                                 </div>
                             </div>
                             <div class="form-group col-md-3">
@@ -158,7 +153,7 @@
                                 <input style="width:26vw" type="number" name="total_harga_barang" id="total_harga_barang" disabled>
                             </div>
                         </div>
-                        <a href="/penerimaans">
+                        <a href="/pembelian/penerimaans">
                             <button type="button" class="btn btn-secondary">Batal</button>
                         </a>
                         <a class="btn" style="background-color:#00BFA6; color:white" onclick="stepper.previous()">Sebelumnya</a>
@@ -174,7 +169,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">%</div>
                                     </div>
-                                    <input type="number" class="form-control" id="diskon" name="diskon" placeholder="-">
+                                    <input type="number" class="form-control" id="diskon" name="diskon" onchange="disc();" placeholder="-">
                                 </div>
                             </div>
                         </div>
@@ -185,7 +180,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" class="form-control" name="biaya_lain" id="biaya_lain" placeholder="-">
+                                    <input type="number" class="form-control" name="biaya_lain" id="biaya_lain" onchange="disc();" placeholder="-">
                                 </div>
                             </div>
                         </div>
@@ -205,13 +200,14 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input style="width:26vw" type="number" name="total_harga_keseluruhan" id="total_harga_keseluruhan" disabled>
+                                    <input style="width:26vw" type="number" id="total_harga_kes" disabled>
+                                    <input type="hidden" name="total_harga_keseluruhan" id="total_harga_keseluruhan">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <a href="/penerimaans">
+                        <a href="/pembelian/penerimaans">
                             <button type="button" class="btn btn-secondary">Batal</button>
                         </a>
                         <a class="btn" style="background-color:#00BFA6; color:white" onclick="stepper.previous()">Sebelumnya</a>
@@ -242,7 +238,6 @@
         x.className = "alert mt-3 mb-0 p-1 alert-primary";
     }
 
-
     var i = 0;
     $('#tambahbarang').click(function() {
         // console.log(i)
@@ -265,9 +260,25 @@
         }
     }
 
+    $('#pemasok_id').change(function() {
+        $.ajax({
+            url: '/pembelian/pemasoks/' + $(this).val(),
+            type: 'get',
+            data: {},
+            success: function(data) {
+                console.log(data.pemesanans)
+                $('#pemesanan_form').removeAttr('style')
+                for (i = 0; i < data.pemesanans.length; i++) {
+                    $('#pemesanan_id').append('<option value="'+data.pemesanans[i].id +'">'+ data.pemesanans[i].kode_pemesanan+'</option>')
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {}
+        });
+    });
+
     $("#pemesanan_id").change(function() {
         $.ajax({
-            url: '/pemesanans/' + $(this).val(),
+            url: '/pembelian/pemesanans/' + $(this).val(),
             type: 'get',
             data: {},
             success: function(data) {
@@ -275,26 +286,22 @@
                     console.log(data)
                     console.log(data.pemesanan)
                     console.log(data.barangs)
-                    $('#pemasok_id').val(data.pemesanan.pemasok_id)
                     $('#gudang').val(data.pemesanan.gudang)
                     $('#tanggal').val(data.pemesanan.tanggal)
                     $('#mata_uang').val(data.pemesanan.mata_uang)
                     $('#diskon').val(data.pemesanan.diskon)
                     $('#biaya_lain').val(data.pemesanan.biaya_lain)
                     $('#barang_id').val(data.barangs[0].id)
+                    $('#unit').val(data.barangs[0].satuan_unit)
                     $('#jumlah_barang').val(data.barangs[0].pivot.jumlah_barang)
                     $('#harga').val(data.barangs[0].pivot.harga)
                     // $('#pemesanan_id').val(data.barangs.pemesanan_id)
                     for (var i = 1; i <= data.barangs.length - 1; i++) {
                         $("#formbarang").append($("#isiformbarang0").clone().attr('id', 'isiformbarang' + i));
-                        $("#isiformbarang" + i).children().children('select').attr('id', 'barang_id' + i)
-                        $('#barang_id' + i).val(data.barangs[i].id)
-                        $("#isiformbarang" + i).children().children('input').attr('id', 'jumlah_barang' + i)
-                        $('#jumlah_barang' + i).val(data.barangs[i].pivot.jumlah_barang)
-                        // $("#isiformbarang" + i).children().children('input').attr('id', 'unit' + i)
-                        // $('#unit' + i).val(data.barangs[i].pivot.unit)
-                        $("#isiformbarang" + i).children().children('input').attr('id', 'harga' + i)
-                        $('#harga' + i).val(data.barangs[i].pivot.harga)
+                        $("#isiformbarang" + i).children().children('select').val(data.barangs[i].id)
+                        $("#isiformbarang" + i).children().children('#jumlah_barang').val(data.barangs[i].pivot.jumlah_barang)
+                        $("#isiformbarang" + i).children().children('#unit').val(data.barangs[i].satuan_unit)
+                        $("#isiformbarang" + i).children().children('#harga').val(data.barangs[i].pivot.harga)
                         // $("#isiformbarang" + i).children().children('input').attr('id', 'total' + i)
                         // $('#total' + i).val(data.barangs[i].pivot.unit)
                     }
@@ -316,6 +323,71 @@
             error: function(jqXHR, textStatus, errorThrown) {}
         });
     });
+
+    function disc() {
+        dis = $('#diskon').val() / 100;
+        biy = parseInt($('#biaya_lain').val());
+        akhir = parseInt($('#total_harga_barang').val())
+        akhir1 = akhir - (akhir * dis)
+        akhir2 = akhir1 + biy
+        if (akhir2) {
+            $('#total_harga_kes').val(akhir2)
+            $('#total_harga_keseluruhan').val(akhir2)
+        } else {
+            $('#total_harga_kes').val(akhir1)
+            $('#total_harga_keseluruhan').val(akhir1)
+        }
+    }
+
+    function startCalc(x) {
+        if ($(x).attr('id') == 'jumlah_barang') {
+            a = x
+            b = $(x).parent().parent().children().children().children('#harga')
+            c = $(x).parent().parent().children().children().children('#total')
+            interval = setInterval(function() {
+                qty = $(a).val();
+                harga = $(b).val();
+                total = qty * harga
+                $(c).val(total)
+            }, 1);
+        } else if ($(x).attr('id') == 'harga') {
+            a = $(x).parent().parent().parent().children().children('#jumlah_barang')
+            b = x
+            c = $(x).parent().parent().parent().children().children().children('#total')
+            interval = setInterval(function() {
+                qty = $(a).val();
+                harga = $(b).val();
+                total = qty * harga
+                $(c).val(total)
+            }, 1);
+        }
+    }
+
+    function stopCalc() {
+        clearInterval(interval);
+        var arr = document.getElementsByName('total[]');
+        var tot = 0;
+        for (var i = 0; i < arr.length; i++) {
+            if (parseInt(arr[i].value))
+                tot += parseInt(arr[i].value);
+        }
+        document.getElementById('total_harga_barang').value = tot;
+        document.getElementById('total_harga_keseluruhan').value = tot;
+    }
+
+    function isi(x) {
+        console.log('isi')
+        $.ajax({
+            url: '/stok/Management-Data/barang/' + $(x).val(),
+            type: 'get',
+            data: {},
+            success: function(data) {
+                console.log(data)
+                var unit = $(x).parent().parent().children().children('#unit').attr('placeholder', data.unit.nama_satuan)
+                console.log(unit)
+            }
+        })
+    }
 </script>
 
 @endsection
