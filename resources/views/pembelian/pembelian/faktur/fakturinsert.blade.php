@@ -103,11 +103,11 @@
                                     <label for="jumlah_barang">QTY</label>
                                     <input type="number" class="form-control" id="jumlah_barang" name="jumlah_barang[]" onfocus="startCalc(this);" onblur="stopCalc();" placeholder="-">
                                 </div>
-                                <div class="form-group col-md-1">
+                                <div class="form-group col-md-2">
                                     <label for="satuan_unit">Unit</label>
                                     <input type="number" class="form-control" id="unit" name="unit_barang[]" disabled>
                                 </div>
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-2">
                                     <label for="harga">Harga Satuan</label>
                                     <div class="input-group mb-2">
                                         <div class="input-group-prepend">
@@ -235,8 +235,8 @@
                             <label class="col-sm-3 col-form-label" for="akun">Akun</label>
                             <div class="col-sm-9">
                                 <select class="form-control" id="akun">
-                                    <!-- <option>--- Pilih Akun ---</option>
-                                foreach ($akuns as $akun)
+                                    <option>--- Pilih Akun ---</option>
+                                    <!-- foreach ($akuns as $akun)
                                 <option> $akun->nama_akun </option>
                                 endforeach -->
                                 </select>
@@ -344,6 +344,7 @@
             type: 'get',
             data: {},
             success: function(data) {
+                console.log(data)
                 for (i = 0; i < data.pemesanans.length; i++) {
                     $('#pemesanan_id').append('<option value="' + data.pemesanans[i].id + '">' + data.pemesanans[i].kode_pemesanan + '</option>')
                 }
@@ -480,6 +481,7 @@
             success: function(data) {
                 console.log(data)
                 var unit = $(x).parent().parent().children().children('#unit').attr('placeholder', data.unit.nama_satuan)
+                var harga = $(x).parent().parent().children().children().children('#harga').val(data.harga_retail)
                 console.log(unit)
             }
         })

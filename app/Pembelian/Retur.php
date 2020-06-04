@@ -9,6 +9,7 @@ class Retur extends Model
 {
     use SoftDeletes;
     protected $table = 'pbl_returs';
+    protected $guarded = ['id'];
     public function jurnal()
     {
         return $this->belongsTo('App\Pembelian\Jurnal');
@@ -26,6 +27,6 @@ class Retur extends Model
 
     public function barangs()
     {
-        return $this->belongsToMany('App\Stock\Barang', 'pbl_retur_details');
+        return $this->belongsToMany('App\Stock\Barang', 'pbl_retur_details')->withPivot('jumlah_barang', 'harga')->withTimestamps();
     }
 }

@@ -53,12 +53,14 @@ class PemasoksController extends Controller
         $permintaans = $pemasok->permintaans;
         $pemesanans = $pemasok->pemesanans;
         $penerimaans = $pemasok->penerimaans;
+        $fakturs = $pemasok->fakturs;
         return response()
         ->json([
             'pemasok' => $pemasok, 
             'permintaans' => $permintaans, 
             'pemesanans' => $pemesanans, 
-            'penerimaans'=> $penerimaans
+            'penerimaans'=> $penerimaans,
+            'fakturs'=> $fakturs,
         ]);
     }
 

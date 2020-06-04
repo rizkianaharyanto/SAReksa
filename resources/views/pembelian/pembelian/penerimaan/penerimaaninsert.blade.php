@@ -108,11 +108,11 @@
                                 <label for="jumlah_barang">QTY</label>
                                 <input type="number" class="form-control" id="jumlah_barang" name="jumlah_barang[]" onfocus="startCalc(this);" onblur="stopCalc();" placeholder="-">
                             </div>
-                            <div class="form-group col-md-1">
+                            <div class="form-group col-md-2">
                                 <label for="satuan_unit">Unit</label>
                                 <input type="number" class="form-control" id="unit" name="unit_barang[]" disabled>
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-2">
                                 <label for="harga">Harga Satuan</label>
                                 <div class="input-group mb-2">
                                     <div class="input-group-prepend">
@@ -238,8 +238,8 @@
         x.className = "alert mt-3 mb-0 p-1 alert-primary";
     }
 
-    var i = 0;
     $('#tambahbarang').click(function() {
+    var i = 0;
         // console.log(i)
         $("#formbarang").append($("#isiformbarang" + i).clone().attr('id', 'isiformbarang' + (i + 1)));
         $(document.querySelectorAll("#isiformbarang1")).children().children().children().css({
@@ -287,11 +287,12 @@
                     console.log(data.pemesanan)
                     console.log(data.barangs)
                     $('#gudang').val(data.pemesanan.gudang)
-                    $('#tanggal').val(data.pemesanan.tanggal)
-                    $('#mata_uang').val(data.pemesanan.mata_uang)
+                    // $('#tanggal').val(data.pemesanan.tanggal)
+                    // $('#mata_uang').val(data.pemesanan.mata_uang)
                     $('#diskon').val(data.pemesanan.diskon)
                     $('#biaya_lain').val(data.pemesanan.biaya_lain)
                     $('#barang_id').val(data.barangs[0].id)
+                    $('#tambahbarang').detach()
                     $('#unit').val(data.barangs[0].satuan_unit)
                     $('#jumlah_barang').val(data.barangs[0].pivot.jumlah_barang)
                     $('#harga').val(data.barangs[0].pivot.harga)
@@ -384,6 +385,7 @@
             success: function(data) {
                 console.log(data)
                 var unit = $(x).parent().parent().children().children('#unit').attr('placeholder', data.unit.nama_satuan)
+                var harga = $(x).parent().parent().children().children().children('#harga').val(data.harga_retail)
                 console.log(unit)
             }
         })

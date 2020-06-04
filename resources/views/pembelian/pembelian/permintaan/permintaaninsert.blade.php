@@ -307,6 +307,7 @@
             success: function(data) {
                 console.log(data)
                 var unit = $(x).parent().parent().children().children('#unit').attr('placeholder', data.unit.nama_satuan)
+                var harga = $(x).parent().parent().children().children().children('#harga').val(data.harga_retail)
                 console.log(unit)
             }
         })

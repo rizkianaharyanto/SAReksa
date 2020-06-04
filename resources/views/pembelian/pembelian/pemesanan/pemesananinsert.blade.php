@@ -108,11 +108,11 @@
                                 <label for="jumlah_barang">QTY</label>
                                 <input type="number" class="form-control" id="jumlah_barang" name="jumlah_barang[]" onfocus="startCalc(this);" onblur="stopCalc();" placeholder="-">
                             </div>
-                            <div class="form-group col-md-1">
+                            <div class="form-group col-md-2">
                                 <label for="satuan_unit">Unit</label>
                                 <input type="number" class="form-control" id="unit" name="unit_barang[]" disabled>
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-2">
                                 <label for="harga">Harga Satuan</label>
                                 <div class="input-group mb-2">
                                     <div class="input-group-prepend">
@@ -239,8 +239,8 @@
     }
 
 
-    var i = 0;
     $('#tambahbarang').click(function() {
+    var i = 0;
         // console.log(i)
         $("#formbarang").append($("#isiformbarang" + i).clone().attr('id', 'isiformbarang' + (i + 1)));
         $(document.querySelectorAll("#isiformbarang1")).children().children().children().css({
@@ -289,8 +289,8 @@
                     console.log(data.barangs[0].pivot.jumlah_barang)
                     // $('#pemasok_id').val(data.permintaan.pemasok_id)
                     $('#gudang').val(data.permintaan.gudang)
-                    $('#tanggal').val(data.permintaan.tanggal)
-                    $('#mata_uang').val(data.permintaan.mata_uang)
+                    // $('#tanggal').val(data.permintaan.tanggal)
+                    // $('#mata_uang').val(data.permintaan.mata_uang)
                     $('#diskon').val(data.permintaan.diskon)
                     $('#biaya_lain').val(data.permintaan.biaya_lain)
                     $('#barang_id').val(data.barangs[0].id)
@@ -386,6 +386,7 @@
             success: function(data) {
                 console.log(data)
                 var unit = $(x).parent().parent().children().children('#unit').attr('placeholder', data.unit.nama_satuan)
+                var harga = $(x).parent().parent().children().children().children('#harga').val(data.harga_retail)
                 console.log(unit)
             }
         })

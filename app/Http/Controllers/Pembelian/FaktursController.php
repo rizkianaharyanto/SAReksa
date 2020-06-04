@@ -50,9 +50,9 @@ class FaktursController extends Controller
     {
         $faktur = Faktur::create([
             'kode_faktur' => $request->kode_faktur,
-            // 'pemesanan_id' => $request->pemesanan_id,
+            'pemesanan_id' => $request->pemesanan_id,
             'pemasok_id' => $request->pemasok_id,
-            'gudang' => 'gudang',
+            // 'gudang' => 'gudang',
             'tanggal' => $request->tanggal,
             'diskon' => $request->diskon,
             'biaya_lain' => $request->biaya_lain,
@@ -77,9 +77,13 @@ class FaktursController extends Controller
      * @param  int  Faktur $faktur
      * @return \Illuminate\Http\Response
      */
-    public function show(Faktur $faktur)
+    public function show($id)
     {
-        //
+        $faktur = Faktur::find($id);
+        $barangs = $faktur->barangs;
+        return response()
+        ->json(['success'=> true, 'faktur' => $faktur, 'barangs' => $barangs ]);
+    
     }
 
     /**

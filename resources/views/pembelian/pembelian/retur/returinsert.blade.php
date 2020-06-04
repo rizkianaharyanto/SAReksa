@@ -33,78 +33,81 @@
             </div>
         </div>
         <div class="bs-stepper-content">
-            <div id="test-l-1" class="content">
-                <form style="height: 58vh;overflow: auto; color:black" class="mt-2">
-                    <div class="form-group row mx-5 mb-5">
-                        <label class="col-sm-3 col-form-label" for="nama_pemasok">pemasok</label>
-                        <div class="col-sm-9">
-                            <select class="form-control" id="nama_pemasok">
-                                @foreach ($pemasoks as $pemasok)
-                                <option>{{ $pemasok->nama_pemasok }}</option>
-                                @endforeach
-                            </select>
+            <form method="POST" action="/pembelian/returs">
+                @csrf
+                <div id="test-l-1" class="content">
+                    <input type="hidden" id="kode_retur" name="kode_retur" placeholder="" value="RET">
+                    <div style="height: 58vh;overflow: auto; color:black" class="mt-2">
+                        <div class="form-group row mx-5 mb-5">
+                            <label class="col-sm-3 col-form-label" for="pemasok_id">pemasok</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" id="pemasok_id" name="pemasok_id">
+                                    <option value="">--- Pilih pemasok ---</option>
+                                    @foreach ($pemasoks as $pemasok)
+                                    <option value="{{$pemasok->id}}">{{ $pemasok->nama_pemasok }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row mx-5 mb-5" id="faktur_form" style="display: none;">
+                            <label class="col-sm-3 col-form-label" for="faktur_id">Faktur</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" id="faktur_id" name="faktur_id">
+                                    <option value="">--- Pilih Faktur ---</option>'
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row mx-5 mb-5">
+                            <label class="col-sm-3 col-form-label" for="tanggal">Tanggal</label>
+                            <div class="col-sm-9">
+                                <input type="date" class="form-control" id="tanggal" name="tanggal" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group row mx-5 mb-5">
+                            <label class="col-sm-3 col-form-label" for="mata-uang">Mata Uang</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" id="mata-uang" name="mata_uang">
+                                    <option value="">--- Pilih Mata Uang ---</option>
+                                    <option value="">IDR</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group row mx-5 mb-5">
-                        <label class="col-sm-3 col-form-label" for="gudang">Gudang</label>
-                        <div class="col-sm-9">
-                            <select class="form-control" id="gudang">
-                                @foreach ($gudangs as $gudang)
-                                <option>{{ $gudang->nama_gudang }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                    <div class="modal-footer">
+                        <a href="/pembelian/returs">
+                            <button type="button" class="btn btn-secondary">Batal</button>
+                        </a>
+                        <a class="btn" style="background-color:#00BFA6; color:white" onclick="stepper.next()">Selanjutnya</a>
                     </div>
-                    <div class="form-group row mx-5 mb-5">
-                        <label class="col-sm-3 col-form-label" for="tanggal">Tanggal</label>
-                        <div class="col-sm-9">
-                            <input type="date" class="form-control" id="tanggal" placeholder="">
-                        </div>
-                    </div>
-                    <div class="form-group row mx-5 mb-5">
-                        <label class="col-sm-3 col-form-label" for="mata-uang">Mata Uang</label>
-                        <div class="col-sm-9">
-                            <select class="form-control" id="mata-uang">
-                                <option>IDR</option>
-                                <option>$</option>
-                            </select>
-                        </div>
-                    </div>
-                </form>
-                <div class="modal-footer">
-                    <a href="/pembelian/returs">
-                        <button type="button" class="btn btn-secondary">Batal</button>
-                    </a>
-                    <button class="btn" style="background-color:#00BFA6; color:white" onclick="stepper.next()">Selanjutnya</button>
                 </div>
-            </div>
 
-            <div id="test-l-2" class="content">
-                    <form style="overflow: auto; height: 41vh;" id="formbarang">
+                <div id="test-l-2" class="content">
+                    <div style="overflow: auto; height: 41vh;" id="formbarang">
                         <div class="form-row mx-5" id="isiformbarang0">
                             <div class="form-group col-md-3">
-                                <label for="nama_barang" id="lbl">Barang</label>
-                                <select class="form-control" id="nama_barang">
+                                <label for="barang_id" id="lbl">Barang</label>
+                                <select class="form-control" id="barang_id" onchange="isi(this)" name="barang_id[]">
+                                    <option value="">--- Pilih Barang ---</option>
                                     @foreach ($barangs as $barang)
-                                    <option>{{ $barang->nama_barang }}</option>
+                                    <option value="{{$barang->id}}">{{ $barang->nama_barang }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="form-group col-md-1">
                                 <label for="jumlah_barang">QTY</label>
-                                <input type="number" class="form-control" id="jumlah_barang" placeholder="-">
+                                <input type="number" class="form-control" id="jumlah_barang" name="jumlah_barang[]" onfocus="startCalc(this);" onblur="stopCalc();" placeholder="-">
                             </div>
-                            <div class="form-group col-md-1">
+                            <div class="form-group col-md-2">
                                 <label for="satuan_unit">Unit</label>
-                                <input type="number" class="form-control" id="unit" disabled>
+                                <input type="number" class="form-control" id="unit" name="unit_barang[]" disabled>
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-2">
                                 <label for="harga">Harga Satuan</label>
                                 <div class="input-group mb-2">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" class="form-control" id="harga" placeholder="-">
+                                    <input type="number" class="form-control" id="harga" name="harga[]" onfocus="startCalc(this);" onblur="stopCalc();" placeholder="-">
                                 </div>
                             </div>
                             <div class="form-group col-md-3">
@@ -113,7 +116,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" class="form-control" id="total" disabled>
+                                    <input type="number" class="form-control" id="total" name="total[]" disabled>
                                 </div>
                             </div>
                             <div class="form-group col-md-1">
@@ -123,102 +126,106 @@
                                 </a>
                             </div>
                         </div>
-                    </form>
+                    </div>
                     <div class="alert alert-primary mt-3 mb-0 p-1" id="tambahbarang" onmouseover="green(this)" onmouseout="grey(this)" style="cursor: pointer; font-size:15px;">
                         <i class="fas fa-plus d-flex justify-content-center">
                             <span class="mx-2">Tambah Barang</span>
                         </i>
                     </div>
-                <div class="modal-footer">
-                    <div class="d-flex mr-auto">
-                        <p class="m-2">Total </p>
-                        <div class="input-group mb-2">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">Rp</div>
-                            </div>
-                            <input style="width:26vw" type="number" name="total_harga_penerimaan" id="total_harga_penerimaan" disabled>
-                        </div>
-                    </div>
-                    <a href="/pembelian/returs">
-                        <button type="button" class="btn btn-secondary">Batal</button>
-                    </a>
-                    <button class="btn" style="background-color:#00BFA6; color:white" onclick="stepper.previous()">Sebelumnya</button>
-                    <button class="btn" style="background-color:#00BFA6; color:white" onclick="stepper.next()">Selanjutnya</button>
-                </div>
-            </div>
-            <div id="test-l-3" class="content">
-                <form style="height: 58vh;overflow:auto" class="mt-2">
-                    <div class="form-group row mx-5 mb-5">
-                        <label class="col-sm-3 col-form-label" for="diskon">Diskon</label>
-                        <div class="col-sm-9">
-                            <div class="input-group mb-2">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">%</div>
-                                </div>
-                                <input type="number" class="form-control" id="diskon" placeholder="-">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group row mx-5 mb-5">
-                        <label class="col-sm-3 col-form-label" for="biaya_lain">Biaya lain</label>
-                        <div class="col-sm-9">
+                    <div class="modal-footer">
+                        <div class="d-flex mr-auto">
+                            <p class="m-2">Total </p>
                             <div class="input-group mb-2">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Rp</div>
                                 </div>
-                                <input type="number" class="form-control" id="biaya_lain" placeholder="-">
+                                <input style="width:26vw" type="number" name="total_harga_barang" id="total_harga_barang" disabled>
+                            </div>
+                        </div>
+                        <a href="/pembelian/returs">
+                            <button type="button" class="btn btn-secondary">Batal</button>
+                        </a>
+                        <a class="btn" style="background-color:#00BFA6; color:white" onclick="stepper.previous()">Sebelumnya</a>
+                        <a class="btn" style="background-color:#00BFA6; color:white" onclick="stepper.next()">Selanjutnya</a>
+                    </div>
+                </div>
+                <div id="test-l-3" class="content">
+                    <div style="height: 58vh;overflow:auto" class="mt-2">
+                        <div class="form-group row mx-5 mb-5">
+                            <label class="col-sm-3 col-form-label" for="diskon">Diskon</label>
+                            <div class="col-sm-9">
+                                <div class="input-group mb-2">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">%</div>
+                                    </div>
+                                    <input type="number" class="form-control" id="diskon" name="diskon" onchange="disc();" placeholder="-">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row mx-5 mb-5">
+                            <label class="col-sm-3 col-form-label" for="biaya_lain">Biaya lain</label>
+                            <div class="col-sm-9">
+                                <div class="input-group mb-2">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Rp</div>
+                                    </div>
+                                    <input type="number" class="form-control" name="biaya_lain" id="biaya_lain" onchange="disc();" placeholder="-">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row mx-5 mb-5">
+                            <label class="col-sm-3 col-form-label" for="termin_pembayaran">Termin Pembayaran</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" id="termin_pembayaran" name="termin_pembayaran">
+                                    <option value="">--- Pilih Termin ---</option>
+                                    <option value="">0 % 0 Net 0</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row mx-5 mb-5" id="uang-muka-form">
+                            <label class="col-sm-3 col-form-label" for="uang_muka">Uang Muka</label>
+                            <div class="col-sm-9">
+                                <div class="input-group mb-2">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Rp</div>
+                                    </div>
+                                    <input type="number" class="form-control" id="uang_muka" onchange="disc()" name="uang_muka" placeholder="-">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row mx-5 mb-5" id="akun-form" style="display: none">
+                            <label class="col-sm-3 col-form-label" for="akun">Akun</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" id="akun">
+                                    <option>--- Pilih Akun ---</option>
+                                    <!-- foreach ($akuns as $akun)
+                                <option> $akun->nama_akun </option>
+                                endforeach -->
+                                </select>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group row mx-5 mb-5">
-                        <label class="col-sm-3 col-form-label" for="termin_pembayaran">Termin Pembayaran</label>
-                        <div class="col-sm-9">
-                            <select class="form-control" id="termin_pembayaran">
-                                <option>0 % 0 Net 0</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row mx-5 mb-5" id="uang-muka-form">
-                        <label class="col-sm-3 col-form-label" for="uang_muka">Uang Muka</label>
-                        <div class="col-sm-9">
+                    <div class="modal-footer">
+                        <div class="d-flex mr-auto">
+                            <p class="m-2" id="sisa">Sisa </p>
                             <div class="input-group mb-2">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Rp</div>
                                 </div>
-                                <input type="number" class="form-control" id="uang_muka" placeholder="-">
+                                <input style="width:26vw" type="number" id="total_harga_kes" disabled>
+                                <input type="hidden" name="total_harga_keseluruhan" id="total_harga_keseluruhan">
                             </div>
+                            <input class="ml-4 mt-2" type="checkbox" onclick="checkLunas(this)" />
+                            <h5 class="ml-2">Lunas</h5>
                         </div>
+                        <a href="/pembelian/returs">
+                            <button type="button" class="btn btn-secondary">Batal</button>
+                        </a>
+                        <a class="btn" style="background-color:#00BFA6; color:white" onclick="stepper.previous()">Sebelumnya</a>
+                        <button type="submit" class="btn" style="background-color:#00BFA6; color:white">Tambah</button>
                     </div>
-                    <div class="form-group row mx-5 mb-5" id="akun-form" style="display: none">
-                        <label class="col-sm-3 col-form-label" for="akun">Akun</label>
-                        <div class="col-sm-9">
-                            <select class="form-control" id="akun">
-                                @foreach ($akuns as $akun)
-                                <option>{{ $akun->nama_akun }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                </form>
-                <div class="modal-footer">
-                    <div class="d-flex mr-auto">
-                        <p class="m-2" id="sisa">Sisa </p>
-                        <div class="input-group mb-2">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">Rp</div>
-                            </div>
-                            <input style="width:26vw" type="number" name="total_harga_keseluruhan" id="total_harga_keseluruhan" disabled>
-                        </div>
-                        <input class="ml-4 mt-2" type="checkbox" onclick="checkLunas(this)" />
-                        <h5 class="ml-2">Lunas</h5>
-                    </div>
-                    <a href="/pembelian/returs">
-                        <button type="button" class="btn btn-secondary">Batal</button>
-                    </a>
-                    <button class="btn" style="background-color:#00BFA6; color:white" onclick="stepper.previous()">Sebelumnya</button>
-                    <button type="submit" class="btn" style="background-color:#00BFA6; color:white">Tambah</button>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </div>
@@ -243,17 +250,10 @@
     }
 
 
-    var i = 0;
     $('#tambahbarang').click(function() {
+        var i = 0;
         $("#formbarang").append($("#isiformbarang" + i).clone().attr('id', 'isiformbarang' + (i + 1)));
         $(document.querySelectorAll("#isiformbarang1")).children().children().children().css({
-            'color': 'black',
-            'cursor': 'pointer'
-        })
-    });
-    $('#tambahpenerimaan').click(function() {
-        $("#formpenerimaan").append($("#isiformpenerimaan" + i).clone().attr('id', 'isiformpenerimaan' + (i + 1)));
-        $(document.querySelectorAll("#isiformpenerimaan1")).children().children().children().css({
             'color': 'black',
             'cursor': 'pointer'
         })
@@ -277,6 +277,125 @@
         if ($(x).parent().parent().attr('id') != 'isiformbarang0') {
             $(x).parent().parent().remove();
         }
+    }
+
+    $('#pemasok_id').change(function() {
+        $.ajax({
+            url: '/pembelian/pemasoks/' + $(this).val(),
+            type: 'get',
+            data: {},
+            success: function(data) {
+                $('#faktur_form').removeAttr('style')
+                for (i = 0; i < data.fakturs.length; i++) {
+                    $('#faktur_id').append('<option value="' + data.fakturs[i].id + '">' + data.fakturs[i].kode_faktur + '</option>')
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {}
+        });
+    });
+
+    $("#faktur_id").change(function() {
+        $.ajax({
+            url: '/pembelian/fakturs/' + $(this).val(),
+            type: 'get',
+            data: {},
+            success: function(data) {
+                if (data.success == true) {
+                    console.log(data)
+                    // $('#diskon').val(data.faktur.diskon)
+                    // $('#biaya_lain').val(data.faktur.biaya_lain)
+                    $('#barang_id').val(data.barangs[0].id)
+                    $('#tambahbarang').detach()
+                    $('#unit').val(data.barangs[0].satuan_unit)
+                    $('#jumlah_barang').val(data.barangs[0].pivot.jumlah_barang)
+                    $('#harga').val(data.barangs[0].pivot.harga)
+                    for (var i = 1; i <= data.barangs.length - 1; i++) {
+                        $("#formbarang").append($("#isiformbarang0").clone().attr('id', 'isiformbarang' + i));
+                        $("#isiformbarang" + i).children().children('select').val(data.barangs[i].id)
+                        $("#isiformbarang" + i).children().children('#jumlah_barang').val(data.barangs[i].pivot.jumlah_barang)
+                        $("#isiformbarang" + i).children().children('#unit').val(data.barangs[i].satuan_unit)
+                        $("#isiformbarang" + i).children().children('#harga').val(data.barangs[i].pivot.harga)
+                    }
+                    var c = data.barangs.length
+                    console.log(c)
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {}
+        });
+    });
+
+
+    function disc() {
+        dis = $('#diskon').val() / 100;
+        biy = parseInt($('#biaya_lain').val());
+        dp = parseInt($('#uang_muka').val());
+        akhir = parseInt($('#total_harga_barang').val())
+        akhir1 = akhir - (akhir * dis)
+        akhir2 = akhir1 + biy
+        akhirbanget = akhir2 - dp
+        if (akhirbanget) {
+            $('#total_harga_kes').val(akhirbanget)
+            $('#total_harga_keseluruhan').val(akhirbanget)
+        } else if (akhir2) {
+            $('#total_harga_kes').val(akhir2)
+            $('#total_harga_keseluruhan').val(akhir2)
+        } else {
+            $('#total_harga_kes').val(akhir1)
+            $('#total_harga_keseluruhan').val(akhir1)
+        }
+    }
+
+
+    function startCalc(x) {
+        if ($(x).attr('id') == 'jumlah_barang') {
+            a = x
+            b = $(x).parent().parent().children().children().children('#harga')
+            c = $(x).parent().parent().children().children().children('#total')
+            interval = setInterval(function() {
+                qty = $(a).val();
+                harga = $(b).val();
+                total = qty * harga
+                $(c).val(total)
+            }, 1);
+        } else if ($(x).attr('id') == 'harga') {
+            a = $(x).parent().parent().parent().children().children('#jumlah_barang')
+            b = x
+            c = $(x).parent().parent().parent().children().children().children('#total')
+            interval = setInterval(function() {
+                qty = $(a).val();
+                harga = $(b).val();
+                total = qty * harga
+                $(c).val(total)
+            }, 1);
+        }
+    }
+
+
+    function stopCalc() {
+        clearInterval(interval);
+        var arr = document.getElementsByName('total[]');
+        var tot = 0;
+        for (var i = 0; i < arr.length; i++) {
+            if (parseInt(arr[i].value))
+                tot += parseInt(arr[i].value);
+        }
+        document.getElementById('total_harga_barang').value = tot;
+        document.getElementById('total_harga_keseluruhan').value = tot;
+    }
+
+    function isi(x) {
+        console.log('isi')
+        $.ajax({
+            url: '/stok/Management-Data/barang/' + $(x).val(),
+            type: 'get',
+            data: {},
+            success: function(data) {
+                console.log(data)
+                var unit = $(x).parent().parent().children().children('#unit').attr('placeholder', data.unit.nama_satuan)
+                var harga = $(x).parent().parent().children().children().children('#harga').val(data.harga_retail)
+                console.log(unit)
+            }
+        })
     }
 </script>
 

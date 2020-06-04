@@ -77,11 +77,11 @@ class Barang extends Model
 
     public function fakturs()
     {
-        return $this->belongsToMany('App\Pembelian\Faktur', 'faktur_details');
+        return $this->belongsToMany('App\Pembelian\Faktur', 'faktur_details')->withPivot('jumlah_barang', 'harga')->withTimestamps();
     }
 
     public function returs()
     {
-        return $this->belongsToMany('App\Pembelian\Retur', 'retur_details');
+        return $this->belongsToMany('App\Pembelian\Retur', 'retur_details')->withPivot('jumlah_barang', 'harga')->withTimestamps();
     }
 }

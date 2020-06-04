@@ -17,7 +17,6 @@ class CreatePblFaktursTable extends Migration
             $table->bigIncrements('id');
             $table->string('kode_faktur');
             $table->date('tanggal');
-            $table->string('gudang');
             $table->integer('total_harga');
             $table->double('diskon', 8, 3);
             $table->integer('biaya_lain');
@@ -25,6 +24,7 @@ class CreatePblFaktursTable extends Migration
             $table->timestamps();
             //fk
             $table->bigInteger('pemasok_id')->nullable();
+            $table->bigInteger('pemesanan_id')->nullable();
         });
     }
 

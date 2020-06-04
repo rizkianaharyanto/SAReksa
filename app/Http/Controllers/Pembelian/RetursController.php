@@ -49,7 +49,27 @@ class RetursController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $retur = retur::create([
+            'kode_retur' => $request->kode_retur,
+            'faktur_id' => $request->faktur_id,
+            'pemasok_id' => $request->pemasok_id,
+            'gudang' => 'gudang',
+            'tanggal' => $request->tanggal,
+            'diskon' => $request->diskon,
+            'biaya_lain' => $request->biaya_lain,
+            // 'uang_muka' => $request->uang_muka,
+            'total_jenis_barang' => 3,
+            'total_harga' => $request->total_harga_keseluruhan,
+        ]);
+
+        foreach ($request->barang_id as $index => $id) {
+
+            $retur->barangs()->attach($id, [
+                'jumlah_barang' => $request->jumlah_barang[$index],
+                'harga' => $request->harga[$index]
+            ]);
+        }
+        return redirect('/pembelian/returs');
     }
 
     /**

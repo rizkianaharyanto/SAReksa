@@ -32,6 +32,6 @@ class Faktur extends Model
 
     public function barangs()
     {
-        return $this->belongsToMany('App\Stock\Barang', 'pbl_faktur_details');
+        return $this->belongsToMany('App\Stock\Barang', 'pbl_faktur_details')->withPivot('jumlah_barang', 'harga')->withTimestamps();
     }
 }
