@@ -36,7 +36,8 @@
             <form method="POST" action="/pembelian/pemesanans">
                 @csrf
                 <div id="test-l-1" class="content">
-                    <input type="hidden" id="kode_pemesanan" name="kode_pemesanan" placeholder="" value="PEM">
+                    <input type="hidden" id="kode_pemesanan" name="kode_pemesanan" placeholder="" value="PEM{{$no+1}}">
+                    <input type="hidden" id="status" name="status" value="baru">
                     <div style="height: 58vh;overflow: auto; color:black" class="mt-2">
                         <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="pemasok_id">Pemasok</label>
@@ -110,7 +111,8 @@
                             </div>
                             <div class="form-group col-md-2">
                                 <label for="satuan_unit">Unit</label>
-                                <input type="number" class="form-control" id="unit" name="unit_barang[]" disabled>
+                                <input type="number" class="form-control" id="uni" disabled>
+                                <input type="hidden" id="unit" name="unit_barang[]" >
                             </div>
                             <div class="form-group col-md-2">
                                 <label for="harga">Harga Satuan</label>
@@ -130,6 +132,7 @@
                                     <input type="number" class="form-control" id="total" name="total[]" disabled>
                                 </div>
                             </div>
+                            <input type="hidden" id="status_barang" name="status_barang[]">
                             <div class="form-group col-md-1">
                                 <p style="color: transparent">#</p>
                                 <a onclick="hapus(this)">
@@ -240,19 +243,13 @@
 
 
     $('#tambahbarang').click(function() {
-    var i = 0;
+        var i = 0;
         // console.log(i)
         $("#formbarang").append($("#isiformbarang" + i).clone().attr('id', 'isiformbarang' + (i + 1)));
         $(document.querySelectorAll("#isiformbarang1")).children().children().children().css({
             'color': 'black',
             'cursor': 'pointer'
         })
-        // $("#isiformbarang" + i).attr('id', 'isiformbarang' + (i + 1))
-        // $("#delete" + i).attr({
-        //     'id': 'delete' + (i + 1),
-        //     'value': (i + 1)
-        // })
-        // console.log(i)
     });
 
     function hapus(x) {
@@ -270,7 +267,7 @@
                 $('#permintaan_form').removeAttr('style')
                 console.log(data.permintaans)
                 for (i = 0; i < data.permintaans.length; i++) {
-                    $('#permintaan_id').append('<option value="'+data.permintaans[i].id +'">'+ data.permintaans[i].kode_permintaan+'</option>')
+                    $('#permintaan_id').append('<option value="' + data.permintaans[i].id + '">' + data.permintaans[i].kode_permintaan + '</option>')
                 }
             },
             error: function(jqXHR, textStatus, errorThrown) {}
@@ -291,18 +288,24 @@
                     $('#gudang').val(data.permintaan.gudang)
                     // $('#tanggal').val(data.permintaan.tanggal)
                     // $('#mata_uang').val(data.permintaan.mata_uang)
+                    // $('#status').val('baru')
                     $('#diskon').val(data.permintaan.diskon)
                     $('#biaya_lain').val(data.permintaan.biaya_lain)
                     $('#barang_id').val(data.barangs[0].id)
-                    $('#unit').val(data.barangs[0].satuan_unit)
+                    $('#unit').val(data.barangs[0].pivot.unit)
+                    $('#uni').attr('placeholder',data.barangs[0].pivot.unit)
                     $('#jumlah_barang').val(data.barangs[0].pivot.jumlah_barang)
                     $('#harga').val(data.barangs[0].pivot.harga)
+                    $('#status_barang').val('belum diterima')
                     for (var i = 1; i <= data.barangs.length - 1; i++) {
                         $("#formbarang").append($("#isiformbarang0").clone().attr('id', 'isiformbarang' + i));
                         $("#isiformbarang" + i).children().children('select').val(data.barangs[i].id)
                         $("#isiformbarang" + i).children().children('#jumlah_barang').val(data.barangs[i].pivot.jumlah_barang)
-                        $("#isiformbarang" + i).children().children('#unit').val(data.barangs[i].satuan_unit)
-                        $("#isiformbarang" + i).children().children('#harga').val(data.barangs[i].pivot.harga)
+                        $("#isiformbarang" + i).children().children().children('#harga').val(data.barangs[i].pivot.harga)
+                        $("#isiformbarang" + i).children().children('#unit').val(data.barangs[i].pivot.unit)
+                        $("#isiformbarang" + i).children().children('#uni').attr('placeholder',data.barangs[i].pivot.unit)
+                        $("#isiformbarang" + i).children('#status_barang').val('belum diterima')
+                        // console.log(data.barangs[i].pivot.harga)
                         // $("#isiformbarang" + i).children().children('input').attr('id', 'total' + i)
                         // $('#total' + i).val(data.barangs[i].pivot.total)
                     }
@@ -385,7 +388,8 @@
             data: {},
             success: function(data) {
                 console.log(data)
-                var unit = $(x).parent().parent().children().children('#unit').attr('placeholder', data.unit.nama_satuan)
+                var unit = $(x).parent().parent().children().children('#uni').attr('placeholder', data.unit.nama_satuan)
+                $(x).parent().parent().children().children('#unit').val(data.unit.nama_satuan)
                 var harga = $(x).parent().parent().children().children().children('#harga').val(data.harga_retail)
                 console.log(unit)
             }

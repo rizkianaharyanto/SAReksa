@@ -27,6 +27,6 @@ class Retur extends Model
 
     public function barangs()
     {
-        return $this->belongsToMany('App\Stock\Barang', 'pbl_retur_details')->withPivot('jumlah_barang', 'harga')->withTimestamps();
+        return $this->belongsToMany('App\Stock\Barang', 'pbl_retur_details')->withPivot('jumlah_barang', 'harga', 'unit', 'pajak', 'status_barang')->withTimestamps();
     }
 }

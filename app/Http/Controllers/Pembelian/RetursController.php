@@ -34,6 +34,7 @@ class RetursController extends Controller
     {
         return view('pembelian.pembelian.retur.returinsert', [
             'pemasoks' => Pemasok::all(),
+            'no' => Retur::max('id'),
             'fakturs' => Faktur::all(),
             'barangs' => Barang::all(),
             'gudangs'=> Gudang::all(),
@@ -52,6 +53,7 @@ class RetursController extends Controller
         $retur = retur::create([
             'kode_retur' => $request->kode_retur,
             'faktur_id' => $request->faktur_id,
+            'status' => $request->status,
             'pemasok_id' => $request->pemasok_id,
             'gudang' => 'gudang',
             'tanggal' => $request->tanggal,
@@ -66,7 +68,10 @@ class RetursController extends Controller
 
             $retur->barangs()->attach($id, [
                 'jumlah_barang' => $request->jumlah_barang[$index],
-                'harga' => $request->harga[$index]
+                'harga' => $request->harga[$index],
+                'unit' => $request->unit[$index],
+                'pajak' => $request->pajak[$index],
+                'status_barang' => $request->status_barang[$index],
             ]);
         }
         return redirect('/pembelian/returs');

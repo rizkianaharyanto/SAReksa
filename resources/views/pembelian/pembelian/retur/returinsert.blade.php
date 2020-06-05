@@ -36,7 +36,8 @@
             <form method="POST" action="/pembelian/returs">
                 @csrf
                 <div id="test-l-1" class="content">
-                    <input type="hidden" id="kode_retur" name="kode_retur" placeholder="" value="RET">
+                    <input type="hidden" id="kode_retur" name="kode_retur" placeholder="" value="RET{{$no+1}}">
+                    <input type="hidden" id="status" name="status" value="hutang">
                     <div style="height: 58vh;overflow: auto; color:black" class="mt-2">
                         <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="pemasok_id">pemasok</label>
@@ -99,7 +100,8 @@
                             </div>
                             <div class="form-group col-md-2">
                                 <label for="satuan_unit">Unit</label>
-                                <input type="number" class="form-control" id="unit" name="unit_barang[]" disabled>
+                                <input type="number" class="form-control" id="uni" disabled>
+                                <input type="hidden" id="unit" name="unit_barang[]">
                             </div>
                             <div class="form-group col-md-2">
                                 <label for="harga">Harga Satuan</label>
@@ -189,7 +191,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" class="form-control" id="uang_muka" onchange="disc()" name="uang_muka" placeholder="-">
+                                    <input type="number" class="form-control" id="uang_muka" onchange="disc()" name="uang_muka" value="0" placeholder="-">
                                 </div>
                             </div>
                         </div>
@@ -265,11 +267,13 @@
             $("#uang-muka-form").removeAttr('style')
             $('#sisa').html('Sisa')
             $("#akun-form").css('display', 'none')
+            $("#status").val('hutang')
         } else {
             $(x).attr('value', '1')
             $("#akun-form").removeAttr('style')
             $("#sisa").html('Total')
             $("#uang-muka-form").css('display', 'none')
+            $("#status").val('lunas')
         }
     }
 
@@ -306,15 +310,17 @@
                     // $('#biaya_lain').val(data.faktur.biaya_lain)
                     $('#barang_id').val(data.barangs[0].id)
                     $('#tambahbarang').detach()
-                    $('#unit').val(data.barangs[0].satuan_unit)
+                    $('#uni').attr('placeholder',data.barangs[0].pivot.unit)
+                    $('#unit').val(data.barangs[0].pivot.unit)
                     $('#jumlah_barang').val(data.barangs[0].pivot.jumlah_barang)
                     $('#harga').val(data.barangs[0].pivot.harga)
                     for (var i = 1; i <= data.barangs.length - 1; i++) {
                         $("#formbarang").append($("#isiformbarang0").clone().attr('id', 'isiformbarang' + i));
                         $("#isiformbarang" + i).children().children('select').val(data.barangs[i].id)
                         $("#isiformbarang" + i).children().children('#jumlah_barang').val(data.barangs[i].pivot.jumlah_barang)
-                        $("#isiformbarang" + i).children().children('#unit').val(data.barangs[i].satuan_unit)
-                        $("#isiformbarang" + i).children().children('#harga').val(data.barangs[i].pivot.harga)
+                        $("#isiformbarang" + i).children().children('#uni').attr('placeholder',data.barangs[i].pivot.unit)
+                        $("#isiformbarang" + i).children().children('#unit').val(data.barangs[i].pivot.unit)
+                        $("#isiformbarang" + i).children().children().children('#harga').val(data.barangs[i].pivot.harga)
                     }
                     var c = data.barangs.length
                     console.log(c)
@@ -391,7 +397,8 @@
             data: {},
             success: function(data) {
                 console.log(data)
-                var unit = $(x).parent().parent().children().children('#unit').attr('placeholder', data.unit.nama_satuan)
+                var unit = $(x).parent().parent().children().children('#uni').attr('placeholder', data.unit.nama_satuan)
+                $(x).parent().parent().children().children('#unit').val(data.unit.nama_satuan)
                 var harga = $(x).parent().parent().children().children().children('#harga').val(data.harga_retail)
                 console.log(unit)
             }

@@ -22,6 +22,6 @@ class Permintaan extends Model
 
     public function barangs()
     {
-        return $this->belongsToMany('App\Stock\Barang', 'pbl_permintaan_details')->withPivot('jumlah_barang', 'harga')->withTimestamps();
+        return $this->belongsToMany('App\Stock\Barang', 'pbl_permintaan_details')->withPivot('jumlah_barang', 'harga', 'unit', 'pajak')->withTimestamps();
     }
 }

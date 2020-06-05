@@ -62,26 +62,26 @@ class Barang extends Model
     
     public function permintaans()
     {
-        return $this->belongsToMany('App\Pembelian\Permintaan', 'permintaan_details')->withPivot('jumlah_barang', 'harga')->withTimestamps();
+        return $this->belongsToMany('App\Pembelian\Permintaan', 'permintaan_details')->withPivot('jumlah_barang', 'harga', 'unit', 'pajak')->withTimestamps();
     }
 
     public function pemesanans()
     {
-        return $this->belongsToMany('App\Pembelian\Pemesanan', 'pemesanan_details')->withTimestamps()->withPivot('jumlah_barang', 'harga');
+        return $this->belongsToMany('App\Pembelian\Pemesanan', 'pemesanan_details')->withTimestamps()->withPivot('jumlah_barang', 'harga', 'unit', 'pajak', 'status_barang');
     }
 
     public function penerimaans()
     {
-        return $this->belongsToMany('App\Pembelian\Penerimaan', 'penerimaan_details')->withPivot('jumlah_barang', 'harga')->withTimestamps();
+        return $this->belongsToMany('App\Pembelian\Penerimaan', 'penerimaan_details')->withPivot('jumlah_barang', 'harga', 'unit', 'pajak')->withTimestamps();
     }
 
     public function fakturs()
     {
-        return $this->belongsToMany('App\Pembelian\Faktur', 'faktur_details')->withPivot('jumlah_barang', 'harga')->withTimestamps();
+        return $this->belongsToMany('App\Pembelian\Faktur', 'faktur_details')->withPivot('jumlah_barang', 'harga', 'unit', 'pajak', 'status_barang')->withTimestamps();
     }
 
     public function returs()
     {
-        return $this->belongsToMany('App\Pembelian\Retur', 'retur_details')->withPivot('jumlah_barang', 'harga')->withTimestamps();
+        return $this->belongsToMany('App\Pembelian\Retur', 'retur_details')->withPivot('jumlah_barang', 'harga', 'unit', 'pajak', 'status_barang')->withTimestamps();
     }
 }

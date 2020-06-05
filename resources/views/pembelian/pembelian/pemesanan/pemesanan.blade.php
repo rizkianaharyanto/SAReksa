@@ -10,6 +10,7 @@
     <th>pemasok</th>
     <th>Tanggal</th>
     <th>Total</th>
+    <th>Status</th>
     <th style="column-width: 80px">Aksi</th>
 </tr>
 @endsection
@@ -21,6 +22,7 @@
     <td>{{ $pemesanan->pemasok->nama_pemasok }}</td>
     <td>{{ $pemesanan->tanggal }}</td>
     <td>{{ $pemesanan->total_harga }}</td>
+    <td>{{ $pemesanan->status !=null ? $pemesanan->status  : '-' }}</td>
     <td class="d-flex justify-content-between">
         <a id="details" href="/pembelian/pemesanans/create">
             <i style="cursor: pointer; " class="fas fa-info-circle">

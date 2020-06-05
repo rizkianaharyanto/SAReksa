@@ -32,6 +32,7 @@ class PermintaansController extends Controller
         // dd(Gudang::all());
         return view('pembelian.pembelian.permintaan.permintaaninsert', [
             'pemasoks' => Pemasok::all(),
+            'no' => Permintaan::max('id'),
             'barangs' => Barang::all(),
             'gudangs' => Gudang::all()
         ]);
@@ -61,7 +62,9 @@ class PermintaansController extends Controller
 
             $permintaan->barangs()->attach($id, [
                 'jumlah_barang' => $request->jumlah_barang[$index],
-                'harga' => $request->harga[$index]
+                'harga' => $request->harga[$index],
+                'unit' => $request->unit_barang[$index],
+                // 'pajak' => $request->pajak[$index]
             ]);
         }
         return redirect('/pembelian/permintaans');
@@ -121,11 +124,15 @@ class PermintaansController extends Controller
         foreach ($request->barang_id as $index => $id) {
             $permintaan->barangs()->detach($id, [
                 'jumlah_barang' => $request->jumlah_barang[$index],
-                'harga' => $request->harga[$index]
+                'harga' => $request->harga[$index],
+                'unit' => $request->unit_barang[$index],
+                // 'pajak' => $request->pajak[$index]
             ]);
             $permintaan->barangs()->attach($id, [
                 'jumlah_barang' => $request->jumlah_barang[$index],
-                'harga' => $request->harga[$index]
+                'harga' => $request->harga[$index],
+                'unit' => $request->unit_barang[$index],
+                // 'pajak' => $request->pajak[$index]
             ]);
         }
         return redirect('/pembelian/permintaans');

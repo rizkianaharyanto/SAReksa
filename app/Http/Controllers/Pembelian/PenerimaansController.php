@@ -33,8 +33,9 @@ class PenerimaansController extends Controller
         return view('pembelian.pembelian.penerimaan.penerimaaninsert', [
             'pemasoks' => Pemasok::all(),
             'pemesanans' => Pemesanan::all(),
+            'no' => Penerimaan::max('id'),
             'barangs' => Barang::all(),
-            'gudangs'=> Gudang::all()
+            'gudangs' => Gudang::all()
         ]);
     }
 
@@ -49,6 +50,7 @@ class PenerimaansController extends Controller
         $penerimaan = Penerimaan::create([
             'kode_penerimaan' => $request->kode_penerimaan,
             'pemesanan_id' => $request->pemesanan_id,
+            'status' => $request->status,
             'pemasok_id' => $request->pemasok_id,
             'gudang' => $request->gudang,
             'tanggal' => $request->tanggal,
@@ -58,14 +60,25 @@ class PenerimaansController extends Controller
             'total_harga' => $request->total_harga_keseluruhan,
         ]);
 
+        $pemesanan=$penerimaan->pemesanan;
         foreach ($request->barang_id as $index => $id) {
-
             $penerimaan->barangs()->attach($id, [
                 'jumlah_barang' => $request->jumlah_barang[$index],
-                'harga' => $request->harga[$index]
+                'harga' => $request->harga[$index],
+                'unit' => $request->unit_barang[$index],
+                // 'pajak' => $request->pajak[$index],
             ]);
+            $pemesanan->barangs()->where('barang_id', $id)->update(array('status_barang' => 'diterima'));
+            $status=$pemesanan->barangs()->get(array('status_barang'));
+            foreach($status as $status_barang){
+                if(count($request->barang_id) == count($status)){
+                    $pemesanan->update(array('status' => 'diterima'));
+                }else{
+                    $pemesanan->update(array('status' => 'diterima sebagian'));
+                }
+            }
+            return redirect('/pembelian/penerimaans');
         }
-        return redirect('/pembelian/penerimaans');
     }
 
     /**
@@ -78,8 +91,9 @@ class PenerimaansController extends Controller
     {
         $penerimaan = Penerimaan::find($id);
         $barangs = $penerimaan->barangs;
+        // dd($barangs);
         return response()
-        ->json(['success'=> true, 'penerimaan' => $penerimaan, 'barangs' => $barangs]);
+        ->json(['success'=> true, 'penerimaan' => $penerimaan, 'barangs' => $barangs ]);
     }
 
     /**
@@ -94,7 +108,7 @@ class PenerimaansController extends Controller
             'penerimaan' => $penerimaan,
             'pemasoks' => Pemasok::all(),
             'barangs' => Barang::all(),
-            'gudangs'=> Gudang::all()
+            'gudangs' => Gudang::all()
         ]);
     }
 
@@ -108,27 +122,27 @@ class PenerimaansController extends Controller
     public function update(Request $request, Penerimaan $penerimaan)
     {
         Penerimaan::where('id', $penerimaan->id)
-        ->update([
-            'kode_penerimaan' => $request->kode_penerimaan,
-            'pemasok_id' => $request->pemasok_id,
-            'gudang' => $request->gudang,
-            'tanggal' => $request->tanggal,
-            'diskon' => $request->diskon,
-            'biaya_lain' => $request->biaya_lain,
-            'total_jenis_barang' => 3,
-            'total_harga' => 1000,
-        ]);
-    foreach ($request->barang_id as $index => $id) {
-        $penerimaan->barangs()->detach($id, [
-            'jumlah_barang' => $request->jumlah_barang[$index],
-            'harga' => $request->harga[$index]
-        ]);
-        $penerimaan->barangs()->attach($id, [
-            'jumlah_barang' => $request->jumlah_barang[$index],
-            'harga' => $request->harga[$index]
-        ]);
-    }
-    return redirect('/pembelian/penerimaans');
+            ->update([
+                'kode_penerimaan' => $request->kode_penerimaan,
+                'pemasok_id' => $request->pemasok_id,
+                'gudang' => $request->gudang,
+                'tanggal' => $request->tanggal,
+                'diskon' => $request->diskon,
+                'biaya_lain' => $request->biaya_lain,
+                'total_jenis_barang' => 3,
+                'total_harga' => 1000,
+            ]);
+        foreach ($request->barang_id as $index => $id) {
+            $penerimaan->barangs()->detach($id, [
+                'jumlah_barang' => $request->jumlah_barang[$index],
+                'harga' => $request->harga[$index]
+            ]);
+            $penerimaan->barangs()->attach($id, [
+                'jumlah_barang' => $request->jumlah_barang[$index],
+                'harga' => $request->harga[$index]
+            ]);
+        }
+        return redirect('/pembelian/penerimaans');
     }
 
     /**

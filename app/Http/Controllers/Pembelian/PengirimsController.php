@@ -19,6 +19,7 @@ class PengirimsController extends Controller
         $pengirims = Pengirim::all();
         return view('pembelian.manajemendata.pengirim', [
             'pengirims' => $pengirims,
+            'no' => Pengirim::max('id'),
             'pemasoks' => Pemasok::all()
         ]);
     }

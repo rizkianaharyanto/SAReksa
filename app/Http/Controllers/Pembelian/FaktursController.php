@@ -34,6 +34,7 @@ class FaktursController extends Controller
         return view('pembelian.pembelian.faktur.fakturinsert', [
             'penerimaans' => Penerimaan::all(),
             'pemasoks' => Pemasok::all(),
+            'no' => Faktur::max('id'),
             'barangs' => Barang::all(),
             'gudangs'=> Gudang::all(),
             // 'akuns'=> Akun::all()
@@ -52,7 +53,7 @@ class FaktursController extends Controller
             'kode_faktur' => $request->kode_faktur,
             'pemesanan_id' => $request->pemesanan_id,
             'pemasok_id' => $request->pemasok_id,
-            // 'gudang' => 'gudang',
+            'status' => $request->status,
             'tanggal' => $request->tanggal,
             'diskon' => $request->diskon,
             'biaya_lain' => $request->biaya_lain,
@@ -65,7 +66,10 @@ class FaktursController extends Controller
 
             $faktur->barangs()->attach($id, [
                 'jumlah_barang' => $request->jumlah_barang[$index],
-                'harga' => $request->harga[$index]
+                'harga' => $request->harga[$index],
+                'unit' => $request->unit_barang[$index],
+                // 'pajak' => $request->pajak[$index],
+                // 'status_barang' => $request->status_barang[$index],
             ]);
         }
         return redirect('/pembelian/fakturs');

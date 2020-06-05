@@ -17,6 +17,7 @@ class CreatePblReturDetailsTable extends Migration
             $table->bigIncrements('id');
             $table->double('pajak', 8, 3)->nullable();
             $table->string('unit')->nullable();
+            $table->enum('status_barang',['lunas', 'hutang'])->nullable();
             $table->integer('jumlah_barang');
             $table->integer('harga');
             $table->timestamps();

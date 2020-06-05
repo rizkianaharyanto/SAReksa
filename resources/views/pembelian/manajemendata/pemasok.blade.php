@@ -169,7 +169,7 @@ endsection -->
         <i class="fas fa-user-circle mr-4" style="font-size:50px;color:#00BFA6;"></i>
         <input type="file" class="form-control-file align-self-center" id="foto">
     </div>
-    <input type="hidden" id="kode_pemasok" name="kode_pemasok" placeholder="" value="SUP">
+    <input type="hidden" id="kode_pemasok" name="kode_pemasok" placeholder="" value="SUP{{$no+1}}">
     <div class="form-group">
         <label for="nama_pemasok">Nama pemasok</label>
         <input type="text" class="form-control" id="nama_pemasok" name="nama_pemasok" placeholder="">

@@ -16,7 +16,10 @@ class PemasoksController extends Controller
     public function index()
     {
         $pemasoks = Pemasok::all();
-        return view('pembelian.manajemendata.pemasok', compact('pemasoks'));
+        return view('pembelian.manajemendata.pemasok', [
+            'pemasoks' => $pemasoks,
+            'no' => Pemasok::max('id'),
+        ]);
     }
 
     /**

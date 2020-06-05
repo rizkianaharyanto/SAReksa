@@ -33,6 +33,7 @@ class PemesanansController extends Controller
         return view('pembelian.pembelian.pemesanan.pemesananinsert', [
             'pemasoks' => Pemasok::all(),
             'permintaans' => Permintaan::all(),
+            'no' => Pemesanan::max('id'),
             'barangs' => Barang::all(),
             'gudangs'=> Gudang::all()
         ]);
@@ -56,13 +57,17 @@ class PemesanansController extends Controller
             'total_jenis_barang' => 3,
             'total_harga' => $request->total_harga_keseluruhan,
             'permintaan_id' => $request->permintaan_id,
+            'status' => $request->status,
         ]);
 
         foreach ($request->barang_id as $index => $id) {
 
             $pemesanan->barangs()->attach($id, [
                 'jumlah_barang' => $request->jumlah_barang[$index],
-                'harga' => $request->harga[$index]
+                'harga' => $request->harga[$index],
+                'unit' => $request->unit_barang[$index],
+                // 'pajak' => $request->pajak[$index],
+                'status_barang' => $request->status_barang[$index],
             ]);
         }
         return redirect('/pembelian/pemesanans');
@@ -123,11 +128,17 @@ class PemesanansController extends Controller
         foreach ($request->barang_id as $index => $id) {
             $pemesanan->barangs()->detach($id, [
                 'jumlah_barang' => $request->jumlah_barang[$index],
-                'harga' => $request->harga[$index]
+                'harga' => $request->harga[$index],
+                'unit' => $request->unit_barang[$index],
+                // 'pajak' => $request->pajak[$index],
+                'status_barang' => $request->status_barang[$index],
             ]);
             $pemesanan->barangs()->attach($id, [
                 'jumlah_barang' => $request->jumlah_barang[$index],
-                'harga' => $request->harga[$index]
+                'harga' => $request->harga[$index],
+                'unit' => $request->unit_barang[$index],
+                // 'pajak' => $request->pajak[$index],
+                'status_barang' => $request->status_barang[$index],
             ]);
         }
         return redirect('/pembelian/pemesanans');

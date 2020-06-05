@@ -32,6 +32,6 @@ class Pemesanan extends Model
 
     public function barangs()
     {
-        return $this->belongsToMany('App\Stock\Barang', 'pbl_pemesanan_details')->withTimestamps()->withPivot('jumlah_barang', 'harga');
+        return $this->belongsToMany('App\Stock\Barang', 'pbl_pemesanan_details')->withTimestamps()->withPivot('jumlah_barang', 'harga', 'unit', 'pajak', 'status_barang');
     }
 }

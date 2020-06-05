@@ -21,7 +21,7 @@ class CreatePblFaktursTable extends Migration
             $table->double('diskon', 8, 3);
             $table->integer('biaya_lain');
             $table->integer('uang_muka');
-            $table->enum('status', ['lunas', 'hutang']);
+            $table->enum('status', ['lunas', 'hutang'])->nullable();
             $table->timestamps();
             //fk
             $table->bigInteger('pemasok_id')->nullable();

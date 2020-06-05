@@ -17,6 +17,7 @@ class CreatePblPenerimaanDetailsTable extends Migration
             $table->bigIncrements('id');
             $table->double('pajak', 8, 3)->nullable();
             $table->string('unit')->nullable();
+            // $table->enum('status_barang',['sudah posting', 'belum posting'])->nullable();
             $table->integer('jumlah_barang');
             $table->integer('harga');
             $table->timestamps();
