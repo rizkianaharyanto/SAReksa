@@ -22,6 +22,7 @@ class CreatePblPemesanansTable extends Migration
             $table->integer('total_harga');
             $table->double('diskon', 8, 3);
             $table->integer('biaya_lain');
+            $table->enum('status', ['diterima', 'diterima sebagian'])->nullable();
             $table->timestamps();
             //fk
             $table->bigInteger('pemasok_id')->nullable();
