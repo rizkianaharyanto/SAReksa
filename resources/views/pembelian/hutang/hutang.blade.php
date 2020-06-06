@@ -6,27 +6,25 @@
 
 @section('thead')
 <tr>
-    <th>Kode Hutang</th>
-    <th>Supplier</th>
+    <th>Pemasok</th>
     <th>Total Hutang</th>
-    <th>Total Lunas</th>
-    <th>Total Sisa</th>
+    <th>Lunas</th>
+    <th>Sisa Hutang</th>
     <th style="column-width: 80px">Aksi</th>
 </tr>
 @endsection
 
 @section('tbody')
-@foreach ($hutangs as $hutang)
+@foreach ($pemasoks as $index => $pemasok)
 <tr>
-    <td>{{ $hutang->kode_hutang }}</td>
-    <td>Supplier</td>
-    <td>{{ $hutang->total_hutang }}</td>
-    <td>{{ $hutang->total_lunas }}</td>
-    <td>{{ $hutang->total_sisa }}</td>
+    <td>{{ $pemasok->nama_pemasok }}</td>
+    <td>{{ $totals[$index]['total_hutang']}}</td>
+    <td> - </td>
+    <td> - </td>
     <td class="d-flex justify-content-between">
-        <i onclick="" class="fas fa-info-circle"></i>
-        <i onclick="" class="fas fa-edit"></i>
-        <i onclick="" class="fas fa-trash"></i>
+        <a href="/pembelian/hutangs/{{$pemasok->id}}">
+            <i onclick="" class="fas fa-info-circle"></i>
+        </a>
     </td>
 </tr>
 @endforeach

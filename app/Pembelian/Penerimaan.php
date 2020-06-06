@@ -10,9 +10,9 @@ class Penerimaan extends Model
     use SoftDeletes;
     protected $table = 'pbl_penerimaans';
     protected $guarded = ['id'];
-    public function jurnal()
+    public function jurnals()
     {
-        return $this->belongsTo('App\Pembelian\Jurnal');
+        return $this->hasMany('App\Pembelian\Jurnal');
     }
 
     public function pemesanan()

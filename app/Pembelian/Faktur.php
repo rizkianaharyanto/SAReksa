@@ -10,9 +10,9 @@ class Faktur extends Model
     use SoftDeletes;
     protected $table = 'pbl_fakturs';
     protected $guarded = ['id'];
-    public function jurnal()
+    public function jurnals()
     {
-        return $this->belongsTo('App\Pembelian\Jurnal');
+        return $this->hasMany('App\Pembelian\Jurnal');
     }
 
     public function pemesanan()
@@ -23,6 +23,11 @@ class Faktur extends Model
     public function retur()
     {
         return $this->hasOne('App\Pembelian\Retur');
+    }
+
+    public function hutang()
+    {
+        return $this->hasOne('App\Pembelian\Hutang');
     }
 
     public function pemasok()

@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Pembelian;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Pembelian\Hutang;
+use App\Pembelian\Pemasok;
 use App\Pembelian\Pembayaran;
+use Illuminate\Support\Arr;
 
 class HutangsController extends Controller
 {
@@ -16,8 +18,19 @@ class HutangsController extends Controller
      */
     public function index()
     {
-        $hutangs = Hutang::all();
-        return view('pembelian.hutang.hutang', compact('hutangs'));
+        $pemasoks = Pemasok::with('hutang')->get();
+        $totals = [];
+        foreach ($pemasoks as $pemasok) {
+            $total = $pemasok->hutang->sum('total_hutang');
+            array_push($totals, [
+                'total_hutang' => $total
+            ]);
+        }
+        // dd($totals);
+        return view('pembelian.hutang.hutang', [
+           'pemasoks' => $pemasoks,
+           'totals' => $totals,
+        ]);
     }
 
     /**
@@ -49,7 +62,9 @@ class HutangsController extends Controller
      */
     public function show($id)
     {
-        //
+        $hutangs = Hutang::get()->where('pemasok_id', $id);
+        // dd($hutangs);
+        return view('pembelian.hutang.hutangdetails', ['hutangs' => $hutangs]);
     }
 
     /**

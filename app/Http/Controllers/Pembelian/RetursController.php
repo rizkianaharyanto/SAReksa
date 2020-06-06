@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Pembelian\Retur;
 use App\Pembelian\Faktur;
+use App\Pembelian\Hutang;
 use App\Stock\Barang;
 use App\Stock\Gudang;
 use App\Pembelian\Pemasok;
@@ -35,6 +36,7 @@ class RetursController extends Controller
         return view('pembelian.pembelian.retur.returinsert', [
             'pemasoks' => Pemasok::all(),
             'no' => Retur::max('id'),
+            'hut' => Hutang::max('id'),
             'fakturs' => Faktur::all(),
             'barangs' => Barang::all(),
             'gudangs'=> Gudang::all(),
@@ -63,6 +65,15 @@ class RetursController extends Controller
             'total_jenis_barang' => 3,
             'total_harga' => $request->total_harga_keseluruhan,
         ]);
+
+        $hutang= $retur->hutang()->create([
+            'kode_hutang' => $request->kode_hutang,
+            'pemasok_id' => $request->pemasok_id,
+            'total_hutang' => $request->hutang,
+            'retur_id' => $retur->id,
+        ]);
+
+        $retur->update(['hutang_id' => $hutang->id]);
 
         foreach ($request->barang_id as $index => $id) {
 

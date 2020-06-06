@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Pembelian;
 
 use App\Http\Controllers\Controller;
+use App\Pembelian\Hutang;
+use App\Pembelian\Jurnal;
 use Illuminate\Http\Request;
 use App\Pembelian\Penerimaan;
 use App\Pembelian\Pemesanan;
@@ -60,7 +62,28 @@ class PenerimaansController extends Controller
             'total_harga' => $request->total_harga_keseluruhan,
         ]);
 
-        $pemesanan=$penerimaan->pemesanan;
+        for ($i = 1; $i < 3; $i++) {
+            if ($i == 1) {
+                Jurnal::create([
+                    'kode_jurnal' => 'jur',
+                    'penerimaan_id' => $penerimaan->id,
+                    'debit' => $request->akun_barang,
+                    'kredit' => 0,
+                    'akun_id' => 1 //barang
+                ]);
+            }
+            if ($i == 2) {
+                Jurnal::create([
+                    'kode_jurnal' => 'jur',
+                    'penerimaan_id' => $penerimaan->id,
+                    'debit' => 0,
+                    'kredit' => $request->akun_barang,
+                    'akun_id' => 2 //barang belum ditagih
+                ]);
+            }
+        }
+
+        $pemesanan = $penerimaan->pemesanan;
         foreach ($request->barang_id as $index => $id) {
             $penerimaan->barangs()->attach($id, [
                 'jumlah_barang' => $request->jumlah_barang[$index],
@@ -69,16 +92,16 @@ class PenerimaansController extends Controller
                 // 'pajak' => $request->pajak[$index],
             ]);
             $pemesanan->barangs()->where('barang_id', $id)->update(array('status_barang' => 'diterima'));
-            $status=$pemesanan->barangs()->get(array('status_barang'));
-            foreach($status as $status_barang){
-                if(count($request->barang_id) == count($status)){
+            $status = $pemesanan->barangs()->get(array('status_barang'));
+            foreach ($status as $status_barang) {
+                if (count($request->barang_id) == count($status)) {
                     $pemesanan->update(array('status' => 'diterima'));
-                }else{
+                } else {
                     $pemesanan->update(array('status' => 'diterima sebagian'));
                 }
             }
-            return redirect('/pembelian/penerimaans');
         }
+        return redirect('/pembelian/penerimaans');
     }
 
     /**
@@ -93,7 +116,7 @@ class PenerimaansController extends Controller
         $barangs = $penerimaan->barangs;
         // dd($barangs);
         return response()
-        ->json(['success'=> true, 'penerimaan' => $penerimaan, 'barangs' => $barangs ]);
+            ->json(['success' => true, 'penerimaan' => $penerimaan, 'barangs' => $barangs]);
     }
 
     /**

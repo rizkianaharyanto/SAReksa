@@ -7,28 +7,29 @@ use Illuminate\Database\Eloquent\Model;
 class Jurnal extends Model
 {
     protected $table = 'pbl_jurnals';
+    protected $guarded = ['id'];
     public function akuns()
     {
         return $this->hasMany('App\Pembelian\Akun');
     }
 
-    public function penerimaans()
+    public function penerimaan()
     {
-        return $this->hasMany('App\Pembelian\Penerimaan');
+        return $this->belongsTo('App\Pembelian\Penerimaan');
     }
 
-    public function fakturs()
+    public function faktur()
     {
-        return $this->hasMany('App\Pembelian\Faktur');
+        return $this->belongsTo('App\Pembelian\Faktur');
     }
 
     public function returs()
     {
-        return $this->hasMany('App\Pembelian\Retur');
+        return $this->belongsTo('App\Pembelian\Retur');
     }
 
-    public function pembayarans()
+    public function pembayaran()
     {
-        return $this->hasMany('App\Pembelian\Pembayaran');
+        return $this->belongsTo('App\Pembelian\Pembayaran');
     }
 }

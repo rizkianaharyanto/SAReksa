@@ -38,6 +38,7 @@
                 <div id="test-l-1" class="content">
                     <input type="hidden" id="kode_penerimaan" name="kode_penerimaan" placeholder="" value="PEN{{$no+1}}">
                     <input type="hidden" id="status" name="status">
+                    <input type="hidden" id="akun_barang" name="akun_barang">
                     <div style="height: 58vh;overflow: auto; color:black" class="mt-2">
                         <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="pemasok_id">pemasok</label>
@@ -374,6 +375,7 @@
         }
         document.getElementById('total_harga_barang').value = tot;
         document.getElementById('total_harga_keseluruhan').value = tot;
+        document.getElementById('akun_barang').value = tot;
     }
 
     function isi(x) {

@@ -10,14 +10,19 @@ class Retur extends Model
     use SoftDeletes;
     protected $table = 'pbl_returs';
     protected $guarded = ['id'];
-    public function jurnal()
+    public function jurnals()
     {
-        return $this->belongsTo('App\Pembelian\Jurnal');
+        return $this->hasMany('App\Pembelian\Jurnal');
     }
 
     public function faktur()
     {
         return $this->hasOne('App\Pembelian\Faktur');
+    }
+
+    public function hutang()
+    {
+        return $this->hasOne('App\Pembelian\Hutang');
     }
 
     public function pemasok()

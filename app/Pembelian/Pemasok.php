@@ -42,7 +42,7 @@ class Pemasok extends Model
 
     public function hutang()
     {
-        return $this->hasOne('App\Pembelian\Hutang');
+        return $this->hasMany('App\Pembelian\Hutang');
     }
 
     public function pembayarans()

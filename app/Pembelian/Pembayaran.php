@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Pembayaran extends Model
 {
     protected $table = 'pbl_pembayarans';
-    public function jurnal()
+    public function jurnals()
     {
-        return $this->belongsTo('App\Pembelian\Jurnal');
+        return $this->hasMany('App\Pembelian\Jurnal');
     }
 
     public function pemasok()
