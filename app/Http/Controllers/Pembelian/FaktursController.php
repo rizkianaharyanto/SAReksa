@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Pembelian\Faktur;
 use App\Pembelian\Hutang;
+use App\Pembelian\Jurnal;
 use App\Pembelian\Penerimaan;
 use App\Stock\Barang;
 use App\Stock\Gudang;
@@ -51,29 +52,6 @@ class FaktursController extends Controller
      */
     public function store(Request $request)
     {
-        // $faktur = new Faktur();
-        // $hutang = new Hutang();
-        // $faktur->kode_faktur = $request->kode_faktur;
-        // $faktur->pemesanan_id = $request->pemesanan_id;
-        // $faktur->pemasok_id = $request->pemasok_id;
-        // $faktur->hutang_id = $hutang->id;
-        // $faktur->status = $request->status;
-        // $faktur->tanggal = $request->tanggal;
-        // $faktur->diskon = $request->diskon;
-        // $faktur->biaya_lain = $request->biaya_lain;
-        // $faktur->uang_muka = $request->uang_muka;
-        // // 'total_jenis_barang = 3;
-        // $faktur->total_harga = $request->total_harga_keseluruhan;
-        // $faktur->save();
-        
-        // $hutang->kode_hutang = 'hut';
-        // $hutang->pemasok_id = $request->pemasok_id;
-        // $hutang->total_hutang = $request->hutang;
-        // $hutang->faktur_id = $faktur->id;
-        // $hutang->save();
-        // dd($faktur, $hutang);
-
-
         $faktur = Faktur::create([
             'kode_faktur' => $request->kode_faktur,
             'pemesanan_id' => $request->pemesanan_id,
@@ -81,11 +59,46 @@ class FaktursController extends Controller
             'status' => $request->status,
             'tanggal' => $request->tanggal,
             'diskon' => $request->diskon,
+            'diskon_rp' => $request->disk,
             'biaya_lain' => $request->biaya_lain,
             'uang_muka' => $request->uang_muka,
             // 'total_jenis_barang' => 3,
             'total_harga' => $request->total_harga_keseluruhan,
         ]);
+
+        $no= Jurnal::max('id') + 1;
+        for ($i = 1; $i < 5; $i++) {
+            $jurnal= Jurnal::create([
+                'kode_jurnal' => 'jur'.$no,
+                'faktur_id' => $faktur->id,
+                'debit' => 0,
+                'kredit' => 0
+            ]);
+            if ($i == 1) {
+                $jurnal->update([
+                    'debit' => $request->akun_barang,
+                    'akun_id' => 1 //barang
+                ]);
+            }
+            else if ($i == 2) {
+                $jurnal->update([
+                    'debit' => $request->biaya_lain,
+                    'akun_id' => 3 //biayalain
+                ]);
+            }
+            else if ($i == 3) {
+                $jurnal->update([
+                    'kredit' => $request->hutang,
+                    'akun_id' => 4 //hutang
+                ]);
+            }
+            else if ($i == 4) {
+                $jurnal->update([
+                    'kredit' => $request->disk,
+                    'akun_id' => 5 //diskon
+                ]);
+            }
+        }
 
         $hutang= $faktur->hutang()->create([
             'kode_hutang' => $request->kode_hutang,

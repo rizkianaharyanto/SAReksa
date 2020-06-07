@@ -1,22 +1,15 @@
-@extends('pembelian.template.table')
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Jurnal PDF</title>
+</head>
+<body>
+	<center>
+		<h5>Reksa Karya</h4>
+		<h6>Periode : 1</h5>
+	</center>
 
-@section('judul', 'Jurnal Khusus Pembelian')
-
-@section('halaman', 'Jurnal Khusus Pembelian')
-
-@section('isi')
-<div style="overflow:auto; height: 80vh;" class="m-4">
-    <div class="d-flex justify-content-end mx-5 p-2">
-        <a class="px-2" href="">Export Excel | </a>
-        <a class="px-2" href="/pembelian/jurnals/cetak_pdf" target="_blank">Export PDF | </a>
-        <a class="px-2" href="">Print | </a>
-    </div>
-    <div style="background-color: white; color: black;" class="mx-5 p-3">
-        <div class="d-flex justify-content-center m-3">
-            <p>Reksa Karya</p>
-            <p>Periode : 1</p>
-        </div>
-        <table class="table table-bordered">
+	<table class="table table-bordered">
             <thead style="background-color: #00BFA6; color:whitesmoke">
                 <tr>
                     <th scope="col" class="p-3" style="width: 20vw;">No. Transaksi</th>
@@ -54,6 +47,6 @@
                 @endforeach
             </tbody>
         </table>
-    </div>
-</div>
-@endsection
+
+</body>
+</html>

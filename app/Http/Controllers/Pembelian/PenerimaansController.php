@@ -57,31 +57,33 @@ class PenerimaansController extends Controller
             'gudang' => $request->gudang,
             'tanggal' => $request->tanggal,
             'diskon' => $request->diskon,
+            'diskon_rp' => $request->disk,
             'biaya_lain' => $request->biaya_lain,
             'total_jenis_barang' => 3,
             'total_harga' => $request->total_harga_keseluruhan,
         ]);
 
+        $no= Jurnal::max('id') + 1;
         for ($i = 1; $i < 3; $i++) {
+            $jurnal= Jurnal::create([
+                'kode_jurnal' => 'jur'+$no,
+                'penerimaan_id' => $penerimaan->id,
+                'debit' => 0,
+                'kredit' => 0
+            ]);
             if ($i == 1) {
-                Jurnal::create([
-                    'kode_jurnal' => 'jur',
-                    'penerimaan_id' => $penerimaan->id,
+                $jurnal->update([
                     'debit' => $request->akun_barang,
-                    'kredit' => 0,
                     'akun_id' => 1 //barang
                 ]);
-            }
-            if ($i == 2) {
-                Jurnal::create([
-                    'kode_jurnal' => 'jur',
-                    'penerimaan_id' => $penerimaan->id,
-                    'debit' => 0,
+            }else if ($i == 2) {
+                $jurnal->update([
                     'kredit' => $request->akun_barang,
                     'akun_id' => 2 //barang belum ditagih
                 ]);
             }
         }
+        // dd($jurnal);
 
         $pemesanan = $penerimaan->pemesanan;
         foreach ($request->barang_id as $index => $id) {

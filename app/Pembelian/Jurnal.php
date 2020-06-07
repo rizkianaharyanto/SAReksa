@@ -23,7 +23,7 @@ class Jurnal extends Model
         return $this->belongsTo('App\Pembelian\Faktur');
     }
 
-    public function returs()
+    public function retur()
     {
         return $this->belongsTo('App\Pembelian\Retur');
     }

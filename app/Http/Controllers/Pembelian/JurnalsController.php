@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Pembelian;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Pembelian\Jurnal;
+use PDF;
 
 class JurnalsController extends Controller
 {
@@ -15,9 +16,18 @@ class JurnalsController extends Controller
      */
     public function index()
     {
-        $jurnals = Jurnal::all();
+        $jurnals = Jurnal::all()->groupBy('kode_jurnal');
+        // dd($jurnals['jur'][0]);
         return view('pembelian.jurnal', compact('jurnals'));
     }
+
+    // public function cetak_pdf()
+    // {
+    // 	$jurnals = Jurnal::all()->groupBy('kode_jurnal');
+ 
+    // 	$pdf = PDF::loadview('pembelian.jurnal', compact('jurnals'));
+    // 	return $pdf->download('pembelian.jurnal-pdf');
+    // }
 
     /**
      * Show the form for creating a new resource.

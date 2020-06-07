@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Pembelian\Retur;
 use App\Pembelian\Faktur;
 use App\Pembelian\Hutang;
+use App\Pembelian\Jurnal;
 use App\Stock\Barang;
 use App\Stock\Gudang;
 use App\Pembelian\Pemasok;
@@ -52,7 +53,7 @@ class RetursController extends Controller
      */
     public function store(Request $request)
     {
-        $retur = retur::create([
+        $retur = Retur::create([
             'kode_retur' => $request->kode_retur,
             'faktur_id' => $request->faktur_id,
             'status' => $request->status,
@@ -60,11 +61,46 @@ class RetursController extends Controller
             'gudang' => 'gudang',
             'tanggal' => $request->tanggal,
             'diskon' => $request->diskon,
+            'diskon_rp' => $request->disk,
             'biaya_lain' => $request->biaya_lain,
             // 'uang_muka' => $request->uang_muka,
             'total_jenis_barang' => 3,
             'total_harga' => $request->total_harga_keseluruhan,
         ]);
+
+        $no= Jurnal::max('id') + 1;
+        for ($i = 1; $i < 5; $i++) {
+            $jurnal= Jurnal::create([
+                'kode_jurnal' => 'jur'.$no,
+                'retur_id' => $retur->id,
+                'debit' => 0,
+                'kredit' => 0
+            ]);
+            if ($i == 1) {
+                $jurnal->update([
+                    'kredit' => $request->akun_barang,
+                    'akun_id' => 1 //barang
+                ]);
+            }
+            else if ($i == 2) {
+                $jurnal->update([
+                    'kredit' => $request->biaya_lain,
+                    'akun_id' => 3 //biayalain
+                ]);
+            }
+            else if ($i == 3) {
+                $jurnal->update([
+                    'debit' => $request->hutang,
+                    'akun_id' => 4 //hutang
+                ]);
+            }
+            else if ($i == 4) {
+                $jurnal->update([
+                    'debit' => $request->disk,
+                    'akun_id' => 5 //diskon
+                ]);
+            }
+        }
 
         $hutang= $retur->hutang()->create([
             'kode_hutang' => $request->kode_hutang,

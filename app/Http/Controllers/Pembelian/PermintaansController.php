@@ -53,6 +53,7 @@ class PermintaansController extends Controller
             'gudang' => $request->gudang,
             'tanggal' => $request->tanggal,
             'diskon' => $request->diskon,
+            'diskon_rp' => $request->disk,
             'biaya_lain' => $request->biaya_lain,
             'total_jenis_barang' => 3,
             'total_harga' => $request->total_harga_keseluruhan,
