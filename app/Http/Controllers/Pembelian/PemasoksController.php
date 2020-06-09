@@ -57,6 +57,7 @@ class PemasoksController extends Controller
         $pemesanans = $pemasok->pemesanans;
         $penerimaans = $pemasok->penerimaans;
         $fakturs = $pemasok->fakturs;
+        $hutangs = $pemasok->hutangs;
         return response()
         ->json([
             'pemasok' => $pemasok, 
@@ -64,6 +65,7 @@ class PemasoksController extends Controller
             'pemesanans' => $pemesanans, 
             'penerimaans'=> $penerimaans,
             'fakturs'=> $fakturs,
+            'hutangs'=> $hutangs,
         ]);
     }
 

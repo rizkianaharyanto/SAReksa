@@ -66,7 +66,7 @@ class PenerimaansController extends Controller
         $no= Jurnal::max('id') + 1;
         for ($i = 1; $i < 3; $i++) {
             $jurnal= Jurnal::create([
-                'kode_jurnal' => 'jur'+$no,
+                'kode_jurnal' => 'jur'.$no,
                 'penerimaan_id' => $penerimaan->id,
                 'debit' => 0,
                 'kredit' => 0

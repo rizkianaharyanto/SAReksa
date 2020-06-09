@@ -18,10 +18,10 @@ class HutangsController extends Controller
      */
     public function index()
     {
-        $pemasoks = Pemasok::with('hutang')->get();
+        $pemasoks = Pemasok::with('hutangs')->get();
         $totals = [];
         foreach ($pemasoks as $pemasok) {
-            $total = $pemasok->hutang->sum('total_hutang');
+            $total = $pemasok->hutangs->sum('total_hutang');
             array_push($totals, [
                 'total_hutang' => $total
             ]);
@@ -65,6 +65,15 @@ class HutangsController extends Controller
         $hutangs = Hutang::get()->where('pemasok_id', $id);
         // dd($hutangs);
         return view('pembelian.hutang.hutangdetails', ['hutangs' => $hutangs]);
+    }
+
+    public function showpembayaran($id)
+    {
+        $hutang = Hutang::find($id);
+        $retur = $hutang->retur;
+        $faktur = $hutang->faktur;
+        return response()
+        ->json(['success'=> true, 'hutang' => $hutang, 'retur' => $retur, 'faktur' => $faktur]);
     }
 
     /**

@@ -40,7 +40,7 @@ class Pemasok extends Model
         return $this->hasMany('App\Pembelian\Retur');
     }
 
-    public function hutang()
+    public function hutangs()
     {
         return $this->hasMany('App\Pembelian\Hutang');
     }
