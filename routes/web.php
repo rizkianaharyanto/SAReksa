@@ -21,13 +21,12 @@ Route::prefix('pembelian')->group(function () {
     Route::get('/', function () {
         return view('pembelian.dashboard');
     });
-    
+
     Route::get('/ambilgudang', 'Pembelian\GudangsController@ambil');
     Route::get('/ambilbarang', 'Pembelian\BarangsController@ambil');
     Route::post('/savebarang', 'Pembelian\PermintaansController@savebarang');
-    Route::get('/jurnals/cetak_pdf', 'Pembelian\JurnalsController@cetak_pdf');
+    Route::get('/jurnals/cetak_pdf/{debit}/{kredit}', 'Pembelian\JurnalsController@cetak_pdf');
     Route::get('/showhutang/{id}', 'Pembelian\HutangsController@showpembayaran');
-    
 
     // Route::get('/barangs', )
     Route::resources([
@@ -52,41 +51,39 @@ Route::prefix('stok')->group(function () {
     Route::get('/barangs', 'Stock\ItemResourceController@indexpembelian');
     Route::get('/gudangs', 'Stock\WarehouseController@indexpembelian');
     Route::get('/pajaks', 'Stock\TaxResourceController@indexpembelian');
-    
+
     Route::get('/ello', "Stock\ItemResourceController@test");
 
     Route::get('/config', 'Stock\ConfigController@index');
     Route::get('/config/getrolepermissions/{id}', 'Stock\ConfigController@getRolePermissions');
-    
+
     Route::post('/updatepermissions', 'Stock\ConfigController@updatePermissions');
     Route::post('/rolebaru', 'Stock\ConfigController@addRole');
-    
+
     Route::prefix('/Management-Data')->group(function () {
         Route::resources([
             'kategori-barang' => "Stock\ItemCategoryController",
-            'barang'          => "Stock\ItemResourceController",
-            'satuan-unit'     => "Stock\UnitsResourceController",
-            'gudang'          => "Stock\WarehouseController",
-            'pemasok'         => "Stock\SuppliersResourceController",
-            'pajak'           => "Stock\TaxResourceController",
-            'coa-master'      => "Stock\COAMasterController",
-            'coa-type'        => "Stock\COATypeController",
-            
+            'barang' => "Stock\ItemResourceController",
+            'satuan-unit' => "Stock\UnitsResourceController",
+            'gudang' => "Stock\WarehouseController",
+            'pemasok' => "Stock\SuppliersResourceController",
+            'pajak' => "Stock\TaxResourceController",
+            'coa-master' => "Stock\COAMasterController",
+            'coa-type' => "Stock\COATypeController",
         ]);
     });
     Route::post('/stock-opname/posting/{id}', 'Stock\StockOpnameController@posting');
     Route::resources([
-            'transfer-stock'    => 'StockTransferController',
-            'stock-opname'      => 'StockOpnameController',
+            'transfer-stock' => 'StockTransferController',
+            'stock-opname' => 'StockOpnameController',
             'penyesuaian-stock' => 'StockAdjustmentController',
-            'pembelian'         => 'ItemPurchaseTransactionController',
+            'pembelian' => 'ItemPurchaseTransactionController',
         ]);
-        
+
     Route::get('/token', function () {
         return csrf_token();
     });
 });
-
 
 Route::prefix('kepegawaian')->group(function () {
     Route::get('/', function () {

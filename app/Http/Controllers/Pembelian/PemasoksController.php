@@ -41,7 +41,13 @@ class PemasoksController extends Controller
     public function store(Request $request)
     {
         $sup = Pemasok::max('id');
-        $pemasok = Pemasok::create(['kode_pemasok' => 'SUP-'.$sup], $request->all());
+        $pemasok = Pemasok::create([
+            'kode_pemasok' => 'SUP-'.$sup,
+            'nama_pemasok' => $request->nama_pemasok,
+            'telp_pemasok' => $request->telp_pemasok,
+            'email_pemasok' => $request->email_pemasok,
+            'alamat_pemasok' => $request->alamat_pemasok,
+        ]);
 
         return redirect('/pembelian/pemasoks');
     }
