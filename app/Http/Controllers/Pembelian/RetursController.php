@@ -130,9 +130,12 @@ class RetursController extends Controller
      * @param  int  Retur $retur
      * @return \Illuminate\Http\Response
      */
-    public function show(Retur $retur)
+    public function show($id)
     {
-        //
+        $retur = Retur::find($id);
+        $barangs = $retur->barangs;
+        return response()
+            ->json(['success' => true, 'retur' => $retur, 'barangs' => $barangs]);
     }
 
     /**

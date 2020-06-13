@@ -34,6 +34,7 @@
                                     @if ($index->penerimaan_id !=null){{$index->penerimaan->kode_penerimaan}}
                                     @elseif ($index->faktur_id !=null){{$index->faktur->kode_faktur}}
                                     @elseif ($index->retur_id !=null){{$index->retur->kode_retur}}
+                                    @elseif ($index->pembayaran_id !=null){{$index->pembayaran->kode_pembayaran}}
                                     @else -
                                     @endif
                             </td>

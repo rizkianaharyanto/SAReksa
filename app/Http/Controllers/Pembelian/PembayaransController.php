@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Pembelian;
 
 use App\Http\Controllers\Controller;
+use App\Pembelian\Hutang;
+use App\Pembelian\Jurnal;
+use App\Pembelian\Pemasok;
 use Illuminate\Http\Request;
 use App\Pembelian\Pembayaran;
 
@@ -26,7 +29,13 @@ class PembayaransController extends Controller
      */
     public function create()
     {
-        //
+        $pemasoks = Pemasok::all();
+        $hutangs = Hutang::all();
+        return view('pembelian.hutang.pembayaraninsert', [
+            'pemasoks' => $pemasoks,
+            'hutangs' => $hutangs,
+            'no' => Pembayaran::max('id'),
+        ]);
     }
 
     /**
@@ -37,7 +46,57 @@ class PembayaransController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // dd($request);
+        $pembayaran = Pembayaran::create([
+            'kode_pembayaran' => $request->kode_pembayaran,
+            'pemasok_id' => $request->pemasok_id,
+            'tanggal' => $request->tanggal,
+            'total' => $request->total_harga,
+        ]);
+
+        $no = Jurnal::max('id') + 1;
+        for ($i = 1; $i < 3; $i++) {
+            $jurnal = Jurnal::create([
+                'kode_jurnal' => 'jur' . $no,
+                'pembayaran_id' => $pembayaran->id,
+                'debit' => 0,
+                'kredit' => 0
+            ]);
+            if ($i == 1) {
+                $jurnal->update([
+                    'debit' => $request->total_harga,
+                    'akun_id' => 4 //hutang
+                ]);
+            } else if ($i == 2) {
+                $jurnal->update([
+                    'kredit' => $request->total_harga,
+                    'akun_id' => 6 //kas
+                ]);
+            }
+        }
+
+        foreach ($request->hutang_id as $index => $id) {
+            $hutang = Hutang::find($id);
+            $hutang->update([
+                'total_hutang' => $request->total_harga * -1,
+            ]);
+            if ($hutang->faktur_id) {
+                $hutang->faktur()->update([
+                    'status' => 'lunas',
+                ]);
+            } else if ($hutang->retur_id) {
+                $hutang->retur()->update([
+                    'status' => 'lunas',
+                ]);
+            }
+        }
+
+        foreach ($request->hutang_id as $index => $id) {
+            $pembayaran->hutangs()->attach($id, [
+                'total' => $request->total_hutang[$index],
+            ]);
+        }
+        return redirect('/pembelian/pembayarans');
     }
 
     /**
@@ -46,7 +105,7 @@ class PembayaransController extends Controller
      * @param  int  Pembayaran $pembayaran
      * @return \Illuminate\Http\Response
      */
-    public function show(Pembayaran $pembayaran)
+    public function show($id)
     {
         //
     }
@@ -59,7 +118,11 @@ class PembayaransController extends Controller
      */
     public function edit(Pembayaran $pembayaran)
     {
-        //
+        return view('pembelian.hutang.pembayaranedit', [
+            'pembayaran' => $pembayaran,
+            'pemasoks' => Pemasok::all(),
+            'hutangs' => Hutang::all(),
+        ]);
     }
 
     /**
@@ -82,6 +145,7 @@ class PembayaransController extends Controller
      */
     public function destroy(Pembayaran $pembayaran)
     {
-        //
+        Pembayaran::destroy($pembayaran->id);
+        return redirect('/pembelian/pembayarans');
     }
 }
