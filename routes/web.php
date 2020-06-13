@@ -25,7 +25,7 @@ Route::prefix('pembelian')->group(function () {
     Route::get('/ambilgudang', 'Pembelian\GudangsController@ambil');
     Route::get('/ambilbarang', 'Pembelian\BarangsController@ambil');
     Route::post('/savebarang', 'Pembelian\PermintaansController@savebarang');
-    Route::get('/jurnals/cetak_pdf', 'PembelianJurnalsController@cetak_pdf');
+    Route::get('/jurnals/cetak_pdf', 'Pembelian\JurnalsController@cetak_pdf');
     Route::get('/showhutang/{id}', 'Pembelian\HutangsController@showpembayaran');
     
 

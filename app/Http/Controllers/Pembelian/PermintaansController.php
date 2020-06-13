@@ -19,6 +19,7 @@ class PermintaansController extends Controller
     public function index()
     {
         $permintaans = Permintaan::all();
+
         return view('pembelian.pembelian.permintaan.permintaan', compact('permintaans'));
     }
 
@@ -32,23 +33,23 @@ class PermintaansController extends Controller
         // dd(Gudang::all());
         return view('pembelian.pembelian.permintaan.permintaaninsert', [
             'pemasoks' => Pemasok::all(),
-            'no' => Permintaan::max('id'),
             'barangs' => Barang::all(),
-            'gudangs' => Gudang::all()
+            'gudangs' => Gudang::all(),
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        // dd($request);
+        $pr = Permintaan::max('id');
         $permintaan = Permintaan::create([
-            'kode_permintaan' => $request->kode_permintaan,
+            'kode_permintaan' => 'PR-'.$pr,
             'pemasok_id' => $request->pemasok_id,
             'gudang' => $request->gudang,
             'tanggal' => $request->tanggal,
@@ -60,7 +61,6 @@ class PermintaansController extends Controller
         ]);
 
         foreach ($request->barang_id as $index => $id) {
-
             $permintaan->barangs()->attach($id, [
                 'jumlah_barang' => $request->jumlah_barang[$index],
                 'harga' => $request->harga[$index],
@@ -68,13 +68,15 @@ class PermintaansController extends Controller
                 // 'pajak' => $request->pajak[$index]
             ]);
         }
+
         return redirect('/pembelian/permintaans');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  Permintaan $permintaan
+     * @param int  Permintaan $permintaan
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -83,13 +85,14 @@ class PermintaansController extends Controller
         $barangs = $permintaan->barangs;
         // $unit = $barangs->unit;
         return response()
-        ->json(['success'=> true, 'permintaan' => $permintaan, 'barangs' => $barangs]);
+        ->json(['success' => true, 'permintaan' => $permintaan, 'barangs' => $barangs]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  Permintaan $permintaan
+     * @param int  Permintaan $permintaan
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(Permintaan $permintaan)
@@ -98,15 +101,16 @@ class PermintaansController extends Controller
             'permintaan' => $permintaan,
             'pemasoks' => Pemasok::all(),
             'barangs' => Barang::all(),
-            'gudangs' => Gudang::all()
+            'gudangs' => Gudang::all(),
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  Permintaan $permintaan
+     * @param \Illuminate\Http\Request $request
+     * @param int  Permintaan          $permintaan
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Permintaan $permintaan)
@@ -136,18 +140,21 @@ class PermintaansController extends Controller
                 // 'pajak' => $request->pajak[$index]
             ]);
         }
+
         return redirect('/pembelian/permintaans');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  Permintaan $permintaan
+     * @param int  Permintaan $permintaan
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Permintaan $permintaan)
     {
         Permintaan::destroy($permintaan->id);
+
         return redirect('/pembelian/permintaans');
     }
 }

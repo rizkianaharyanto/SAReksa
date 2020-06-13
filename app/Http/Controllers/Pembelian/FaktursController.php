@@ -23,6 +23,7 @@ class FaktursController extends Controller
     public function index()
     {
         $fakturs = Faktur::all();
+
         return view('pembelian.pembelian.faktur.faktur', compact('fakturs'));
     }
 
@@ -36,8 +37,6 @@ class FaktursController extends Controller
         return view('pembelian.pembelian.faktur.fakturinsert', [
             'penerimaans' => Penerimaan::all(),
             'pemasoks' => Pemasok::all(),
-            'no' => Faktur::max('id'),
-            'hut' => Hutang::max('id'),
             'barangs' => Barang::all(),
             'gudangs' => Gudang::all(),
             // 'akuns'=> Akun::all()
@@ -47,13 +46,15 @@ class FaktursController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
+        $fak = Faktur::max('id') + 1;
         $faktur = Faktur::create([
-            'kode_faktur' => $request->kode_faktur,
+            'kode_faktur' => 'FAK-'.$fak,
             'pemesanan_id' => $request->pemesanan_id,
             'pemasok_id' => $request->pemasok_id,
             'status' => $request->status,
@@ -66,42 +67,40 @@ class FaktursController extends Controller
             'total_harga' => $request->total_harga_keseluruhan,
         ]);
 
-        $no= Jurnal::max('id') + 1;
-        for ($i = 1; $i < 5; $i++) {
-            $jurnal= Jurnal::create([
+        $no = Jurnal::max('id') + 1;
+        for ($i = 1; $i < 5; ++$i) {
+            $jurnal = Jurnal::create([
                 'kode_jurnal' => 'jur'.$no,
                 'faktur_id' => $faktur->id,
                 'debit' => 0,
-                'kredit' => 0
+                'kredit' => 0,
             ]);
             if ($i == 1) {
                 $jurnal->update([
                     'debit' => $request->akun_barang,
-                    'akun_id' => 1 //barang
+                    'akun_id' => 1, //barang
                 ]);
-            }
-            else if ($i == 2) {
+            } elseif ($i == 2) {
                 $jurnal->update([
                     'debit' => $request->biaya_lain,
-                    'akun_id' => 3 //biayalain
+                    'akun_id' => 3, //biayalain
                 ]);
-            }
-            else if ($i == 3) {
+            } elseif ($i == 3) {
                 $jurnal->update([
                     'kredit' => $request->hutang,
-                    'akun_id' => 4 //hutang
+                    'akun_id' => 4, //hutang
                 ]);
-            }
-            else if ($i == 4) {
+            } elseif ($i == 4) {
                 $jurnal->update([
                     'kredit' => $request->disk,
-                    'akun_id' => 5 //diskon
+                    'akun_id' => 5, //diskon
                 ]);
             }
         }
 
-        $hutang= $faktur->hutang()->create([
-            'kode_hutang' => $request->kode_hutang,
+        $hut = Hutang::max('id');
+        $hutang = $faktur->hutang()->create([
+            'kode_hutang' => 'HUT-'.$hut,
             'pemasok_id' => $request->pemasok_id,
             'total_hutang' => $request->hutang,
             'faktur_id' => $faktur->id,
@@ -110,7 +109,6 @@ class FaktursController extends Controller
         $faktur->update(['hutang_id' => $hutang->id]);
 
         foreach ($request->barang_id as $index => $id) {
-
             $faktur->barangs()->attach($id, [
                 'jumlah_barang' => $request->jumlah_barang[$index],
                 'harga' => $request->harga[$index],
@@ -119,19 +117,22 @@ class FaktursController extends Controller
                 // 'status_barang' => $request->status_barang[$index],
             ]);
         }
+
         return redirect('/pembelian/fakturs');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  Faktur $faktur
+     * @param int  Faktur $faktur
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
         $faktur = Faktur::find($id);
         $barangs = $faktur->barangs;
+
         return response()
             ->json(['success' => true, 'faktur' => $faktur, 'barangs' => $barangs]);
     }
@@ -139,7 +140,8 @@ class FaktursController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  Faktur $faktur
+     * @param int  Faktur $faktur
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(Faktur $faktur)
@@ -157,24 +159,26 @@ class FaktursController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  Faktur $faktur
+     * @param \Illuminate\Http\Request $request
+     * @param int  Faktur              $faktur
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Faktur $faktur)
     {
-        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  Faktur $faktur
+     * @param int  Faktur $faktur
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Faktur $faktur)
     {
         Faktur::destroy($faktur->id);
+
         return redirect('/pembelian/fakturs');
     }
 }

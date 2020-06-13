@@ -16,9 +16,9 @@ class PemasoksController extends Controller
     public function index()
     {
         $pemasoks = Pemasok::all();
+
         return view('pembelian.manajemendata.pemasok', [
             'pemasoks' => $pemasoks,
-            'no' => Pemasok::max('id'),
         ]);
     }
 
@@ -29,25 +29,28 @@ class PemasoksController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        Pemasok::create($request->all());
+        $sup = Pemasok::max('id');
+        $pemasok = Pemasok::create(['kode_pemasok' => 'SUP-'.$sup], $request->all());
+
         return redirect('/pembelian/pemasoks');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  Pemasok $pemasok
+     * @param int  Pemasok $pemasok
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -58,33 +61,35 @@ class PemasoksController extends Controller
         $penerimaans = $pemasok->penerimaans;
         $fakturs = $pemasok->fakturs;
         $hutangs = $pemasok->hutangs;
+
         return response()
         ->json([
-            'pemasok' => $pemasok, 
-            'permintaans' => $permintaans, 
-            'pemesanans' => $pemesanans, 
-            'penerimaans'=> $penerimaans,
-            'fakturs'=> $fakturs,
-            'hutangs'=> $hutangs,
+            'pemasok' => $pemasok,
+            'permintaans' => $permintaans,
+            'pemesanans' => $pemesanans,
+            'penerimaans' => $penerimaans,
+            'fakturs' => $fakturs,
+            'hutangs' => $hutangs,
         ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  Pemasok $pemasok
+     * @param int  Pemasok $pemasok
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(Pemasok $pemasok)
     {
-        //
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  Pemasok $pemasok
+     * @param \Illuminate\Http\Request $request
+     * @param int  Pemasok             $pemasok
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Pemasok $pemasok)
@@ -94,7 +99,7 @@ class PemasoksController extends Controller
                 'nama_pemasok' => $request->nama_pemasok,
                 'telp_pemasok' => $request->telp_pemasok,
                 'email_pemasok' => $request->email_pemasok,
-                'alamat_pemasok' => $request->alamat_pemasok
+                'alamat_pemasok' => $request->alamat_pemasok,
             ]);
 
         return redirect('/pembelian/pemasoks');
@@ -103,12 +108,14 @@ class PemasoksController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  Pemasok $pemasok
+     * @param int  Pemasok $pemasok
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Pemasok $pemasok)
     {
         Pemasok::destroy($pemasok->id);
+
         return redirect('/pembelian/pemasoks');
     }
 }

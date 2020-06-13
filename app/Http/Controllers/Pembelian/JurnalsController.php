@@ -21,13 +21,13 @@ class JurnalsController extends Controller
         return view('pembelian.jurnal', compact('jurnals'));
     }
 
-    // public function cetak_pdf()
-    // {
-    // 	$jurnals = Jurnal::all()->groupBy('kode_jurnal');
+    public function cetak_pdf()
+    {
+    	$jurnals = Jurnal::all()->groupBy('kode_jurnal');
  
-    // 	$pdf = PDF::loadview('pembelian.jurnal', compact('jurnals'));
-    // 	return $pdf->download('pembelian.jurnal-pdf');
-    // }
+    	$pdf = PDF::loadview('pembelian.jurnal-pdf', ['jurnals' => $jurnals]);
+    	return $pdf->download('pembelian.jurnal-pdf.pdf');
+    }
 
     /**
      * Show the form for creating a new resource.
