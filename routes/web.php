@@ -85,3 +85,20 @@ Route::prefix('stok')->group(function () {
         return csrf_token();
     });
 });
+
+
+Route::prefix('kepegawaian')->group(function () {
+    Route::get('/', function () {
+        return view('kepegawaian.dashboard');
+    });
+
+    // Route::get('/barangs', )
+    Route::resources([
+        'admin' => 'Kepegawaian\AdminController',
+        'jabatan' => 'Kepegawaian\JabatanController',
+        'laporan' => 'Kepegawaian\LaporanController',
+        'pegawai' => 'Kepegawaian\PegawaiController',
+        'penggajian' => 'Kepegawaian\PenggajianController',
+        'pengguna' => 'Kepegawaian\PenggunaController',
+    ]);
+});
