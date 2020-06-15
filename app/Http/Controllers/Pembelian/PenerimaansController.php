@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Pembelian;
 
 use App\Http\Controllers\Controller;
-use App\Pembelian\Hutang;
 use App\Pembelian\Jurnal;
 use Illuminate\Http\Request;
 use App\Pembelian\Penerimaan;
@@ -22,6 +21,7 @@ class PenerimaansController extends Controller
     public function index()
     {
         $penerimaans = Penerimaan::all();
+
         return view('pembelian.pembelian.penerimaan.penerimaan', compact('penerimaans'));
     }
 
@@ -35,22 +35,23 @@ class PenerimaansController extends Controller
         return view('pembelian.pembelian.penerimaan.penerimaaninsert', [
             'pemasoks' => Pemasok::all(),
             'pemesanans' => Pemesanan::all(),
-            'no' => Penerimaan::max('id'),
             'barangs' => Barang::all(),
-            'gudangs' => Gudang::all()
+            'gudangs' => Gudang::all(),
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
+        $pnm = Penerimaan::max('id');
         $penerimaan = Penerimaan::create([
-            'kode_penerimaan' => $request->kode_penerimaan,
+            'kode_penerimaan' => 'PNM-'.$pnm,
             'pemesanan_id' => $request->pemesanan_id,
             'status' => $request->status,
             'pemasok_id' => $request->pemasok_id,
@@ -63,23 +64,23 @@ class PenerimaansController extends Controller
             'total_harga' => $request->total_harga_keseluruhan,
         ]);
 
-        $no= Jurnal::max('id') + 1;
-        for ($i = 1; $i < 3; $i++) {
-            $jurnal= Jurnal::create([
-                'kode_jurnal' => 'jur'+$no,
+        $no = Jurnal::max('id') + 1;
+        for ($i = 1; $i < 3; ++$i) {
+            $jurnal = Jurnal::create([
+                'kode_jurnal' => 'jur'.$no,
                 'penerimaan_id' => $penerimaan->id,
                 'debit' => 0,
-                'kredit' => 0
+                'kredit' => 0,
             ]);
             if ($i == 1) {
                 $jurnal->update([
                     'debit' => $request->akun_barang,
-                    'akun_id' => 1 //barang
+                    'akun_id' => 1, //barang
                 ]);
-            }else if ($i == 2) {
+            } elseif ($i == 2) {
                 $jurnal->update([
                     'kredit' => $request->akun_barang,
-                    'akun_id' => 2 //barang belum ditagih
+                    'akun_id' => 2, //barang belum ditagih
                 ]);
             }
         }
@@ -103,13 +104,15 @@ class PenerimaansController extends Controller
                 }
             }
         }
+
         return redirect('/pembelian/penerimaans');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  Penerimaan $penerimaan
+     * @param int  Penerimaan $penerimaan
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -124,7 +127,8 @@ class PenerimaansController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  Penerimaan $penerimaan
+     * @param int  Penerimaan $penerimaan
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(Penerimaan $penerimaan)
@@ -133,15 +137,16 @@ class PenerimaansController extends Controller
             'penerimaan' => $penerimaan,
             'pemasoks' => Pemasok::all(),
             'barangs' => Barang::all(),
-            'gudangs' => Gudang::all()
+            'gudangs' => Gudang::all(),
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  Penerimaan $penerimaan
+     * @param \Illuminate\Http\Request $request
+     * @param int  Penerimaan          $penerimaan
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Penerimaan $penerimaan)
@@ -160,25 +165,28 @@ class PenerimaansController extends Controller
         foreach ($request->barang_id as $index => $id) {
             $penerimaan->barangs()->detach($id, [
                 'jumlah_barang' => $request->jumlah_barang[$index],
-                'harga' => $request->harga[$index]
+                'harga' => $request->harga[$index],
             ]);
             $penerimaan->barangs()->attach($id, [
                 'jumlah_barang' => $request->jumlah_barang[$index],
-                'harga' => $request->harga[$index]
+                'harga' => $request->harga[$index],
             ]);
         }
+
         return redirect('/pembelian/penerimaans');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  Penerimaan $penerimaan
+     * @param int  Penerimaan $penerimaan
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Penerimaan $penerimaan)
     {
         Penerimaan::destroy($penerimaan->id);
+
         return redirect('/pembelian/penerimaans');
     }
 }

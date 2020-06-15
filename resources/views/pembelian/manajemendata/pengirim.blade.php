@@ -181,7 +181,6 @@ endsection -->
         <i class="fas fa-user-circle mr-4" style="font-size:50px;color:#00BFA6;"></i>
         <input type="file" class="form-control-file align-self-center" id="foto">
     </div>
-    <input type="hidden" id="kode_pengirim" name="kode_pengirim" placeholder="" value="PENG{{$no+1}}">
     <div class="form-group">
         <label for="nama_pengirim">Nama pengirim</label>
         <input type="text" class="form-control" id="nama_pengirim" name="nama_pengirim" placeholder="">

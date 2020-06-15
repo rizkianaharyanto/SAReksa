@@ -36,7 +36,6 @@
             <form method="POST" action="/pembelian/permintaans">
                 @csrf
                 <div id="test-l-1" class="content">
-                    <input type="hidden" id="kode_permintaan" name="kode_permintaan" placeholder="" value="PER{{$no+1}}">
                     <div style="height: 58vh;overflow: auto; color:black" class="mt-2">
                         <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="pemasok_id">pemasok</label>

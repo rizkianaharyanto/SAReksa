@@ -20,6 +20,7 @@ class PemesanansController extends Controller
     public function index()
     {
         $pemesanans = Pemesanan::all();
+
         return view('pembelian.pembelian.pemesanan.pemesanan', compact('pemesanans'));
     }
 
@@ -33,22 +34,23 @@ class PemesanansController extends Controller
         return view('pembelian.pembelian.pemesanan.pemesananinsert', [
             'pemasoks' => Pemasok::all(),
             'permintaans' => Permintaan::all(),
-            'no' => Pemesanan::max('id'),
             'barangs' => Barang::all(),
-            'gudangs'=> Gudang::all()
+            'gudangs' => Gudang::all(),
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
+        $psn = Pemesanan::max('id');
         $pemesanan = Pemesanan::create([
-            'kode_pemesanan' => $request->kode_pemesanan,
+            'kode_pemesanan' => 'PSN-'.$psn,
             'pemasok_id' => $request->pemasok_id,
             'gudang' => $request->gudang,
             'tanggal' => $request->tanggal,
@@ -62,7 +64,6 @@ class PemesanansController extends Controller
         ]);
 
         foreach ($request->barang_id as $index => $id) {
-
             $pemesanan->barangs()->attach($id, [
                 'jumlah_barang' => $request->jumlah_barang[$index],
                 'harga' => $request->harga[$index],
@@ -71,13 +72,15 @@ class PemesanansController extends Controller
                 'status_barang' => $request->status_barang[$index],
             ]);
         }
+
         return redirect('/pembelian/pemesanans');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  Pemesanan $pemesanan
+     * @param int  Pemesanan $pemesanan
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -85,14 +88,16 @@ class PemesanansController extends Controller
         $pemesanan = Pemesanan::find($id);
         $barangs = $pemesanan->barangs;
         $penerimaans = $pemesanan->penerimaans;
+
         return response()
-        ->json(['success'=> true, 'pemesanan' => $pemesanan, 'barangs' => $barangs, 'penerimaans' => $penerimaans ]);
+        ->json(['success' => true, 'pemesanan' => $pemesanan, 'barangs' => $barangs, 'penerimaans' => $penerimaans]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  Pemesanan $pemesanan
+     * @param int  Pemesanan $pemesanan
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(Pemesanan $pemesanan)
@@ -102,15 +107,16 @@ class PemesanansController extends Controller
             'pemasoks' => Pemasok::all(),
             'permintaans' => Permintaan::all(),
             'barangs' => Barang::all(),
-            'gudangs'=> Gudang::all()
+            'gudangs' => Gudang::all(),
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  Pemesanan $pemesanan
+     * @param \Illuminate\Http\Request $request
+     * @param int  Pemesanan           $pemesanan
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Pemesanan $pemesanan)
@@ -142,18 +148,21 @@ class PemesanansController extends Controller
                 'status_barang' => $request->status_barang[$index],
             ]);
         }
+
         return redirect('/pembelian/pemesanans');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  Pemesanan $pemesanan
+     * @param int  Pemesanan $pemesanan
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Pemesanan $pemesanan)
     {
         Pemesanan::destroy($pemesanan->id);
+
         return redirect('/pembelian/pemesanans');
     }
 }

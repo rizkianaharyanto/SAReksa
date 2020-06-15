@@ -36,7 +36,6 @@
             <form method="POST" action="/pembelian/pemesanans">
                 @csrf
                 <div id="test-l-1" class="content">
-                    <input type="hidden" id="kode_pemesanan" name="kode_pemesanan" placeholder="" value="PEM{{$no+1}}">
                     <input type="hidden" id="status" name="status" value="baru">
                     <div style="height: 58vh;overflow: auto; color:black" class="mt-2">
                         <div class="form-group row mx-5 mb-5">

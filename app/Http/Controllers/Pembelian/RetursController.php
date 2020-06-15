@@ -24,6 +24,7 @@ class RetursController extends Controller
     public function index()
     {
         $returs = Retur::all();
+
         return view('pembelian.pembelian.retur.retur', compact('returs'));
     }
 
@@ -36,11 +37,9 @@ class RetursController extends Controller
     {
         return view('pembelian.pembelian.retur.returinsert', [
             'pemasoks' => Pemasok::all(),
-            'no' => Retur::max('id'),
-            'hut' => Hutang::max('id'),
             'fakturs' => Faktur::all(),
             'barangs' => Barang::all(),
-            'gudangs'=> Gudang::all(),
+            'gudangs' => Gudang::all(),
             // 'akuns'=> Akun::all(),
         ]);
     }
@@ -48,13 +47,15 @@ class RetursController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
+        $ret = Retur::max('id');
         $retur = Retur::create([
-            'kode_retur' => $request->kode_retur,
+            'kode_retur' => 'RET-'.$ret,
             'faktur_id' => $request->faktur_id,
             'status' => $request->status,
             'pemasok_id' => $request->pemasok_id,
@@ -68,42 +69,40 @@ class RetursController extends Controller
             'total_harga' => $request->total_harga_keseluruhan,
         ]);
 
-        $no= Jurnal::max('id') + 1;
-        for ($i = 1; $i < 5; $i++) {
-            $jurnal= Jurnal::create([
+        $no = Jurnal::max('id') + 1;
+        for ($i = 1; $i < 5; ++$i) {
+            $jurnal = Jurnal::create([
                 'kode_jurnal' => 'jur'.$no,
                 'retur_id' => $retur->id,
                 'debit' => 0,
-                'kredit' => 0
+                'kredit' => 0,
             ]);
             if ($i == 1) {
                 $jurnal->update([
                     'kredit' => $request->akun_barang,
-                    'akun_id' => 1 //barang
+                    'akun_id' => 1, //barang
                 ]);
-            }
-            else if ($i == 2) {
+            } elseif ($i == 2) {
                 $jurnal->update([
                     'kredit' => $request->biaya_lain,
-                    'akun_id' => 3 //biayalain
+                    'akun_id' => 3, //biayalain
                 ]);
-            }
-            else if ($i == 3) {
+            } elseif ($i == 3) {
                 $jurnal->update([
                     'debit' => $request->hutang,
-                    'akun_id' => 4 //hutang
+                    'akun_id' => 4, //hutang
                 ]);
-            }
-            else if ($i == 4) {
+            } elseif ($i == 4) {
                 $jurnal->update([
                     'debit' => $request->disk,
-                    'akun_id' => 5 //diskon
+                    'akun_id' => 5, //diskon
                 ]);
             }
         }
 
-        $hutang= $retur->hutang()->create([
-            'kode_hutang' => $request->kode_hutang,
+        $hut = Hutang::max('id');
+        $hutang = $retur->hutang()->create([
+            'kode_hutang' => 'HUT-'.$hut,
             'pemasok_id' => $request->pemasok_id,
             'total_hutang' => $request->hutang,
             'retur_id' => $retur->id,
@@ -112,7 +111,6 @@ class RetursController extends Controller
         $retur->update(['hutang_id' => $hutang->id]);
 
         foreach ($request->barang_id as $index => $id) {
-
             $retur->barangs()->attach($id, [
                 'jumlah_barang' => $request->jumlah_barang[$index],
                 'harga' => $request->harga[$index],
@@ -121,24 +119,31 @@ class RetursController extends Controller
                 'status_barang' => $request->status_barang[$index],
             ]);
         }
+
         return redirect('/pembelian/returs');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  Retur $retur
+     * @param int  Retur $retur
+     *
      * @return \Illuminate\Http\Response
      */
-    public function show(Retur $retur)
+    public function show($id)
     {
-        //
+        $retur = Retur::find($id);
+        $barangs = $retur->barangs;
+
+        return response()
+            ->json(['success' => true, 'retur' => $retur, 'barangs' => $barangs]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  Retur $retur
+     * @param int  Retur $retur
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(Retur $retur)
@@ -148,7 +153,7 @@ class RetursController extends Controller
             'pemasoks' => Pemasok::all(),
             'fakturs' => Faktur::all(),
             'barangs' => Barang::all(),
-            'gudangs'=> Gudang::all(),
+            'gudangs' => Gudang::all(),
             // 'akuns'=> Akun::all()
         ]);
     }
@@ -156,24 +161,26 @@ class RetursController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  Retur $retur
+     * @param \Illuminate\Http\Request $request
+     * @param int  Retur               $retur
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Retur $retur)
     {
-        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  Retur $retur
+     * @param int  Retur $retur
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Retur $retur)
     {
         Retur::destroy($retur->id);
+
         return redirect('/pembelian/returs');
     }
 }

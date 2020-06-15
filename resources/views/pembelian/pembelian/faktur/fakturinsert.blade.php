@@ -36,11 +36,9 @@
             <form method="POST" action="/pembelian/fakturs">
                 @csrf
                 <div id="test-l-1" class="content">
-                    <input type="hidden" id="kode_faktur" name="kode_faktur" placeholder="" value="FAK{{$no+1}}">
                     <input type="hidden" id="status" name="status" value="hutang">
                     <input type="hidden" id="akun_barang" name="akun_barang">
                     <input type="hidden" id="hutang" name="hutang">
-                    <input type="hidden" name="kode_hutang" value="HUT{{$hut+1}}">
                     <div style="height: 58vh;overflow: auto; color:black" class="mt-2">
                         <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="pemasok_id">pemasok</label>

@@ -36,7 +36,6 @@
             <form method="POST" action="/pembelian/penerimaans">
                 @csrf
                 <div id="test-l-1" class="content">
-                    <input type="hidden" id="kode_penerimaan" name="kode_penerimaan" placeholder="" value="PEN{{$no+1}}">
                     <input type="hidden" id="status" name="status">
                     <input type="hidden" id="akun_barang" name="akun_barang">
                     <div style="height: 58vh;overflow: auto; color:black" class="mt-2">
