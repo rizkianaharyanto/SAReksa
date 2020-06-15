@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Penjualan;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Penjualan\Penjual;
+use App\Penjualan\Pelanggan;
+
 
 class PenjualsController extends Controller
 {
@@ -18,7 +20,6 @@ class PenjualsController extends Controller
         $penjuals = Penjual::all();
         return view('penjualan.manajemendata.penjual', [
             'penjuals' => $penjuals,
-            'no' => Penjual::max('id'),
         ]);
     }
 
@@ -40,11 +41,13 @@ class PenjualsController extends Controller
      */
     public function store(Request $request)
     {
+        $pnj = Penjual::max('id');
         $penjual = new Penjual;
-        $penjual->kode_penjual = $request->kode_penjual;
+        $penjual->kode_penjual = 'SAL-'.$pnj;
         $penjual->nama_penjual = $request->nama_penjual;
         $penjual->telp_penjual = $request->telp_penjual;
         $penjual->email_penjual = $request->email_penjual;
+        $penjual->alamat_penjual = $request->alamat_penjual;
         $penjual->save();
         return redirect('/penjualan/penjuals');
     }
@@ -86,9 +89,11 @@ class PenjualsController extends Controller
                 'nama_penjual' => $request->nama_penjual,
                 'telp_penjual' => $request->telp_penjual,
                 'email_penjual' => $request->email_penjual,
+                'alamat_penjual' => $request->alamat_penjual,
+
             ]);
 
-        return redirect('/penjualan/penjual');
+        return redirect('/penjualan/penjuals');
     }
 
     /**
@@ -100,6 +105,6 @@ class PenjualsController extends Controller
     public function destroy(Penjual $penjual)
     {
         Penjual::destroy($penjual->id);
-        return redirect('/penjualan/penjual');
+        return redirect('/penjualan/penjuals');
     }
 }

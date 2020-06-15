@@ -19,6 +19,7 @@ class CreatePnjPenjualsTable extends Migration
             $table->string('nama_penjual', 100);
             $table->string('telp_penjual');
             $table->string('email_penjual');
+            $table->string('alamat_penjual');
             $table->timestamps();
             $table->softDeletes();
         });

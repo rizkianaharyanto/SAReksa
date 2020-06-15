@@ -1,13 +1,13 @@
 <?php
 
-namespace App;
+namespace App\Penjualan;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Pelanggan extends Model
 {
-    protected $table = 'pnj_pelanggan';
+    protected $table = 'pnj_pelanggans';
     protected $guarded = ['id'];
     use SoftDeletes;
 

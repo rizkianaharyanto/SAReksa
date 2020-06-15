@@ -100,3 +100,26 @@ Route::prefix('kepegawaian')->group(function () {
         'pengguna' => 'Kepegawaian\PenggunaController',
     ]);
 });
+
+Route::prefix('penjualan')->group(function () {
+    Route::get('/', function () {
+        return view('penjualan.dashboard');
+    });
+
+    Route::get('/ambilgudang', 'Penjualan\GudangsController@ambil');
+    Route::get('/ambilbarang', 'Penjualan\BarangsController@ambil');
+
+    // Route::get('/barangs', )
+    Route::resources([
+        'pelanggans' => 'Penjualan\PelanggansController',
+        'penjuals' => 'Penjualan\PenjualsController',
+        'jurnals' => 'Penjualan\JurnalsController',
+        'pemesanans' => 'Penjualan\PemesanansController',
+        'pengirimans' => 'Penjualan\PengirimansController',
+        'penawarans' => 'Penjualan\PenawaransController',
+        'fakturs' => 'Penjualan\FaktursController',
+        'returs' => 'Penjualan\RetursController',
+        'piutangs' => 'Penjualan\PiutangsController',
+        'pembayarans' => 'Penjualan\PembayaransController',
+    ]);
+});

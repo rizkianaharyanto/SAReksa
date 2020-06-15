@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Penjualan;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Pembelian\Penawaran;
+use App\Penjualan\Penawaran;
 use App\Stock\Barang;
 use App\Stock\Gudang;
-use App\Pembelian\Pelanggan;
-use App\Pembelian\Penjual;
+use App\Penjualan\Pelanggan;
+use App\Penjualan\Penjual;
 
 
 class PenawaransController extends Controller
@@ -33,7 +33,6 @@ class PenawaransController extends Controller
     {
         return view('penjualan.penjualan.penawaran.penawaraninsert', [
             'pelanggans' => Pelanggan::all(),
-            'no' => Penawaran::max('id'),
             'barangs' => Barang::all(),
             'penjuals' => Penjual::all(),
             'gudangs' => Gudang::all()
@@ -48,8 +47,9 @@ class PenawaransController extends Controller
      */
     public function store(Request $request)
     {
+        $pnw = Penawaran::max('id');
         $penawaran = Penawaran::create([
-            'kode_penawaran' => $request->kode_penawaran,
+            'kode_penawaran' => 'PNW-'.$pnw,
             'pelanggan_id' => $request->pelanggan_id,
             'gudang' => $request->gudang,
             'tanggal' => $request->tanggal,
@@ -96,6 +96,7 @@ class PenawaransController extends Controller
      */
     public function edit(Penawaran $penawaran)
     {
+        // dd($penawaran->barangs);
         return view('penjualan.penjualan.penawaran.penawaranedit', [
             'penawaran' => $penawaran,
             'pelanggans' => Pelanggan::all(),

@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Penjualan;
 
 use App\Penjualan\Pelanggan;
 use Illuminate\Http\Request;
 use Illuminate\View\ViewName;
+use App\Http\Controllers\Controller;
+
 
 class PelanggansController extends Controller
 {
@@ -18,8 +20,7 @@ class PelanggansController extends Controller
         $pelanggans = Pelanggan::all();
         // dd($pealnggans);
         return view('penjualan.manajemendata.pelanggan', [
-            'pealanggans' => $pelanggans,
-            'no' => Pelanggan::max('id'),
+            'pelanggans' => $pelanggans,
         ]);
     }
 
@@ -41,8 +42,16 @@ class PelanggansController extends Controller
      */
     public function store(Request $request)
     {
-        Pelanggan::create($request->all());
-        return redirect('/penjualan/pelanggan');
+        $sup = Pelanggan::max('id');
+        $pelanggan = Pelanggan::create([
+            'kode_pelanggan' => 'PEL-'.$sup,
+            'nama_pelanggan' => $request->nama_pelanggan,
+            'telp_pelanggan' => $request->telp_pelanggan,
+            'email_pelanggan' => $request->email_pelanggan,
+            'alamat_pelanggan' => $request->alamat_pelanggan,
+        ]);
+
+        return redirect('/penjualan/pelanggans');
     }
 
     /**

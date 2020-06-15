@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Penjualan;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -28,6 +28,6 @@ class Penawaran extends Model
 
     public function barangs()
     {
-        return $this->belongsToMany('App\Stock\Barang', 'pbl_permintaan_details')->withPivot('jumlah_barang', 'harga', 'unit', 'pajak')->withTimestamps();
+        return $this->belongsToMany('App\Stock\Barang', 'pnj_penawaran_details')->withPivot('jumlah_barang', 'harga', 'unit', 'pajak')->withTimestamps();
     }
 }
