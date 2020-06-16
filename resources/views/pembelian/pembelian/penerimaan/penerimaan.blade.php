@@ -24,7 +24,7 @@
     <td>{{ $penerimaan->total_harga }}</td>
     <td>{{ $penerimaan->status !=null ? $penerimaan->status  : '-' }}</td>
     <td class="d-flex justify-content-between">
-        <a id="details" href="/pembelian/penerimaans/create">
+        <a id="details" href="/pembelian/penerimaanshow/{{$penerimaan->id}}">
             <i style="cursor: pointer; " class="fas fa-info-circle">
                 <span></span>
             </i>

@@ -10,6 +10,7 @@ use App\Pembelian\Pemesanan;
 use App\Stock\Barang;
 use App\Stock\Gudang;
 use App\Pembelian\Pemasok;
+use PDF;
 
 class PenerimaansController extends Controller
 {
@@ -122,6 +123,61 @@ class PenerimaansController extends Controller
         // dd($barangs);
         return response()
             ->json(['success' => true, 'penerimaan' => $penerimaan, 'barangs' => $barangs]);
+    }
+
+    public function show2($id)
+    {
+        $penerimaan = penerimaan::find($id);
+        $gudang = Gudang::find($penerimaan->gudang);
+        $barangs = $penerimaan->barangs;
+        $diskon = $penerimaan->diskon.'%';
+        $biaya_lain = $penerimaan->biaya_lain;
+        $total_seluruh = $penerimaan->total_harga;
+        $total_harga = [];
+        $subtotal = 0;
+        foreach ($barangs as $index => $barang){
+            $total_harga[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
+            $subtotal += $total_harga[$index];
+        }
+        // dd($total_harga, $total_seluruh);
+        return view('pembelian.pembelian.penerimaan.penerimaandetails', [
+            'penerimaan' => $penerimaan, 
+            'gudang' => $gudang,
+            'barangs' => $barangs,
+            'diskon' => $diskon,
+            'biaya_lain' => $biaya_lain,
+            'total_harga' => $total_harga,
+            'subtotal' => $subtotal,
+            'total_seluruh' => $total_seluruh,
+        ]);
+    }
+
+    public function cetak_pdf(Request $request)
+    {
+        $penerimaan = penerimaan::find($request->id);
+        $gudang = Gudang::find($penerimaan->gudang);
+        $barangs = $penerimaan->barangs;
+        $diskon = $penerimaan->diskon.'%';
+        $biaya_lain = $penerimaan->biaya_lain;
+        $total_seluruh = $penerimaan->total_harga;
+        $total_harga = [];
+        $subtotal = 0;
+        foreach ($barangs as $index => $barang){
+            $total_harga[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
+            $subtotal += $total_harga[$index];
+        }
+        $pdf = PDF::loadview('pembelian.pembelian.penerimaan.penerimaan-pdf', [
+            'penerimaan' => $penerimaan, 
+            'gudang' => $gudang,
+            'barangs' => $barangs,
+            'diskon' => $diskon,
+            'biaya_lain' => $biaya_lain,
+            'total_harga' => $total_harga,
+            'subtotal' => $subtotal,
+            'total_seluruh' => $total_seluruh,
+            ]);
+
+        return $pdf->download('penerimaan.pdf');
     }
 
     /**

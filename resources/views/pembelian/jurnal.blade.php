@@ -7,7 +7,7 @@
 @section('isi')
     <div class="d-flex justify-content-end mx-5">
         <!-- <a class="px-2" href="">Export Excel | </a> -->
-        <a class="px-2" id="pdf" href="" target="_blank">Export PDF | </a>
+        <a class="px-2" id="pdf" href="/pembelian/jurnals/cetak_pdf" target="_blank">Export PDF | </a>
         <!-- <a class="px-2" href="">Print | </a> -->
     </div>
 <div style="overflow:auto; height: 80vh;" class="m-2">
@@ -65,32 +65,12 @@
                 @endforeach
                 <tr>
                     <td colspan="3">Total</td>
-                    <td id="debit"></td>
-                    <td id="kredit"></td>
+                    <td>{{$debit}}</td>
+                    <td>{{$kredit}}</td>
                 </tr>
             </tbody>
         </table>
     </div>
 </div>
-<script>
-            $(document).ready(function() {
-            var totdeb = document.getElementsByName('debit[]');
-            var totd = 0;
-            for (var i = 0; i < totdeb.length; i++) {
-                if (parseInt(totdeb[i].innerHTML))
-                    totd += parseInt(totdeb[i].innerHTML);
-            // console.log(parseInt(totdeb[i].innerHTML))
-            }
-            document.getElementById('debit').innerHTML = totd;
-            var totkre = document.getElementsByName('kredit[]');
-            var totk = 0;
-            for (var i = 0; i < totkre.length; i++) {
-                if (parseInt(totkre[i].innerHTML))
-                    totk += parseInt(totkre[i].innerHTML);
-            // console.log(parseInt(totkre[i].innerHTML))
-            }
-            document.getElementById('kredit').innerHTML = totk;
-            $('#pdf').attr('href', '/pembelian/jurnals/cetak_pdf/'+totd+'/'+totk)
-            })
-        </script>
+
 @endsection

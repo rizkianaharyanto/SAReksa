@@ -24,7 +24,7 @@
     <td>{{ $faktur->total_harga }}</td>
     <td>{{ $faktur->status !=null ? $faktur->status  : '-' }}</td>
     <td class="d-flex justify-content-between">
-        <a id="details" href="/pembelian/fakturs/create">
+        <a id="details" href="/pembelian/fakturshow/{{$faktur->id}}">
             <i style="cursor: pointer; " class="fas fa-info-circle">
                 <span></span>
             </i>

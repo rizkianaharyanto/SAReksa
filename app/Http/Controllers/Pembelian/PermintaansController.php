@@ -8,6 +8,7 @@ use App\Pembelian\Permintaan;
 use App\Stock\Barang;
 use App\Stock\Gudang;
 use App\Pembelian\Pemasok;
+use PDF;
 
 class PermintaansController extends Controller
 {
@@ -86,6 +87,61 @@ class PermintaansController extends Controller
         // $unit = $barangs->unit;
         return response()
         ->json(['success' => true, 'permintaan' => $permintaan, 'barangs' => $barangs]);
+    }
+
+    public function show2($id)
+    {
+        $permintaan = Permintaan::find($id);
+        $gudang = Gudang::find($permintaan->gudang);
+        $barangs = $permintaan->barangs;
+        $diskon = $permintaan->diskon.'%';
+        $biaya_lain = $permintaan->biaya_lain;
+        $total_seluruh = $permintaan->total_harga;
+        $total_harga = [];
+        $subtotal = 0;
+        foreach ($barangs as $index => $barang){
+            $total_harga[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
+            $subtotal += $total_harga[$index];
+        }
+        // dd($total_harga, $total_seluruh);
+        return view('pembelian.pembelian.permintaan.permintaandetails', [
+            'permintaan' => $permintaan, 
+            'gudang' => $gudang,
+            'barangs' => $barangs,
+            'diskon' => $diskon,
+            'biaya_lain' => $biaya_lain,
+            'total_harga' => $total_harga,
+            'subtotal' => $subtotal,
+            'total_seluruh' => $total_seluruh,
+        ]);
+    }
+
+    public function cetak_pdf(Request $request)
+    {
+        $permintaan = Permintaan::find($request->id);
+        $gudang = Gudang::find($permintaan->gudang);
+        $barangs = $permintaan->barangs;
+        $diskon = $permintaan->diskon.'%';
+        $biaya_lain = $permintaan->biaya_lain;
+        $total_seluruh = $permintaan->total_harga;
+        $total_harga = [];
+        $subtotal = 0;
+        foreach ($barangs as $index => $barang){
+            $total_harga[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
+            $subtotal += $total_harga[$index];
+        }
+        $pdf = PDF::loadview('pembelian.pembelian.permintaan.permintaan-pdf', [
+            'permintaan' => $permintaan, 
+            'gudang' => $gudang,
+            'barangs' => $barangs,
+            'diskon' => $diskon,
+            'biaya_lain' => $biaya_lain,
+            'total_harga' => $total_harga,
+            'subtotal' => $subtotal,
+            'total_seluruh' => $total_seluruh,
+            ]);
+
+        return $pdf->download('permintaan.pdf');
     }
 
     /**
