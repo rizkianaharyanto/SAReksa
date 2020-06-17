@@ -25,8 +25,22 @@ Route::prefix('pembelian')->group(function () {
     Route::get('/ambilgudang', 'Pembelian\GudangsController@ambil');
     Route::get('/ambilbarang', 'Pembelian\BarangsController@ambil');
     Route::post('/savebarang', 'Pembelian\PermintaansController@savebarang');
-    Route::get('/jurnals/cetak_pdf/{debit}/{kredit}', 'Pembelian\JurnalsController@cetak_pdf');
     Route::get('/showhutang/{id}', 'Pembelian\HutangsController@showpembayaran');
+
+    //show details page
+    Route::get('/permintaanshow/{id}', 'Pembelian\PermintaansController@show2');
+    Route::get('/pemesananshow/{id}', 'Pembelian\PemesanansController@show2');
+    Route::get('/penerimaanshow/{id}', 'Pembelian\PenerimaansController@show2');
+    Route::get('/fakturshow/{id}', 'Pembelian\FaktursController@show2');
+    Route::get('/returshow/{id}', 'Pembelian\RetursController@show2');
+
+    //cetak pdf
+    Route::get('/jurnals/cetak_pdf', 'Pembelian\JurnalsController@cetak_pdf');
+    Route::get('/permintaans/cetak_pdf', 'Pembelian\PermintaansController@cetak_pdf');
+    Route::get('/pemesanans/cetak_pdf', 'Pembelian\PemesanansController@cetak_pdf');
+    Route::get('/penerimaans/cetak_pdf', 'Pembelian\PenerimaansController@cetak_pdf');
+    Route::get('/fakturs/cetak_pdf', 'Pembelian\FaktursController@cetak_pdf');
+    Route::get('/returs/cetak_pdf', 'Pembelian\RetursController@cetak_pdf');
 
     // Route::get('/barangs', )
     Route::resources([

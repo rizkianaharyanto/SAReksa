@@ -17,16 +17,35 @@ class JurnalsController extends Controller
     public function index()
     {
         $jurnals = Jurnal::all()->groupBy('kode_jurnal');
-        // dd($jurnals['jur'][0]);
-        return view('pembelian.jurnal', compact('jurnals'));
+        $debit = 0;
+        $kredit = 0;
+        foreach (Jurnal::all() as $jurnal){
+            $debit += $jurnal->debit;
+            $kredit += $jurnal->kredit;
+        }
+        // dd($debit, $kredit);
+        // dd($jurnals);
+        return view('pembelian.jurnal', [
+            'jurnals' => $jurnals,
+            'debit' => $debit,
+            'kredit' => $kredit
+        ]);
     }
 
-    public function cetak_pdf($debit, $kredit)
+    public function cetak_pdf()
     {
         $jurnals = Jurnal::all()->groupBy('kode_jurnal');
-        $debit = $debit;
-        $kredit = $kredit;
-        $pdf = PDF::loadview('pembelian.jurnal-pdf', ['jurnals' => $jurnals, 'debit' => $debit, 'kredit' => $kredit]);
+        $debit = 0;
+        $kredit = 0;
+        foreach (Jurnal::all() as $jurnal){
+            $debit += $jurnal->debit;
+            $kredit += $jurnal->kredit;
+        }
+        $pdf = PDF::loadview('pembelian.jurnal-pdf', [
+            'jurnals' => $jurnals,
+            'debit' => $debit,
+            'kredit' => $kredit
+        ]);
 
         return $pdf->download('pembelian.jurnal-pdf.pdf');
         // return view('pembelian.jurnal-pdf', ['jurnals' => $jurnals]);

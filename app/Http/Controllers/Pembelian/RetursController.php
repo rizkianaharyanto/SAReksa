@@ -11,6 +11,7 @@ use App\Pembelian\Jurnal;
 use App\Stock\Barang;
 use App\Stock\Gudang;
 use App\Pembelian\Pemasok;
+use PDF;
 
 // use App\Pembelian\Akun;
 
@@ -64,7 +65,7 @@ class RetursController extends Controller
             'diskon' => $request->diskon,
             'diskon_rp' => $request->disk,
             'biaya_lain' => $request->biaya_lain,
-            // 'uang_muka' => $request->uang_muka,
+            'uang_muka' => $request->uang_muka,
             'total_jenis_barang' => 3,
             'total_harga' => $request->total_harga_keseluruhan,
         ]);
@@ -137,6 +138,61 @@ class RetursController extends Controller
 
         return response()
             ->json(['success' => true, 'retur' => $retur, 'barangs' => $barangs]);
+    }
+
+    public function show2($id)
+    {
+        $retur = retur::find($id);
+        $barangs = $retur->barangs;
+        $diskon = $retur->diskon_rp;
+        $biaya_lain = $retur->biaya_lain;
+        $uang_muka = $retur->uang_muka;
+        $total_seluruh = $retur->total_harga;
+        $total_harga = [];
+        $subtotal = 0;
+        foreach ($barangs as $index => $barang){
+            $total_harga[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
+            $subtotal += $total_harga[$index];
+        }
+        // dd($total_harga, $total_seluruh);
+        return view('pembelian.pembelian.retur.returdetails', [
+            'retur' => $retur, 
+            'barangs' => $barangs,
+            'diskon' => $diskon,
+            'biaya_lain' => $biaya_lain,
+            'uang_muka' => $uang_muka,
+            'total_harga' => $total_harga,
+            'subtotal' => $subtotal,
+            'total_seluruh' => $total_seluruh,
+        ]);
+    }
+
+    public function cetak_pdf(Request $request)
+    {
+        $retur = retur::find($request->id);
+        $barangs = $retur->barangs;
+        $diskon = $retur->diskon_rp;
+        $biaya_lain = $retur->biaya_lain;
+        $uang_muka = $retur->uang_muka;
+        $total_seluruh = $retur->total_harga;
+        $total_harga = [];
+        $subtotal = 0;
+        foreach ($barangs as $index => $barang){
+            $total_harga[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
+            $subtotal += $total_harga[$index];
+        }
+        $pdf = PDF::loadview('pembelian.pembelian.retur.retur-pdf', [
+            'retur' => $retur, 
+            'barangs' => $barangs,
+            'diskon' => $diskon,
+            'biaya_lain' => $biaya_lain,
+            'uang_muka' => $uang_muka,
+            'total_harga' => $total_harga,
+            'subtotal' => $subtotal,
+            'total_seluruh' => $total_seluruh,
+            ]);
+
+        return $pdf->download('retur.pdf');
     }
 
     /**

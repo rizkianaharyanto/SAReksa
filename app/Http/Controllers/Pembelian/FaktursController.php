@@ -11,6 +11,7 @@ use App\Pembelian\Penerimaan;
 use App\Stock\Barang;
 use App\Stock\Gudang;
 use App\Pembelian\Pemasok;
+use PDF;
 
 // use App\Pembelian\Akun;
 class FaktursController extends Controller
@@ -135,6 +136,61 @@ class FaktursController extends Controller
 
         return response()
             ->json(['success' => true, 'faktur' => $faktur, 'barangs' => $barangs]);
+    }
+
+    public function show2($id)
+    {
+        $faktur = Faktur::find($id);
+        $barangs = $faktur->barangs;
+        $diskon = $faktur->diskon_rp;
+        $biaya_lain = $faktur->biaya_lain;
+        $uang_muka = $faktur->uang_muka;
+        $total_seluruh = $faktur->total_harga;
+        $total_harga = [];
+        $subtotal = 0;
+        foreach ($barangs as $index => $barang){
+            $total_harga[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
+            $subtotal += $total_harga[$index];
+        }
+        // dd($total_harga, $total_seluruh);
+        return view('pembelian.pembelian.faktur.fakturdetails', [
+            'faktur' => $faktur, 
+            'barangs' => $barangs,
+            'diskon' => $diskon,
+            'biaya_lain' => $biaya_lain,
+            'uang_muka' => $uang_muka,
+            'total_harga' => $total_harga,
+            'subtotal' => $subtotal,
+            'total_seluruh' => $total_seluruh,
+        ]);
+    }
+
+    public function cetak_pdf(Request $request)
+    {
+        $faktur = faktur::find($request->id);
+        $barangs = $faktur->barangs;
+        $diskon = $faktur->diskon_rp;
+        $biaya_lain = $faktur->biaya_lain;
+        $uang_muka = $faktur->uang_muka;
+        $total_seluruh = $faktur->total_harga;
+        $total_harga = [];
+        $subtotal = 0;
+        foreach ($barangs as $index => $barang){
+            $total_harga[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
+            $subtotal += $total_harga[$index];
+        }
+        $pdf = PDF::loadview('pembelian.pembelian.faktur.faktur-pdf', [
+            'faktur' => $faktur, 
+            'barangs' => $barangs,
+            'diskon' => $diskon,
+            'biaya_lain' => $biaya_lain,
+            'uang_muka' => $uang_muka,
+            'total_harga' => $total_harga,
+            'subtotal' => $subtotal,
+            'total_seluruh' => $total_seluruh,
+            ]);
+
+        return $pdf->download('faktur.pdf');
     }
 
     /**

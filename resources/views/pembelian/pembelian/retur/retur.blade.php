@@ -24,7 +24,7 @@
     <td>{{ $retur->total_harga }}</td>
     <td>{{ $retur->status !=null ? $retur->status  : '-' }}</td>
     <td class="d-flex justify-content-between">
-        <a id="details" href="/pembelian/returs/create">
+        <a id="details" href="/pembelian/returshow/{{$retur->id}}">
             <i style="cursor: pointer; " class="fas fa-info-circle">
                 <span></span>
             </i>
