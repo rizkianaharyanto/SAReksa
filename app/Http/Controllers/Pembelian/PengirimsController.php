@@ -42,7 +42,7 @@ class PengirimsController extends Controller
      */
     public function store(Request $request)
     {
-        $peng = Pengirim::max('id');
+        $peng = Pengirim::max('id') + 1;
         $pengirim = new Pengirim();
         $pengirim->kode_pengirim = 'PENG-'.$peng;
         $pengirim->nama_pengirim = $request->nama_pengirim;

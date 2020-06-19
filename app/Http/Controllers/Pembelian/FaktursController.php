@@ -99,7 +99,7 @@ class FaktursController extends Controller
             }
         }
 
-        $hut = Hutang::max('id');
+        $hut = Hutang::max('id')+1;
         $hutang = $faktur->hutang()->create([
             'kode_hutang' => 'HUT-'.$hut,
             'pemasok_id' => $request->pemasok_id,

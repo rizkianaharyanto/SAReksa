@@ -40,7 +40,7 @@ class PemasoksController extends Controller
      */
     public function store(Request $request)
     {
-        $sup = Pemasok::max('id');
+        $sup = Pemasok::max('id') + 1;
         $pemasok = Pemasok::create([
             'kode_pemasok' => 'SUP-'.$sup,
             'nama_pemasok' => $request->nama_pemasok,

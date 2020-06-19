@@ -50,7 +50,7 @@ class PenerimaansController extends Controller
      */
     public function store(Request $request)
     {
-        $pnm = Penerimaan::max('id');
+        $pnm = Penerimaan::max('id') + 1;
         $penerimaan = Penerimaan::create([
             'kode_penerimaan' => 'PNM-'.$pnm,
             'pemesanan_id' => $request->pemesanan_id,
@@ -135,13 +135,13 @@ class PenerimaansController extends Controller
         $total_seluruh = $penerimaan->total_harga;
         $total_harga = [];
         $subtotal = 0;
-        foreach ($barangs as $index => $barang){
+        foreach ($barangs as $index => $barang) {
             $total_harga[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
             $subtotal += $total_harga[$index];
         }
         // dd($total_harga, $total_seluruh);
         return view('pembelian.pembelian.penerimaan.penerimaandetails', [
-            'penerimaan' => $penerimaan, 
+            'penerimaan' => $penerimaan,
             'gudang' => $gudang,
             'barangs' => $barangs,
             'diskon' => $diskon,
@@ -162,12 +162,12 @@ class PenerimaansController extends Controller
         $total_seluruh = $penerimaan->total_harga;
         $total_harga = [];
         $subtotal = 0;
-        foreach ($barangs as $index => $barang){
+        foreach ($barangs as $index => $barang) {
             $total_harga[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
             $subtotal += $total_harga[$index];
         }
         $pdf = PDF::loadview('pembelian.pembelian.penerimaan.penerimaan-pdf', [
-            'penerimaan' => $penerimaan, 
+            'penerimaan' => $penerimaan,
             'gudang' => $gudang,
             'barangs' => $barangs,
             'diskon' => $diskon,
@@ -209,25 +209,47 @@ class PenerimaansController extends Controller
     {
         Penerimaan::where('id', $penerimaan->id)
             ->update([
-                'kode_penerimaan' => $request->kode_penerimaan,
-                'pemasok_id' => $request->pemasok_id,
-                'gudang' => $request->gudang,
-                'tanggal' => $request->tanggal,
                 'diskon' => $request->diskon,
+                'diskon_rp' => $request->disk,
                 'biaya_lain' => $request->biaya_lain,
                 'total_jenis_barang' => 3,
-                'total_harga' => 1000,
+                'total_harga' => $request->total_harga_keseluruhan,
             ]);
+        $pemesanan = $penerimaan->pemesanan;
+        $penerimaan->barangs()->detach();
         foreach ($request->barang_id as $index => $id) {
-            $penerimaan->barangs()->detach($id, [
-                'jumlah_barang' => $request->jumlah_barang[$index],
-                'harga' => $request->harga[$index],
-            ]);
             $penerimaan->barangs()->attach($id, [
                 'jumlah_barang' => $request->jumlah_barang[$index],
                 'harga' => $request->harga[$index],
+                'unit' => $request->unit_barang[$index],
+                // 'pajak' => $request->pajak[$index],
             ]);
+            $pemesanan->barangs()->where('barang_id', $id)->update(array('status_barang' => 'diterima'));
+            // $status = $pemesanan->barangs()->get(array('status_barang'));
+            // foreach ($status as $status_barang) {
+            //     if (count($request->barang_id) == count($status)) {
+            //         $pemesanan->update(array('status' => 'diterima'));
+            //     } else {
+            //         $pemesanan->update(array('status' => 'diterima sebagian'));
+            //     }
+            // }
         }
+
+        // for ($i = 1; $i < 3; ++$i) {
+        //     $jurnal = $penerimaan->jurnals();
+        //     dd($jurnal);
+        //     if ($i == 1) {
+        //         $jurnal->update([
+        //             'debit' => $request->akun_barang,
+        //             'akun_id' => 1, //barang
+        //         ]);
+        //     } elseif ($i == 2) {
+        //         $jurnal->update([
+        //             'kredit' => $request->akun_barang,
+        //             'akun_id' => 2, //barang belum ditagih
+        //         ]);
+        //     }
+        // }
 
         return redirect('/pembelian/penerimaans');
     }

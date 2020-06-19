@@ -43,7 +43,7 @@
                             <label class="col-sm-3 col-form-label" for="pemasok_id">pemasok</label>
                             <div class="col-sm-9">
                                 <select class="form-control" id="pemasok_id" name="pemasok_id">
-                                    <option value="">--- Pilih pemasok ---</option>
+                                    <option value="">--- Pilih Pemasok ---</option>
                                     @foreach ($pemasoks as $pemasok)
                                     <option value="{{$pemasok->id}}" {{$pemasok->id == "$pemesanan->pemasok_id" ? "selected" : "" }}>{{ $pemasok->nama_pemasok }}</option>
                                     @endforeach
@@ -56,7 +56,7 @@
                                 <select class="form-control" id="gudang" name="gudang">
                                     <option value="">--- Pilih Gudang ---</option>
                                     @foreach ($gudangs as $gudang)
-                                    <option value="{{$gudang->id}}" {{$gudang->id == "$pemesanan->gudang" ? "selected" : "" }}>{{ $gudang->nama_gudang }}</option>
+                                    <option value="{{$gudang->id}}" {{$gudang->id == "$pemesanan->gudang" ? "selected" : "" }}>{{ $gudang->kode_gudang }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -91,7 +91,7 @@
                         <div class="form-row mx-5" id="isiformbarang0">
                             <div class="form-group col-md-3">
                                 <label for="nama_barang" id="lbl">Barang</label>
-                                <select class="form-control" id="nama_barang" name="barang_id[]">
+                                <select class="form-control" onchange="isi(this)" id="barang_id" name="barang_id[]">
                                     <option value="">--- Pilih Barang ---</option>
                                     @foreach ($barangs as $barang)
                                     <option value="{{$barang->id}}" {{$barang->id == $pemesananbarang->pivot->barang_id ? "selected" : "" }}>{{ $barang->nama_barang }}</option>
@@ -100,11 +100,12 @@
                             </div>
                             <div class="form-group col-md-1">
                                 <label for="jumlah_barang">QTY</label>
-                                <input type="number" class="form-control" id="jumlah_barang" name="jumlah_barang[]" value="{{$pemesananbarang->pivot->jumlah_barang}}" placeholder="-">
+                                <input type="number" class="form-control" id="jumlah_barang" name="jumlah_barang[]" onfocus="startCalc(this);" onblur="stopCalc();" placeholder="-" value="{{$pemesananbarang->pivot->jumlah_barang}}">
                             </div>
                             <div class="form-group col-md-1">
                                 <label for="satuan_unit">Unit</label>
-                                <input type="number" class="form-control" id="unit" name="unit_barang[]" disabled>
+                                <input type="text" class="form-control" placeholder="{{$pemesananbarang->pivot->unit}}" id="uni" disabled>
+                                <input type="hidden" value="{{$pemesananbarang->pivot->unit}}" id="unit" name="unit_barang[]">
                             </div>
                             <div class="form-group col-md-3">
                                 <label for="harga">Harga Satuan</label>
@@ -112,7 +113,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" class="form-control" id="harga" name="harga[]" value="{{$pemesananbarang->pivot->harga}}" placeholder="-">
+                                    <input type="number" class="form-control" id="harga" name="harga[]" onfocus="startCalc(this);" onblur="stopCalc();" value="{{$pemesananbarang->pivot->harga}}" placeholder="-">
                                 </div>
                             </div>
                             <div class="form-group col-md-3">
@@ -164,7 +165,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">%</div>
                                     </div>
-                                    <input type="number" class="form-control" id="diskon" name="diskon" value="{{$pemesanan->diskon}}" placeholder="-">
+                                    <input type="number" class="form-control" id="diskon" onchange="disc();" name="diskon"  value="{{$pemesanan->diskon}}" placeholder="-">
                                 </div>
                             </div>
                         </div>
@@ -175,7 +176,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" class="form-control" id="biaya_lain" name="biaya_lain" value="{{$pemesanan->biaya_lain}}" placeholder="-">
+                                    <input type="number" class="form-control" name="biaya_lain" onchange="disc();" id="biaya_lain" value="{{$pemesanan->biaya_lain}}" placeholder="-">
                                 </div>
                             </div>
                         </div>
@@ -195,7 +196,8 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input style="width:26vw" type="number" name="total_harga_keseluruhan" id="total_harga_keseluruhan" disabled>
+                                    <input style="width:26vw" type="number" value="{{$pemesanan->total_harga}}" id="total_harga_kes" disabled>
+                                    <input type="hidden" name="total_harga_keseluruhan" value="{{$pemesanan->total_harga}}" id="total_harga_keseluruhan">
                                 </div>
                             </div>
                         </div>
@@ -233,26 +235,159 @@
     }
 
 
-    var i = 0;
     $('#tambahbarang').click(function() {
+        var i = 0;
         // console.log(i)
         $("#formbarang").append($("#isiformbarang" + i).clone().attr('id', 'isiformbarang' + (i + 1)));
         $(document.querySelectorAll("#isiformbarang1")).children().children().children().css({
             'color': 'black',
             'cursor': 'pointer'
         })
-        // $("#isiformbarang" + i).attr('id', 'isiformbarang' + (i + 1))
-        // $("#delete" + i).attr({
-        //     'id': 'delete' + (i + 1),
-        //     'value': (i + 1)
-        // })
-        // console.log(i)
     });
 
     function hapus(x) {
         if ($(x).parent().parent().attr('id') != 'isiformbarang0') {
             $(x).parent().parent().remove();
         }
+    }
+
+    $('#pemasok_id').change(function() {
+        $.ajax({
+            url: '/pembelian/pemasoks/' + $(this).val(),
+            type: 'get',
+            data: {},
+            success: function(data) {
+                $('#permintaan_form').removeAttr('style')
+                console.log(data.permintaans)
+                for (i = 0; i < data.permintaans.length; i++) {
+                    $('#permintaan_id').append('<option value="' + data.permintaans[i].id + '">' + data.permintaans[i].kode_permintaan + '</option>')
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {}
+        });
+    });
+
+    $("#permintaan_id").change(function() {
+        $.ajax({
+            url: '/pembelian/permintaans/' + $(this).val(),
+            type: 'get',
+            data: {},
+            success: function(data) {
+                if (data.success == true) {
+                    console.log(data)
+                    console.log(data.permintaan)
+                    console.log(data.barangs[0].pivot.jumlah_barang)
+                    // $('#pemasok_id').val(data.permintaan.pemasok_id)
+                    $('#gudang').val(data.permintaan.gudang)
+                    // $('#tanggal').val(data.permintaan.tanggal)
+                    // $('#mata_uang').val(data.permintaan.mata_uang)
+                    // $('#status').val('baru')
+                    $('#diskon').val(data.permintaan.diskon)
+                    $('#biaya_lain').val(data.permintaan.biaya_lain)
+                    $('#barang_id').val(data.barangs[0].id)
+                    $('#unit').val(data.barangs[0].pivot.unit)
+                    $('#uni').attr('placeholder',data.barangs[0].pivot.unit)
+                    $('#jumlah_barang').val(data.barangs[0].pivot.jumlah_barang)
+                    $('#harga').val(data.barangs[0].pivot.harga)
+                    $('#status_barang').val('belum diterima')
+                    for (var i = 1; i <= data.barangs.length - 1; i++) {
+                        $("#formbarang").append($("#isiformbarang0").clone().attr('id', 'isiformbarang' + i));
+                        $("#isiformbarang" + i).children().children('select').val(data.barangs[i].id)
+                        $("#isiformbarang" + i).children().children('#jumlah_barang').val(data.barangs[i].pivot.jumlah_barang)
+                        $("#isiformbarang" + i).children().children().children('#harga').val(data.barangs[i].pivot.harga)
+                        $("#isiformbarang" + i).children().children('#unit').val(data.barangs[i].pivot.unit)
+                        $("#isiformbarang" + i).children().children('#uni').attr('placeholder',data.barangs[i].pivot.unit)
+                        $("#isiformbarang" + i).children('#status_barang').val('belum diterima')
+                        // console.log(data.barangs[i].pivot.harga)
+                        // $("#isiformbarang" + i).children().children('input').attr('id', 'total' + i)
+                        // $('#total' + i).val(data.barangs[i].pivot.total)
+                    }
+                    var c = data.barangs.length
+                    console.log(c)
+                } else {
+                    console.log(c)
+                    $('#pemasok_id').val('')
+                    $('#gudang').val('')
+                    $('#tanggal').val('')
+                    $('#mata_uang').val('')
+                    $('#diskon').val('')
+                    $('#biaya_lain').val('')
+                    // for (var b = 1; b <= c; b++) {
+                    //     $(document.querySelectorAll("#isiformbarang" + b)).remove()
+                    // }
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {}
+        });
+    });
+
+    function disc() {
+        dis = $('#diskon').val() / 100;
+        biy = parseInt($('#biaya_lain').val());
+        akhir = parseInt($('#total_harga_barang').val())
+        akhir1 = akhir - (akhir * dis)
+        akhir2 = akhir1 + biy
+        if (akhir2) {
+            $('#total_harga_kes').val(akhir2)
+            $('#total_harga_keseluruhan').val(akhir2)
+        } else {
+            $('#total_harga_kes').val(akhir1)
+            $('#total_harga_keseluruhan').val(akhir1)
+        }
+    }
+
+
+    function startCalc(x) {
+        console.log('yes')
+        if ($(x).attr('id') == 'jumlah_barang') {
+            a = x
+            b = $(x).parent().parent().children().children().children('#harga')
+            c = $(x).parent().parent().children().children().children('#total')
+            interval = setInterval(function() {
+                qty = $(a).val();
+                harga = $(b).val();
+                total = qty * harga
+                $(c).val(total)
+            }, 1);
+        } else if ($(x).attr('id') == 'harga') {
+            a = $(x).parent().parent().parent().children().children('#jumlah_barang')
+            b = x
+            c = $(x).parent().parent().parent().children().children().children('#total')
+            interval = setInterval(function() {
+                qty = $(a).val();
+                harga = $(b).val();
+                total = qty * harga
+                $(c).val(total)
+            }, 1);
+        }
+    }
+
+    function stopCalc() {
+        clearInterval(interval);
+        var arr = document.getElementsByName('total[]');
+        var tot = 0;
+        for (var i = 0; i < arr.length; i++) {
+            if (parseInt(arr[i].value))
+                tot += parseInt(arr[i].value);
+        }
+        document.getElementById('total_harga_barang').value = tot;
+        document.getElementById('total_harga_keseluruhan').value = tot;
+    }
+
+    function isi(x) {
+        console.log('isi')
+        $.ajax({
+            url: '/stok/Management-Data/barang/' + $(x).val(),
+            type: 'get',
+            data: {},
+            success: function(data) {
+                console.log(data)
+                var unit = $(x).parent().parent().children().children('#uni').attr('placeholder', data.unit.nama_satuan)
+                $(x).parent().parent().children().children('#unit').val(data.unit.nama_satuan)
+                var harga = $(x).parent().parent().children().children().children('#harga').val(data.harga_retail)
+                console.log(unit)
+            }
+        })
     }
 </script>
 

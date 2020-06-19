@@ -42,7 +42,7 @@
                             <label class="col-sm-3 col-form-label" for="pemasok_id">Pemasok</label>
                             <div class="col-sm-9">
                                 <select class="form-control" id="pemasok_id" name="pemasok_id">
-                                    <option value="">--- Pilih pemasok ---</option>
+                                    <option value="">--- Pilih Pemasok ---</option>
                                     @foreach ($pemasoks as $pemasok)
                                     <option value="{{$pemasok->id}}">{{ $pemasok->nama_pemasok }}</option>
                                     @endforeach

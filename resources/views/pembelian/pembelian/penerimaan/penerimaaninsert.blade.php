@@ -141,11 +141,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="alert alert-primary mt-3 mb-0 p-1" id="tambahbarang" onmouseover="green(this)" onmouseout="grey(this)" style="cursor: pointer; font-size:15px;">
-                        <i class="fas fa-plus d-flex justify-content-center">
-                            <span class="mx-2">Tambah Barang</span>
-                        </i>
-                    </div>
                     <div class="modal-footer">
                         <div class="d-flex mr-auto">
                             <p class="m-2">Total </p>

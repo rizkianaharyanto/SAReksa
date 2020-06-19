@@ -48,7 +48,7 @@ class PermintaansController extends Controller
      */
     public function store(Request $request)
     {
-        $pr = Permintaan::max('id');
+        $pr = Permintaan::max('id') + 1;
         $permintaan = Permintaan::create([
             'kode_permintaan' => 'PR-'.$pr,
             'pemasok_id' => $request->pemasok_id,
@@ -99,13 +99,13 @@ class PermintaansController extends Controller
         $total_seluruh = $permintaan->total_harga;
         $total_harga = [];
         $subtotal = 0;
-        foreach ($barangs as $index => $barang){
+        foreach ($barangs as $index => $barang) {
             $total_harga[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
             $subtotal += $total_harga[$index];
         }
         // dd($total_harga, $total_seluruh);
         return view('pembelian.pembelian.permintaan.permintaandetails', [
-            'permintaan' => $permintaan, 
+            'permintaan' => $permintaan,
             'gudang' => $gudang,
             'barangs' => $barangs,
             'diskon' => $diskon,
@@ -126,12 +126,12 @@ class PermintaansController extends Controller
         $total_seluruh = $permintaan->total_harga;
         $total_harga = [];
         $subtotal = 0;
-        foreach ($barangs as $index => $barang){
+        foreach ($barangs as $index => $barang) {
             $total_harga[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
             $subtotal += $total_harga[$index];
         }
         $pdf = PDF::loadview('pembelian.pembelian.permintaan.permintaan-pdf', [
-            'permintaan' => $permintaan, 
+            'permintaan' => $permintaan,
             'gudang' => $gudang,
             'barangs' => $barangs,
             'diskon' => $diskon,
@@ -173,22 +173,17 @@ class PermintaansController extends Controller
     {
         Permintaan::where('id', $permintaan->id)
             ->update([
-                'kode_permintaan' => $request->kode_permintaan,
                 'pemasok_id' => $request->pemasok_id,
                 'gudang' => $request->gudang,
                 'tanggal' => $request->tanggal,
                 'diskon' => $request->diskon,
+                'diskon_rp' => $request->disk,
                 'biaya_lain' => $request->biaya_lain,
                 'total_jenis_barang' => 3,
-                'total_harga' => 1000,
+                'total_harga' => $request->total_harga_keseluruhan,
             ]);
+        $permintaan->barangs()->detach();
         foreach ($request->barang_id as $index => $id) {
-            $permintaan->barangs()->detach($id, [
-                'jumlah_barang' => $request->jumlah_barang[$index],
-                'harga' => $request->harga[$index],
-                'unit' => $request->unit_barang[$index],
-                // 'pajak' => $request->pajak[$index]
-            ]);
             $permintaan->barangs()->attach($id, [
                 'jumlah_barang' => $request->jumlah_barang[$index],
                 'harga' => $request->harga[$index],

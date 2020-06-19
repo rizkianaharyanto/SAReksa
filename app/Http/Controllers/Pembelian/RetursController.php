@@ -54,7 +54,7 @@ class RetursController extends Controller
      */
     public function store(Request $request)
     {
-        $ret = Retur::max('id');
+        $ret = Retur::max('id') + 1;
         $retur = Retur::create([
             'kode_retur' => 'RET-'.$ret,
             'faktur_id' => $request->faktur_id,
@@ -101,7 +101,7 @@ class RetursController extends Controller
             }
         }
 
-        $hut = Hutang::max('id');
+        $hut = Hutang::max('id') + 1;
         $hutang = $retur->hutang()->create([
             'kode_hutang' => 'HUT-'.$hut,
             'pemasok_id' => $request->pemasok_id,
@@ -150,13 +150,13 @@ class RetursController extends Controller
         $total_seluruh = $retur->total_harga;
         $total_harga = [];
         $subtotal = 0;
-        foreach ($barangs as $index => $barang){
+        foreach ($barangs as $index => $barang) {
             $total_harga[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
             $subtotal += $total_harga[$index];
         }
         // dd($total_harga, $total_seluruh);
         return view('pembelian.pembelian.retur.returdetails', [
-            'retur' => $retur, 
+            'retur' => $retur,
             'barangs' => $barangs,
             'diskon' => $diskon,
             'biaya_lain' => $biaya_lain,
@@ -177,12 +177,12 @@ class RetursController extends Controller
         $total_seluruh = $retur->total_harga;
         $total_harga = [];
         $subtotal = 0;
-        foreach ($barangs as $index => $barang){
+        foreach ($barangs as $index => $barang) {
             $total_harga[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
             $subtotal += $total_harga[$index];
         }
         $pdf = PDF::loadview('pembelian.pembelian.retur.retur-pdf', [
-            'retur' => $retur, 
+            'retur' => $retur,
             'barangs' => $barangs,
             'diskon' => $diskon,
             'biaya_lain' => $biaya_lain,

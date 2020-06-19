@@ -48,7 +48,7 @@ class PembayaransController extends Controller
      */
     public function store(Request $request)
     {
-        $byr = Pembayaran::max('id');
+        $byr = Pembayaran::max('id') + 1;
         $pembayaran = Pembayaran::create([
             'kode_pembayaran' => 'BYR-'.$byr,
             'pemasok_id' => $request->pemasok_id,
