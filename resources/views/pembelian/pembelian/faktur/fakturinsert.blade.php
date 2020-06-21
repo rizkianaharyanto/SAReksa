@@ -148,6 +148,7 @@
                                 <div class="form-group col-md-4">
                                     <label for="tanggal_penerimaan">Tanggal</label>
                                     <input type="date" class="form-control" id="tanggal_penerimaan" disabled>
+                                    <input type="hidden" id="discpnm" name="discpnm[]">
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="total">Total</label>
@@ -198,7 +199,8 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">%</div>
                                     </div>
-                                    <input type="number" class="form-control" id="diskon" onchange="disc();" name="diskon" placeholder="-">
+                                    <input type="number" class="form-control" id="disko" onchange="disc();" placeholder="-" disabled>
+                                    <input type="hidden" class="form-control" id="diskon" name="diskon" placeholder="-">
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -206,7 +208,8 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" class="form-control" id="disk" onchange="disc();" name="disk" placeholder="-">
+                                    <input type="number" class="form-control" id="diskoo" onchange="disc();" placeholder="-" disabled>
+                                    <input type="hidden" class="form-control" id="disk"  name="disk" placeholder="-">
                                 </div>
                             </div>
                         </div>
@@ -357,11 +360,11 @@
             data: {},
             success: function(data) {
                 console.log(data)
-                for (i = 0; i < data.pemesanans.length; i++) {
-                    $('#pemesanan_id').append('<option value="' + data.pemesanans[i].id + '">' + data.pemesanans[i].kode_pemesanan + '</option>')
+                for (i = 0; i < data.fpemesanans.length; i++) {
+                    $('#pemesanan_id').append('<option value="' + data.fpemesanans[i].id + '">' + data.fpemesanans[i].kode_pemesanan + '</option>')
                 }
-                for (a = 0; a < data.penerimaans.length; a++) {
-                    $('#penerimaan_id').append('<option value="' + data.penerimaans[a].id + '">' + data.penerimaans[a].kode_penerimaan + '</option>')
+                for (a = 0; a < data.fpenerimaans.length; a++) {
+                    $('#penerimaan_id').append('<option value="' + data.fpenerimaans[a].id + '">' + data.fpenerimaans[a].kode_penerimaan + '</option>')
                 }
             },
             error: function(jqXHR, textStatus, errorThrown) {}
@@ -379,6 +382,9 @@
                     $("#checkBarang").removeAttr('style')
                     $("#checkPenerimaan").css('display', 'none')
                     $('#diskon').val(data.pemesanan.diskon)
+                    $('#disko').val(data.pemesanan.diskon)
+                    $('#disk').val(data.pemesanan.diskon_rp)
+                    $('#diskoo').val(data.pemesanan.diskon_rp)
                     $('#biaya_lain').val(data.pemesanan.biaya_lain)
                     $('#barang_id').val(data.barangs[0].id)
                     $('#unit').val(data.barangs[0].pivot.unit)
@@ -408,10 +414,22 @@
             type: 'get',
             data: {},
             success: function(data) {
-                console.log(data)
+                console.log('a:', data.penerimaan.diskon_rp)
                 if (data.success == true) {
                     $(x).parent().parent().children().children('#tanggal_penerimaan').val(data.penerimaan.tanggal)
                     $(x).parent().parent().children().children().children('#total_penerimaan').val(data.penerimaan.total_harga)
+                    $('#discpnm').val(data.penerimaan.diskon_rp)
+                    var arr = document.getElementsByName('discpnm[]');
+                    var discpnm = 0;
+                    for (var i = 0; i < arr.length; i++) {
+                        if (parseInt(arr[i].value))
+                            discpnm += parseInt(arr[i].value);
+                    }
+                    $('#disk').val(discpnm)
+                    $('#diskon').val(0)
+                    $('#disko').val(0)
+                    $('#diskoo').val(discpnm)
+                    $('#diskon').css('display', 'none')
                     $('#barang_id').val(data.barangs[0].id)
                     $('#unit').val(data.barangs[0].pivot.unit)
                     $('#uni').attr('placeholder',data.barangs[0].pivot.unit)
@@ -439,7 +457,15 @@
         dp = parseInt($('#uang_muka').val());
         barang = parseInt($('#total_harga_barang').val())
         $('#akun_barang').val(barang)
-        diskon = (barang * dis)
+
+        var arr = document.getElementsByName('discpnm[]');
+        var discpnm = 0;
+        for (var i = 0; i < arr.length; i++) {
+            if (parseInt(arr[i].value))
+                discpnm += parseInt(arr[i].value);
+        }
+
+        diskon = (barang * dis) + discpnm;
         $('#disk').val(diskon)
         barangafterdiskon = barang - diskon
         hutang = barangafterdiskon + biy - dp

@@ -357,7 +357,7 @@
             'barang:', barang,
             'dis:', dis,
             'diskon:', diskon,
-            'hutang:', hutang, 
+            'hutang:', hutang,
             'biaya:', biy,
             'dp:', dp,
         )

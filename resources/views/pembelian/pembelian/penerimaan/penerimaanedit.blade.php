@@ -1,6 +1,6 @@
 @extends('pembelian.template.template')
 
-@section('judul', 'edit')
+@section('judul', 'Edit')
 
 @section('halaman', 'Edit Penerimaan')
 
@@ -33,7 +33,7 @@
             </div>
         </div>
         <div class="bs-stepper-content">
-            <form method="POST" action="/pembelian/penerimaans/{{$penerimaan->id}}">
+        <form method="POST" action="/pembelian/penerimaans/{{$penerimaan->id}}">
                 @method('put')
                 @csrf
                 <div id="test-l-1" class="content">
@@ -43,8 +43,8 @@
                         <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="pemasok_id">pemasok</label>
                             <div class="col-sm-9">
-                                <select class="form-control" id="pemasok_id" name="pemasok_id" disabled>
-                                    <option value="">--- Pilih Pemasok ---</option>
+                                <select class="form-control" id="pemasok_id" name="pemasok_id">
+                                    <option value="">--- Pilih pemasok ---</option>
                                     @foreach ($pemasoks as $pemasok)
                                     <option value="{{$pemasok->id}}" {{$pemasok->id == "$penerimaan->pemasok_id" ? "selected" : "" }}>{{ $pemasok->nama_pemasok }}</option>
                                     @endforeach
@@ -54,10 +54,10 @@
                         <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="gudang">Gudang</label>
                             <div class="col-sm-9">
-                                <select class="form-control" id="gudang" name="gudang" disabled>
+                                <select class="form-control" id="gudang" name="gudang">
                                     <option value="">--- Pilih Gudang ---</option>
                                     @foreach ($gudangs as $gudang)
-                                    <option value="{{$gudang->id}}" {{$pemasok->id == "$penerimaan->gudang" ? "selected" : "" }}>{{ $gudang->kode_gudang }}</option>
+                                    <option value="{{$gudang->id}}" {{$gudang->id == "$penerimaan->gudang" ? "selected" : "" }}>{{ $gudang->kode_gudang }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -65,7 +65,7 @@
                         <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="tanggal">Tanggal</label>
                             <div class="col-sm-9">
-                                <input type="date" class="form-control" id="tanggal" name="tanggal" value="{{$penerimaan->tanggal}}" placeholder="" disabled>
+                                <input type="date" class="form-control" id="tanggal" name="tanggal" value="{{$penerimaan->tanggal}}">
                             </div>
                         </div>
                         <div class="form-group row mx-5 mb-5">
@@ -88,11 +88,11 @@
 
                 <div id="test-l-2" class="content">
                     <div style="overflow: auto; height: 52vh;" id="formbarang">
-                        @foreach ($penerimaan->barangs as $penerimaanbarang)
+                    @foreach ($penerimaan->barangs as $penerimaanbarang)
                         <div class="form-row mx-5" id="isiformbarang0">
                             <div class="form-group col-md-3">
                                 <label for="barang_id" id="lbl">Barang</label>
-                                <select class="form-control" id="barang_id" onchange="isi(this)" name="barang_id[]">
+                                <select class="form-control" onchange="isi(this)" id="barang_id" name="barang_id[]">
                                     <option value="">--- Pilih Barang ---</option>
                                     @foreach ($barangs as $barang)
                                     <option value="{{$barang->id}}" {{$barang->id == $penerimaanbarang->pivot->barang_id ? "selected" : "" }}>{{ $barang->nama_barang }}</option>
@@ -126,7 +126,6 @@
                                     <input type="number" class="form-control" id="total" name="total[]" disabled>
                                 </div>
                             </div>
-                            <input type="hidden" id="status_barang" name="status_barang[]">
                             <div class="form-group col-md-1">
                                 <p style="color: transparent">#</p>
                                 <a onclick="hapus(this)">
@@ -162,7 +161,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">%</div>
                                     </div>
-                                    <input type="number" class="form-control" id="diskon" name="diskon" onchange="disc();" value="{{$penerimaan->diskon}}" placeholder="-">
+                                    <input type="number" class="form-control" id="diskon" onchange="disc();" name="diskon"  value="{{$penerimaan->diskon}}" placeholder="-">
                                 </div>
                             </div>
                         </div>
@@ -173,7 +172,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" class="form-control" name="biaya_lain" id="biaya_lain" value="{{$penerimaan->biaya_lain}}" onchange="disc();" placeholder="-">
+                                    <input type="number" class="form-control" name="biaya_lain" onchange="disc();" id="biaya_lain" value="{{$penerimaan->biaya_lain}}" placeholder="-">
                                 </div>
                             </div>
                         </div>
@@ -204,7 +203,7 @@
                             <button type="button" class="btn btn-secondary">Batal</button>
                         </a>
                         <a class="btn" style="background-color:#00BFA6; color:white" onclick="stepper.previous()">Sebelumnya</a>
-                        <button type="submit" class="btn" style="background-color:#00BFA6; color:white">Tambah</button>
+                        <button type="submit" class="btn" style="background-color:#00BFA6; color:white">Ubah</button>
                     </div>
                 </div>
             </form>

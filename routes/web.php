@@ -27,6 +27,10 @@ Route::prefix('pembelian')->group(function () {
     Route::post('/savebarang', 'Pembelian\PermintaansController@savebarang');
     Route::get('/showhutang/{id}', 'Pembelian\HutangsController@showpembayaran');
 
+    //posting
+    Route::get('/postingpnm/{idnya}', 'Pembelian\PenerimaansController@posting');
+    Route::get('/ubahpsn/{idnya}', 'Pembelian\PenerimaansController@ubahpsn');
+
     //show details page
     Route::get('/permintaanshow/{id}', 'Pembelian\PermintaansController@show2');
     Route::get('/pemesananshow/{id}', 'Pembelian\PemesanansController@show2');

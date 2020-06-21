@@ -29,7 +29,6 @@
             <form method="POST" action="/pembelian/pembayarans">
                 @csrf
                 <div id="test-l-1" class="content">
-                    <input type="hidden" id="kode_pembayaran" name="kode_pembayaran" placeholder="" value="BYR{{$no+1}}">
                     <input type="hidden" id="status" name="status">
                     <div style="height: 58vh;overflow: auto; color:black" class="mt-2">
                         <div class="form-group row mx-5 mb-5">

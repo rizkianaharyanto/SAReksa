@@ -94,7 +94,7 @@ class PermintaansController extends Controller
         $permintaan = Permintaan::find($id);
         $gudang = Gudang::find($permintaan->gudang);
         $barangs = $permintaan->barangs;
-        $diskon = $permintaan->diskon.'%';
+        $diskon = $permintaan->diskon_rp;
         $biaya_lain = $permintaan->biaya_lain;
         $total_seluruh = $permintaan->total_harga;
         $total_harga = [];
@@ -121,7 +121,7 @@ class PermintaansController extends Controller
         $permintaan = Permintaan::find($request->id);
         $gudang = Gudang::find($permintaan->gudang);
         $barangs = $permintaan->barangs;
-        $diskon = $permintaan->diskon.'%';
+        $diskon = $permintaan->diskon_rp;
         $biaya_lain = $permintaan->biaya_lain;
         $total_seluruh = $permintaan->total_harga;
         $total_harga = [];

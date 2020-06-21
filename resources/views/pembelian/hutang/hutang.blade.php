@@ -19,8 +19,8 @@
 <tr>
     <td>{{ $pemasok->nama_pemasok }}</td>
     <td>{{ $totals[$index]['total_hutang']}}</td>
-    <td> - </td>
-    <td> - </td>
+    <td>{{ $lunass[$index]['lunas']}}</td>
+    <td>{{ $sisas[$index]['sisa']}}</td>
     <td class="d-flex justify-content-between">
         <a href="/pembelian/hutangs/{{$pemasok->id}}">
             <i onclick="" class="fas fa-info-circle"></i>

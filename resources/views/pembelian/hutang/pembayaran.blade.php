@@ -27,7 +27,7 @@
                 <span></span>
             </i>
         </a>
-        <a id="edit" href="/pembelian/pembayarans/{{$pembayaran->id}}/edit">
+        <!-- <a id="edit" href="/pembelian/pembayarans/{{$pembayaran->id}}/edit">
             <i style="cursor: pointer;" class="fas fa-edit">
                 <span></span>
             </i>
@@ -36,7 +36,7 @@
             <i style="cursor: pointer;" class="fas fa-trash">
                 <span></span>
             </i>
-        </a>
+        </a> -->
     </td>
 </tr>
 

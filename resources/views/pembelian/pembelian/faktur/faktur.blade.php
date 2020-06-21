@@ -29,16 +29,16 @@
                 <span></span>
             </i>
         </a>
-        <a id="edit" href="/pembelian/fakturs/{{$faktur->id}}/edit">
+        <!-- <a id="edit" href="/pembelian/fakturs/{{$faktur->id}}/edit">
             <i style="cursor: pointer;" class="fas fa-edit">
                 <span></span>
             </i>
-        </a>
-        <a id="delete" data-toggle="modal" data-target="#delete-{{$faktur->id }}">
+        </a> -->
+        <!-- <a id="delete" data-toggle="modal" data-target="#delete-{{$faktur->id }}">
             <i style="cursor: pointer;" class="fas fa-trash">
                 <span></span>
             </i>
-        </a>
+        </a> -->
     </td>
 </tr>
 

@@ -70,7 +70,7 @@ class PemesanansController extends Controller
                 'harga' => $request->harga[$index],
                 'unit' => $request->unit_barang[$index],
                 // 'pajak' => $request->pajak[$index],
-                'status_barang' => $request->status_barang[$index],
+                'status_barang' => 'belum diterima',
             ]);
         }
 
@@ -99,7 +99,7 @@ class PemesanansController extends Controller
         $pemesanan = pemesanan::find($id);
         $gudang = Gudang::find($pemesanan->gudang);
         $barangs = $pemesanan->barangs;
-        $diskon = $pemesanan->diskon.'%';
+        $diskon = $pemesanan->diskon_rp;
         $biaya_lain = $pemesanan->biaya_lain;
         $total_seluruh = $pemesanan->total_harga;
         $total_harga = [];
@@ -126,7 +126,7 @@ class PemesanansController extends Controller
         $pemesanan = pemesanan::find($request->id);
         $gudang = Gudang::find($pemesanan->gudang);
         $barangs = $pemesanan->barangs;
-        $diskon = $pemesanan->diskon.'%';
+        $diskon = $pemesanan->diskon_rp;
         $biaya_lain = $pemesanan->biaya_lain;
         $total_seluruh = $pemesanan->total_harga;
         $total_harga = [];

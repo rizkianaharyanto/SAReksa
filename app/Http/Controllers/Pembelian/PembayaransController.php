@@ -80,7 +80,8 @@ class PembayaransController extends Controller
         foreach ($request->hutang_id as $index => $id) {
             $hutang = Hutang::find($id);
             $hutang->update([
-                'total_hutang' => $request->total_harga * -1,
+                'lunas' => $request->total_harga,
+                'total_hutang' => 0,
             ]);
             if ($hutang->faktur_id) {
                 $hutang->faktur()->update([
