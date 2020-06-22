@@ -23,7 +23,7 @@
     <td>{{ $penawaran->tanggal }}</td>
     <td>{{ $penawaran->total_harga }}</td>
     <td class="d-flex justify-content-between">
-        <a id="details" href="/penjualan/penawarans/create">
+        <a id="details" href="/penjualan/penawarandetails/{{$penawaran->id}}">
             <i style="cursor: pointer;color:#212120 " class="fas fa-info-circle">
                 <span></span>
             </i>

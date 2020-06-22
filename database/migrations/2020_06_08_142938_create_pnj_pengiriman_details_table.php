@@ -21,7 +21,7 @@ class CreatePnjPengirimanDetailsTable extends Migration
             $table->integer('harga');
             $table->timestamps();
             //fk
-            $table->bigInteger('penerimaan_id')->nullable();
+            $table->bigInteger('pengiriman_id')->nullable();
             $table->bigInteger('barang_id')->nullable();
         });
     }

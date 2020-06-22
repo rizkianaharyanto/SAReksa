@@ -264,7 +264,7 @@
             data: {},
             success: function(data) {
                 $('#permintaan_form').removeAttr('style')
-                console.log(data.permintaans)
+                console.log(data)
                 for (i = 0; i < data.permintaans.length; i++) {
                     $('#permintaan_id').append('<option value="' + data.permintaans[i].id + '">' + data.permintaans[i].kode_permintaan + '</option>')
                 }

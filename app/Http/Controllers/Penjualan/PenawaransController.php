@@ -9,6 +9,7 @@ use App\Stock\Barang;
 use App\Stock\Gudang;
 use App\Penjualan\Pelanggan;
 use App\Penjualan\Penjual;
+use PDF;
 
 
 class PenawaransController extends Controller
@@ -86,6 +87,61 @@ class PenawaransController extends Controller
         // $unit = $barangs->unit;
         return response()
         ->json(['success'=> true, 'penawaran' => $penawaran, 'barangs' => $barangs]);
+    }
+
+    public function detail($id)
+    {
+        $penawaran = Penawaran::find($id);
+        $gudang = Gudang::find($penawaran->gudang);
+        $barangs = $penawaran->barangs;
+        $diskon = $penawaran->diskon.'%';
+        $biaya_lain = $penawaran->biaya_lain;
+        $total_seluruh = $penawaran->total_harga;
+        $total_harga = [];
+        $subtotal = 0;
+        foreach ($barangs as $index => $barang){
+            $total_harga[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
+            $subtotal += $total_harga[$index];
+        }
+        // dd($total_harga, $total_seluruh);
+        return view('penjualan.penjualan.penawaran.penawarandetails', [
+            'penawaran' => $penawaran, 
+            'gudang' => $gudang,
+            'barangs' => $barangs,
+            'diskon' => $diskon,
+            'biaya_lain' => $biaya_lain,
+            'total_harga' => $total_harga,
+            'subtotal' => $subtotal,
+            'total_seluruh' => $total_seluruh,
+        ]);
+    }
+
+    public function cetak_pdf(Request $request)
+    {
+        $penawaran = Penawaran::find($request->id);
+        $gudang = Gudang::find($penawaran->gudang);
+        $barangs = $penawaran->barangs;
+        $diskon = $penawaran->diskon.'%';
+        $biaya_lain = $penawaran->biaya_lain;
+        $total_seluruh = $penawaran->total_harga;
+        $total_harga = [];
+        $subtotal = 0;
+        foreach ($barangs as $index => $barang){
+            $total_harga[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
+            $subtotal += $total_harga[$index];
+        }
+        $pdf = PDF::loadview('penjualan.penjualan.penawaran.penawaran-pdf', [
+            'penawaran' => $penawaran, 
+            'gudang' => $gudang,
+            'barangs' => $barangs,
+            'diskon' => $diskon,
+            'biaya_lain' => $biaya_lain,
+            'total_harga' => $total_harga,
+            'subtotal' => $subtotal,
+            'total_seluruh' => $total_seluruh,
+            ]);
+
+        return $pdf->download('Penawaran.pdf');
     }
 
     /**

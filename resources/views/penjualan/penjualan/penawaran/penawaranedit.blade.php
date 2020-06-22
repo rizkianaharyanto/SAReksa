@@ -10,7 +10,7 @@
 <div class="content">
         <div class="row">
             <div class="col-md-12">
-                <div class="card">
+                <div class="">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">
@@ -43,9 +43,11 @@
                                                     </div>
                                                 </div>
                                                 <div class="bs-stepper-content">
-                                                    <form method="POST" action="/penjualan/penawarans">
+                                                    <form method="POST" action="/penjualan/penawarans/{{$penawaran->id}}">
+                                                        @method('put')
                                                         @csrf
                                                         <div id="test-l-1" class="content">
+                                                        <input type="hidden" id="kode_penawaran" name="kode_penawaran" placeholder="" value="{{$penawaran->kode_penawaran}}">
                                                             <div style="height: 58vh;overflow: auto; color:#212120" class="mt-2">
                                                                 <div class="form-group row mx-5 mb-5">
                                                                     <label class="col-sm-3 col-form-label" for="pelanggan_id">Pelanggan</label>
@@ -113,7 +115,7 @@
                                                                         <select class="form-control" id="barang_id" name="barang_id[]">
                                                                             <option value="">--- Pilih Barang ---</option>
                                                                             @foreach ($barangs as $barang)
-                                                                            <option value="{{$barang->id}}" {{$barang->id == $penawaranbarang->pivot->barang_id ? "selected" : "" }}>{{ $barang->nama_barang }}></option>
+                                                                            <option value="{{$barang->id}}" {{$barang->id == $penawaranbarang->pivot->barang_id ? "selected" : "" }}>{{ $barang->nama_barang }}</option>
                                                                             @endforeach
                                                                         </select>
                                                                     </div>

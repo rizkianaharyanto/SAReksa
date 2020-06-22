@@ -4,3 +4,66 @@
 @section('judul', 'Pengiriman')
 
 @section('menu', 'Pengiriman')
+
+@section('thead')
+<tr>
+    <th>Kode Pengiriman</th>
+    <th>pelanggan</th>
+    <th>Tanggal</th>
+    <th>Total</th>
+    <th>Status</th>
+    <th style="column-width: 80px">Aksi</th>
+</tr>
+@endsection
+
+@section('tbody')
+@foreach ($pengirimans as $pengiriman)
+<tr>
+    <td>{{ $pengiriman->kode_pengiriman }}</td>
+    <td>{{ $pengiriman->pelanggan->nama_pelanggan }}</td>
+    <td>{{ $pengiriman->tanggal }}</td>
+    <td>{{ $pengiriman->total_harga }}</td>
+    <td>{{ $pengiriman->status !=null ? $pengiriman->status  : '-' }}</td>
+    <td class="d-flex justify-content-between">
+        <a id="details" href="/penjualan/pengirimandetails/{{$pengiriman->id}}">
+            <i style="cursor: pointer;color: #212120 " class="fas fa-info-circle">
+                <span></span>
+            </i>
+        </a>
+        <a id="edit" href="/penjualan/pengirimans/{{$pengiriman->id}}/edit">
+            <i style="cursor: pointer;color: #212120" class="fas fa-edit">
+                <span></span>
+            </i>
+        </a>
+        <a id="delete" data-toggle="modal" data-target="#delete-{{$pengiriman->id }}">
+            <i style="cursor: pointer;color: #212120" class="fas fa-trash">
+                <span></span>
+            </i>
+        </a>
+    </td>
+</tr>
+
+@php
+$delete = "delete-".$pengiriman->id
+@endphp
+
+<x-modal :id="$delete">
+    <x-slot name="title">
+        <h5 class="align-self-center">Hapus pengiriman {{$pengiriman->kode_pengiriman}}</h5>
+    </x-slot>
+    <x-slot name="body">
+        <x-penjualan.pengiriman-delete :id="$pengiriman->id" />
+    </x-slot>
+</x-modal>
+
+@endforeach
+@endsection
+
+
+@section('tambah')
+<a href="/penjualan/pengirimans/create">
+    <i class="fas fa-plus mr-4" style="font-size:30px;color:#212120; cursor: pointer;">
+        <span></span>
+    </i>
+</a>
+@endsection

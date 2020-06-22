@@ -12,7 +12,7 @@ use App\Stock\Barang;
 use App\Stock\Gudang;
 use App\Penjualan\Pelanggan;
 use App\Penjualan\Penjual;
-
+use PDF;
 
 class PengirimansController extends Controller
 {
@@ -37,7 +37,6 @@ class PengirimansController extends Controller
         return view('penjualan.penjualan.pengiriman.pengirimaninsert', [
             'pelanggans' => Pelanggan::all(),
             'pemesanans' => Pemesanan::all(),
-            'no' => Pengiriman::max('id'),
             'barangs' => Barang::all(),
             'penjuals' => Penjual::all(),
             'gudangs' => Gudang::all()
@@ -52,8 +51,9 @@ class PengirimansController extends Controller
      */
     public function store(Request $request)
     {
+        $pgr = Pengiriman::max('id');
         $pengiriman = Pengiriman::create([
-            'kode_pengiriman' => $request->kode_pengiriman,
+            'kode_pengiriman' => 'PGR-'.$pgr,
             'pemesanan_id' => $request->pemesanan_id,
             'status' => $request->status,
             'pelanggan_id' => $request->pelanggan_id,
@@ -67,26 +67,6 @@ class PengirimansController extends Controller
             'total_harga' => $request->total_harga_keseluruhan,
         ]);
 
-        $no= Jurnal::max('id') + 1;
-        for ($i = 1; $i < 3; $i++) {
-            $jurnal= Jurnal::create([
-                'kode_jurnal' => 'jur'+$no,
-                'pengiriman_id' => $pengiriman->id,
-                'debit' => 0,
-                'kredit' => 0
-            ]);
-            if ($i == 1) {
-                $jurnal->update([
-                    'debit' => $request->akun_barang,
-                    'akun_id' => 1 //barang
-                ]);
-            }else if ($i == 2) {
-                $jurnal->update([
-                    'kredit' => $request->akun_barang,
-                    'akun_id' => 2 //barang belum ditagih
-                ]);
-            }
-        }
         // dd($jurnal);
 
         $pemesanan = $pengiriman->pemesanan;
@@ -97,13 +77,13 @@ class PengirimansController extends Controller
                 'unit' => $request->unit_barang[$index],
                 // 'pajak' => $request->pajak[$index],
             ]);
-            $pemesanan->barangs()->where('barang_id', $id)->update(array('status_barang' => 'diterima'));
+            $pemesanan->barangs()->where('barang_id', $id)->update(array('status_barang' => 'terkirim'));
             $status = $pemesanan->barangs()->get(array('status_barang'));
             foreach ($status as $status_barang) {
                 if (count($request->barang_id) == count($status)) {
-                    $pemesanan->update(array('status' => 'diterima'));
+                    $pemesanan->update(array('status' => 'terkirim'));
                 } else {
-                    $pemesanan->update(array('status' => 'diterima sebagian'));
+                    $pemesanan->update(array('status' => 'terkirim sebagian'));
                 }
             }
         }
@@ -123,6 +103,61 @@ class PengirimansController extends Controller
         // dd($barangs);
         return response()
             ->json(['success' => true, 'pengiriman' => $pengiriman, 'barangs' => $barangs]);
+    }
+
+    public function detail($id)
+    {
+        $pengiriman = pengiriman::find($id);
+        $gudang = Gudang::find($pengiriman->gudang);
+        $barangs = $pengiriman->barangs;
+        $diskon = $pengiriman->diskon.'%';
+        $biaya_lain = $pengiriman->biaya_lain;
+        $total_seluruh = $pengiriman->total_harga;
+        $total_harga = [];
+        $subtotal = 0;
+        foreach ($barangs as $index => $barang){
+            $total_harga[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
+            $subtotal += $total_harga[$index];
+        }
+        // dd($total_harga, $total_seluruh);
+        return view('penjualan.penjualan.pengiriman.pengirimandetails', [
+            'pengiriman' => $pengiriman, 
+            'gudang' => $gudang,
+            'barangs' => $barangs,
+            'diskon' => $diskon,
+            'biaya_lain' => $biaya_lain,
+            'total_harga' => $total_harga,
+            'subtotal' => $subtotal,
+            'total_seluruh' => $total_seluruh,
+        ]);
+    }
+
+    public function cetak_pdf(Request $request)
+    {
+        $pengiriman = pengiriman::find($request->id);
+        $gudang = Gudang::find($pengiriman->gudang);
+        $barangs = $pengiriman->barangs;
+        $diskon = $pengiriman->diskon.'%';
+        $biaya_lain = $pengiriman->biaya_lain;
+        $total_seluruh = $pengiriman->total_harga;
+        $total_harga = [];
+        $subtotal = 0;
+        foreach ($barangs as $index => $barang){
+            $total_harga[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
+            $subtotal += $total_harga[$index];
+        }
+        $pdf = PDF::loadview('penjualan.penjualan.pengiriman.pengiriman-pdf', [
+            'pengiriman' => $pengiriman, 
+            'gudang' => $gudang,
+            'barangs' => $barangs,
+            'diskon' => $diskon,
+            'biaya_lain' => $biaya_lain,
+            'total_harga' => $total_harga,
+            'subtotal' => $subtotal,
+            'total_seluruh' => $total_seluruh,
+            ]);
+
+        return $pdf->download('Pengiriman.pdf');
     }
 
     /**

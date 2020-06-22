@@ -4,13 +4,14 @@ namespace App\Http\Controllers\Penjualan;
 
 use App\Http\Controllers\Controller;
 
-use App\Pembelian\Pemesanan;
+use App\Penjualan\Pemesanan;
 use App\Stock\Barang;
 use App\Stock\Gudang;
-use App\Pembelian\Pelanggan;
-use App\Pembelian\Penawaran;
+use App\Penjualan\Pelanggan;
+use App\Penjualan\Penawaran;
 use Illuminate\Http\Request;
 use App\Penjualan\Penjual;
+use PDF;
 
 class PemesanansController extends Controller
 {
@@ -35,7 +36,6 @@ class PemesanansController extends Controller
         return view('penjualan.penjualan.pemesanan.pemesananinsert', [
             'pelanggans' => Pelanggan::all(),
             'penawarans' => Penawaran::all(),
-            'no' => Pemesanan::max('id'),
             'barangs' => Barang::all(),
             'gudangs'=> Gudang::all(),
             'penjuals' => Penjual::all()
@@ -50,8 +50,9 @@ class PemesanansController extends Controller
      */
     public function store(Request $request)
     {
+        $pms = Pemesanan::max('id');
         $pemesanan = Pemesanan::create([
-            'kode_pemesanan' => $request->kode_pemesanan,
+            'kode_pemesanan' => 'PMS-'.$pms,
             'pelanggan_id' => $request->pelanggan_id,
             'gudang' => $request->gudang,
             'tanggal' => $request->tanggal,
@@ -84,13 +85,68 @@ class PemesanansController extends Controller
      * @param  \App\Pemesanan  $pemesanan
      * @return \Illuminate\Http\Response
      */
-    public function show(Pemesanan $pemesanan)
+    public function show($id)
     {
         $pemesanan = Pemesanan::find($id);
         $barangs = $pemesanan->barangs;
-        $penerimaans = $pemesanan->penerimaans;
+        $pengirimans = $pemesanan->pengirimans;
         return response()
         ->json(['success'=> true, 'pemesanan' => $pemesanan, 'barangs' => $barangs, 'pengirimans' => $pengirimans ]);
+    }
+    
+    public function detail($id)
+    {
+        $pemesanan = Pemesanan::find($id);
+        $gudang = Gudang::find($pemesanan->gudang);
+        $barangs = $pemesanan->barangs;
+        $diskon = $pemesanan->diskon.'%';
+        $biaya_lain = $pemesanan->biaya_lain;
+        $total_seluruh = $pemesanan->total_harga;
+        $total_harga = [];
+        $subtotal = 0;
+        foreach ($barangs as $index => $barang){
+            $total_harga[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
+            $subtotal += $total_harga[$index];
+        }
+        // dd($barangs);
+        return view('penjualan.penjualan.pemesanan.pemesanandetails', [
+            'pemesanan' => $pemesanan, 
+            'gudang' => $gudang,
+            'barangs' => $barangs,
+            'diskon' => $diskon,
+            'biaya_lain' => $biaya_lain,
+            'total_harga' => $total_harga,
+            'subtotal' => $subtotal,
+            'total_seluruh' => $total_seluruh,
+        ]);
+    }
+
+    public function cetak_pdf(Request $request)
+    {
+        $pemesanan = Pemesanan::find($request->id);
+        $gudang = Gudang::find($pemesanan->gudang);
+        $barangs = $pemesanan->barangs;
+        $diskon = $pemesanan->diskon.'%';
+        $biaya_lain = $pemesanan->biaya_lain;
+        $total_seluruh = $pemesanan->total_harga;
+        $total_harga = [];
+        $subtotal = 0;
+        foreach ($barangs as $index => $barang){
+            $total_harga[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
+            $subtotal += $total_harga[$index];
+        }
+        $pdf = PDF::loadview('penjualan.penjualan.pemesanan.pemesanan-pdf', [
+            'pemesanan' => $pemesanan, 
+            'gudang' => $gudang,
+            'barangs' => $barangs,
+            'diskon' => $diskon,
+            'biaya_lain' => $biaya_lain,
+            'total_harga' => $total_harga,
+            'subtotal' => $subtotal,
+            'total_seluruh' => $total_seluruh,
+            ]);
+
+        return $pdf->download('Pemesanan.pdf');
     }
 
     /**

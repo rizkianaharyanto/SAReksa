@@ -1,6 +1,6 @@
 @extends('penjualan.template.table', [
     'elementActive' => 'pembayaran'
 ])
-@section('judul', 'Pembayaran')
+@section('judul', 'Edit Pembayaran Piutang')
 
-@section('menu', 'Pembayaran')
+@section('menu', 'Edit Pembayaran Piutang')

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Penjualan;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Penjualan\Jurnal;
+use PDF;
+
 
 class JurnalsController extends Controller
 {
@@ -16,9 +18,38 @@ class JurnalsController extends Controller
     public function index()
     {
         $jurnals = Jurnal::all()->groupBy('kode_jurnal');
-        return view('penjualan.jurnal', compact('jurnals'));
+        $debit = 0;
+        $kredit = 0;
+        foreach (Jurnal::all() as $jurnal){
+            $debit += $jurnal->debit;
+            $kredit += $jurnal->kredit;
+        }
+        // dd($debit, $kredit);
+        // dd($jurnals);
+        return view('penjualan.jurnal', [
+            'jurnals' => $jurnals,
+            'debit' => $debit,
+            'kredit' => $kredit
+        ]);
     }
 
+    public function cetak_pdf()
+    {
+        $jurnals = Jurnal::all()->groupBy('kode_jurnal');
+        $debit = 0;
+        $kredit = 0;
+        foreach (Jurnal::all() as $jurnal){
+            $debit += $jurnal->debit;
+            $kredit += $jurnal->kredit;
+        }
+        $pdf = PDF::loadview('penjualan.jurnal-pdf', [
+            'jurnals' => $jurnals,
+            'debit' => $debit,
+            'kredit' => $kredit
+        ]);
+
+        return $pdf->download('penjualan.jurnal-pdf.pdf');
+    }
     /**
      * Show the form for creating a new resource.
      *

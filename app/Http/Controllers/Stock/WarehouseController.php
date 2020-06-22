@@ -29,6 +29,12 @@ class WarehouseController extends Controller
         return view('pembelian.manajemendata.gudang', compact("allData"));
     }
 
+    public function indexpenjualan()
+    {
+        $allData = $this->model->all();
+        return view('penjualan.manajemendata.gudang', compact("allData"));
+    }
+
     public function store(WarehouseRequest $request)
     {
         $input = $request->validated();

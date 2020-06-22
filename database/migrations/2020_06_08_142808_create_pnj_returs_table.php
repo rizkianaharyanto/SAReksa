@@ -23,7 +23,7 @@ class CreatePnjRetursTable extends Migration
             $table->double('diskon', 8, 3);
             $table->integer('biaya_lain');
             $table->integer('diskon_rp')->nullable();
-            $table->enum('status', ['lunas', 'hutang'])->nullable();
+            $table->enum('status', ['lunas', 'piutang'])->nullable();
             $table->timestamps();
             $table->softDeletes();
             //fk

@@ -18,10 +18,10 @@ class PiutangsController extends Controller
      */
     public function index()
     {
-        $pelanggans = Pelanggan::with('piutang')->get();
-        $totals = [];
+        $pelanggans = Pelanggan::with('piutangs')->get();
+        $totals = [];   
         foreach ($pelanggans as $pelanggan) {
-            $total = $pelanggan->piutang->sum('total_piutang');
+            $total = $pelanggan->piutangs->sum('total_piutang');
             array_push($totals, [
                 'total_piutang' => $total
             ]);
@@ -65,6 +65,15 @@ class PiutangsController extends Controller
         $piutangs = Piutang::get()->where('pelanggan_id', $id);
         // dd($piutangs);
         return view('penjualan.piutang.piutangdetails', ['piutangs' => $piutangs]);
+    }
+
+    public function showpembayaran($id)
+    {
+        $piutang = Piutang::find($id);
+        $retur = $piutang->retur;
+        $faktur = $piutang->faktur;
+        return response()
+        ->json(['success'=> true, 'piutang' => $piutang, 'retur' => $retur, 'faktur' => $faktur]);
     }
 
     /**

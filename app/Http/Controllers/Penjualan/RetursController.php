@@ -12,6 +12,7 @@ use App\Stock\Barang;
 use App\Stock\Gudang;
 use App\Penjualan\Pelanggan;
 use App\Penjualan\Penjual;
+use PDF;
 
 class RetursController extends Controller
 {
@@ -35,8 +36,6 @@ class RetursController extends Controller
     {
         return view('penjualan.penjualan.retur.returinsert', [
             'pelanggans' => Pelanggan::all(),
-            'no' => Retur::max('id'),
-            'hut' => Piutang::max('id'),
             'fakturs' => Faktur::all(),
             'barangs' => Barang::all(),
             'gudangs'=> Gudang::all(),
@@ -53,8 +52,9 @@ class RetursController extends Controller
      */
     public function store(Request $request)
     {
+        $rtp = Retur::max('id');
         $retur = Retur::create([
-            'kode_retur' => $request->kode_retur,
+            'kode_retur' => 'RTP-'.$rtp,
             'faktur_id' => $request->faktur_id,
             'status' => $request->status,
             'penjual_id' => $request->penjual_id,
@@ -64,46 +64,15 @@ class RetursController extends Controller
             'diskon' => $request->diskon,
             'diskon_rp' => $request->disk,
             'biaya_lain' => $request->biaya_lain,
-            // 'uang_muka' => $request->uang_muka,
+            'uang_muka' => $request->uang_muka,
             'total_jenis_barang' => 3,
             'total_harga' => $request->total_harga_keseluruhan,
         ]);
-        $no= Jurnal::max('id') + 1;
-        for ($i = 1; $i < 5; $i++) {
-            $jurnal= Jurnal::create([
-                'kode_jurnal' => 'jur'.$no,
-                'retur_id' => $retur->id,
-                'debit' => 0,
-                'kredit' => 0
-            ]);
-            if ($i == 1) {
-                $jurnal->update([
-                    'kredit' => $request->akun_barang,
-                    'akun_id' => 1 //barang
-                ]);
-            }
-            else if ($i == 2) {
-                $jurnal->update([
-                    'kredit' => $request->biaya_lain,
-                    'akun_id' => 3 //biayalain
-                ]);
-            }
-            else if ($i == 3) {
-                $jurnal->update([
-                    'debit' => $request->piutang,
-                    'akun_id' => 4 //piutang
-                ]);
-            }
-            else if ($i == 4) {
-                $jurnal->update([
-                    'debit' => $request->disk,
-                    'akun_id' => 5 //diskon
-                ]);
-            }
-        }
 
+
+        $pit = Piutang::max('id');
         $piutang= $retur->piutang()->create([
-            'kode_piutang' => $request->kode_piutang,
+            'kode_piutang' => 'PIT-'.$pit,
             'pelanggan_id' => $request->pelanggan_id,
             'total_piutang' => $request->piutang,
             'retur_id' => $retur->id,
@@ -112,13 +81,13 @@ class RetursController extends Controller
         $retur->update(['piutang_id' => $piutang->id]);
 
         foreach ($request->barang_id as $index => $id) {
-
+            
             $retur->barangs()->attach($id, [
                 'jumlah_barang' => $request->jumlah_barang[$index],
                 'harga' => $request->harga[$index],
-                'unit' => $request->unit[$index],
-                'pajak' => $request->pajak[$index],
-                'status_barang' => $request->status_barang[$index],
+                'unit' => $request->unit_barang[$index],
+                // 'pajak' => $request->pajak[$index],
+                // 'status_barang' => $request->status_barang[$index],
             ]);
         }
         return redirect('/penjualan/returs');
@@ -132,7 +101,66 @@ class RetursController extends Controller
      */
     public function show(Retur $retur)
     {
-        //
+        $retur = Retur::find($id);
+        $barangs = $retur->barangs;
+
+        return response()
+            ->json(['success' => true, 'retur' => $retur, 'barangs' => $barangs]);
+    }
+
+    public function detail($id)
+    {
+        $retur = retur::find($id);
+        $barangs = $retur->barangs;
+        $diskon = $retur->diskon_rp;
+        $biaya_lain = $retur->biaya_lain;
+        $uang_muka = $retur->uang_muka;
+        $total_seluruh = $retur->total_harga;
+        $total_harga = [];
+        $subtotal = 0;
+        foreach ($barangs as $index => $barang){
+            $total_harga[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
+            $subtotal += $total_harga[$index];
+        }
+        // dd($total_harga, $total_seluruh);
+        return view('penjualan.penjualan.retur.returdetails', [
+            'retur' => $retur, 
+            'barangs' => $barangs,
+            'diskon' => $diskon,
+            'biaya_lain' => $biaya_lain,
+            'uang_muka' => $uang_muka,
+            'total_harga' => $total_harga,
+            'subtotal' => $subtotal,
+            'total_seluruh' => $total_seluruh,
+        ]);
+    }
+
+    public function cetak_pdf(Request $request)
+    {
+        $retur = retur::find($request->id);
+        $barangs = $retur->barangs;
+        $diskon = $retur->diskon_rp;
+        $biaya_lain = $retur->biaya_lain;
+        $uang_muka = $retur->uang_muka;
+        $total_seluruh = $retur->total_harga;
+        $total_harga = [];
+        $subtotal = 0;
+        foreach ($barangs as $index => $barang){
+            $total_harga[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
+            $subtotal += $total_harga[$index];
+        }
+        $pdf = PDF::loadview('penjualan.penjualan.retur.retur-pdf', [
+            'retur' => $retur, 
+            'barangs' => $barangs,
+            'diskon' => $diskon,
+            'biaya_lain' => $biaya_lain,
+            'uang_muka' => $uang_muka,
+            'total_harga' => $total_harga,
+            'subtotal' => $subtotal,
+            'total_seluruh' => $total_seluruh,
+            ]);
+
+        return $pdf->download('retur.pdf');
     }
 
     /**
