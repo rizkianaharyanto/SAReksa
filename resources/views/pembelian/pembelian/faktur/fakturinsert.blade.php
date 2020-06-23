@@ -361,7 +361,11 @@
             success: function(data) {
                 console.log(data)
                 for (i = 0; i < data.fpemesanans.length; i++) {
-                    $('#pemesanan_id').append('<option value="' + data.fpemesanans[i].id + '">' + data.fpemesanans[i].kode_pemesanan + '</option>')
+                    if (data.fpemesanans[i].id == null){
+                        $('#pemesanan_id').append('<option value="">' + data.fpemesanans[i] + '(Buat Berdasarkan Penerimaan)</option>')
+                    }else{
+                        $('#pemesanan_id').append('<option value="' + data.fpemesanans[i].id + '">' + data.fpemesanans[i].kode_pemesanan + '</option>')
+                    }  
                 }
                 for (a = 0; a < data.fpenerimaans.length; a++) {
                     $('#penerimaan_id').append('<option value="' + data.fpenerimaans[a].id + '">' + data.fpenerimaans[a].kode_penerimaan + '</option>')

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class RenamePiutangColoumn extends Migration
+class AddStatusToPblHutangsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class RenamePiutangColoumn extends Migration
      */
     public function up()
     {
-        Schema::table('pnj_piutangs', function(Blueprint $table) {
-            $table->renameColumn('total_sisa', 'total_piutang');
+        Schema::table('pbl_hutangs', function (Blueprint $table) {
+            $table->enum('status', ['lunas', 'hutang'])->nullable();
         });
     }
 
@@ -25,8 +25,8 @@ class RenamePiutangColoumn extends Migration
      */
     public function down()
     {
-        Schema::table('pnj_piutangs', function(Blueprint $table) {
-//
-        });    
+        Schema::table('pbl_hutangs', function (Blueprint $table) {
+            //
+        });
     }
 }

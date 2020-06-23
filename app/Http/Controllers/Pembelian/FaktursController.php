@@ -81,7 +81,9 @@ class FaktursController extends Controller
                 'kode_hutang' => 'HUT-'.$hut,
                 'pemasok_id' => $faktur->pemasok_id,
                 'total_hutang' => $request->hutang,
+                'sisa' => $request->hutang,
                 'faktur_id' => $faktur->id,
+                'status' => 'hutang'
             ]);
             $faktur->update(['hutang_id' => $hutang->id]);
         }

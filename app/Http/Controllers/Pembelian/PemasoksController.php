@@ -66,10 +66,19 @@ class PemasoksController extends Controller
         $pemesanans = $pemasok->pemesanans;
         $pnmpemesanans = $pemasok->pemesanans()->whereNotIn('status', ['diterima', 'selesai'])->get();
         $fpemesanans = $pemasok->pemesanans()->where('status', 'diterima')->get();
+        foreach($fpemesanans as $index => $fakpemesanans){
+            $status = $fakpemesanans->penerimaans()->where('status', 'selesai')->first();
+            if ($status == null){
+                $fpemesanans[$index] = $fakpemesanans;
+            }else {
+                $fpemesanans[$index] = $fakpemesanans->kode_pemesanan;
+            }
+        }
+        
         $penerimaans = $pemasok->penerimaans;
         $fpenerimaans = $pemasok->penerimaans()->where('status', 'sudah posting')->get();
         $fakturs = $pemasok->fakturs;
-        $hutangs = $pemasok->hutangs;
+        $hutangs = $pemasok->hutangs()->where('status', 'hutang')->get();
 
         return response()
         ->json([
