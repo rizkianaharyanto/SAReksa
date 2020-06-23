@@ -108,7 +108,7 @@ class PenerimaansController extends Controller
 
         $pemesanan = $penerimaan->pemesanan;
         foreach ($penerimaan->barangs as $index => $barang) {
-            $a = $pemesanan->barangs()->where('barang_id', $barang->id)->first()->pivot->jumlah_barang;
+            $a = $pemesanan->barangs()->where('barang_id', $barang->id)->first()->pivot->barang_belum_diterima;
             $b = $barang->pivot->jumlah_barang;
             $belum_diterima = $a - $b;
             // dd($a, $b, $belum_diterima);

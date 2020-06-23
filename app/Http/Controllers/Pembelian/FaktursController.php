@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Pembelian;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use App\Pembelian\Faktur;
 use App\Pembelian\Hutang;
 use App\Pembelian\Jurnal;
@@ -18,7 +17,6 @@ use PDF;
 // use App\Pembelian\Akun;
 class FaktursController extends Controller
 {
-    
     /**
      * Display a listing of the resource.
      *
@@ -72,12 +70,12 @@ class FaktursController extends Controller
         ]);
 
         if ($request->penerimaan_id) {
-            foreach($request->penerimaan_id as $penerimaan){
+            foreach ($request->penerimaan_id as $penerimaan) {
                 Penerimaan::where('id', $penerimaan)->update(['faktur_id' => $faktur->id]);
             }
         }
 
-        if ($request->status == 'hutang'){
+        if ($request->status == 'hutang') {
             $hut = Hutang::max('id') + 1;
             $hutang = $faktur->hutang()->create([
                 'kode_hutang' => 'HUT-'.$hut,
@@ -87,7 +85,21 @@ class FaktursController extends Controller
             ]);
             $faktur->update(['hutang_id' => $hutang->id]);
         }
-        
+
+        if ($request->pemesanan_id) {
+            Pemesanan::find($request->pemesanan_id)->update(['status' => 'selesai']);
+            $pemesanan = Pemesanan::find($request->pemesanan_id)->id;
+            $coba = Penerimaan::where('pemesanan_id', $pemesanan)->update(['status' => 'selesai']);
+            // dd($pemesanan, $coba);
+        }
+
+        if ($request->penerimaan_id) {
+            foreach ($request->penerimaan_id as $penerimaan) {
+                // dd($penerimaan->id);
+                Penerimaan::where('id', $penerimaan)->update(['status' => 'selesai']);
+            }
+        }
+
         foreach ($request->barang_id as $index => $id) {
             $faktur->barangs()->attach($id, [
                 'jumlah_barang' => $request->jumlah_barang[$index],
@@ -105,32 +117,10 @@ class FaktursController extends Controller
     {
         $faktur = Faktur::find($idnya);
         Faktur::where('id', $faktur->id)
-                    ->update(['status_posting' => 'konfirmasi']);
-
-        if ($faktur->pemesanan_id) {
-            Pemesanan::find($faktur->pemesanan_id)->update(['status' => 'selesai']);
-            $pemesanan = Pemesanan::find($faktur->pemesanan_id)->id;
-            $coba = Penerimaan::where('pemesanan_id', $pemesanan)->update(['status' => 'selesai']);
-            // dd($pemesanan, $coba);
-        }
-
-        if($faktur->penerimaans){
-            foreach($faktur->penerimaans as $penerimaan){
-                // dd($penerimaan->id);
-                Penerimaan::where('id', $penerimaan->id)->update(['status' => 'selesai']);
-            }
-        }
-
-        return redirect('/pembelian/fakturs');
-    }
-
-    public function ubahpsn($idnya){
-        $faktur = Faktur::find($idnya);
-        Faktur::where('id', $faktur->id)
                     ->update(['status_posting' => 'sudah posting']);
 
         $penerimaan = $faktur->penerimaans;
-        foreach($faktur->penerimaans as $penerimaan){
+        foreach ($faktur->penerimaans as $penerimaan) {
             $pemesanan = $penerimaan->pemesanan;
             $status_pesanan = $penerimaan->pemesanan->status;
             $status = $pemesanan->penerimaans->where('status', 'sudah posting')->first();
@@ -139,72 +129,72 @@ class FaktursController extends Controller
                 $pemesanan->update(array('status' => 'selesai'));
             }
         }
-        
-            if ($faktur->status == 'hutang') {
-                $no = Jurnal::max('id') + 1;
-                for ($i = 1; $i < 5; ++$i) {
-                    $jurnal = Jurnal::create([
+
+        if ($faktur->status == 'hutang') {
+            $no = Jurnal::max('id') + 1;
+            for ($i = 1; $i < 5; ++$i) {
+                $jurnal = Jurnal::create([
                         'kode_jurnal' => 'jur'.$no,
                         'faktur_id' => $faktur->id,
                         'debit' => 0,
                         'kredit' => 0,
                     ]);
-                    if ($i == 1) {
-                        $jurnal->update([
+                if ($i == 1) {
+                    $jurnal->update([
                             'debit' => $faktur->akun_barang - $faktur->uang_muka,
                             'akun_id' => 1, //barang
                         ]);
-                    } elseif ($i == 2) {
-                        $jurnal->update([
+                } elseif ($i == 2) {
+                    $jurnal->update([
                             'debit' => $faktur->biaya_lain,
                             'akun_id' => 3, //biayalain
                         ]);
-                    } elseif ($i == 3) {
-                        $jurnal->update([
+                } elseif ($i == 3) {
+                    $jurnal->update([
                             'kredit' => $faktur->hutang->total_hutang,
                             'akun_id' => 4, //hutang
                         ]);
-                    } elseif ($i == 4) {
-                        $jurnal->update([
+                } elseif ($i == 4) {
+                    $jurnal->update([
                             'kredit' => $faktur->diskon_rp,
                             'akun_id' => 5, //diskon
                         ]);
-                    }
                 }
-    
-            } elseif ($faktur->status == 'lunas') {
-                $no = Jurnal::max('id') + 1;
-                for ($i = 1; $i < 5; ++$i) {
-                    $jurnal = Jurnal::create([
+            }
+        } elseif ($faktur->status == 'lunas') {
+            $no = Jurnal::max('id') + 1;
+            for ($i = 1; $i < 5; ++$i) {
+                $jurnal = Jurnal::create([
                         'kode_jurnal' => 'jur'.$no,
                         'faktur_id' => $faktur->id,
                         'debit' => 0,
                         'kredit' => 0,
                     ]);
-                    if ($i == 1) {
-                        $jurnal->update([
+                if ($i == 1) {
+                    $jurnal->update([
                             'debit' => $faktur->akun_barang - $faktur->uang_muka,
                             'akun_id' => 1, //barang
                         ]);
-                    } elseif ($i == 2) {
-                        $jurnal->update([
+                } elseif ($i == 2) {
+                    $jurnal->update([
                             'debit' => $faktur->biaya_lain,
                             'akun_id' => 3, //biayalain
                         ]);
-                    } elseif ($i == 3) {
-                        $jurnal->update([
+                } elseif ($i == 3) {
+                    $jurnal->update([
                             'kredit' => $faktur->hutang->total_hutang,
                             'akun_id' => 6, //kas
                         ]);
-                    } elseif ($i == 4) {
-                        $jurnal->update([
+                } elseif ($i == 4) {
+                    $jurnal->update([
                             'kredit' => $faktur->diskon_rp,
                             'akun_id' => 5, //diskon
                         ]);
-                    }
                 }
             }
-            return redirect('/pembelian/fakturs');
+        }
+
+        return redirect('/pembelian/fakturs');
     }
 
     /**

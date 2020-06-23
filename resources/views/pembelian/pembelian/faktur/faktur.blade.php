@@ -28,7 +28,7 @@
         @elseif ($faktur->status_posting == 'konfirmasi')
         <a href="/pembelian/ubahpsnfak/{{$faktur->id}}">posting</a>
         @else
-        <a href="/pembelian/postingfak/{{$faktur->id}}">konfirmasi</a>
+        <a href="/pembelian/postingfak/{{$faktur->id}}">posting</a>
         @endif
     </td>
     <td class="d-flex justify-content-between">

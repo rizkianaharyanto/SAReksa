@@ -386,20 +386,20 @@
                     $('#disk').val(data.pemesanan.diskon_rp)
                     $('#diskoo').val(data.pemesanan.diskon_rp)
                     $('#biaya_lain').val(data.pemesanan.biaya_lain)
-                    $('#barang_id').val(data.barangs[0].id)
-                    $('#unit').val(data.barangs[0].pivot.unit)
-                    $('#uni').attr('placeholder',data.barangs[0].pivot.unit)
-                    $('#jumlah_barang').val(data.barangs[0].pivot.jumlah_barang)
-                    $('#harga').val(data.barangs[0].pivot.harga)
-                    for (var i = 1; i <= data.barangs.length - 1; i++) {
+                    $('#barang_id').val(data.barangsfak[0].id)
+                    $('#unit').val(data.barangsfak[0].pivot.unit)
+                    $('#uni').attr('placeholder',data.barangsfak[0].pivot.unit)
+                    $('#jumlah_barang').val(data.barangsfak[0].pivot.jumlah_barang)
+                    $('#harga').val(data.barangsfak[0].pivot.harga)
+                    for (var i = 1; i <= data.barangsfak.length - 1; i++) {
                         $("#formbarang").append($("#isiformbarang0").clone().attr('id', 'isiformbarang' + i));
-                        $("#isiformbarang" + i).children().children('select').val(data.barangs[i].id)
-                        $("#isiformbarang" + i).children().children('#jumlah_barang').val(data.barangs[i].pivot.jumlah_barang)
-                        $("#isiformbarang" + i).children().children('#unit').val(data.barangs[i].pivot.unit)
-                        $("#isiformbarang" + i).children().children('#uni').attr('placeholder',data.barangs[i].pivot.unit)
-                        $("#isiformbarang" + i).children().children().children('#harga').val(data.barangs[i].pivot.harga)
+                        $("#isiformbarang" + i).children().children('select').val(data.barangsfak[i].id)
+                        $("#isiformbarang" + i).children().children('#jumlah_barang').val(data.barangsfak[i].pivot.jumlah_barang)
+                        $("#isiformbarang" + i).children().children('#unit').val(data.barangsfak[i].pivot.unit)
+                        $("#isiformbarang" + i).children().children('#uni').attr('placeholder',data.barangsfak[i].pivot.unit)
+                        $("#isiformbarang" + i).children().children().children('#harga').val(data.barangsfak[i].pivot.harga)
                     }
-                    var c = data.barangs.length
+                    var c = data.barangsfak.length
                     console.log(c)
                 }
             },
