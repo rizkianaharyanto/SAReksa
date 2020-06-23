@@ -42,7 +42,7 @@ class PelanggansController extends Controller
      */
     public function store(Request $request)
     {
-        $sup = Pelanggan::max('id');
+        $sup = Pelanggan::max('id') + 1;
         $pelanggan = Pelanggan::create([
             'kode_pelanggan' => 'PEL-'.$sup,
             'nama_pelanggan' => $request->nama_pelanggan,

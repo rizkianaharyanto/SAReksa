@@ -84,4 +84,21 @@ class Barang extends Model
     {
         return $this->belongsToMany('App\Pembelian\Retur', 'retur_details')->withPivot('jumlah_barang', 'harga', 'unit', 'pajak', 'status_barang')->withTimestamps();
     }
+
+    //Penjualan
+    public function pelanggan()
+    {
+        return $this->belongsTo('App\Penjualan\Pelanggan', 'pelanggan_id');
+    }
+    
+    public function penawarans()
+    {
+        return $this->belongsToMany('App\Penjualan\Penawaran', 'penawaran_details')->withPivot('jumlah_barang', 'harga', 'unit', 'pajak')->withTimestamps();
+    }
+
+    public function pengirimans()
+    {
+        return $this->belongsToMany('App\Penjualan\Pengiriman', 'pengiriman_details')->withPivot('jumlah_barang', 'harga', 'unit', 'pajak')->withTimestamps();
+    }
+
 }

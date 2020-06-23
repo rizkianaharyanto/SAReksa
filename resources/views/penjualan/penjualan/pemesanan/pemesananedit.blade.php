@@ -108,10 +108,10 @@
                                                         <div id="test-l-2" class="content">
                                                             <div style="overflow: auto; height: 52vh;" id="formbarang">
                                                             @foreach ($pemesanan->barangs as $pemesananbarang)
-                                                                <div class="form-row mx-5" id="isiformbarang">
+                                                                <div class="form-row mx-5" id="isiformbarang0">
                                                                     <div class="col-md-3">
                                                                         <label for="barang_id" id="lbl">Barang</label>
-                                                                        <select class="form-control" id="barang_id" name="barang_id[]">
+                                                                        <select class="form-control" onchange="isi(this)" id="barang_id" name="barang_id[]">
                                                                             <option value="">--- Pilih Barang ---</option>
                                                                             @foreach ($barangs as $barang)
                                                                             <option value="{{$barang->id}}" {{$barang->id == $pemesananbarang->pivot->barang_id ? "selected" : "" }}>{{ $barang->nama_barang }}</option>
@@ -120,12 +120,12 @@
                                                                     </div>
                                                                     <div class="col-md-1">
                                                                         <label for="jumlah_barang">QTY</label>
-                                                                        <input type="number" class="form-control" id="jumlah_barang" name="jumlah_barang[]" value="{{$pemesananbarang->pivot->jumlah_barang}}" placeholder="-">
+                                                                        <input type="number" class="form-control" id="jumlah_barang" name="jumlah_barang[]" onfocus="startCalc(this);" onblur="stopCalc();" value="{{$pemesananbarang->pivot->jumlah_barang}}" placeholder="-">
                                                                     </div>
                                                                     <div class="col-md-2">
                                                                         <label for="satuan_unit">Unit</label>
-                                                                        <input type="number" class="form-control" id="uni" disabled>
-                                                                        <input type="hidden" id="unit" name="unit_barang[]">
+                                                                        <input type="text" class="form-control" placeholder="{{$pemesananbarang->pivot->unit}}" id="uni" disabled>
+                                                                        <input type="hidden" value="{{$pemesananbarang->pivot->unit}}" id="unit" name="unit_barang[]">
                                                                     </div>
                                                                     <div class="col-md-2">
                                                                         <label for="harga">Harga Satuan</label>
@@ -133,7 +133,7 @@
                                                                             <div class="input-group-prepend">
                                                                                 <div class="input-group-text">Rp</div>
                                                                             </div>
-                                                                            <input type="number" class="form-control" id="harga" name="harga[]" value="{{$pemesananbarang->pivot->harga}}"  placeholder="-">
+                                                                            <input type="number" class="form-control" onfocus="startCalc(this);" onblur="stopCalc();" id="harga" name="harga[]" value="{{$pemesananbarang->pivot->harga}}"  placeholder="-">
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-3">
@@ -145,7 +145,7 @@
                                                                             <input type="number" class="form-control" id="total" name="total[]" disabled>
                                                                         </div>
                                                                     </div>
-                                                                    <input type="hidden" id="status_barang" name="status_barang[]" value="{{ $barang->status_barang }}">
+                                                                    <input type="hidden" id="status_barang" name="status_barang[]" value="{{$pemesananbarang->pivot->status_barang}}" >
                                                                     <div class="col-md-1">
                                                                         <p style="color: transparent">#</p>
                                                                         <a onclick="hapus(this)">
@@ -180,13 +180,13 @@
                                                         <div id="test-l-3" class="content">
                                                             <div style="height: 58vh;overflow:auto" class="mt-2">
                                                                 <div class="form-group row mx-5 mb-5">
-                                                                    <label class="col-sm-3 col-form-label" for="diskon">Diskon</label>
+                                                                    <label class="col-sm-3 col-form-label"  for="diskon">Diskon</label>
                                                                     <div class="col-sm-9">
                                                                         <div class="input-group mb-2">
                                                                             <div class="input-group-prepend">
                                                                                 <div class="input-group-text">%</div>
                                                                             </div>
-                                                                            <input type="number" class="form-control" id="diskon"  name="diskon" value="{{$pemesanan->diskon}}"  placeholder="-">
+                                                                            <input type="number" class="form-control" onchange="disc();" id="diskon"  name="diskon" value="{{$pemesanan->diskon}}"  placeholder="-">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -197,7 +197,7 @@
                                                                             <div class="input-group-prepend">
                                                                                 <div class="input-group-text">Rp</div>
                                                                             </div>
-                                                                            <input type="number" class="form-control" name="biaya_lain"  id="biaya_lain"  value="{{$pemesanan->biaya_lain}}"  placeholder="-">
+                                                                            <input type="number" class="form-control" name="biaya_lain" onchange="disc();" id="biaya_lain"  value="{{$pemesanan->biaya_lain}}"  placeholder="-">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -288,6 +288,74 @@
         if ($(x).parent().parent().attr('id') != 'isiformbarang0') {
             $(x).parent().parent().remove();
         }
+    }
+
+    function disc() {
+        dis = $('#diskon').val() / 100;
+        biy = parseInt($('#biaya_lain').val());
+        akhir = parseInt($('#total_harga_barang').val())
+        akhir1 = akhir - (akhir * dis)
+        akhir2 = akhir1 + biy
+        if (akhir2) {
+            $('#total_harga_kes').val(akhir2)
+            $('#total_harga_keseluruhan').val(akhir2)
+        } else {
+            $('#total_harga_kes').val(akhir1)
+            $('#total_harga_keseluruhan').val(akhir1)
+        }
+    }
+
+    function startCalc(x) {
+        console.log('yes')
+        if ($(x).attr('id') == 'jumlah_barang') {
+            a = x
+            b = $(x).parent().parent().children().children().children('#harga')
+            c = $(x).parent().parent().children().children().children('#total')
+            interval = setInterval(function() {
+                qty = $(a).val();
+                harga = $(b).val();
+                total = qty * harga
+                $(c).val(total)
+            }, 1);
+        } else if ($(x).attr('id') == 'harga') {
+            a = $(x).parent().parent().parent().children().children('#jumlah_barang')
+            b = x
+            c = $(x).parent().parent().parent().children().children().children('#total')
+            interval = setInterval(function() {
+                qty = $(a).val();
+                harga = $(b).val();
+                total = qty * harga
+                $(c).val(total)
+            }, 1);
+        }
+    }
+
+    function stopCalc() {
+        clearInterval(interval);
+        var arr = document.getElementsByName('total[]');
+        var tot = 0;
+        for (var i = 0; i < arr.length; i++) {
+            if (parseInt(arr[i].value))
+                tot += parseInt(arr[i].value);
+        }
+        document.getElementById('total_harga_barang').value = tot;
+        document.getElementById('total_harga_keseluruhan').value = tot;
+    }
+
+    function isi(x) {
+        console.log('isi')
+        $.ajax({
+            url: '/penjualan/barangs/' + $(x).val(),
+            type: 'get',
+            data: {},
+            success: function(data) {
+                console.log(data)
+                var unit = $(x).parent().parent().children().children('#uni').attr('placeholder', data.unit.nama_satuan)
+                $(x).parent().parent().children().children('#unit').val(data.unit.nama_satuan)
+                var harga = $(x).parent().parent().children().children().children('#harga').val(data.harga_retail)
+                console.log(unit)
+            }
+        })
     }
 </script>
 

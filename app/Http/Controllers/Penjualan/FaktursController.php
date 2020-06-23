@@ -70,7 +70,7 @@ class FaktursController extends Controller
             'penjual_id' => $request->penjual_id,
         ]);
 
-        $pit = Piutang::max('id');
+        $pit = Piutang::max('id') + 1;
         $piutang= $faktur->piutang()->create([
             'kode_piutang' => 'PIT-'.$pit,
             'pelanggan_id' => $request->pelanggan_id,

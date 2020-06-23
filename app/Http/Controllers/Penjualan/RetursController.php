@@ -52,7 +52,7 @@ class RetursController extends Controller
      */
     public function store(Request $request)
     {
-        $rtp = Retur::max('id');
+        $rtp = Retur::max('id') + 1;
         $retur = Retur::create([
             'kode_retur' => 'RTP-'.$rtp,
             'faktur_id' => $request->faktur_id,
@@ -70,7 +70,7 @@ class RetursController extends Controller
         ]);
 
 
-        $pit = Piutang::max('id');
+        $pit = Piutang::max('id') + 1;
         $piutang= $retur->piutang()->create([
             'kode_piutang' => 'PIT-'.$pit,
             'pelanggan_id' => $request->pelanggan_id,

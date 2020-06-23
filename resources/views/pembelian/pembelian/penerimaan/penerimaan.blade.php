@@ -22,13 +22,22 @@
     <td>{{ $penerimaan->pemasok->nama_pemasok }}</td>
     <td>{{ $penerimaan->tanggal }}</td>
     <td>{{ $penerimaan->total_harga }}</td>
-    <td>{{ $penerimaan->status !=null ? $penerimaan->status  : '-' }}</td>
+    <td>
+        @if ($penerimaan->status == 'sudah posting')
+         sudah posting 
+        @elseif ($penerimaan->status == 'konfirmasi')
+        <a href="/pembelian/ubahpsn/{{$penerimaan->id}}">posting</a>
+        @else
+        <a href="/pembelian/postingpnm/{{$penerimaan->id}}">konfirmasi</a>
+        @endif
+    </td>
     <td class="d-flex justify-content-between">
         <a id="details" href="/pembelian/penerimaanshow/{{$penerimaan->id}}">
             <i style="cursor: pointer; " class="fas fa-info-circle">
                 <span></span>
             </i>
         </a>
+        @if($penerimaan->status == null)
         <a id="edit" href="/pembelian/penerimaans/{{$penerimaan->id}}/edit">
             <i style="cursor: pointer;" class="fas fa-edit">
                 <span></span>
@@ -39,6 +48,7 @@
                 <span></span>
             </i>
         </a>
+        @endif
     </td>
 </tr>
 

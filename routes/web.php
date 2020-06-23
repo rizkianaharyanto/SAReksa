@@ -27,6 +27,10 @@ Route::prefix('pembelian')->group(function () {
     Route::post('/savebarang', 'Pembelian\PermintaansController@savebarang');
     Route::get('/showhutang/{id}', 'Pembelian\HutangsController@showpembayaran');
 
+    //posting
+    Route::get('/postingpnm/{idnya}', 'Pembelian\PenerimaansController@posting');
+    Route::get('/ubahpsn/{idnya}', 'Pembelian\PenerimaansController@ubahpsn');
+
     //show details page
     Route::get('/permintaanshow/{id}', 'Pembelian\PermintaansController@show2');
     Route::get('/pemesananshow/{id}', 'Pembelian\PemesanansController@show2');
@@ -145,7 +149,10 @@ Route::prefix('penjualan')->group(function () {
     Route::get('/returs/cetak_pdf', 'Penjualan\RetursController@cetak_pdf');
     Route::get('/pembayarans/cetak_pdf', 'Penjualan\PembayaransController@cetak_pdf');
 
+    //Posting
+    Route::get('/pengirimans/{idnya}/posting', 'Penjualan\PengirimansController@posting');
 
+    
     // Route::get('/barangs', )
     Route::resources([
         'pelanggans' => 'Penjualan\PelanggansController',

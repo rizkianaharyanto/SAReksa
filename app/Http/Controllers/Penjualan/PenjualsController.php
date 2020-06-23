@@ -41,7 +41,7 @@ class PenjualsController extends Controller
      */
     public function store(Request $request)
     {
-        $pnj = Penjual::max('id');
+        $pnj = Penjual::max('id') + 1;
         $penjual = new Penjual;
         $penjual->kode_penjual = 'SAL-'.$pnj;
         $penjual->nama_penjual = $request->nama_penjual;

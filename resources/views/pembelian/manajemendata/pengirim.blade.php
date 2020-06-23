@@ -177,12 +177,12 @@ endsection -->
 
 <form method="POST" action="/pembelian/pengirims">
     @csrf
-    <div class="form-group d-inline-flex">
+    <!-- <div class="form-group d-inline-flex">
         <i class="fas fa-user-circle mr-4" style="font-size:50px;color:#00BFA6;"></i>
         <input type="file" class="form-control-file align-self-center" id="foto">
-    </div>
+    </div> -->
     <div class="form-group">
-        <label for="nama_pengirim">Nama pengirim</label>
+        <label for="nama_pengirim">Nama Pengirim</label>
         <input type="text" class="form-control" id="nama_pengirim" name="nama_pengirim" placeholder="">
     </div>
     <div class="form-group">
@@ -194,9 +194,9 @@ endsection -->
         <input type="email" class="form-control" id="email_pengirim" name="email_pengirim" placeholder="">
     </div>
     <div class="form-group">
-        <label for="nama_pemasok">pemasok</label>
+        <label for="nama_pemasok">Pemasok</label>
         <select class="form-control" id="nama_pemasok" name="pemasok_id">
-            <option value="">--- Pilih pemasok ---</option>
+            <option value="">--- Pilih Pemasok ---</option>
             @foreach ($pemasoks as $pemasok)
             <option value="{{$pemasok->id}}">{{ $pemasok->nama_pemasok }}</option>
             @endforeach

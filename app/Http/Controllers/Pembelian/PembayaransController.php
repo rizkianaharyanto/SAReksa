@@ -48,7 +48,7 @@ class PembayaransController extends Controller
      */
     public function store(Request $request)
     {
-        $byr = Pembayaran::max('id');
+        $byr = Pembayaran::max('id') + 1;
         $pembayaran = Pembayaran::create([
             'kode_pembayaran' => 'BYR-'.$byr,
             'pemasok_id' => $request->pemasok_id,
@@ -80,7 +80,8 @@ class PembayaransController extends Controller
         foreach ($request->hutang_id as $index => $id) {
             $hutang = Hutang::find($id);
             $hutang->update([
-                'total_hutang' => $request->total_harga * -1,
+                'lunas' => $request->total_harga,
+                'total_hutang' => 0,
             ]);
             if ($hutang->faktur_id) {
                 $hutang->faktur()->update([

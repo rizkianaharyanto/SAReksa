@@ -68,46 +68,79 @@ class FaktursController extends Controller
             'total_harga' => $request->total_harga_keseluruhan,
         ]);
 
-        $no = Jurnal::max('id') + 1;
-        for ($i = 1; $i < 5; ++$i) {
-            $jurnal = Jurnal::create([
-                'kode_jurnal' => 'jur'.$no,
+        if($request->status == 'hutang'){
+            $no = Jurnal::max('id') + 1;
+            for ($i = 1; $i < 5; ++$i) {
+                $jurnal = Jurnal::create([
+                    'kode_jurnal' => 'jur'.$no,
+                    'faktur_id' => $faktur->id,
+                    'debit' => 0,
+                    'kredit' => 0,
+                ]);
+                if ($i == 1) {
+                    $jurnal->update([
+                        'debit' => $request->akun_barang - $request->uang_muka,
+                        'akun_id' => 1, //barang
+                    ]);
+                } elseif ($i == 2) {
+                    $jurnal->update([
+                        'debit' => $request->biaya_lain,
+                        'akun_id' => 3, //biayalain
+                    ]);
+                } elseif ($i == 3) {
+                    $jurnal->update([
+                        'kredit' => $request->hutang,
+                        'akun_id' => 4, //hutang
+                    ]);
+                } elseif ($i == 4) {
+                    $jurnal->update([
+                        'kredit' => $request->disk,
+                        'akun_id' => 5, //diskon
+                    ]);
+                }
+            }
+
+            $hut = Hutang::max('id')+1;
+            $hutang = $faktur->hutang()->create([
+                'kode_hutang' => 'HUT-'.$hut,
+                'pemasok_id' => $request->pemasok_id,
+                'total_hutang' => $request->hutang,
                 'faktur_id' => $faktur->id,
-                'debit' => 0,
-                'kredit' => 0,
             ]);
-            if ($i == 1) {
-                $jurnal->update([
-                    'debit' => $request->akun_barang,
-                    'akun_id' => 1, //barang
+    
+            $faktur->update(['hutang_id' => $hutang->id]);
+        }elseif($request->status == 'lunas'){
+            $no = Jurnal::max('id') + 1;
+            for ($i = 1; $i < 5; ++$i) {
+                $jurnal = Jurnal::create([
+                    'kode_jurnal' => 'jur'.$no,
+                    'faktur_id' => $faktur->id,
+                    'debit' => 0,
+                    'kredit' => 0,
                 ]);
-            } elseif ($i == 2) {
-                $jurnal->update([
-                    'debit' => $request->biaya_lain,
-                    'akun_id' => 3, //biayalain
-                ]);
-            } elseif ($i == 3) {
-                $jurnal->update([
-                    'kredit' => $request->hutang,
-                    'akun_id' => 4, //hutang
-                ]);
-            } elseif ($i == 4) {
-                $jurnal->update([
-                    'kredit' => $request->disk,
-                    'akun_id' => 5, //diskon
-                ]);
+                if ($i == 1) {
+                    $jurnal->update([
+                        'debit' => $request->akun_barang - $request->uang_muka,
+                        'akun_id' => 1, //barang
+                    ]);
+                } elseif ($i == 2) {
+                    $jurnal->update([
+                        'debit' => $request->biaya_lain,
+                        'akun_id' => 3, //biayalain
+                    ]);
+                } elseif ($i == 3) {
+                    $jurnal->update([
+                        'kredit' => $request->hutang,
+                        'akun_id' => 6, //kas
+                    ]);
+                } elseif ($i == 4) {
+                    $jurnal->update([
+                        'kredit' => $request->disk,
+                        'akun_id' => 5, //diskon
+                    ]);
+                }
             }
         }
-
-        $hut = Hutang::max('id');
-        $hutang = $faktur->hutang()->create([
-            'kode_hutang' => 'HUT-'.$hut,
-            'pemasok_id' => $request->pemasok_id,
-            'total_hutang' => $request->hutang,
-            'faktur_id' => $faktur->id,
-        ]);
-
-        $faktur->update(['hutang_id' => $hutang->id]);
 
         foreach ($request->barang_id as $index => $id) {
             $faktur->barangs()->attach($id, [

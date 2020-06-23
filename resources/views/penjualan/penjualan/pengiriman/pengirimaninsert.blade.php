@@ -114,7 +114,7 @@
 
                                                         <div id="test-l-2" class="content">
                                                             <div style="overflow: auto; height: 52vh;" id="formbarang">
-                                                                <div class="form-row mx-5" id="isiformbarang">
+                                                                <div class="form-row mx-5" id="isiformbarang0">
                                                                     <div class="col-md-3">
                                                                         <label for="barang_id" id="lbl">Barang</label>
                                                                         <select class="form-control" onchange="isi(this)" id="barang_id" name="barang_id[]">
@@ -159,11 +159,6 @@
                                                                         </a>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="alert alert-success mt-3 mb-0 p-1" id="tambahbarang" onmouseover="green(this)" onmouseout="grey(this)" style="cursor: pointer; font-size:15px;color: white;background-color:#212120" role='alert'>
-                                                                <i class="fas fa-plus d-flex justify-content-center">
-                                                                    <span class="mx-2">Tambah Barang</span>
-                                                                </i>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <div class="d-flex mr-auto">
@@ -323,16 +318,15 @@
                     $('#status').val('sudah posting')
                     $('#biaya_lain').val(data.pemesanan.biaya_lain)
                     $('#barang_id').val(data.barangs[0].id)
-                    $('#tambahbarang').detach()
                     $('#unit').val(data.barangs[0].pivot.unit)
                     $('#uni').attr('placeholder',data.barangs[0].pivot.unit)
-                    $('#jumlah_barang').val(data.barangs[0].pivot.jumlah_barang)
+                    $('#jumlah_barang').val(data.barangs[0].pivot.barang_belum_diterima)
                     $('#harga').val(data.barangs[0].pivot.harga)
                     // $('#pemesanan_id').val(data.barangs.pemesanan_id)
                     for (var i = 1; i <= data.barangs.length - 1; i++) {
                         $("#formbarang").append($("#isiformbarang0").clone().attr('id', 'isiformbarang' + i));
                         $("#isiformbarang" + i).children().children('select').val(data.barangs[i].id)
-                        $("#isiformbarang" + i).children().children('#jumlah_barang').val(data.barangs[i].pivot.jumlah_barang)
+                        $("#isiformbarang" + i).children().children('#jumlah_barang').val(data.barangs[i].pivot.barang_belum_diterima)
                         $("#isiformbarang" + i).children().children('#unit').val(data.barangs[i].pivot.unit)
                         $("#isiformbarang" + i).children().children('#uni').attr('placeholder', data.barangs[i].pivot.unit)
                         $("#isiformbarang" + i).children().children().children('#harga').val(data.barangs[i].pivot.harga)

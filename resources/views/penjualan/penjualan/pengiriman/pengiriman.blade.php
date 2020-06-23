@@ -30,11 +30,25 @@
                 <span></span>
             </i>
         </a>
-        <a id="edit" href="/penjualan/pengirimans/{{$pengiriman->id}}/edit">
-            <i style="cursor: pointer;color: #212120" class="fas fa-edit">
+        @if($pengiriman->status == 'dalam pengiriman')
+        <a id="edit"  href="/penjualan/pengirimans/{{$pengiriman->id}}/edit" title='Konfirmasi'>
+            <i style="cursor: pointer;color: #212120" class="fas fa-check">
                 <span></span>
             </i>
         </a>
+        @endif
+        @if($pengiriman->status == 'terkirim')
+        <a id="edit" href="/penjualan/pengirimans/{{$pengiriman->id}}/edit">
+            <i style="cursor: pointer;color: #212120" class="fas fa-edit" title='Edit'>
+                <span></span>
+            </i>
+        </a>
+        <a id="edit" href="/penjualan/pengirimans/{{$pengiriman->id}}/posting">
+            <i onmouseover="" style="cursor: pointer;color: #212120" class="fas fa-file-upload" title='Posting'>
+                <span></span>
+            </i>
+        </a>
+        @endif
         <a id="delete" data-toggle="modal" data-target="#delete-{{$pengiriman->id }}">
             <i style="cursor: pointer;color: #212120" class="fas fa-trash">
                 <span></span>

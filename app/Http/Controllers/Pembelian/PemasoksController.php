@@ -40,7 +40,7 @@ class PemasoksController extends Controller
      */
     public function store(Request $request)
     {
-        $sup = Pemasok::max('id');
+        $sup = Pemasok::max('id') + 1;
         $pemasok = Pemasok::create([
             'kode_pemasok' => 'SUP-'.$sup,
             'nama_pemasok' => $request->nama_pemasok,
@@ -64,7 +64,9 @@ class PemasoksController extends Controller
         $pemasok = Pemasok::find($id);
         $permintaans = $pemasok->permintaans;
         $pemesanans = $pemasok->pemesanans;
+        $fpemesanans = $pemasok->pemesanans()->where('status', 'diterima')->get();
         $penerimaans = $pemasok->penerimaans;
+        $fpenerimaans = $pemasok->penerimaans()->where('status', 'sudah posting')->get();
         $fakturs = $pemasok->fakturs;
         $hutangs = $pemasok->hutangs;
 
@@ -73,6 +75,8 @@ class PemasoksController extends Controller
             'pemasok' => $pemasok,
             'permintaans' => $permintaans,
             'pemesanans' => $pemesanans,
+            'fpemesanans' => $fpemesanans,
+            'fpenerimaans' => $fpenerimaans,
             'penerimaans' => $penerimaans,
             'fakturs' => $fakturs,
             'hutangs' => $hutangs,

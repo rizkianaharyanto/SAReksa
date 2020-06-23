@@ -48,7 +48,7 @@ class PenawaransController extends Controller
      */
     public function store(Request $request)
     {
-        $pnw = Penawaran::max('id');
+        $pnw = Penawaran::max('id') + 1;
         $penawaran = Penawaran::create([
             'kode_penawaran' => 'PNW-'.$pnw,
             'pelanggan_id' => $request->pelanggan_id,
@@ -180,7 +180,7 @@ class PenawaransController extends Controller
                 'diskon' => $request->diskon,
                 'biaya_lain' => $request->biaya_lain,
                 'total_jenis_barang' => 3,
-                'total_harga' => 1000,
+                'total_harga' => $request->total_harga_keseluruhan,
                 'penjual_id' => $request->penjual_id,
                 
             ]);

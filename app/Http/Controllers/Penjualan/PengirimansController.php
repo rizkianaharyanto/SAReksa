@@ -51,11 +51,11 @@ class PengirimansController extends Controller
      */
     public function store(Request $request)
     {
-        $pgr = Pengiriman::max('id');
+        $pgr = Pengiriman::max('id') + 1;
         $pengiriman = Pengiriman::create([
             'kode_pengiriman' => 'PGR-'.$pgr,
             'pemesanan_id' => $request->pemesanan_id,
-            'status' => $request->status,
+            'status' => 'dalam pengiriman',
             'pelanggan_id' => $request->pelanggan_id,
             'gudang' => $request->gudang,
             'tanggal' => $request->tanggal,
@@ -68,7 +68,6 @@ class PengirimansController extends Controller
         ]);
 
         // dd($jurnal);
-
         $pemesanan = $pengiriman->pemesanan;
         foreach ($request->barang_id as $index => $id) {
             $pengiriman->barangs()->attach($id, [
@@ -77,19 +76,42 @@ class PengirimansController extends Controller
                 'unit' => $request->unit_barang[$index],
                 // 'pajak' => $request->pajak[$index],
             ]);
-            $pemesanan->barangs()->where('barang_id', $id)->update(array('status_barang' => 'terkirim'));
-            $status = $pemesanan->barangs()->get(array('status_barang'));
-            foreach ($status as $status_barang) {
-                if (count($request->barang_id) == count($status)) {
-                    $pemesanan->update(array('status' => 'terkirim'));
-                } else {
-                    $pemesanan->update(array('status' => 'terkirim sebagian'));
-                }
-            }
+
         }
-        return redirect('/penjualan/pengirimans');
+        return redirect('/penjualan/pengirimans');      
     }
 
+    public function posting($idnya)
+    {
+        $pengiriman = Pengiriman::find($idnya);
+        Pengiriman::where('id', $pengiriman->id)
+                    ->update(['status' => 'sudah posting']);
+        //posting
+        
+        $pemesanan = $pengiriman->pemesanan;
+        
+        foreach ($pengiriman->barangs as $index => $barang) {
+            $a = $pemesanan->barangs()->where('barang_id', $barang->id)->first()->pivot->barang_belum_diterima;
+            $b = $barang->pivot->jumlah_barang;
+            $belum_diterima = $a - $b;
+            // dd($a, $b, $belum_diterima);
+            $pemesanan->barangs()->where('barang_id', $barang->id)->update(array('barang_belum_diterima' => $belum_diterima));
+            if ($belum_diterima == 0) {
+                $pemesanan->barangs()->where('barang_id', $barang->id)->update(array('status_barang' => 'terkirim'));
+            } else {
+                $pemesanan->barangs()->where('barang_id', $barang->id)->update(array('status_barang' => 'belum terkirim'));
+            }
+        }
+        $status = $pemesanan->barangs()->where('status_barang', 'belum terkirim')->first();
+        // dd($status);
+            if ($status) {
+                $pemesanan->update(array('status' => 'terkirim sebagian'));
+            }else{
+                $pemesanan->update(array('status' => 'terkirim'));
+            }
+        
+        return redirect('/penjualan/pengirimans');
+    }
     /**
      * Display the specified resource.
      *
@@ -107,7 +129,8 @@ class PengirimansController extends Controller
 
     public function detail($id)
     {
-        $pengiriman = pengiriman::find($id);
+        
+        $pengiriman = Pengiriman::find($id);
         $gudang = Gudang::find($pengiriman->gudang);
         $barangs = $pengiriman->barangs;
         $diskon = $pengiriman->diskon.'%';
@@ -191,22 +214,22 @@ class PengirimansController extends Controller
                 'kode_pengiriman' => $request->kode_pengiriman,
                 'pelanggan_id' => $request->pelanggan_id,
                 'gudang' => $request->gudang,
+                'status' => 'terkirim',
                 'tanggal' => $request->tanggal,
                 'diskon' => $request->diskon,
                 'biaya_lain' => $request->biaya_lain,
                 'total_jenis_barang' => 3,
-                'total_harga' => 1000,
+                'total_harga' => $request->total_harga_keseluruhan,
                 'penjual_id' => $request->penjual_id,
             ]);
-        foreach ($request->barang_id as $index => $id) {
-            $pengiriman->barangs()->detach($id, [
-                'jumlah_barang' => $request->jumlah_barang[$index],
-                'harga' => $request->harga[$index]
-            ]);
-            $pengiriman->barangs()->attach($id, [
-                'jumlah_barang' => $request->jumlah_barang[$index],
-                'harga' => $request->harga[$index]
-            ]);
+            $pengiriman->barangs()->detach();
+            foreach ($request->barang_id as $index => $id) {
+                $pengiriman->barangs()->attach($id, [
+                    'jumlah_barang' => $request->jumlah_barang[$index],
+                    'harga' => $request->harga[$index],
+                    'unit' => $request->unit_barang[$index],
+                    // 'pajak' => $request->pajak[$index],
+                    ]);
         }
         return redirect('/penjualan/pengirimans');
     }

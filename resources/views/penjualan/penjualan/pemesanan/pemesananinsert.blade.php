@@ -114,7 +114,7 @@
 
                                                         <div id="test-l-2" class="content">
                                                             <div style="overflow: auto; height: 52vh;" id="formbarang">
-                                                                <div class="form-row mx-5" id="isiformbarang">
+                                                                <div class="form-row mx-5" id="isiformbarang0">
                                                                     <div class="col-md-3">
                                                                         <label for="barang_id" id="lbl">Barang</label>
                                                                         <select class="form-control" onchange="isi(this)" id="barang_id" name="barang_id[]">
@@ -275,7 +275,7 @@
 
     $('#tambahbarang').click(function() {
         var i = 0;
-        // console.log(i)
+        console.log(i)
         $("#formbarang").append($("#isiformbarang" + i).clone().attr('id', 'isiformbarang' + (i + 1)));
         $(document.querySelectorAll("#isiformbarang1")).children().children().children().css({
             'color': 'black',

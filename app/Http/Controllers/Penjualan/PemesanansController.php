@@ -50,7 +50,7 @@ class PemesanansController extends Controller
      */
     public function store(Request $request)
     {
-        $pms = Pemesanan::max('id');
+        $pms = Pemesanan::max('id') + 1;
         $pemesanan = Pemesanan::create([
             'kode_pemesanan' => 'PMS-'.$pms,
             'pelanggan_id' => $request->pelanggan_id,
@@ -70,6 +70,7 @@ class PemesanansController extends Controller
 
             $pemesanan->barangs()->attach($id, [
                 'jumlah_barang' => $request->jumlah_barang[$index],
+                'barang_belum_diterima' => $request->jumlah_barang[$index],
                 'harga' => $request->harga[$index],
                 'unit' => $request->unit_barang[$index],
                 // 'pajak' => $request->pajak[$index],
@@ -183,19 +184,14 @@ class PemesanansController extends Controller
                 'gudang' => $request->gudang,
                 'tanggal' => $request->tanggal,
                 'diskon' => $request->diskon,
+                'diskon_rp' => $request->disk,
                 'biaya_lain' => $request->biaya_lain,
                 'total_jenis_barang' => 3,
-                'total_harga' => 1000,
+                'total_harga' => $request->total_harga_keseluruhan,
                 'penjual_id' => $request->penjual_id,
                 ]);
-        foreach ($request->barang_id as $index => $id) {
-            $pemesanan->barangs()->detach($id, [
-                'jumlah_barang' => $request->jumlah_barang[$index],
-                'harga' => $request->harga[$index],
-                'unit' => $request->unit_barang[$index],
-                // 'pajak' => $request->pajak[$index],
-                'status_barang' => $request->status_barang[$index],
-            ]);
+            $pemesanan->barangs()->detach();
+            foreach ($request->barang_id as $index => $id) {
             $pemesanan->barangs()->attach($id, [
                 'jumlah_barang' => $request->jumlah_barang[$index],
                 'harga' => $request->harga[$index],

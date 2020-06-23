@@ -29,16 +29,16 @@
                 <span></span>
             </i>
         </a>
-        <a id="edit" href="/pembelian/returs/{{$retur->id}}/edit">
+        <!-- <a id="edit" href="/pembelian/returs/{{$retur->id}}/edit">
             <i style="cursor: pointer;" class="fas fa-edit">
                 <span></span>
             </i>
-        </a>
-        <a id="delete" data-toggle="modal" data-target="#delete-{{$retur->id }}">
+        </a> -->
+        <!-- <a id="delete" data-toggle="modal" data-target="#delete-{{$retur->id }}">
             <i style="cursor: pointer;" class="fas fa-trash">
                 <span></span>
             </i>
-        </a>
+        </a> -->
     </td>
 </tr>
 

@@ -54,7 +54,7 @@ class RetursController extends Controller
      */
     public function store(Request $request)
     {
-        $ret = Retur::max('id');
+        $ret = Retur::max('id') + 1;
         $retur = Retur::create([
             'kode_retur' => 'RET-'.$ret,
             'faktur_id' => $request->faktur_id,
@@ -70,6 +70,7 @@ class RetursController extends Controller
             'total_harga' => $request->total_harga_keseluruhan,
         ]);
 
+        if ($request->status == 'hutang'){
         $no = Jurnal::max('id') + 1;
         for ($i = 1; $i < 5; ++$i) {
             $jurnal = Jurnal::create([
@@ -80,7 +81,7 @@ class RetursController extends Controller
             ]);
             if ($i == 1) {
                 $jurnal->update([
-                    'kredit' => $request->akun_barang,
+                    'kredit' => $request->akun_barang - $request->uang_muka,
                     'akun_id' => 1, //barang
                 ]);
             } elseif ($i == 2) {
@@ -101,15 +102,47 @@ class RetursController extends Controller
             }
         }
 
-        $hut = Hutang::max('id');
-        $hutang = $retur->hutang()->create([
-            'kode_hutang' => 'HUT-'.$hut,
-            'pemasok_id' => $request->pemasok_id,
-            'total_hutang' => $request->hutang,
-            'retur_id' => $retur->id,
-        ]);
-
-        $retur->update(['hutang_id' => $hutang->id]);
+            $hut = Hutang::max('id') + 1;
+            $hutang = $retur->hutang()->create([
+                'kode_hutang' => 'HUT-'.$hut,
+                'pemasok_id' => $request->pemasok_id,
+                'total_hutang' => $request->hutang,
+                'retur_id' => $retur->id,
+            ]);
+    
+            $retur->update(['hutang_id' => $hutang->id]);
+        }elseif($request->status == 'lunas'){
+            $no = Jurnal::max('id') + 1;
+            for ($i = 1; $i < 5; ++$i) {
+                $jurnal = Jurnal::create([
+                    'kode_jurnal' => 'jur'.$no,
+                    'retur_id' => $retur->id,
+                    'debit' => 0,
+                    'kredit' => 0,
+                ]);
+                if ($i == 1) {
+                    $jurnal->update([
+                        'kredit' => $request->akun_barang - $request->uang_muka,
+                        'akun_id' => 1, //barang
+                    ]);
+                } elseif ($i == 2) {
+                    $jurnal->update([
+                        'kredit' => $request->biaya_lain,
+                        'akun_id' => 3, //biayalain
+                    ]);
+                } elseif ($i == 3) {
+                    $jurnal->update([
+                        'debit' => $request->hutang,
+                        'akun_id' => 6, //kas
+                    ]);
+                } elseif ($i == 4) {
+                    $jurnal->update([
+                        'debit' => $request->disk,
+                        'akun_id' => 5, //diskon
+                    ]);
+                }
+            }
+        }
 
         foreach ($request->barang_id as $index => $id) {
             $retur->barangs()->attach($id, [
@@ -150,13 +183,13 @@ class RetursController extends Controller
         $total_seluruh = $retur->total_harga;
         $total_harga = [];
         $subtotal = 0;
-        foreach ($barangs as $index => $barang){
+        foreach ($barangs as $index => $barang) {
             $total_harga[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
             $subtotal += $total_harga[$index];
         }
         // dd($total_harga, $total_seluruh);
         return view('pembelian.pembelian.retur.returdetails', [
-            'retur' => $retur, 
+            'retur' => $retur,
             'barangs' => $barangs,
             'diskon' => $diskon,
             'biaya_lain' => $biaya_lain,
@@ -177,12 +210,12 @@ class RetursController extends Controller
         $total_seluruh = $retur->total_harga;
         $total_harga = [];
         $subtotal = 0;
-        foreach ($barangs as $index => $barang){
+        foreach ($barangs as $index => $barang) {
             $total_harga[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
             $subtotal += $total_harga[$index];
         }
         $pdf = PDF::loadview('pembelian.pembelian.retur.retur-pdf', [
-            'retur' => $retur, 
+            'retur' => $retur,
             'barangs' => $barangs,
             'diskon' => $diskon,
             'biaya_lain' => $biaya_lain,
