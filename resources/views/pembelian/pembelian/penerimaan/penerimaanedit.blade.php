@@ -253,8 +253,8 @@
             success: function(data) {
                 console.log(data.pemesanans)
                 $('#pemesanan_form').removeAttr('style')
-                for (i = 0; i < data.pemesanans.length; i++) {
-                    $('#pemesanan_id').append('<option value="' + data.pemesanans[i].id + '">' + data.pemesanans[i].kode_pemesanan + '</option>')
+                for (i = 0; i < data.pnmpemesanans.length; i++) {
+                    $('#pemesanan_id').append('<option value="' + data.pnmpemesanans[i].id + '">' + data.pnmpemesanans[i].kode_pemesanan + '</option>')
                 }
             },
             error: function(jqXHR, textStatus, errorThrown) {}

@@ -66,82 +66,20 @@ class RetursController extends Controller
             'diskon_rp' => $request->disk,
             'biaya_lain' => $request->biaya_lain,
             'uang_muka' => $request->uang_muka,
-            'total_jenis_barang' => 3,
+            'total_jenis_barang' => $request->akun_barang,
             'total_harga' => $request->total_harga_keseluruhan,
         ]);
 
-        if ($request->status == 'hutang'){
-        $no = Jurnal::max('id') + 1;
-        for ($i = 1; $i < 5; ++$i) {
-            $jurnal = Jurnal::create([
-                'kode_jurnal' => 'jur'.$no,
-                'retur_id' => $retur->id,
-                'debit' => 0,
-                'kredit' => 0,
-            ]);
-            if ($i == 1) {
-                $jurnal->update([
-                    'kredit' => $request->akun_barang - $request->uang_muka,
-                    'akun_id' => 1, //barang
-                ]);
-            } elseif ($i == 2) {
-                $jurnal->update([
-                    'kredit' => $request->biaya_lain,
-                    'akun_id' => 3, //biayalain
-                ]);
-            } elseif ($i == 3) {
-                $jurnal->update([
-                    'debit' => $request->hutang,
-                    'akun_id' => 4, //hutang
-                ]);
-            } elseif ($i == 4) {
-                $jurnal->update([
-                    'debit' => $request->disk,
-                    'akun_id' => 5, //diskon
-                ]);
-            }
-        }
-
+        if($request->status == 'hutang'){
             $hut = Hutang::max('id') + 1;
             $hutang = $retur->hutang()->create([
                 'kode_hutang' => 'HUT-'.$hut,
-                'pemasok_id' => $request->pemasok_id,
+                'pemasok_id' => $retur->pemasok_id,
                 'total_hutang' => $request->hutang,
                 'retur_id' => $retur->id,
             ]);
     
             $retur->update(['hutang_id' => $hutang->id]);
-        }elseif($request->status == 'lunas'){
-            $no = Jurnal::max('id') + 1;
-            for ($i = 1; $i < 5; ++$i) {
-                $jurnal = Jurnal::create([
-                    'kode_jurnal' => 'jur'.$no,
-                    'retur_id' => $retur->id,
-                    'debit' => 0,
-                    'kredit' => 0,
-                ]);
-                if ($i == 1) {
-                    $jurnal->update([
-                        'kredit' => $request->akun_barang - $request->uang_muka,
-                        'akun_id' => 1, //barang
-                    ]);
-                } elseif ($i == 2) {
-                    $jurnal->update([
-                        'kredit' => $request->biaya_lain,
-                        'akun_id' => 3, //biayalain
-                    ]);
-                } elseif ($i == 3) {
-                    $jurnal->update([
-                        'debit' => $request->hutang,
-                        'akun_id' => 6, //kas
-                    ]);
-                } elseif ($i == 4) {
-                    $jurnal->update([
-                        'debit' => $request->disk,
-                        'akun_id' => 5, //diskon
-                    ]);
-                }
-            }
         }
 
         foreach ($request->barang_id as $index => $id) {
@@ -152,6 +90,81 @@ class RetursController extends Controller
                 'pajak' => $request->pajak[$index],
                 'status_barang' => $request->status_barang[$index],
             ]);
+        }
+
+        return redirect('/pembelian/returs');
+    }
+
+    public function posting($idnya)
+    {
+        $retur = Retur::find($idnya);
+        // dd($retur);
+        Retur::where('id', $retur->id)
+                ->update(['status_posting' => 'sudah posting']);
+
+        if ($retur->status == 'hutang'){
+        $no = Jurnal::max('id') + 1;
+        for ($i = 1; $i < 5; ++$i) {
+            $jurnal = Jurnal::create([
+                'kode_jurnal' => 'jur'.$no,
+                'retur_id' => $retur->id,
+                'debit' => 0,
+                'kredit' => 0,
+            ]);
+            if ($i == 1) {
+                $jurnal->update([
+                    'kredit' => $retur->total_jenis_barang - $retur->uang_muka,
+                    'akun_id' => 1, //barang
+                ]);
+            } elseif ($i == 2) {
+                $jurnal->update([
+                    'kredit' => $retur->biaya_lain,
+                    'akun_id' => 3, //biayalain
+                ]);
+            } elseif ($i == 3) {
+                $jurnal->update([
+                    'debit' => $retur->hutang->total_hutang,
+                    'akun_id' => 4, //hutang
+                ]);
+            } elseif ($i == 4) {
+                $jurnal->update([
+                    'debit' => $retur->diskon_rp,
+                    'akun_id' => 5, //diskon
+                ]);
+            }
+        }
+
+        }elseif($retur->status == 'lunas'){
+            $no = Jurnal::max('id') + 1;
+            for ($i = 1; $i < 5; ++$i) {
+                $jurnal = Jurnal::create([
+                    'kode_jurnal' => 'jur'.$no,
+                    'retur_id' => $retur->id,
+                    'debit' => 0,
+                    'kredit' => 0,
+                ]);
+                if ($i == 1) {
+                    $jurnal->update([
+                        'kredit' => $retur->total_jenis_barang - $retur->uang_muka,
+                        'akun_id' => 1, //barang
+                    ]);
+                } elseif ($i == 2) {
+                    $jurnal->update([
+                        'kredit' => $retur->biaya_lain,
+                        'akun_id' => 3, //biayalain
+                    ]);
+                } elseif ($i == 3) {
+                    $jurnal->update([
+                        'debit' => $retur->hutang->total_hutang,
+                        'akun_id' => 6, //kas
+                    ]);
+                } elseif ($i == 4) {
+                    $jurnal->update([
+                        'debit' => $retur->diskon_rp,
+                        'akun_id' => 5, //diskon
+                    ]);
+                }
+            }
         }
 
         return redirect('/pembelian/returs');

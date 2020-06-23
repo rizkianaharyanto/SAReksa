@@ -23,6 +23,7 @@ class CreatePblRetursTable extends Migration
             $table->double('diskon', 8, 3);
             $table->integer('biaya_lain');
             $table->enum('status', ['lunas', 'hutang'])->nullable();
+            $table->enum('status_posting', ['konfirmasi', 'sudah posting'])->nullable();
             $table->timestamps();
             //fk
             $table->bigInteger('pemasok_id')->nullable();

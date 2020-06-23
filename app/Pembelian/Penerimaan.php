@@ -20,6 +20,11 @@ class Penerimaan extends Model
         return $this->belongsTo('App\Pembelian\Pemesanan');
     }
 
+    public function faktur()
+    {
+        return $this->belongsTo('App\Pembelian\Faktur');
+    }
+
     public function pemasok()
     {
         return $this->belongsTo('App\Pembelian\Pemasok');

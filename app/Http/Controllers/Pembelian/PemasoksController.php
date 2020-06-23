@@ -64,6 +64,7 @@ class PemasoksController extends Controller
         $pemasok = Pemasok::find($id);
         $permintaans = $pemasok->permintaans;
         $pemesanans = $pemasok->pemesanans;
+        $pnmpemesanans = $pemasok->pemesanans()->whereNotIn('status', ['diterima', 'selesai'])->get();
         $fpemesanans = $pemasok->pemesanans()->where('status', 'diterima')->get();
         $penerimaans = $pemasok->penerimaans;
         $fpenerimaans = $pemasok->penerimaans()->where('status', 'sudah posting')->get();
@@ -75,6 +76,7 @@ class PemasoksController extends Controller
             'pemasok' => $pemasok,
             'permintaans' => $permintaans,
             'pemesanans' => $pemesanans,
+            'pnmpemesanans' => $pnmpemesanans,
             'fpemesanans' => $fpemesanans,
             'fpenerimaans' => $fpenerimaans,
             'penerimaans' => $penerimaans,

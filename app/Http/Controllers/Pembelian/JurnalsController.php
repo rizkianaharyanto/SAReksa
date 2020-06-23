@@ -23,6 +23,7 @@ class JurnalsController extends Controller
             $debit += $jurnal->debit;
             $kredit += $jurnal->kredit;
         }
+        // return gettype($jurnals);
         // dd($debit, $kredit);
         // dd($jurnals);
         return view('pembelian.jurnal', [
