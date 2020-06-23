@@ -76,7 +76,9 @@ class RetursController extends Controller
                 'kode_hutang' => 'HUT-'.$hut,
                 'pemasok_id' => $retur->pemasok_id,
                 'total_hutang' => $request->hutang,
+                'sisa' => $request->hutang,
                 'retur_id' => $retur->id,
+                'status' => 'hutang',
             ]);
     
             $retur->update(['hutang_id' => $hutang->id]);
