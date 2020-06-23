@@ -11,7 +11,7 @@ class Pelanggan extends Model
     protected $guarded = ['id'];
     use SoftDeletes;
 
-    public function penawaran()
+    public function penawarans()
     {
         return $this->hasMany('App\Penjualan\Penawaran');
     }
@@ -36,7 +36,7 @@ class Pelanggan extends Model
         return $this->hasMany('App\Penjualan\Retur');
     }
 
-    public function piutang()
+    public function piutangs()
     {
         return $this->hasMany('App\Penjualan\Piutang');
     }

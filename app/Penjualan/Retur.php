@@ -27,7 +27,7 @@ class Retur extends Model
 
     public function pelanggan()
     {
-        return $this->belongsTo('App\Penjualan\Pelangggan');
+        return $this->belongsTo('App\Penjualan\Pelanggan');
     }
 
     public function penjual()
@@ -37,6 +37,6 @@ class Retur extends Model
 
     public function barangs()
     {
-        return $this->belongsToMany('App\Stock\Barang', 'pbl_retur_details')->withPivot('jumlah_barang', 'harga', 'unit', 'pajak', 'status_barang')->withTimestamps();
+        return $this->belongsToMany('App\Stock\Barang', 'pnj_retur_details')->withPivot('jumlah_barang', 'harga', 'unit', 'pajak', 'status_barang')->withTimestamps();
     }
 }

@@ -24,7 +24,9 @@
                 <li class="nav-item btn-rotate dropdown">
                     <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink2"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="nc-icon nc-settings-gear-65"></i>
+                        <i class="logo-image-small">
+                            <img alt='icon' width='20px' class='icon' src="/img/penjualan/setting (2).png">
+                        </i>
                         <p>
                             <span class="d-lg-none d-md-block">{{ __('Account') }}</span>
                         </p>

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Pembayaran extends Model
 {
     protected $table = 'pnj_pembayarans';
+    protected $guarded = ['id'];
 
     public function jurnals()
     {
@@ -20,6 +21,6 @@ class Pembayaran extends Model
 
     public function piutangs()
     {
-        return $this->belongsToMany('App\Penjualan\Piutang', 'pnj_pembayaran_details');
+        return $this->belongsToMany('App\Penjualan\Piutang', 'pnj_pembayaran_details')->withPivot('total')->withTimestamps();
     }
 }

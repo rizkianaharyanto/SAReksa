@@ -8,10 +8,13 @@ use App\Penjualan\Faktur;
 use App\Penjualan\Piutang;
 use App\Penjualan\Jurnal;
 use App\Penjualan\Pengiriman;
+use App\Penjualan\Pemesanan;
+use App\Penjualan\Pelanggan;
 use App\Penjualan\Penjual;
 use App\Stock\Barang;
 use App\Stock\Gudang;
 use App\Penjualan\Pemasok;
+use PDF;
 
 class FaktursController extends Controller
 {
@@ -37,8 +40,6 @@ class FaktursController extends Controller
             'pengirimans' => Pengiriman::all(),
             'penjuals' => Penjual::all(),
             'pelanggans' => Pelanggan::all(),
-            'no' => Faktur::max('id'),
-            'hut' => Piutang::max('id'),
             'barangs' => Barang::all(),
             'gudangs' => Gudang::all(),
             // 'akuns'=> Akun::all()
@@ -53,8 +54,9 @@ class FaktursController extends Controller
      */
     public function store(Request $request)
     {
+        $fak = Faktur::max('id') + 1;
         $faktur = Faktur::create([
-            'kode_faktur' => $request->kode_faktur,
+            'kode_faktur' => 'FKJ-'.$fak,
             'pemesanan_id' => $request->pemesanan_id,
             'pelanggan_id' => $request->pelanggan_id,
             'status' => $request->status,
@@ -68,48 +70,15 @@ class FaktursController extends Controller
             'penjual_id' => $request->penjual_id,
         ]);
 
-        $no= Jurnal::max('id') + 1;
-        for ($i = 1; $i < 5; $i++) {
-            $jurnal= Jurnal::create([
-                'kode_jurnal' => 'jur'.$no,
-                'faktur_id' => $faktur->id,
-                'debit' => 0,
-                'kredit' => 0
-            ]);
-            if ($i == 1) {
-                $jurnal->update([
-                    'debit' => $request->akun_barang,
-                    'akun_id' => 1 //barang
-                ]);
-            }
-            else if ($i == 2) {
-                $jurnal->update([
-                    'debit' => $request->biaya_lain,
-                    'akun_id' => 3 //biayalain
-                ]);
-            }
-            else if ($i == 3) {
-                $jurnal->update([
-                    'kredit' => $request->hutang,
-                    'akun_id' => 4 //hutang
-                ]);
-            }
-            else if ($i == 4) {
-                $jurnal->update([
-                    'kredit' => $request->disk,
-                    'akun_id' => 5 //diskon
-                ]);
-            }
-        }
-
-        $hutang= $faktur->hutang()->create([
-            'kode_hutang' => $request->kode_hutang,
+        $pit = Piutang::max('id') + 1;
+        $piutang= $faktur->piutang()->create([
+            'kode_piutang' => 'PIT-'.$pit,
             'pelanggan_id' => $request->pelanggan_id,
-            'total_hutang' => $request->hutang,
+            'total_piutang' => $request->piutang,
             'faktur_id' => $faktur->id,
         ]);
-
-        $faktur->update(['hutang_id' => $hutang->id]);
+        
+        $faktur->update(['piutang_id' => $piutang->id]);
 
         foreach ($request->barang_id as $index => $id) {
 
@@ -121,7 +90,14 @@ class FaktursController extends Controller
                 // 'status_barang' => $request->status_barang[$index],
             ]);
         }
-        return redirect('/pembelian/fakturs');
+        if ($faktur->pemesanan_id){
+            Pemesanan::where('id', $faktur->pemesanan_id)
+            ->update([
+                'status' => 'terkirim',
+            ]);  
+        }
+
+        return redirect('/penjualan/fakturs');
     }
 
     /**
@@ -138,6 +114,61 @@ class FaktursController extends Controller
             ->json(['success' => true, 'faktur' => $faktur, 'barangs' => $barangs]);
     }
 
+    public function detail($id)
+    {
+        $faktur = Faktur::find($id);
+        $barangs = $faktur->barangs;
+        $diskon = $faktur->diskon_rp;
+        $biaya_lain = $faktur->biaya_lain;
+        $uang_muka = $faktur->uang_muka;
+        $total_seluruh = $faktur->total_harga;
+        $total_harga = [];
+        $subtotal = 0;
+        foreach ($barangs as $index => $barang){
+            $total_harga[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
+            $subtotal += $total_harga[$index];
+        }
+        // dd($total_harga, $total_seluruh);
+        return view('penjualan.penjualan.faktur.fakturdetails', [
+            'faktur' => $faktur, 
+            'barangs' => $barangs,
+            'diskon' => $diskon,
+            'biaya_lain' => $biaya_lain,
+            'uang_muka' => $uang_muka,
+            'total_harga' => $total_harga,
+            'subtotal' => $subtotal,
+            'total_seluruh' => $total_seluruh,
+        ]);
+    }
+
+    public function cetak_pdf(Request $request)
+    {
+        $faktur = faktur::find($request->id);
+        $barangs = $faktur->barangs;
+        $diskon = $faktur->diskon_rp;
+        $biaya_lain = $faktur->biaya_lain;
+        $uang_muka = $faktur->uang_muka;
+        $total_seluruh = $faktur->total_harga;
+        $total_harga = [];
+        $subtotal = 0;
+        foreach ($barangs as $index => $barang){
+            $total_harga[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
+            $subtotal += $total_harga[$index];
+        }
+        $pdf = PDF::loadview('penjualan.penjualan.faktur.faktur-pdf', [
+            'faktur' => $faktur, 
+            'barangs' => $barangs,
+            'diskon' => $diskon,
+            'biaya_lain' => $biaya_lain,
+            'uang_muka' => $uang_muka,
+            'total_harga' => $total_harga,
+            'subtotal' => $subtotal,
+            'total_seluruh' => $total_seluruh,
+            ]);
+
+        return $pdf->download('Faktur Penjualan.pdf');
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -149,8 +180,8 @@ class FaktursController extends Controller
         return view('penjualan.penjualan.faktur.fakturedit', [
             'faktur' => $faktur,
             'penjuals' => Penjual::all(),
-            'pengiriman' => Pengiriman::all(),
-            'Pelanggan' => Pelanggan::all(),
+            'pengirimans' => Pengiriman::all(),
+            'pelanggans' => Pelanggan::all(),
             'barangs' => Barang::all(),
             'gudangs' => Gudang::all(),
             // 'akuns'=> Akun::all()

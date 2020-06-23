@@ -127,9 +127,35 @@ Route::prefix('penjualan')->group(function () {
         return view('penjualan.dashboard');
     });
 
+    Route::get('/barangs', 'Stock\ItemResourceController@indexpenjualan');
+    Route::get('/gudangs', 'Stock\WarehouseController@indexpenjualan');
+    Route::get('/pajaks', 'Stock\TaxResourceController@indexpenjualan');
+
     Route::get('/ambilgudang', 'Penjualan\GudangsController@ambil');
     Route::get('/ambilbarang', 'Penjualan\BarangsController@ambil');
+    Route::get('/showpiutang/{id}', 'Penjualan\PiutangsController@showpembayaran');
 
+    //show details page
+    Route::get('/penawarandetails/{id}', 'Penjualan\PenawaransController@detail');
+    Route::get('/pemesanandetails/{id}', 'Penjualan\PemesanansController@detail');
+    Route::get('/pengirimandetails/{id}', 'Penjualan\PengirimansController@detail');
+    Route::get('/fakturdetails/{id}', 'Penjualan\FaktursController@detail');
+    Route::get('/returdetails/{id}', 'Penjualan\RetursController@detail');
+    Route::get('/pembayarandetails/{id}', 'Penjualan\PembayaransController@detail');
+
+    //cetak pdf
+    Route::get('/jurnals/cetak_pdf', 'Penjualan\JurnalsController@cetak_pdf');
+    Route::get('/penawarans/cetak_pdf', 'Penjualan\PenawaransController@cetak_pdf');
+    Route::get('/pemesanans/cetak_pdf', 'Penjualan\PemesanansController@cetak_pdf');
+    Route::get('/pengirimans/cetak_pdf', 'Penjualan\PengirimansController@cetak_pdf');
+    Route::get('/fakturs/cetak_pdf', 'Penjualan\FaktursController@cetak_pdf');
+    Route::get('/returs/cetak_pdf', 'Penjualan\RetursController@cetak_pdf');
+    Route::get('/pembayarans/cetak_pdf', 'Penjualan\PembayaransController@cetak_pdf');
+
+    //Posting
+    Route::get('/pengirimans/{idnya}/posting', 'Penjualan\PengirimansController@posting');
+
+    
     // Route::get('/barangs', )
     Route::resources([
         'pelanggans' => 'Penjualan\PelanggansController',

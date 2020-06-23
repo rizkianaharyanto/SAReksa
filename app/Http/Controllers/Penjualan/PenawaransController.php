@@ -9,6 +9,7 @@ use App\Stock\Barang;
 use App\Stock\Gudang;
 use App\Penjualan\Pelanggan;
 use App\Penjualan\Penjual;
+use PDF;
 
 
 class PenawaransController extends Controller
@@ -47,7 +48,7 @@ class PenawaransController extends Controller
      */
     public function store(Request $request)
     {
-        $pnw = Penawaran::max('id');
+        $pnw = Penawaran::max('id') + 1;
         $penawaran = Penawaran::create([
             'kode_penawaran' => 'PNW-'.$pnw,
             'pelanggan_id' => $request->pelanggan_id,
@@ -88,6 +89,61 @@ class PenawaransController extends Controller
         ->json(['success'=> true, 'penawaran' => $penawaran, 'barangs' => $barangs]);
     }
 
+    public function detail($id)
+    {
+        $penawaran = Penawaran::find($id);
+        $gudang = Gudang::find($penawaran->gudang);
+        $barangs = $penawaran->barangs;
+        $diskon = $penawaran->diskon.'%';
+        $biaya_lain = $penawaran->biaya_lain;
+        $total_seluruh = $penawaran->total_harga;
+        $total_harga = [];
+        $subtotal = 0;
+        foreach ($barangs as $index => $barang){
+            $total_harga[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
+            $subtotal += $total_harga[$index];
+        }
+        // dd($total_harga, $total_seluruh);
+        return view('penjualan.penjualan.penawaran.penawarandetails', [
+            'penawaran' => $penawaran, 
+            'gudang' => $gudang,
+            'barangs' => $barangs,
+            'diskon' => $diskon,
+            'biaya_lain' => $biaya_lain,
+            'total_harga' => $total_harga,
+            'subtotal' => $subtotal,
+            'total_seluruh' => $total_seluruh,
+        ]);
+    }
+
+    public function cetak_pdf(Request $request)
+    {
+        $penawaran = Penawaran::find($request->id);
+        $gudang = Gudang::find($penawaran->gudang);
+        $barangs = $penawaran->barangs;
+        $diskon = $penawaran->diskon.'%';
+        $biaya_lain = $penawaran->biaya_lain;
+        $total_seluruh = $penawaran->total_harga;
+        $total_harga = [];
+        $subtotal = 0;
+        foreach ($barangs as $index => $barang){
+            $total_harga[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
+            $subtotal += $total_harga[$index];
+        }
+        $pdf = PDF::loadview('penjualan.penjualan.penawaran.penawaran-pdf', [
+            'penawaran' => $penawaran, 
+            'gudang' => $gudang,
+            'barangs' => $barangs,
+            'diskon' => $diskon,
+            'biaya_lain' => $biaya_lain,
+            'total_harga' => $total_harga,
+            'subtotal' => $subtotal,
+            'total_seluruh' => $total_seluruh,
+            ]);
+
+        return $pdf->download('Penawaran.pdf');
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -124,7 +180,7 @@ class PenawaransController extends Controller
                 'diskon' => $request->diskon,
                 'biaya_lain' => $request->biaya_lain,
                 'total_jenis_barang' => 3,
-                'total_harga' => 1000,
+                'total_harga' => $request->total_harga_keseluruhan,
                 'penjual_id' => $request->penjual_id,
                 
             ]);

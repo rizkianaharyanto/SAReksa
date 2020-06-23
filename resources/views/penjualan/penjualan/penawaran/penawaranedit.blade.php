@@ -10,7 +10,7 @@
 <div class="content">
         <div class="row">
             <div class="col-md-12">
-                <div class="card">
+                <div class="">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">
@@ -43,9 +43,11 @@
                                                     </div>
                                                 </div>
                                                 <div class="bs-stepper-content">
-                                                    <form method="POST" action="/penjualan/penawarans">
+                                                    <form method="POST" action="/penjualan/penawarans/{{$penawaran->id}}">
+                                                        @method('put')
                                                         @csrf
                                                         <div id="test-l-1" class="content">
+                                                        <input type="hidden" id="kode_penawaran" name="kode_penawaran" placeholder="" value="{{$penawaran->kode_penawaran}}">
                                                             <div style="height: 58vh;overflow: auto; color:#212120" class="mt-2">
                                                                 <div class="form-group row mx-5 mb-5">
                                                                     <label class="col-sm-3 col-form-label" for="pelanggan_id">Pelanggan</label>
@@ -110,21 +112,21 @@
                                                                 <div class="form-row mx-5" id="isiformbarang">
                                                                     <div class="col-md-3">
                                                                         <label for="barang_id" id="lbl">Barang</label>
-                                                                        <select class="form-control" id="barang_id" name="barang_id[]">
+                                                                        <select class="form-control" onchange="isi(this)" id="barang_id" name="barang_id[]">
                                                                             <option value="">--- Pilih Barang ---</option>
                                                                             @foreach ($barangs as $barang)
-                                                                            <option value="{{$barang->id}}" {{$barang->id == $penawaranbarang->pivot->barang_id ? "selected" : "" }}>{{ $barang->nama_barang }}></option>
+                                                                            <option value="{{$barang->id}}" {{$barang->id == $penawaranbarang->pivot->barang_id ? "selected" : "" }}>{{ $barang->nama_barang }}</option>
                                                                             @endforeach
                                                                         </select>
                                                                     </div>
                                                                     <div class="col-md-1">
                                                                         <label for="jumlah_barang">QTY</label>
-                                                                        <input type="number" class="form-control" id="jumlah_barang" name="jumlah_barang[]" value="{{$penawaranbarang->pivot->jumlah_barang}}" placeholder="-">
+                                                                        <input type="number" class="form-control" id="jumlah_barang" name="jumlah_barang[]" onfocus="startCalc(this);" onblur="stopCalc();" value="{{$penawaranbarang->pivot->jumlah_barang}}" placeholder="-">
                                                                     </div>
                                                                     <div class="col-md-2">
                                                                         <label for="satuan_unit">Unit</label>
-                                                                        <input type="number" class="form-control" id="uni" disabled>
-                                                                        <input type="hidden" id="unit" name="unit_barang[]">
+                                                                        <input type="text" class="form-control" placeholder="{{$penawaranbarang->pivot->unit}}" id="uni" disabled>
+                                                                        <input type="hidden" value="{{$penawaranbarang->pivot->unit}}" id="unit" name="unit_barang[]">
                                                                     </div>
                                                                     <div class="col-md-2">
                                                                         <label for="harga">Harga Satuan</label>
@@ -132,7 +134,7 @@
                                                                             <div class="input-group-prepend">
                                                                                 <div class="input-group-text">Rp</div>
                                                                             </div>
-                                                                            <input type="number" class="form-control" id="harga" name="harga[]" value="{{$penawaranbarang->pivot->harga}}"  placeholder="-">
+                                                                            <input type="number" class="form-control" id="harga" name="harga[]" onfocus="startCalc(this);" onblur="stopCalc();" value="{{$penawaranbarang->pivot->harga}}"  placeholder="-">
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-3">
@@ -184,7 +186,7 @@
                                                                             <div class="input-group-prepend">
                                                                                 <div class="input-group-text">%</div>
                                                                             </div>
-                                                                            <input type="number" class="form-control" id="diskon"  name="diskon" value="{{$penawaran->diskon}}"  placeholder="-">
+                                                                            <input type="number" class="form-control" id="diskon"  name="diskon" value="{{$penawaran->diskon}}" onchange="disc();" name="diskon"   placeholder="-">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -269,7 +271,7 @@
     var i = 0;
     $('#tambahbarang').click(function() {
         // console.log(i)
-        $("#formbarang").append($("#isiformbarang" + i).clone().attr('id', 'isiformbarang' + (i + 1)));
+        $("#formbarang").append($("#isiformbarang").clone().attr('id', 'isiformbarang' + (i + 1)));
         $(document.querySelectorAll("#isiformbarang1")).children().children().children().css({
             'color': 'black',
             'cursor': 'pointer'
@@ -283,9 +285,75 @@
     });
 
     function hapus(x) {
-        if ($(x).parent().parent().attr('id') != 'isiformbarang0') {
+        if ($(x).parent().parent().attr('id') != 'isiformbarang') {
             $(x).parent().parent().remove();
         }
+    }
+    function disc() {
+        dis = $('#diskon').val() / 100;
+        biy = parseInt($('#biaya_lain').val());
+        akhir = parseInt($('#total_harga_barang').val())
+        akhir1 = akhir - (akhir * dis)
+        akhir2 = akhir1 + biy
+        if (akhir2) {
+            $('#total_harga_kes').val(akhir2)
+            $('#total_harga_keseluruhan').val(akhir2)
+        } else {
+            $('#total_harga_kes').val(akhir1)
+            $('#total_harga_keseluruhan').val(akhir1)
+        }
+    }
+
+    function startCalc(x) {
+        if ($(x).attr('id') == 'jumlah_barang') {
+            a = x
+            b = $(x).parent().parent().children().children().children('#harga')
+            c = $(x).parent().parent().children().children().children('#total')
+            interval = setInterval(function() {
+                qty = $(a).val();
+                harga = $(b).val();
+                total = qty * harga
+                $(c).val(total)
+            }, 1);
+        } else if ($(x).attr('id') == 'harga') {
+            a = $(x).parent().parent().parent().children().children('#jumlah_barang')
+            b = x
+            c = $(x).parent().parent().parent().children().children().children('#total')
+            interval = setInterval(function() {
+                qty = $(a).val();
+                harga = $(b).val();
+                total = qty * harga
+                $(c).val(total)
+            }, 1);
+        }
+    }
+
+    function stopCalc() {
+        clearInterval(interval);
+        var arr = document.getElementsByName('total[]');
+        var tot = 0;
+        for (var i = 0; i < arr.length; i++) {
+            if (parseInt(arr[i].value))
+                tot += parseInt(arr[i].value);
+        }
+        document.getElementById('total_harga_barang').value = tot;
+        document.getElementById('total_harga_keseluruhan').value = tot;
+    }
+
+    function isi(x) {
+        console.log('isi')
+        $.ajax({
+            url: '/stok/Management-Data/barang/' + $(x).val(),
+            type: 'get',
+            data: {},
+            success: function(data) {
+                console.log(data)
+                var unit = $(x).parent().parent().children().children('#uni').attr('placeholder', data.unit.nama_satuan)
+                $(x).parent().parent().children().children('#unit').val(data.unit.nama_satuan)
+                var harga = $(x).parent().parent().children().children().children('#harga').val(data.harga_retail)
+                console.log(unit)
+            }
+        })
     }
 </script>
 

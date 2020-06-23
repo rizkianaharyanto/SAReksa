@@ -42,7 +42,7 @@ class PelanggansController extends Controller
      */
     public function store(Request $request)
     {
-        $sup = Pelanggan::max('id');
+        $sup = Pelanggan::max('id') + 1;
         $pelanggan = Pelanggan::create([
             'kode_pelanggan' => 'PEL-'.$sup,
             'nama_pelanggan' => $request->nama_pelanggan,
@@ -67,13 +67,47 @@ class PelanggansController extends Controller
         $pemesanans = $pelanggan->pemesanans;
         $pengirimans = $pelanggan->pengirimans;
         $fakturs = $pelanggan->fakturs;
+        $piutangs = $pelanggan->piutangs;
+        $piutangmasih = null;
+        $pemesananpengiriman = null;
+        $pemesananfaktur = null;
+
+
+        $i=0;
+        foreach($piutangs as $piutangs){
+            if($piutangs->total_piutang != 0){
+                $piutangmasih[$i] = $piutangs;
+                $i++;
+            }
+        }
+        $k=0;
+
+        $j=0;
+        foreach($pemesanans as $pemesanans){
+            if($pemesanans->status != 'terkirim'){
+                $pemesananpengiriman[$j] = $pemesanans;
+                $j++;
+            }
+            if($pemesanans->status == 'baru'){
+                $pemesananfaktur[$k] = $pemesanans;
+                $k++;
+            }
+        }
+        // for ($i = 0 ; $i < count($piutang) ; i++) {
+        //     if ($piutang[i]->total_piutang != 0){
+        //         $piutangmasih[i] = $piutang[i];
+        //     }
+        // }
+
         return response()
         ->json([
             'pelanggan' => $pelanggan, 
             'penawarans' => $penawarans, 
-            'pemesanans' => $pemesanans, 
+            'pemesanans' => $pemesananpengiriman, 
+            'pemesananfakturs' => $pemesananfaktur, 
             'pengirimans'=> $pengirimans,
             'fakturs'=> $fakturs,
+            'piutangs' => $piutangmasih,
         ]);
     }
 

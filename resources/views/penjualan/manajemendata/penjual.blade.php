@@ -1,15 +1,15 @@
 @extends('penjualan.template.table', [
-      'elementActive' => 'penjual'
+      'elementActive' => 'sales'
 ])
 
-@section('judul', 'Penjual')
+@section('judul', 'Sales')
 
-@section('menu', 'Penjual')
+@section('menu', 'Sales')
 
 @section('thead')
 <tr>
-    <th>Kode Penjual</th>
-    <th>Nama Penjual</th>
+    <th>Kode Sales</th>
+    <th>Nama Sales</th>
     <th>Telp</th>
     <th style="column-width: 80px">Aksi</th>
 </tr>
@@ -94,7 +94,7 @@
                 $('#lebarmodal').removeClass('modal-xl');
                 $('#footermodal').empty();
                 $('#judulmodal').html(
-                    '<h5 class="align-self-center">Edit Penjual ' + datanya[index].nama_penjual + '</h5>'
+                    '<h5 class="align-self-center">Edit Sales ' + datanya[index].nama_penjual + '</h5>'
                 );
                 $('#bodymodal').html(
                     '<form method="POST" action="/penjualan/penjuals/' + datanya[index].id + '">' +
@@ -118,7 +118,7 @@
                     '</div>' +
                     '<div class="form-group modal-footer">' +
                     '<button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>' +
-                    '<button type="submit" class="btn btn-primary">Simpan</button>' +
+                    '<button type="submit" style="background-color:#212120" class="btn ">Simpan</button>' +
                     '</div>' +
                     '</form>'
                 );
@@ -126,10 +126,10 @@
                 $('#lebarmodal').removeClass('modal-xl');
                 $('#footermodal').addClass('modal-footer');
                 $('#judulmodal').html(
-                    '<h5 class="align-self-center">Hapus Penjual</h5>'
+                    '<h5 class="align-self-center">Hapus Sales</h5>'
                 );
                 $('#bodymodal').html(
-                    '<p>Apakah kamu yakin ingin menghapus Penjual ' + datanya[index].nama_penjual + ' ?</p>'
+                    '<p>Apakah kamu yakin ingin menghapus Sales ' + datanya[index].nama_penjual + ' ?</p>'
                 );
 
                 $('#footermodal').html(
@@ -158,7 +158,7 @@
 @endsection
 
 @section('judulTambah')
-<h5 class="align-self-center">Tambah Penjual</h5>
+<h5 class="align-self-center">Tambah Sales</h5>
 @endsection
 
 @section('bodyTambah')

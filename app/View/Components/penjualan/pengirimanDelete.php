@@ -30,6 +30,6 @@ class pengirimanDelete extends Component
 
     public function pengiriman()
     {
-        return Penerimaan::find($this->id);
+        return Pengiriman::find($this->id);
     }
 }

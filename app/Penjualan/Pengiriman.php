@@ -32,6 +32,6 @@ class Pengiriman extends Model
 
     public function barangs()
     {
-        return $this->belongsToMany('App\Stock\Barang', 'pbl_penerimaan_details')->withPivot('jumlah_barang', 'harga', 'unit', 'pajak')->withTimestamps();
+        return $this->belongsToMany('App\Stock\Barang', 'pnj_pengiriman_details')->withPivot('jumlah_barang', 'harga', 'unit', 'pajak')->withTimestamps();
     }
 }
