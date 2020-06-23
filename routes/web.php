@@ -73,7 +73,6 @@ Route::prefix('stok')->group(function () {
     Route::get('/gudangs', 'Stock\WarehouseController@indexpembelian');
     Route::get('/pajaks', 'Stock\TaxResourceController@indexpembelian');
 
-    Route::get('/ello', "Stock\ItemResourceController@test");
 
     Route::get('/config', 'Stock\ConfigController@index');
     Route::get('/config/getrolepermissions/{id}', 'Stock\ConfigController@getRolePermissions');
@@ -100,7 +99,8 @@ Route::prefix('stok')->group(function () {
             'penyesuaian-stock' => 'StockAdjustmentController',
             'pembelian' => 'ItemPurchaseTransactionController',
         ]);
-
+    Route::get('/stokbarang/{barangId}', 'Stock\ItemStockController@getStocksTotalById');
+    Route::get('/stokbarangpergudang/{barangId}', 'Stock\ItemStockController@getStocksByGudang');
     Route::get('/token', function () {
         return csrf_token();
     });

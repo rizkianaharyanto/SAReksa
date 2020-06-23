@@ -9,6 +9,15 @@ class Barang extends Model
     protected $table = 'stk_master_barang';
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
+    // public function getHargaRetailAttribute()
+    // {
+    //     $hargaRetailHistory = $this->hargaRetailHistory()->latest()->first();
+    //     return $hargaRetailHistory ? $hargaRetailHistory->harga_retail : 0.0;
+    // }
+    public function hargaRetailHistory()
+    {
+        return $this->hasMany('App\Stock\HargaRetailHistory', 'item_id');
+    }
     public function getTableColumns()
     {
         return $this->getConnection()->getSchemaBuilder()->getColumnListing($this->getTable());
@@ -102,5 +111,4 @@ class Barang extends Model
     {
         return $this->belongsToMany('App\Penjualan\Pengiriman', 'pengiriman_details')->withPivot('jumlah_barang', 'harga', 'unit', 'pajak')->withTimestamps();
     }
-
 }

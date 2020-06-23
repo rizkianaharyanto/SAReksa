@@ -3,6 +3,7 @@ namespace App\Services\Stock;
 
 use App\Repositories\Stock\Repository;
 use App\Stock\Barang;
+use App\Stock\StokGudang;
 
 class ItemService
 {
@@ -69,7 +70,10 @@ class ItemService
     }
     public function getStocksByWhouse($id, $whsId)
     {
-        return Barang::find($id)->warehouseStocks()->wherePivot('gudang_id', $whsId);
+        return StokGudang::with([
+            'barang',
+            'gudang'
+        ])->where('gudang_id', $whsId)->where('barang_id', $id)->first();
     }
     public function getStocksQtyByWhouse($whsId, $itemId)
     {
