@@ -22,7 +22,7 @@ class CreatePblPenerimaansTable extends Migration
             $table->integer('total_harga');
             $table->double('diskon', 8, 3);
             $table->integer('biaya_lain');
-            $table->enum('status', ['sudah posting', 'belum posting', 'konfirmasi'])->nullable();
+            $table->enum('status', ['sudah posting', 'belum posting', 'konfirmasi', 'selesai'])->nullable();
             $table->timestamps();
             //fk
             $table->bigInteger('pemasok_id')->nullable();

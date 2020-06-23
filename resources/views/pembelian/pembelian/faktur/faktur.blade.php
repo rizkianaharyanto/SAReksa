@@ -22,23 +22,33 @@
     <td>pemasok</td>
     <td>{{ $faktur->tanggal }}</td>
     <td>{{ $faktur->total_harga }}</td>
-    <td>{{ $faktur->status !=null ? $faktur->status  : '-' }}</td>
+    <td>{{ $faktur->status !=null ? $faktur->status  : '-' }} | 
+        @if ($faktur->status_posting == 'sudah posting')
+            sudah posting 
+        @elseif ($faktur->status_posting == 'konfirmasi')
+        <a href="/pembelian/ubahpsnfak/{{$faktur->id}}">posting</a>
+        @else
+        <a href="/pembelian/postingfak/{{$faktur->id}}">konfirmasi</a>
+        @endif
+    </td>
     <td class="d-flex justify-content-between">
         <a id="details" href="/pembelian/fakturshow/{{$faktur->id}}">
             <i style="cursor: pointer; " class="fas fa-info-circle">
                 <span></span>
             </i>
         </a>
+        @if($faktur->status_posting == null)
         <!-- <a id="edit" href="/pembelian/fakturs/{{$faktur->id}}/edit">
             <i style="cursor: pointer;" class="fas fa-edit">
                 <span></span>
             </i>
-        </a> -->
-        <!-- <a id="delete" data-toggle="modal" data-target="#delete-{{$faktur->id }}">
+        </a>
+        <a id="delete" data-toggle="modal" data-target="#delete-{{$faktur->id}}">
             <i style="cursor: pointer;" class="fas fa-trash">
                 <span></span>
             </i>
         </a> -->
+        @endif
     </td>
 </tr>
 

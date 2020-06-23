@@ -41,7 +41,7 @@
                     <input type="hidden" id="hutang" name="hutang">
                     <div style="height: 58vh;overflow: auto; color:black" class="mt-2">
                         <div class="form-group row mx-5 mb-5">
-                            <label class="col-sm-3 col-form-label" for="pemasok_id">pemasok</label>
+                            <label class="col-sm-3 col-form-label" for="pemasok_id">Pemasok</label>
                             <div class="col-sm-9">
                                 <select class="form-control" id="pemasok_id" name="pemasok_id">
                                     <option value="">--- Pilih pemasok ---</option>
@@ -141,7 +141,7 @@
                             <div class="form-row mx-5" id="isiformpenerimaan0">
                                 <div class="form-group col-md-3">
                                     <label for="penerimaan_id">Penerimaan</label>
-                                    <select class="form-control" id="penerimaan_id" onchange="isipenerimaan(this)" name="penerimaan_id" >
+                                    <select class="form-control" id="penerimaan_id" onchange="isipenerimaan(this)" name="penerimaan_id[]" >
                                         <option value="">--- Pilih Penerimaan ---</option>
                                     </select>
                                 </div>

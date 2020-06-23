@@ -24,7 +24,9 @@
     <td>{{ $penerimaan->total_harga }}</td>
     <td>
         @if ($penerimaan->status == 'sudah posting')
-         sudah posting 
+            sudah posting 
+        @elseif ($penerimaan->status == 'selesai')
+            selesai
         @elseif ($penerimaan->status == 'konfirmasi')
         <a href="/pembelian/ubahpsn/{{$penerimaan->id}}">posting</a>
         @else

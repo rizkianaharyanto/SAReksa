@@ -22,7 +22,15 @@
     <td>pemasok</td>
     <td>{{ $retur->tanggal }}</td>
     <td>{{ $retur->total_harga }}</td>
-    <td>{{ $retur->status !=null ? $retur->status  : '-' }}</td>
+    <td>{{ $retur->status !=null ? $retur->status  : '-' }} |
+        @if ($retur->status_posting == 'sudah posting')
+            sudah posting 
+        @elseif ($retur->status_posting == 'konfirmasi')
+        <a href="/pembelian/ubahpsnret/{{$retur->id}}">posting</a>
+        @else
+        <a href="/pembelian/postingret/{{$retur->id}}">posting</a>
+        @endif
+    </td>
     <td class="d-flex justify-content-between">
         <a id="details" href="/pembelian/returshow/{{$retur->id}}">
             <i style="cursor: pointer; " class="fas fa-info-circle">
