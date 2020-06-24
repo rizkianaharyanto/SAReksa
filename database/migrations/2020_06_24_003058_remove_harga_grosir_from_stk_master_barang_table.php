@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStkPajakBarangTable extends Migration
+class RemoveHargaGrosirFromStkMasterBarangTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateStkPajakBarangTable extends Migration
      */
     public function up()
     {
-        Schema::create('stk_pajak_barang', function (Blueprint $table) {
-            $table->id();
-            $table->string('nama');
-            $table->float('rate');
-            $table->timestamps();
+        Schema::table('stk_master_barang', function (Blueprint $table) {
+            $table->dropColumn('harga_grosir');
         });
     }
 
@@ -28,6 +25,8 @@ class CreateStkPajakBarangTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('stk_pajak_barang');
+        Schema::table('stk_master_barang', function (Blueprint $table) {
+            $table->float('harga_grosir');
+        });
     }
 }
