@@ -11,6 +11,7 @@ use App\Stock\Barang;
 use App\Stock\Gudang;
 use App\Pembelian\Pemasok;
 use App\Services\Stock\ItemService;
+use App\Stock\HargaRetailHistory;
 use PDF;
 
 class PenerimaansController extends Controller
@@ -89,7 +90,6 @@ class PenerimaansController extends Controller
         $penerimaan = Penerimaan::find($idnya);
         Penerimaan::where('id', $penerimaan->id)
                     ->update(['status' => 'konfirmasi']);
-        //Update Stok barang
 
 
         //posting
@@ -127,6 +127,16 @@ class PenerimaansController extends Controller
                 // dd("berhasil");
             } catch (\Throwable $th) {
                 dd("Gagal");
+            }
+
+            //update harga barang
+            try {
+                HargaRetailHistory::create([
+                    'item_id'  => $barang->id,
+                    'harga_retail' => $barang->pivot->harga
+                ]);               
+            } catch (\Throwable $th) {
+                throw $th;
             }
             // dd($a, $b, $belum_diterima);
             $pemesanan->barangs()->where('barang_id', $barang->id)->update(array('barang_belum_diterima' => $belum_diterima));
