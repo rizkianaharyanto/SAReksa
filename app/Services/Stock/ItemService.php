@@ -77,8 +77,10 @@ class ItemService
     }
     public function updateStocks($itemId, $whsId, $qty)
     {
-        $Barangtock = $this->getStocksByWhouse($itemId, $whsId);
-        $Barangtock->updateExistingPivot($whsId, ['kuantitas'=>$qty]);
+        Barang::find($itemId)->warehouseStocks()->syncWithoutDetaching([$itemId => [
+            'gudang_id' => $whsId,
+            'kuantitas' => $qty,
+        ]]);
         return 201;
     }
     public function except($columns)

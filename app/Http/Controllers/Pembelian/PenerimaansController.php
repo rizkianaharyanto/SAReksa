@@ -10,15 +10,23 @@ use App\Pembelian\Pemesanan;
 use App\Stock\Barang;
 use App\Stock\Gudang;
 use App\Pembelian\Pemasok;
+use App\Services\Stock\ItemService;
 use PDF;
 
 class PenerimaansController extends Controller
 {
+    private $itemService;
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct(ItemService $itemService)
+    {
+        $this->itemService = $itemService;
+    }
+
     public function index()
     {
         $penerimaans = Penerimaan::all();
@@ -111,6 +119,14 @@ class PenerimaansController extends Controller
             $a = $pemesanan->barangs()->where('barang_id', $barang->id)->first()->pivot->barang_belum_diterima;
             $b = $barang->pivot->jumlah_barang;
             $belum_diterima = $a - $b;
+
+            //update stock
+            try {
+                $this->itemService->updateStocks($barang->id,$penerimaan->gudang,$b);
+                // dd("berhasil");
+            } catch (\Throwable $th) {
+                dd("Gagal");
+            }
             // dd($a, $b, $belum_diterima);
             $pemesanan->barangs()->where('barang_id', $barang->id)->update(array('barang_belum_diterima' => $belum_diterima));
             if ($belum_diterima == 0) {
@@ -119,23 +135,25 @@ class PenerimaansController extends Controller
                 $pemesanan->barangs()->where('barang_id', $barang->id)->update(array('status_barang' => 'belum diterima'));
             }
         }
-        
+
         return redirect('/pembelian/penerimaans');
     }
 
-    public function ubahpsn($idnya){
+    public function ubahpsn($idnya)
+    {
         $penerimaan = Penerimaan::find($idnya);
         Penerimaan::where('id', $penerimaan->id)
                     ->update(['status' => 'sudah posting']);
         $pemesanan = $penerimaan->pemesanan;
         $status = $pemesanan->barangs()->where('status_barang', 'belum diterima')->first();
         // dd($status);
-            if ($status) {
-                $pemesanan->update(array('status' => 'diterima sebagian'));
-            }else{
-                $pemesanan->update(array('status' => 'diterima'));
-            }
-            return redirect('/pembelian/penerimaans');
+        if ($status) {
+            $pemesanan->update(array('status' => 'diterima sebagian'));
+        } else {
+            $pemesanan->update(array('status' => 'diterima'));
+        }
+
+        return redirect('/pembelian/penerimaans');
     }
 
     /**
