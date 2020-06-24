@@ -29,6 +29,7 @@
                 <span></span>
             </i>
         </a>
+        @if ($pemesanan->status != 'selesai')
         <a id="edit" href="/pembelian/pemesanans/{{$pemesanan->id}}/edit">
             <i style="cursor: pointer;" class="fas fa-edit">
                 <span></span>
@@ -39,6 +40,7 @@
                 <span></span>
             </i>
         </a>
+        @endif
     </td>
 </tr>
 
