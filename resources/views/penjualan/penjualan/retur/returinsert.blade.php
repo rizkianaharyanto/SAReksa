@@ -80,7 +80,7 @@
                                                                     <div class="col-sm-9">
                                                                         <select class="form-control" id="mata_uang" name="mata_uang">
                                                                             <option value="">--- Pilih Mata Uang ---</option>
-                                                                            <option value="">IDR</option>
+                                                                            <option value="" selected>IDR</option>
                                                                         </select>
                                                                     </div>
                                                                 </div>

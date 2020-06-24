@@ -71,6 +71,7 @@ class PelanggansController extends Controller
         $piutangmasih = null;
         $pemesananpengiriman = null;
         $pemesananfaktur = null;
+        $pengirimanfaktur = null;
 
 
         $i=0;
@@ -80,17 +81,25 @@ class PelanggansController extends Controller
                 $i++;
             }
         }
+        
         $k=0;
 
         $j=0;
         foreach($pemesanans as $pemesanans){
-            if($pemesanans->status != 'terkirim'){
+            if($pemesanans->status == 'baru' || $pemesanans->status == 'terkirim sebagian'){
                 $pemesananpengiriman[$j] = $pemesanans;
                 $j++;
             }
             if($pemesanans->status == 'baru'){
                 $pemesananfaktur[$k] = $pemesanans;
                 $k++;
+            }
+        }
+        $l=0;
+        foreach($pengirimans as $pengirimans){
+            if($pengirimans->status == 'sudah posting'){
+                $pengirimanfaktur[$l] = $pengirimans;
+                $l++;
             }
         }
         // for ($i = 0 ; $i < count($piutang) ; i++) {
@@ -104,7 +113,8 @@ class PelanggansController extends Controller
             'pelanggan' => $pelanggan, 
             'penawarans' => $penawarans, 
             'pemesanans' => $pemesananpengiriman, 
-            'pemesananfakturs' => $pemesananfaktur, 
+            'pemesananfakturs' => $pemesananfaktur,
+            'pengirimanfakturs' => $pengirimanfaktur,  
             'pengirimans'=> $pengirimans,
             'fakturs'=> $fakturs,
             'piutangs' => $piutangmasih,

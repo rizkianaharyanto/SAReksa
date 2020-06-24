@@ -324,12 +324,15 @@
                     $('#harga').val(data.barangs[0].pivot.harga)
                     // $('#pemesanan_id').val(data.barangs.pemesanan_id)
                     for (var i = 1; i <= data.barangs.length - 1; i++) {
-                        $("#formbarang").append($("#isiformbarang0").clone().attr('id', 'isiformbarang' + i));
-                        $("#isiformbarang" + i).children().children('select').val(data.barangs[i].id)
-                        $("#isiformbarang" + i).children().children('#jumlah_barang').val(data.barangs[i].pivot.barang_belum_diterima)
-                        $("#isiformbarang" + i).children().children('#unit').val(data.barangs[i].pivot.unit)
-                        $("#isiformbarang" + i).children().children('#uni').attr('placeholder', data.barangs[i].pivot.unit)
-                        $("#isiformbarang" + i).children().children().children('#harga').val(data.barangs[i].pivot.harga)
+                        if(data.barangs[i].pivot.barang_belum_diterima !=0){
+                            $("#formbarang").append($("#isiformbarang0").clone().attr('id', 'isiformbarang' + i));
+                            $("#isiformbarang" + i).children().children('select').val(data.barangs[i].id)
+                            $("#isiformbarang" + i).children().children('#jumlah_barang').val(data.barangs[i].pivot.barang_belum_diterima)
+                            $("#isiformbarang" + i).children().children('#unit').val(data.barangs[i].pivot.unit)
+                            $("#isiformbarang" + i).children().children('#uni').attr('placeholder', data.barangs[i].pivot.unit)
+                            $("#isiformbarang" + i).children().children().children('#harga').val(data.barangs[i].pivot.harga)
+                        }
+                        
                         // $("#isiformbarang" + i).children('#status_barang').val('diterima')
                         // $("#isiformbarang" + i).children().children('input').attr('id', 'total' + i)
                         // $('#total' + i).val(data.barangs[i].pivot.unit)

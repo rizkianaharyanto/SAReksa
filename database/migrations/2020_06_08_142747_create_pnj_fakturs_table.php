@@ -23,6 +23,7 @@ class CreatePnjFaktursTable extends Migration
             $table->integer('uang_muka');
             $table->integer('diskon_rp')->nullable();
             $table->enum('status', ['lunas', 'piutang'])->nullable();
+            $table->enum('status_posting', ['belum posting', 'sudah posting'])->nullable();
             $table->timestamps();
             $table->softDeletes();
             //fk

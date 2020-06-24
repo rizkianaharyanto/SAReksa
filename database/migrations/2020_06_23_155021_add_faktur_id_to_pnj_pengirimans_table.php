@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class RenamePiutangColoumn extends Migration
+class AddFakturIdToPnjPengirimansTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class RenamePiutangColoumn extends Migration
      */
     public function up()
     {
-        Schema::table('pnj_piutangs', function(Blueprint $table) {
-            $table->renameColumn('total_sisa', 'total_piutang');
+        Schema::table('pnj_pengirimans', function (Blueprint $table) {
+            $table->bigInteger('faktur_id')->nullable();
         });
     }
 
@@ -25,8 +25,8 @@ class RenamePiutangColoumn extends Migration
      */
     public function down()
     {
-        Schema::table('pnj_piutangs', function(Blueprint $table) {
-//
-        });    
+        Schema::table('pnj_pengirimans', function (Blueprint $table) {
+            //
+        });
     }
 }

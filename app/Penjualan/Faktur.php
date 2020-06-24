@@ -20,6 +20,11 @@ class Faktur extends Model
         return $this->hasOne('App\Penjualan\Pemesanan');
     }
 
+    public function pengirimans()
+    {
+        return $this->hasMany('App\Penjualan\Pengiriman');
+    }
+
     public function piutang()
     {
         return $this->hasOne('App\Penjualan\Piutang');

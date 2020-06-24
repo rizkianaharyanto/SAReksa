@@ -23,7 +23,7 @@ class CreatePnjPemesanansTable extends Migration
             $table->double('diskon', 8, 3);
             $table->integer('biaya_lain');
             $table->integer('diskon_rp')->nullable();
-            $table->enum('status', ['baru','terkirim', 'terkirim sebagian'])->nullable();
+            $table->enum('status', ['baru','terkirim', 'terkirim sebagian','selesai'])->nullable();
             $table->timestamps();
             $table->softDeletes();
             //fk

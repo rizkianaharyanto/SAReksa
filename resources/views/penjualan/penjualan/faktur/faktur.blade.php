@@ -12,6 +12,7 @@
     <th>Tanggal</th>
     <th>Total</th>
     <th>Status</th>
+    <th>Posting</th>
     <th style="column-width: 80px">Aksi</th>
 </tr>
 @endsection
@@ -24,17 +25,29 @@
     <td>{{ $faktur->tanggal }}</td>
     <td>{{ $faktur->total_harga }}</td>
     <td>{{ $faktur->status !=null ? $faktur->status  : '-' }}</td>
+    <td>
+        @if($faktur->status_posting == 'belum posting')Belum
+        @else Sudah
+        @endif
+    </td>
     <td class="d-flex justify-content-between">
         <a id="details" href="/penjualan/fakturdetails/{{$faktur->id}}">
             <i style="cursor: pointer;color:#212120 " class="fas fa-info-circle">
                 <span></span>
             </i>
         </a>
+        @if($faktur->status_posting == 'belum posting')
         <a id="edit" href="/penjualan/fakturs/{{$faktur->id}}/edit">
             <i style="cursor: pointer;color:#212120" class="fas fa-edit">
                 <span></span>
             </i>
         </a>
+        <a id="edit"  href="/penjualan/fakturs/{{$faktur->id}}/posting" title='Posting'>
+        <i onmouseover="" style="cursor: pointer;color: #212120" class="fas fa-file-upload" title='Posting'>
+                <span></span>
+            </i>
+        </a>
+        @endif
         <a id="delete" data-toggle="modal" data-target="#delete-{{$faktur->id }}">
             <i style="cursor: pointer;color:#212120" class="fas fa-trash">
                 <span></span>

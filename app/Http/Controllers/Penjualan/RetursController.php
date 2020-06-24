@@ -55,6 +55,7 @@ class RetursController extends Controller
         $rtp = Retur::max('id') + 1;
         $retur = Retur::create([
             'kode_retur' => 'RTP-'.$rtp,
+            'status_posting' => 'belum posting',
             'faktur_id' => $request->faktur_id,
             'status' => $request->status,
             'penjual_id' => $request->penjual_id,
@@ -69,17 +70,6 @@ class RetursController extends Controller
             'total_harga' => $request->total_harga_keseluruhan,
         ]);
 
-
-        $pit = Piutang::max('id') + 1;
-        $piutang= $retur->piutang()->create([
-            'kode_piutang' => 'PIT-'.$pit,
-            'pelanggan_id' => $request->pelanggan_id,
-            'total_piutang' => $request->piutang,
-            'retur_id' => $retur->id,
-        ]);
-
-        $retur->update(['piutang_id' => $piutang->id]);
-
         foreach ($request->barang_id as $index => $id) {
             
             $retur->barangs()->attach($id, [
@@ -93,13 +83,32 @@ class RetursController extends Controller
         return redirect('/penjualan/returs');
     }
 
+    public function posting($idnya)
+    {
+        $retur = Retur::find($idnya);
+        Retur::where('id', $retur->id)
+                    ->update(['status_posting' => 'sudah posting']);
+        //posting
+        if ($retur->status == 'piutang'){
+            $pit = Piutang::max('id') + 1;
+            $piutang= $retur->piutang()->create([
+                'kode_piutang' => 'PIT-'.$pit,
+                'pelanggan_id' => $retur->pelanggan_id,
+                'total_piutang' => $retur->total_harga * -1,
+                'retur_id' => $retur->id,
+        ]);
+            $retur->update(['piutang_id' => $piutang->id]);
+        }
+        return redirect('/penjualan/returs');
+    }
+
     /**
      * Display the specified resource.
      *
      * @param  \App\Retur  $retur
      * @return \Illuminate\Http\Response
      */
-    public function show(Retur $retur)
+    public function show($id)
     {
         $retur = Retur::find($id);
         $barangs = $retur->barangs;
@@ -191,7 +200,27 @@ class RetursController extends Controller
      */
     public function update(Request $request, Retur $retur)
     {
-        //
+        Retur::where('id', $retur->id)
+        ->update([
+            'pelanggan_id' => $request->pelanggan_id,
+            'tanggal' => $request->tanggal,
+            'diskon' => $request->diskon,
+            'biaya_lain' => $request->biaya_lain,
+            'total_harga' => $request->total_harga_keseluruhan,
+            'uang_muka' => $request->uang_muka,
+            'diskon_rp' => $request->diskon_rp,
+            'status' => $request->status,
+        ]);
+        $retur->barangs()->detach();
+            foreach ($request->barang_id as $index => $id) {
+                $retur->barangs()->attach($id, [
+                    'jumlah_barang' => $request->jumlah_barang[$index],
+                    'harga' => $request->harga[$index],
+                    'unit' => $request->unit_barang[$index],
+                    // 'pajak' => $request->pajak[$index],
+                    ]);
+        }
+        return redirect('/penjualan/returs');
     }
 
     /**
