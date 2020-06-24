@@ -20,7 +20,6 @@ class CreateStkMasterBarangTable extends Migration
             $table->string('nama_barang');
             $table->string('jenis_barang');
             $table->bigInteger('satuan_unit');
-            $table->integer('harga_retail');
             $table->integer('harga_grosir');
             $table->string('item_image');
             $table->bigInteger('akun_hpp');

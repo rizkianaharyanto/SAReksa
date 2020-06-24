@@ -16,7 +16,6 @@ use PDF;
 class PenerimaansController extends Controller
 {
     private $itemService;
-
     /**
      * Display a listing of the resource.
      *
@@ -26,7 +25,6 @@ class PenerimaansController extends Controller
     {
         $this->itemService = $itemService;
     }
-
     public function index()
     {
         $penerimaans = Penerimaan::all();
@@ -91,6 +89,9 @@ class PenerimaansController extends Controller
         $penerimaan = Penerimaan::find($idnya);
         Penerimaan::where('id', $penerimaan->id)
                     ->update(['status' => 'konfirmasi']);
+        //Update Stok barang
+
+
         //posting
 
         $no = Jurnal::max('id') + 1;
@@ -152,7 +153,6 @@ class PenerimaansController extends Controller
         } else {
             $pemesanan->update(array('status' => 'diterima'));
         }
-
         return redirect('/pembelian/penerimaans');
     }
 
