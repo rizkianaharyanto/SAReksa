@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Stock;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\Stock\ItemService;
+use App\Stock\Barang;
 
 class ItemStockController extends Controller
 {
@@ -21,10 +22,6 @@ class ItemStockController extends Controller
         return $stokBarang ? $stokBarang : ['message' => 'Barang Tidak ditemukan'];
     }
     public function getStocksTotalById($barangId)
-    {
-        
-    }
-    public function updateStocks()
     {
     }
 }

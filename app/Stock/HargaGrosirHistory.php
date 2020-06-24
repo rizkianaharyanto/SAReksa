@@ -4,9 +4,9 @@ namespace App\Stock;
 
 use Illuminate\Database\Eloquent\Model;
 
-class HargaRetailHistory extends Model
+class HargaGrosirHistory extends Model
 {
-    protected $table = 'stk_harga_retail_history';
+    protected $table = 'stk_harga_grosir_history';
     protected $guarded = [
         'id',
     ];

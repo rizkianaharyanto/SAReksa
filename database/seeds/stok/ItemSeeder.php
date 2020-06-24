@@ -37,6 +37,18 @@ class ItemSeeder extends Seeder
             'barang_id'   => '3',
             'kuantitas'     => '0'
         ]);
+        DB::table('stk_harga_retail_history')->insert([
+            'harga_retail'   => '10000',
+            'item_id'        => '3',
+            'created_at'     => now(),
+            'updated_at'     => now()
+        ]);     
+        DB::table('stk_harga_grosir_history')->insert([
+            'harga_grosir'   => '10000',
+            'item_id'        => '3',
+            'created_at'     => now(),
+            'updated_at'     => now()
+        ]); 
 
         factory(App\Stock\Barang::class, 20)->create();
     }

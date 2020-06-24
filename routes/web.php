@@ -79,7 +79,7 @@ Route::prefix('stok')->group(function () {
 
     Route::post('/updatepermissions', 'Stock\ConfigController@updatePermissions');
     Route::post('/rolebaru', 'Stock\ConfigController@addRole');
-
+    Route::get('/upd/{itemId}', 'Stock\ItemStockController@updateStocks');
     Route::prefix('/Management-Data')->group(function () {
         Route::resources([
             'kategori-barang' => "Stock\ItemCategoryController",

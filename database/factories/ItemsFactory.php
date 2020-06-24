@@ -12,8 +12,6 @@ $factory->define(Barang::class, function (Faker $faker) {
         'nama_barang'       => $faker->word,
         'jenis_barang'      => $faker->word,
         'satuan_unit'       => $faker->numberBetween($min=1, $max = 4),
-        'harga_retail'      => $faker->numberBetween($min= 10000, $max = 10000000),
-        'harga_grosir'      => $faker->numberBetween($min= 15000, $max = 100000),
         'item_image'        => $faker->imageUrl($width =200, $height=200),
         'akun_hpp'          => $faker->numerify('1###'),
         'akun_persediaan'   => $faker->numerify('2###'),

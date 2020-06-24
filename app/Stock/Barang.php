@@ -8,12 +8,21 @@ class Barang extends Model
 {
     protected $table = 'stk_master_barang';
     protected $guarded = ['id', 'created_at', 'updated_at'];
-
-    // public function getHargaRetailAttribute()
-    // {
-    //     $hargaRetailHistory = $this->hargaRetailHistory()->latest()->first();
-    //     return $hargaRetailHistory ? $hargaRetailHistory->harga_retail : 0.0;
-    // }
+    protected $appends = ['harga_retail','harga_grosir'];
+    public function getHargaRetailAttribute()
+    {
+        $hargaRetailHistory = $this->hargaRetailHistory()->latest()->first();
+        return $hargaRetailHistory ? $hargaRetailHistory->harga_retail : 0.0;
+    }
+    public function getHargaGrosirAttribute()
+    {
+        $hargaGrosirHistory = $this->hargaGrosirHistory()->latest()->first();
+        return $hargaGrosirHistory ? $hargaGrosirHistory->harga_grosir : 0.0;
+    }
+    public function hargaGrosirHistory()
+    {
+        return $this->hasMany('App\Stock\HargaGrosirHistory', 'item_id');
+    }
     public function hargaRetailHistory()
     {
         return $this->hasMany('App\Stock\HargaRetailHistory', 'item_id');
