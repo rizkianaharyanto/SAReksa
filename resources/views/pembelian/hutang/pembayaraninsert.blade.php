@@ -88,7 +88,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" class="form-control" id="total" name="total[]" disabled>
+                                    <input type="number" class="form-control" id="total" name="total[]" onchange="hitung()">
                                     <input type="hidden" id="total_hutang" name="total_hutang[]">
                                 </div>
                             </div>
@@ -225,8 +225,8 @@
                 } else if (data.retur) {
                     $(x).parent().parent().children().children('#tanggal_hutang').val(data.retur.tanggal)
                 }
-                $(x).parent().parent().children().children().children('#total').val(data.hutang.total_hutang)
-                $(x).parent().parent().children().children().children('#total_hutang').val(data.hutang.total_hutang)
+                $(x).parent().parent().children().children().children('#total').val(data.hutang.sisa)
+                $(x).parent().parent().children().children().children('#total_hutang').val(data.hutang.sisa)
             }
         })
     }

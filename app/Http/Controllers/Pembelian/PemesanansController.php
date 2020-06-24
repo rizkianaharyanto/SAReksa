@@ -67,6 +67,7 @@ class PemesanansController extends Controller
         foreach ($request->barang_id as $index => $id) {
             $pemesanan->barangs()->attach($id, [
                 'jumlah_barang' => $request->jumlah_barang[$index],
+                'barang_belum_diterima' => $request->jumlah_barang[$index],
                 'harga' => $request->harga[$index],
                 'unit' => $request->unit_barang[$index],
                 // 'pajak' => $request->pajak[$index],
@@ -87,11 +88,12 @@ class PemesanansController extends Controller
     public function show($id)
     {
         $pemesanan = Pemesanan::find($id);
-        $barangs = $pemesanan->barangs;
+        $barangs = $pemesanan->barangs()->wherePivot('status_barang', 'belum diterima')->get();
+        $barangsfak = $pemesanan->barangs;
         $penerimaans = $pemesanan->penerimaans;
 
         return response()
-        ->json(['success' => true, 'pemesanan' => $pemesanan, 'barangs' => $barangs, 'penerimaans' => $penerimaans]);
+        ->json(['success' => true, 'pemesanan' => $pemesanan, 'barangs' => $barangs, 'barangsfak' => $barangsfak, 'penerimaans' => $penerimaans]);
     }
 
     public function show2($id)
@@ -194,6 +196,7 @@ class PemesanansController extends Controller
         foreach ($request->barang_id as $index => $id) {
             $pemesanan->barangs()->attach($id, [
                 'jumlah_barang' => $request->jumlah_barang[$index],
+                'barang_belum_diterima' => $request->jumlah_barang[$index],
                 'harga' => $request->harga[$index],
                 'unit' => $request->unit_barang[$index],
                 // 'pajak' => $request->pajak[$index],
