@@ -17,11 +17,11 @@
                                         <div style="position: ">
                                           <div class='d-flex justify-content-end' style='style=z-index: 1;; padding-bottom:1%;'>
                                             @yield('tambah')
-                                            <a data-toggle="modal" data-target="#modalFilter">
+                                            <!-- <a data-toggle="modal" data-target="#modalFilter">
                                               <i id="tambah" onmouseover="tulisan()" class="fas fa-filter mr-4" style="font-size:25px;color:#212120;cursor: pointer;">
                                                 <span></span>
                                               </i>
-                                            </a>
+                                            </a> -->
                                           </div>
                                           <table id="table_id" class="table table-hover" style="width: 75vw">
                                             <thead style="background-color: #212120; color:white;">

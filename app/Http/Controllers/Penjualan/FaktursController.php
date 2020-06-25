@@ -71,6 +71,12 @@ class FaktursController extends Controller
             'penjual_id' => $request->penjual_id,
         ]);
         
+        if($request->pengiriman_id){
+            foreach ($request->pengiriman_id as $pengiriman) {
+                Pengiriman::where('id', $pengiriman)->update(['faktur_id' => $faktur->id]);
+            }
+        }
+
         foreach ($request->barang_id as $index => $id) {
             $faktur->barangs()->attach($id, [
                 'jumlah_barang' => $request->jumlah_barang[$index],
@@ -106,10 +112,22 @@ class FaktursController extends Controller
             $coba = Pengiriman::where('pemesanan_id', $pemesanan)->update(['status' => 'selesai']);
             // dd($pemesanan, $coba);
         }
-        if($faktur->pengirimans){
-            foreach($faktur->pengirimans as $pengiriman){
-                // dd($penerimaan->id);
-                Pengiriman::where('id', $pengiriman->id)->update(['status' => 'selesai']);
+        $cek = NULL;
+        $banyak = NULL;
+        if($faktur->pemesanan_id == NULL){
+            $cekpemesanan = Pemesanan::where('status' , 'terkirim')->get();
+            Pengiriman::where('faktur_id', $faktur->id)->update(['status' => 'selesai']);
+            foreach($cekpemesanan as $cekpemesanan){
+                $id = $cekpemesanan->id;
+                foreach($cekpemesanan->pengirimans as $cekpengiriman){
+                    if($cekpengiriman->status == 'selesai'){
+                        $cek++;
+                    }
+                    $banyak++;
+                }
+                if ($banyak == $cek){
+                    Pemesanan::where('id', $id)->update(['status' => 'selesai']);
+                }
             }
         }
 

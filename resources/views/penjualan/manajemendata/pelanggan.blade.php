@@ -150,9 +150,8 @@
 <!-- Tambah -->
 @section('tambah')
 <a data-toggle="modal" data-target="#modaltambah">
-    <i id="tambah" onmouseover="" class="fas fa-plus mr-4" style="font-size:30px;color:#212120; cursor: pointer;">
-        <span></span>
-    </i>
+    <a data-toggle="modal" data-target="#modaltambah" class="btn" style="background-color:#212120; color:white" >Tambah</a>
+
 </a>
 @endsection
 

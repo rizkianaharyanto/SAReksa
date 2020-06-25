@@ -72,7 +72,7 @@ class PelanggansController extends Controller
         $pemesananpengiriman = null;
         $pemesananfaktur = null;
         $pengirimanfaktur = null;
-
+        $fakturretur = null;
 
         $i=0;
         foreach($piutangs as $piutangs){
@@ -102,6 +102,20 @@ class PelanggansController extends Controller
                 $l++;
             }
         }
+        $idr = null;
+        $m=0;
+        foreach($pelanggan->returs as $returan){
+            $idr[] = $returan->faktur_id;
+          
+
+        }
+        foreach($fakturs as $fakturs){
+            if($fakturs->status_posting == 'sudah posting' && $fakturs->id != $idr[0]){
+                $fakturretur[$m] = $fakturs;
+                $m++;
+            }
+        }
+        
         // for ($i = 0 ; $i < count($piutang) ; i++) {
         //     if ($piutang[i]->total_piutang != 0){
         //         $piutangmasih[i] = $piutang[i];
@@ -117,6 +131,7 @@ class PelanggansController extends Controller
             'pengirimanfakturs' => $pengirimanfaktur,  
             'pengirimans'=> $pengirimans,
             'fakturs'=> $fakturs,
+            'fakturreturs' => $fakturretur,
             'piutangs' => $piutangmasih,
         ]);
     }

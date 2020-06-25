@@ -138,8 +138,8 @@
                                                                     </i>
                                                                 </div>
                                                             </div>
-                                                            @endif
-                                                            <div style="display:none" id="checkPenerimaan">
+                                                            @else
+                                                            <div style="display:" id="checkPenerimaan">
                                                                 <div style="overflow: auto; height: 41vh;" id="formpengiriman">
                                                                     <div class="form-row mx-5" id="isiformpengiriman0">
                                                                         <div class="form-group col-md-3">
@@ -181,6 +181,7 @@
                                                                     </i>
                                                                 </div>
                                                             </div>
+                                                            @endif
                                                             <div class="modal-footer">
                                                                 <div class="d-flex mr-auto">
                                                                     <p class="m-2">Total </p>

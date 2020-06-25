@@ -72,7 +72,7 @@
                                                                     <div class="col-sm-9">
                                                                         <select class="form-control" id="mata_uang" name="mata_uang">
                                                                             <option value="">--- Pilih Mata Uang ---</option>
-                                                                            <option value="">IDR</option>
+                                                                            <option value="" selected>IDR</option>
                                                                         </select>
                                                                     </div>
                                                                 </div>
@@ -151,7 +151,7 @@
                                                                     <div class="form-row mx-5" id="isiformpengiriman0">
                                                                         <div class="form-group col-md-3">
                                                                             <label for="pengiriman_id">Pengiriman</label>
-                                                                            <select class="form-control" id="pengiriman_id" onchange="isipengiriman(this)" name="pengiriman_id" >
+                                                                            <select class="form-control" id="pengiriman_id" onchange="isipengiriman(this)" name="pengiriman_id[]" >
                                                                                 <option value="">--- Pilih Pengiriman ---</option>
                                                                             </select>
                                                                         </div>
@@ -235,8 +235,8 @@
                                                                     <label class="col-sm-3 col-form-label" for="termin_pembayaran">Termin Pembayaran</label>
                                                                     <div class="col-sm-9">
                                                                         <select class="form-control" id="termin_pembayaran" name="termin_pembayaran">
-                                                                            <option value="">--- Pilih Termin ---</option>
-                                                                            <option value="">0 % 0 Net 0</option>
+                                                                            <option value="" >--- Pilih Termin ---</option>
+                                                                            <option value="" selected>0 % 0 Net 0</option>
                                                                         </select>
                                                                     </div>
                                                                 </div>
