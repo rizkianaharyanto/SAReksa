@@ -23,7 +23,7 @@ class StockTransferService
     {
         $itemId = $data['item_id'];
         $newStockTrf = $this->model;
-        $created = $newStockTrf::create([
+        $stockTransfer = $newStockTrf::create([
             'kode_transfer' => $data['kode_transfer'],
             'gudang_asal'   => $data['gudang_asal'],
             'gudang_tujuan' => $data['gudang_tujuan'],
@@ -32,8 +32,8 @@ class StockTransferService
         ]);
 
         $stocksData = [
-            'asal'      => $created['gudang_asal'],
-            'tujuan'    => $created['gudang_tujuan'],
+            'asal'      => $stockTransfer['gudang_asal'],
+            'tujuan'    => $stockTransfer['gudang_tujuan'],
             'item_id'   => $itemId,
             'quantity'  => $data['qty']
         ];
@@ -55,7 +55,7 @@ class StockTransferService
                 } else {
                     $condition = 1;
                 }
-                $created->items()->attach($id, ['quantity' => $data['qty'][$index]]);
+                $stockTransfer->items()->attach($id, ['quantity' => $data['qty'][$index]]);
             }
         } catch (\Exception $e) {
             DB::rollback();

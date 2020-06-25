@@ -93,9 +93,29 @@ h5 {
   margin: 1.5em 1em 0 0;
   padding: 1em;
 }
-
+#table_id_filter input[type=search]{
+  background-color: #424852;
+  padding-right: 4em;
+  margin: 1.5em 1.5em;
+  border: 2px solid #0DD3DC;
+  border-radius: 50px;
+}
+#table_id_filter input[type=search]:focus{
+  background-color: #424852;
+  padding-right: 4em;
+  margin: 1.5em 1.5em;
+  border: 2px solid #0DD3DC;
+  border-radius: 50px;
+}
 input[type=search] {
   background-color: #424852;
+  padding-right: 4em;
+  margin: 1.5em 1.5em;
+  border: 2px solid #0DD3DC;
+  border-radius: 50px;
+}
+
+input[type=search]:focus {
   padding-right: 4em;
   margin: 1.5em 1.5em;
   border: 2px solid #0DD3DC;

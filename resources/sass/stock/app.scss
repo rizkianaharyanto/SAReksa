@@ -210,11 +210,11 @@ body {
             }
         }
     }
-    .content.collapsed{
+    .main-content.collapsed{
         transition: all $transition-delay ease;
         margin-left: 12vw;
     }
-    .content {
+    .main-content {
         line-height: 2rem;
         margin: 1.5em 1em 1.3em $sidebar-size+2vw;
         padding: 1.5em 1em;

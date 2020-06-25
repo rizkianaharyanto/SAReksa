@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Stock;
 
 use App\Http\Controllers\Controller;
-use App\Stock\Barang;
 use Illuminate\Http\Request;
 use App\Services\Stock\ItemService;
 use App\Http\Requests\Stock\CreateItemsRequest;
+use App\Stock\Barang;
+use App\Stock\KategoriBarang;
+use App\Stock\SatuanUnit;
+use App\Stock\Gudang;
 
 class ItemResourceController extends Controller
 {
@@ -19,8 +22,19 @@ class ItemResourceController extends Controller
     public function index(ItemService $item)
     {
         // $allItem = $item->all();
-        $allItem = Barang::with('unit:id,nama_satuan')->get();
-        return view('stock.Management-Data/barang', ['data'=>$allItem]);
+        $allItem = Barang::with([
+            'unit:id,nama_satuan',
+            'kategori'
+            ])->get();
+        $categories = KategoriBarang::all();
+        $units = SatuanUnit::all();
+        $gudangs = Gudang::all();
+        return view('stock.Management-Data/barang', [
+            'barang'=>$allItem,
+            'kategoriBarang' => $categories,
+            'satuanUnit' => $units,
+            'gudangs' => $gudangs
+            ]);
     }
     
     public function indexpenjualan(ItemService $itmSrv)
@@ -54,7 +68,7 @@ class ItemResourceController extends Controller
 
         $item = $itemService->create($input);
          
-        return redirect()->back()->withSuccess($message);
+        return redirect()->back();
     }
 
     public function test(ItemService $itmSrv)

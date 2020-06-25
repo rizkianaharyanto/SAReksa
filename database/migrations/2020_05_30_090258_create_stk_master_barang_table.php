@@ -28,7 +28,7 @@ class CreateStkMasterBarangTable extends Migration
             $table->bigInteger('akun_pembelian');
             $table->bigInteger('pajak_id')->nullable();
             $table->bigInteger('supplier_id');
-            $table->float('nilai_barang',10,4)->nullable();
+            $table->float('nilai_barang', 10, 4)->nullable();
             $table->timestamps();
         });
     }
