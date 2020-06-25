@@ -8,9 +8,11 @@ class Jabatan extends Model
 {
     //
     protected $table = "kpg_jabatans";
+    protected $fillable = ['nama_jabatan'];
 
-    public function pegawai()
+    public function pegawais()
     {
-        return $this->belongsToMany('App\Kepegawaian\Pegawai')->withPivot('id','pegawai_id','jabatan_id');
+        return $this->belongsToMany('App\Kepegawaian\Pegawai','kpg_naik_jabatans')->withPivot('id','pegawai_id','jabatan_id');
     }
+    
 }

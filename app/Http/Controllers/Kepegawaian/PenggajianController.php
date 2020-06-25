@@ -11,6 +11,7 @@ class PenggajianController extends Controller
     public function index(Request $request){
 
         $request->session()->put('page','penggajian');
+        $request->session()->put('title','Penggajian');
         return view('kepegawaian.penggajian');
     }
 }
