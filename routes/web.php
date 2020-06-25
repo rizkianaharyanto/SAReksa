@@ -107,18 +107,62 @@ Route::prefix('stok')->group(function () {
 });
 
 Route::prefix('kepegawaian')->group(function () {
-    Route::get('/', function () {
-        return view('kepegawaian.dashboard');
-    });
+    Route::get('/', 'Kepegawaian\DashboardController@index');
 
-    // Route::get('/barangs', )
+    //PPH
+    Route::get('/admin/pph/tambah','Kepegawaian\PphController@tambah');
+    Route::post('/admin/pph/store','Kepegawaian\PphController@store');
+    Route::get('/admin/pph/hapus/{pph}','Kepegawaian\PphController@destroy');
+    Route::get('/admin/pph/{pph}','Kepegawaian\PphController@show');
+    Route::put('/admin/pph/{pph}','Kepegawaian\PphController@update');
+
+    //PTKP
+    Route::get('/admin/ptkp/tambah','Kepegawaian\PtkpController@tambah');
+    Route::post('/admin/ptkp/store','Kepegawaian\PtkpController@store');
+    Route::get('/admin/ptkp/hapus/{ptkp}','Kepegawaian\PtkpController@destroy');
+    Route::get('/admin/ptkp/{ptkp}','Kepegawaian\PtkpController@show');
+    Route::put('/admin/ptkp/{ptkp}','Kepegawaian\PtkpController@update');
+
+    //AKUN
+    Route::get('/admin/akun/tambah','Kepegawaian\AkunController@tambah');
+    Route::post('/admin/akun/store','Kepegawaian\AkunController@store');
+    Route::get('/admin/akun/hapus/{akun}','Kepegawaian\AkunController@destroy');
+    Route::get('/admin/akun/{akun}','Kepegawaian\AkunController@show');
+    Route::put('/admin/akun/{akun}','Kepegawaian\AkunController@update');
+
+    //User pengguna
+    Route::get('/pengguna/tambah','Kepegawaian\UserController@tambah');
+    Route::post('/pengguna/store','Kepegawaian\UserController@store');
+    Route::get('/pengguna/hapus/{id}','Kepegawaian\UserController@destroy');
+    Route::get('/pengguna/{id}','Kepegawaian\UserController@show');
+    Route::put('/pengguna/{id}','Kepegawaian\UserController@update');
+
+    //User pengguna
+    Route::get('/jabatan/promosi/tambah','Kepegawaian\PromosiController@tambah');
+    Route::post('/jabatan/promosi/store','Kepegawaian\PromosiController@store');
+    Route::get('/jabatan/promosi/hapus/{id}','Kepegawaian\PromosiController@destroy');
+    Route::get('/jabatan/promosi/{id}','Kepegawaian\PromosiController@show');
+    Route::put('/jabatan/promosi/{id}','Kepegawaian\PromosiController@update');
+
+
+    Route::get('pegawai/tambah', 'Kepegawaian\PegawaiController@tambah');
+    Route::post('pegawai/add', 'Kepegawaian\PegawaiController@add');
+    
+    
+    Route::post('jabatan/add', 'Kepegawaian\JabatanController@add');
+
+    // Route::get('/', )
     Route::resources([
+        'admin/akun' => 'Kepegawaian\AkunController',
+        'admin/pph' => 'Kepegawaian\PphController',
+        'admin/ptkp' => 'Kepegawaian\PtkpController',
         'admin' => 'Kepegawaian\AdminController',
+        'jabatan/promosi' => 'Kepegawaian\PromosiController',
         'jabatan' => 'Kepegawaian\JabatanController',
         'laporan' => 'Kepegawaian\LaporanController',
         'pegawai' => 'Kepegawaian\PegawaiController',
         'penggajian' => 'Kepegawaian\PenggajianController',
-        'pengguna' => 'Kepegawaian\PenggunaController',
+        'pengguna' => 'Kepegawaian\UserController',
     ]);
 });
 

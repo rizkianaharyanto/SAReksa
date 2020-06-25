@@ -1,10 +1,6 @@
 @extends('kepegawaian.sidebar')
 
 @section('content')
- 
-  <link rel="stylesheet" type="text/css" href="{{ url('/css/kepegawaian/dashboard.css') }}" />
-  <h1 class="title"><i class="fas fa-tachometer-alt mr-2 pt-2"></i>Dashboard</h1><hr>
-
   <div class="row text-white">
 
     <div class="card bg-info ml-3" style="width: 25rem;">

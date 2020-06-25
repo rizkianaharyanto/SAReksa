@@ -15,9 +15,9 @@ class CreateKpgPphsTable extends Migration
     {
         Schema::create('kpg_pphs', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('batas_minimal');
-            $table->integer('batas_maksimal');
-            $table->double('persentase');
+            $table->string('batas_minimal');
+            $table->string('batas_maksimal');
+            $table->string('persentase');
             $table->timestamps();
         });
     }
