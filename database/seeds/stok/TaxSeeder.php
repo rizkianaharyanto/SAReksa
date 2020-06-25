@@ -12,13 +12,13 @@ class TaxSeeder extends Seeder
     public function run()
     {
         //
-        DB::table('stk_pajak_barang')->insert([
-        'nama' => 'PPN',
-        'rate' => '0.01'
+        DB::table('stk_pajak_master')->insert([
+        'jenis_pajak' => 'PPN',
+        'tarif' => '0.01'
     ]);
-        DB::table('stk_pajak_barang')->insert([
-        'nama' => 'pph',
-        'rate' => '0.1'
+        DB::table('stk_pajak_master')->insert([
+        'jenis_pajak' => 'pph',
+        'tarif' => '0.1'
     ]);
     }
 }

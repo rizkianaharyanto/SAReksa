@@ -21,13 +21,33 @@ Route::prefix('pembelian')->group(function () {
     Route::get('/', function () {
         return view('pembelian.dashboard');
     });
-    
+
     Route::get('/ambilgudang', 'Pembelian\GudangsController@ambil');
     Route::get('/ambilbarang', 'Pembelian\BarangsController@ambil');
     Route::post('/savebarang', 'Pembelian\PermintaansController@savebarang');
-    Route::get('/jurnals/cetak_pdf', 'PembelianJurnalsController@cetak_pdf');
     Route::get('/showhutang/{id}', 'Pembelian\HutangsController@showpembayaran');
-    
+
+    //posting
+    Route::get('/postingpnm/{idnya}', 'Pembelian\PenerimaansController@posting');
+    Route::get('/ubahpsn/{idnya}', 'Pembelian\PenerimaansController@ubahpsn');
+    Route::get('/postingfak/{idnya}', 'Pembelian\FaktursController@posting');
+    Route::get('/ubahpsnfak/{idnya}', 'Pembelian\FaktursController@ubahpsn');
+    Route::get('/postingret/{idnya}', 'Pembelian\RetursController@posting');
+
+    //show details page
+    Route::get('/permintaanshow/{id}', 'Pembelian\PermintaansController@show2');
+    Route::get('/pemesananshow/{id}', 'Pembelian\PemesanansController@show2');
+    Route::get('/penerimaanshow/{id}', 'Pembelian\PenerimaansController@show2');
+    Route::get('/fakturshow/{id}', 'Pembelian\FaktursController@show2');
+    Route::get('/returshow/{id}', 'Pembelian\RetursController@show2');
+
+    //cetak pdf
+    Route::get('/jurnals/cetak_pdf', 'Pembelian\JurnalsController@cetak_pdf');
+    Route::get('/permintaans/cetak_pdf', 'Pembelian\PermintaansController@cetak_pdf');
+    Route::get('/pemesanans/cetak_pdf', 'Pembelian\PemesanansController@cetak_pdf');
+    Route::get('/penerimaans/cetak_pdf', 'Pembelian\PenerimaansController@cetak_pdf');
+    Route::get('/fakturs/cetak_pdf', 'Pembelian\FaktursController@cetak_pdf');
+    Route::get('/returs/cetak_pdf', 'Pembelian\RetursController@cetak_pdf');
 
     // Route::get('/barangs', )
     Route::resources([
@@ -52,41 +72,39 @@ Route::prefix('stok')->group(function () {
     Route::get('/barangs', 'Stock\ItemResourceController@indexpembelian');
     Route::get('/gudangs', 'Stock\WarehouseController@indexpembelian');
     Route::get('/pajaks', 'Stock\TaxResourceController@indexpembelian');
-    
-    Route::get('/ello', "Stock\ItemResourceController@test");
+
 
     Route::get('/config', 'Stock\ConfigController@index');
     Route::get('/config/getrolepermissions/{id}', 'Stock\ConfigController@getRolePermissions');
-    
+
     Route::post('/updatepermissions', 'Stock\ConfigController@updatePermissions');
     Route::post('/rolebaru', 'Stock\ConfigController@addRole');
-    
+    Route::get('/upd/{itemId}', 'Stock\ItemStockController@updateStocks');
     Route::prefix('/Management-Data')->group(function () {
         Route::resources([
             'kategori-barang' => "Stock\ItemCategoryController",
-            'barang'          => "Stock\ItemResourceController",
-            'satuan-unit'     => "Stock\UnitsResourceController",
-            'gudang'          => "Stock\WarehouseController",
-            'pemasok'         => "Stock\SuppliersResourceController",
-            'pajak'           => "Stock\TaxResourceController",
-            'coa-master'      => "Stock\COAMasterController",
-            'coa-type'        => "Stock\COATypeController",
-            
+            'barang' => "Stock\ItemResourceController",
+            'satuan-unit' => "Stock\UnitsResourceController",
+            'gudang' => "Stock\WarehouseController",
+            'pemasok' => "Stock\SuppliersResourceController",
+            'pajak' => "Stock\TaxResourceController",
+            'coa-master' => "Stock\COAMasterController",
+            'coa-type' => "Stock\COATypeController",
         ]);
     });
     Route::post('/stock-opname/posting/{id}', 'Stock\StockOpnameController@posting');
     Route::resources([
-            'transfer-stock'    => 'StockTransferController',
-            'stock-opname'      => 'StockOpnameController',
+            'transfer-stock' => 'StockTransferController',
+            'stock-opname' => 'StockOpnameController',
             'penyesuaian-stock' => 'StockAdjustmentController',
-            'pembelian'         => 'ItemPurchaseTransactionController',
+            'pembelian' => 'ItemPurchaseTransactionController',
         ]);
-        
+    Route::get('/stokbarang/{barangId}', 'Stock\ItemStockController@getStocksTotalById');
+    Route::get('/stokbarangpergudang/{barangId}', 'Stock\ItemStockController@getStocksByGudang');
     Route::get('/token', function () {
         return csrf_token();
     });
 });
-
 
 Route::prefix('kepegawaian')->group(function () {
     Route::get('/', 'Kepegawaian\DashboardController@index');
@@ -145,5 +163,54 @@ Route::prefix('kepegawaian')->group(function () {
         'pegawai' => 'Kepegawaian\PegawaiController',
         'penggajian' => 'Kepegawaian\PenggajianController',
         'pengguna' => 'Kepegawaian\UserController',
+    ]);
+});
+
+Route::prefix('penjualan')->group(function () {
+    Route::get('/', function () {
+        return view('penjualan.dashboard');
+    });
+
+    Route::get('/barangs', 'Stock\ItemResourceController@indexpenjualan');
+    Route::get('/gudangs', 'Stock\WarehouseController@indexpenjualan');
+    Route::get('/pajaks', 'Stock\TaxResourceController@indexpenjualan');
+
+    Route::get('/ambilgudang', 'Penjualan\GudangsController@ambil');
+    Route::get('/ambilbarang', 'Penjualan\BarangsController@ambil');
+    Route::get('/showpiutang/{id}', 'Penjualan\PiutangsController@showpembayaran');
+
+    //show details page
+    Route::get('/penawarandetails/{id}', 'Penjualan\PenawaransController@detail');
+    Route::get('/pemesanandetails/{id}', 'Penjualan\PemesanansController@detail');
+    Route::get('/pengirimandetails/{id}', 'Penjualan\PengirimansController@detail');
+    Route::get('/fakturdetails/{id}', 'Penjualan\FaktursController@detail');
+    Route::get('/returdetails/{id}', 'Penjualan\RetursController@detail');
+    Route::get('/pembayarandetails/{id}', 'Penjualan\PembayaransController@detail');
+
+    //cetak pdf
+    Route::get('/jurnals/cetak_pdf', 'Penjualan\JurnalsController@cetak_pdf');
+    Route::get('/penawarans/cetak_pdf', 'Penjualan\PenawaransController@cetak_pdf');
+    Route::get('/pemesanans/cetak_pdf', 'Penjualan\PemesanansController@cetak_pdf');
+    Route::get('/pengirimans/cetak_pdf', 'Penjualan\PengirimansController@cetak_pdf');
+    Route::get('/fakturs/cetak_pdf', 'Penjualan\FaktursController@cetak_pdf');
+    Route::get('/returs/cetak_pdf', 'Penjualan\RetursController@cetak_pdf');
+    Route::get('/pembayarans/cetak_pdf', 'Penjualan\PembayaransController@cetak_pdf');
+
+    //Posting
+    Route::get('/pengirimans/{idnya}/posting', 'Penjualan\PengirimansController@posting');
+
+    
+    // Route::get('/barangs', )
+    Route::resources([
+        'pelanggans' => 'Penjualan\PelanggansController',
+        'penjuals' => 'Penjualan\PenjualsController',
+        'jurnals' => 'Penjualan\JurnalsController',
+        'pemesanans' => 'Penjualan\PemesanansController',
+        'pengirimans' => 'Penjualan\PengirimansController',
+        'penawarans' => 'Penjualan\PenawaransController',
+        'fakturs' => 'Penjualan\FaktursController',
+        'returs' => 'Penjualan\RetursController',
+        'piutangs' => 'Penjualan\PiutangsController',
+        'pembayarans' => 'Penjualan\PembayaransController',
     ]);
 });

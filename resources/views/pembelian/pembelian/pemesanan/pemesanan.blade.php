@@ -24,11 +24,12 @@
     <td>{{ $pemesanan->total_harga }}</td>
     <td>{{ $pemesanan->status !=null ? $pemesanan->status  : '-' }}</td>
     <td class="d-flex justify-content-between">
-        <a id="details" href="/pembelian/pemesanans/create">
+        <a id="details" href="/pembelian/pemesananshow/{{$pemesanan->id}}">
             <i style="cursor: pointer; " class="fas fa-info-circle">
                 <span></span>
             </i>
         </a>
+        @if ($pemesanan->status != 'selesai' && $pemesanan->status != 'diterima')
         <a id="edit" href="/pembelian/pemesanans/{{$pemesanan->id}}/edit">
             <i style="cursor: pointer;" class="fas fa-edit">
                 <span></span>
@@ -39,6 +40,7 @@
                 <span></span>
             </i>
         </a>
+        @endif
     </td>
 </tr>
 

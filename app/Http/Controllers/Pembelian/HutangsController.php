@@ -20,16 +20,28 @@ class HutangsController extends Controller
     {
         $pemasoks = Pemasok::with('hutangs')->get();
         $totals = [];
+        $lunass = [];
+        $sisas = [];
         foreach ($pemasoks as $pemasok) {
             $total = $pemasok->hutangs->sum('total_hutang');
             array_push($totals, [
                 'total_hutang' => $total
+            ]);
+            $lunas = $pemasok->hutangs->sum('lunas');
+            array_push($lunass, [
+                'lunas' => $lunas
+            ]);
+            $sisa = $pemasok->hutangs->sum('sisa');
+            array_push($sisas, [
+                'sisa' => $sisa
             ]);
         }
         // dd($totals);
         return view('pembelian.hutang.hutang', [
            'pemasoks' => $pemasoks,
            'totals' => $totals,
+           'lunass' => $lunass,
+           'sisas' => $sisas,
         ]);
     }
 

@@ -36,7 +36,6 @@
             <form method="POST" action="/pembelian/penerimaans">
                 @csrf
                 <div id="test-l-1" class="content">
-                    <input type="hidden" id="kode_penerimaan" name="kode_penerimaan" placeholder="" value="PEN{{$no+1}}">
                     <input type="hidden" id="status" name="status">
                     <input type="hidden" id="akun_barang" name="akun_barang">
                     <div style="height: 58vh;overflow: auto; color:black" class="mt-2">
@@ -142,11 +141,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="alert alert-primary mt-3 mb-0 p-1" id="tambahbarang" onmouseover="green(this)" onmouseout="grey(this)" style="cursor: pointer; font-size:15px;">
-                        <i class="fas fa-plus d-flex justify-content-center">
-                            <span class="mx-2">Tambah Barang</span>
-                        </i>
-                    </div>
                     <div class="modal-footer">
                         <div class="d-flex mr-auto">
                             <p class="m-2">Total </p>
@@ -168,12 +162,20 @@
                     <div style="height: 58vh;overflow:auto" class="mt-2">
                         <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="diskon">Diskon</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-3">
                                 <div class="input-group mb-2">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">%</div>
                                     </div>
-                                    <input type="number" class="form-control" id="diskon" name="diskon" onchange="disc();" placeholder="-">
+                                    <input type="number" class="form-control" id="diskon" onchange="disc();" name="diskon" placeholder="-">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="input-group mb-2">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Rp</div>
+                                    </div>
+                                    <input type="number" class="form-control" id="disk" onchange="disc();" name="disk" placeholder="-">
                                 </div>
                             </div>
                         </div>
@@ -263,10 +265,10 @@
             type: 'get',
             data: {},
             success: function(data) {
-                console.log(data.pemesanans)
+                console.log(data)
                 $('#pemesanan_form').removeAttr('style')
-                for (i = 0; i < data.pemesanans.length; i++) {
-                    $('#pemesanan_id').append('<option value="' + data.pemesanans[i].id + '">' + data.pemesanans[i].kode_pemesanan + '</option>')
+                for (i = 0; i < data.pnmpemesanans.length; i++) {
+                    $('#pemesanan_id').append('<option value="' + data.pnmpemesanans[i].id + '">' + data.pnmpemesanans[i].kode_pemesanan + '</option>')
                 }
             },
             error: function(jqXHR, textStatus, errorThrown) {}
@@ -282,24 +284,25 @@
                 if (data.success == true) {
                     console.log(data)
                     console.log(data.pemesanan)
-                    console.log(data.barangs)
+                    console.log(data.barangs[0].pivot.barang_belum_diterima)
                     $('#gudang').val(data.pemesanan.gudang)
                     // $('#tanggal').val(data.pemesanan.tanggal)
                     // $('#mata_uang').val(data.pemesanan.mata_uang)
                     $('#diskon').val(data.pemesanan.diskon)
+                    $('#disk').val(data.pemesanan.diskon_rp)
                     $('#status').val('sudah posting')
                     $('#biaya_lain').val(data.pemesanan.biaya_lain)
                     $('#barang_id').val(data.barangs[0].id)
                     $('#tambahbarang').detach()
                     $('#unit').val(data.barangs[0].pivot.unit)
                     $('#uni').attr('placeholder',data.barangs[0].pivot.unit)
-                    $('#jumlah_barang').val(data.barangs[0].pivot.jumlah_barang)
+                    $('#jumlah_barang').val(data.barangs[0].pivot.barang_belum_diterima)
                     $('#harga').val(data.barangs[0].pivot.harga)
                     // $('#pemesanan_id').val(data.barangs.pemesanan_id)
                     for (var i = 1; i <= data.barangs.length - 1; i++) {
                         $("#formbarang").append($("#isiformbarang0").clone().attr('id', 'isiformbarang' + i));
                         $("#isiformbarang" + i).children().children('select').val(data.barangs[i].id)
-                        $("#isiformbarang" + i).children().children('#jumlah_barang').val(data.barangs[i].pivot.jumlah_barang)
+                        $("#isiformbarang" + i).children().children('#jumlah_barang').val(data.barangs[i].pivot.barang_belum_diterima)
                         $("#isiformbarang" + i).children().children('#unit').val(data.barangs[i].pivot.unit)
                         $("#isiformbarang" + i).children().children('#uni').attr('placeholder', data.barangs[i].pivot.unit)
                         $("#isiformbarang" + i).children().children().children('#harga').val(data.barangs[i].pivot.harga)
@@ -327,18 +330,28 @@
     });
 
     function disc() {
-        dis = $('#diskon').val() / 100;
+        dis = parseInt($('#diskon').val()) / 100;
         biy = parseInt($('#biaya_lain').val());
-        akhir = parseInt($('#total_harga_barang').val())
-        akhir1 = akhir - (akhir * dis)
-        akhir2 = akhir1 + biy
-        if (akhir2) {
-            $('#total_harga_kes').val(akhir2)
-            $('#total_harga_keseluruhan').val(akhir2)
-        } else {
-            $('#total_harga_kes').val(akhir1)
-            $('#total_harga_keseluruhan').val(akhir1)
+        dp = 0
+        barang = parseInt($('#total_harga_barang').val())
+        $('#akun_barang').val(barang)
+        diskon = (barang * dis)
+        $('#disk').val(diskon)
+        barangafterdiskon = barang - diskon
+        hutang = barangafterdiskon + biy - dp
+        $('#hutang').val(hutang)
+        if (hutang) {
+            $('#total_harga_kes').val(hutang)
+            $('#total_harga_keseluruhan').val(hutang)
         }
+        console.log(
+            'barang:', barang,
+            'dis:', dis,
+            'diskon:', diskon,
+            'hutang:', hutang,
+            'biaya:', biy,
+            'dp:', dp,
+        )
     }
 
     function startCalc(x) {

@@ -23,6 +23,12 @@ class ItemResourceController extends Controller
         return view('stock.Management-Data/barang', ['data'=>$allItem]);
     }
     
+    public function indexpenjualan(ItemService $itmSrv)
+    {
+        $allDataBarang = $itmSrv->getAllStocksQty();
+        return view('penjualan.manajemendata.barang', ['data' => $allDataBarang]);
+    }
+
     public function indexpembelian(ItemService $itmSrv)
     {
         $allDataBarang = $itmSrv->getAllStocksQty();

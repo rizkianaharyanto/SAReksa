@@ -36,14 +36,12 @@
             <form method="POST" action="/pembelian/fakturs">
                 @csrf
                 <div id="test-l-1" class="content">
-                    <input type="hidden" id="kode_faktur" name="kode_faktur" placeholder="" value="FAK{{$no+1}}">
                     <input type="hidden" id="status" name="status" value="hutang">
                     <input type="hidden" id="akun_barang" name="akun_barang">
                     <input type="hidden" id="hutang" name="hutang">
-                    <input type="hidden" name="kode_hutang" value="HUT{{$hut+1}}">
                     <div style="height: 58vh;overflow: auto; color:black" class="mt-2">
                         <div class="form-group row mx-5 mb-5">
-                            <label class="col-sm-3 col-form-label" for="pemasok_id">pemasok</label>
+                            <label class="col-sm-3 col-form-label" for="pemasok_id">Pemasok</label>
                             <div class="col-sm-9">
                                 <select class="form-control" id="pemasok_id" name="pemasok_id">
                                     <option value="">--- Pilih pemasok ---</option>
@@ -143,13 +141,14 @@
                             <div class="form-row mx-5" id="isiformpenerimaan0">
                                 <div class="form-group col-md-3">
                                     <label for="penerimaan_id">Penerimaan</label>
-                                    <select class="form-control" id="penerimaan_id" onchange="isipenerimaan(this)" name="penerimaan_id" >
+                                    <select class="form-control" id="penerimaan_id" onchange="isipenerimaan(this)" name="penerimaan_id[]" >
                                         <option value="">--- Pilih Penerimaan ---</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="tanggal_penerimaan">Tanggal</label>
                                     <input type="date" class="form-control" id="tanggal_penerimaan" disabled>
+                                    <input type="hidden" id="discpnm" name="discpnm[]">
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="total">Total</label>
@@ -200,7 +199,8 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">%</div>
                                     </div>
-                                    <input type="number" class="form-control" id="diskon" onchange="disc();" name="diskon" placeholder="-">
+                                    <input type="number" class="form-control" id="disko" onchange="disc();" placeholder="-" disabled>
+                                    <input type="hidden" class="form-control" id="diskon" name="diskon" placeholder="-">
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -208,7 +208,8 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" class="form-control" id="disk" onchange="disc();" name="disk" placeholder="-">
+                                    <input type="number" class="form-control" id="diskoo" onchange="disc();" placeholder="-" disabled>
+                                    <input type="hidden" class="form-control" id="disk"  name="disk" placeholder="-">
                                 </div>
                             </div>
                         </div>
@@ -359,11 +360,15 @@
             data: {},
             success: function(data) {
                 console.log(data)
-                for (i = 0; i < data.pemesanans.length; i++) {
-                    $('#pemesanan_id').append('<option value="' + data.pemesanans[i].id + '">' + data.pemesanans[i].kode_pemesanan + '</option>')
+                for (i = 0; i < data.fpemesanans.length; i++) {
+                    if (data.fpemesanans[i].id == null){
+                        $('#pemesanan_id').append('<option value="">' + data.fpemesanans[i] + '(Buat Berdasarkan Penerimaan)</option>')
+                    }else{
+                        $('#pemesanan_id').append('<option value="' + data.fpemesanans[i].id + '">' + data.fpemesanans[i].kode_pemesanan + '</option>')
+                    }  
                 }
-                for (a = 0; a < data.penerimaans.length; a++) {
-                    $('#penerimaan_id').append('<option value="' + data.penerimaans[a].id + '">' + data.penerimaans[a].kode_penerimaan + '</option>')
+                for (a = 0; a < data.fpenerimaans.length; a++) {
+                    $('#penerimaan_id').append('<option value="' + data.fpenerimaans[a].id + '">' + data.fpenerimaans[a].kode_penerimaan + '</option>')
                 }
             },
             error: function(jqXHR, textStatus, errorThrown) {}
@@ -381,21 +386,24 @@
                     $("#checkBarang").removeAttr('style')
                     $("#checkPenerimaan").css('display', 'none')
                     $('#diskon').val(data.pemesanan.diskon)
+                    $('#disko').val(data.pemesanan.diskon)
+                    $('#disk').val(data.pemesanan.diskon_rp)
+                    $('#diskoo').val(data.pemesanan.diskon_rp)
                     $('#biaya_lain').val(data.pemesanan.biaya_lain)
-                    $('#barang_id').val(data.barangs[0].id)
-                    $('#unit').val(data.barangs[0].pivot.unit)
-                    $('#uni').attr('placeholder',data.barangs[0].pivot.unit)
-                    $('#jumlah_barang').val(data.barangs[0].pivot.jumlah_barang)
-                    $('#harga').val(data.barangs[0].pivot.harga)
-                    for (var i = 1; i <= data.barangs.length - 1; i++) {
+                    $('#barang_id').val(data.barangsfak[0].id)
+                    $('#unit').val(data.barangsfak[0].pivot.unit)
+                    $('#uni').attr('placeholder',data.barangsfak[0].pivot.unit)
+                    $('#jumlah_barang').val(data.barangsfak[0].pivot.jumlah_barang)
+                    $('#harga').val(data.barangsfak[0].pivot.harga)
+                    for (var i = 1; i <= data.barangsfak.length - 1; i++) {
                         $("#formbarang").append($("#isiformbarang0").clone().attr('id', 'isiformbarang' + i));
-                        $("#isiformbarang" + i).children().children('select').val(data.barangs[i].id)
-                        $("#isiformbarang" + i).children().children('#jumlah_barang').val(data.barangs[i].pivot.jumlah_barang)
-                        $("#isiformbarang" + i).children().children('#unit').val(data.barangs[i].pivot.unit)
-                        $("#isiformbarang" + i).children().children('#uni').attr('placeholder',data.barangs[i].pivot.unit)
-                        $("#isiformbarang" + i).children().children().children('#harga').val(data.barangs[i].pivot.harga)
+                        $("#isiformbarang" + i).children().children('select').val(data.barangsfak[i].id)
+                        $("#isiformbarang" + i).children().children('#jumlah_barang').val(data.barangsfak[i].pivot.jumlah_barang)
+                        $("#isiformbarang" + i).children().children('#unit').val(data.barangsfak[i].pivot.unit)
+                        $("#isiformbarang" + i).children().children('#uni').attr('placeholder',data.barangsfak[i].pivot.unit)
+                        $("#isiformbarang" + i).children().children().children('#harga').val(data.barangsfak[i].pivot.harga)
                     }
-                    var c = data.barangs.length
+                    var c = data.barangsfak.length
                     console.log(c)
                 }
             },
@@ -410,10 +418,22 @@
             type: 'get',
             data: {},
             success: function(data) {
-                console.log(data)
+                console.log('a:', data.penerimaan.diskon_rp)
                 if (data.success == true) {
                     $(x).parent().parent().children().children('#tanggal_penerimaan').val(data.penerimaan.tanggal)
                     $(x).parent().parent().children().children().children('#total_penerimaan').val(data.penerimaan.total_harga)
+                    $('#discpnm').val(data.penerimaan.diskon_rp)
+                    var arr = document.getElementsByName('discpnm[]');
+                    var discpnm = 0;
+                    for (var i = 0; i < arr.length; i++) {
+                        if (parseInt(arr[i].value))
+                            discpnm += parseInt(arr[i].value);
+                    }
+                    $('#disk').val(discpnm)
+                    $('#diskon').val(0)
+                    $('#disko').val(0)
+                    $('#diskoo').val(discpnm)
+                    $('#diskon').css('display', 'none')
                     $('#barang_id').val(data.barangs[0].id)
                     $('#unit').val(data.barangs[0].pivot.unit)
                     $('#uni').attr('placeholder',data.barangs[0].pivot.unit)
@@ -441,7 +461,15 @@
         dp = parseInt($('#uang_muka').val());
         barang = parseInt($('#total_harga_barang').val())
         $('#akun_barang').val(barang)
-        diskon = (barang * dis)
+
+        var arr = document.getElementsByName('discpnm[]');
+        var discpnm = 0;
+        for (var i = 0; i < arr.length; i++) {
+            if (parseInt(arr[i].value))
+                discpnm += parseInt(arr[i].value);
+        }
+
+        diskon = (barang * dis) + discpnm;
         $('#disk').val(diskon)
         barangafterdiskon = barang - diskon
         hutang = barangafterdiskon + biy - dp

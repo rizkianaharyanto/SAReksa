@@ -8,7 +8,10 @@
 <tr>
     <th>Kode Hutang</th>
     <th>Transaksi</th>
-    <th>Total Hutang</th>
+    <!-- <th>Total Hutang</th> -->
+    <th>Lunas</th>
+    <th>Sisa</th>
+    <th>Status</th>
     <th style="column-width: 80px">Aksi</th>
 </tr>
 @endsection
@@ -23,7 +26,10 @@
         @else -
         @endif
     </td>
-    <td>{{ $hutang->total_hutang }}</td>
+    <!-- <td>{{ $hutang->total_hutang ? $hutang->total_hutang : '-' }}</td> -->
+    <td>{{ $hutang->lunas ? $hutang->lunas : '-' }}</td>
+    <td>{{ $hutang->sisa ? $hutang->sisa : '-' }}</td>
+    <td>{{ $hutang->status ? $hutang->status : '-' }}</td>
     <td class="d-flex justify-content-between">
         <i onclick="" class="fas fa-info-circle"></i>
     </td>

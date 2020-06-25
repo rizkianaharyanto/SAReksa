@@ -1,8 +1,8 @@
 @extends('pembelian.template.table')
 
-@section('judul', 'pemasok')
+@section('judul', 'Pemasok')
 
-@section('halaman', 'pemasok')
+@section('halaman', 'Pemasok')
 
 <!-- section('isi')
 <a href="/pembelian/pemasok/create">Tambah pemasok</a>
@@ -11,8 +11,8 @@ endsection -->
 
 @section('thead')
 <tr>
-    <th>Kode pemasok</th>
-    <th>Nama pemasok</th>
+    <th>Kode Pemasok</th>
+    <th>Nama Pemasok</th>
     <th>Telp</th>
     <th style="column-width: 80px">Aksi</th>
 </tr>
@@ -70,7 +70,7 @@ endsection -->
                 $('#footermodal').addClass('modal-footer');
                 $('#judulmodal').html(
                     '<i class="fas fa-user-circle mr-4" style="font-size:50px;color:#00BFA6;"></i> ' +
-                    '<h5 id = "nama_pemasok" class = "align-self-center"> pemasok ' + datanya.pemasok.nama_pemasok + '</h5>'
+                    '<h5 id = "nama_pemasok" class = "align-self-center"> Pemasok ' + datanya.pemasok.nama_pemasok + '</h5>'
                 );
                 $('#bodymodal').html(
                     '<form>' +
@@ -97,7 +97,7 @@ endsection -->
                 $('#lebarmodal').removeClass('modal-xl');
                 $('#footermodal').empty();
                 $('#judulmodal').html(
-                    '<h5 class="align-self-center">Edit pemasok ' + datanya.pemasok.nama_pemasok + '</h5>'
+                    '<h5 class="align-self-center">Edit Pemasok ' + datanya.pemasok.nama_pemasok + '</h5>'
                 );
                 $('#bodymodal').html(
                     '<form method="POST" action="/pembelian/pemasoks/' + datanya.pemasok.id + '">' +
@@ -129,10 +129,10 @@ endsection -->
                 $('#lebarmodal').removeClass('modal-xl');
                 $('#footermodal').addClass('modal-footer');
                 $('#judulmodal').html(
-                    '<h5 class="align-self-center">Hapus pemasok</h5>'
+                    '<h5 class="align-self-center">Hapus Pemasok</h5>'
                 );
                 $('#bodymodal').html(
-                    '<p>Apakah kamu yakin ingin menghapus pemasok ' + datanya.pemasok.nama_pemasok + ' ?</p>'
+                    '<p>Apakah kamu yakin ingin menghapus Pemasok ' + datanya.pemasok.nama_pemasok + ' ?</p>'
                 );
                 $('#footermodal').html(
                     '<button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>' +
@@ -158,20 +158,19 @@ endsection -->
 @endsection
 
 @section('judulTambah')
-<h5 class="align-self-center">Tambah pemasok</h5>
+<h5 class="align-self-center">Tambah Pemasok</h5>
 @endsection
 
 @section('bodyTambah')
 
 <form method="POST" action="/pembelian/pemasoks">
     @csrf
-    <div class="form-group d-inline-flex">
+    <!-- <div class="form-group d-inline-flex">
         <i class="fas fa-user-circle mr-4" style="font-size:50px;color:#00BFA6;"></i>
         <input type="file" class="form-control-file align-self-center" id="foto">
-    </div>
-    <input type="hidden" id="kode_pemasok" name="kode_pemasok" placeholder="" value="SUP{{$no+1}}">
+    </div> -->
     <div class="form-group">
-        <label for="nama_pemasok">Nama pemasok</label>
+        <label for="nama_pemasok">Nama Pemasok</label>
         <input type="text" class="form-control" id="nama_pemasok" name="nama_pemasok" placeholder="">
     </div>
     <div class="form-group">

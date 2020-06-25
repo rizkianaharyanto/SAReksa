@@ -31,13 +31,20 @@ class TaxResourceController extends Controller
       
         $allData = $this->model->all();
         // return $allData;
-        return view('pembelian.manajemendata.pajak',compact("allData"));
+        return view('pembelian.manajemendata.pajak', compact("allData"));
+    }
+    public function indexpenjualan()
+    {
+        //
+      
+        $allData = $this->model->all();
+        // return $allData;
+        return view('penjualan.manajemendata.pajak', compact("allData"));
     }
     public function store(CreateTaxRequest $request)
     {
         $input = $request->input();
         $data= $this->model->create($input);
-        return $data;
         return redirect()->back();
     }
 

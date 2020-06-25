@@ -10,6 +10,7 @@ class Pemesanan extends Model
     use SoftDeletes;
     protected $table = 'pbl_pemesanans';
     protected $guarded = ['id'];
+
     public function permintaans()
     {
         return $this->hasMany('App\Pembelian\Permintaan');
@@ -32,6 +33,6 @@ class Pemesanan extends Model
 
     public function barangs()
     {
-        return $this->belongsToMany('App\Stock\Barang', 'pbl_pemesanan_details')->withTimestamps()->withPivot('jumlah_barang', 'harga', 'unit', 'pajak', 'status_barang');
+        return $this->belongsToMany('App\Stock\Barang', 'pbl_pemesanan_details')->withTimestamps()->withPivot('jumlah_barang', 'harga', 'unit', 'pajak', 'status_barang', 'barang_belum_diterima');
     }
 }

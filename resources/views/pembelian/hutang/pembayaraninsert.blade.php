@@ -29,7 +29,6 @@
             <form method="POST" action="/pembelian/pembayarans">
                 @csrf
                 <div id="test-l-1" class="content">
-                    <input type="hidden" id="kode_pembayaran" name="kode_pembayaran" placeholder="" value="BYR{{$no+1}}">
                     <input type="hidden" id="status" name="status">
                     <div style="height: 58vh;overflow: auto; color:black" class="mt-2">
                         <div class="form-group row mx-5 mb-5">
@@ -89,7 +88,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" class="form-control" id="total" name="total[]" disabled>
+                                    <input type="number" class="form-control" id="total" name="total[]" onchange="hitung()">
                                     <input type="hidden" id="total_hutang" name="total_hutang[]">
                                 </div>
                             </div>
@@ -226,8 +225,8 @@
                 } else if (data.retur) {
                     $(x).parent().parent().children().children('#tanggal_hutang').val(data.retur.tanggal)
                 }
-                $(x).parent().parent().children().children().children('#total').val(data.hutang.total_hutang)
-                $(x).parent().parent().children().children().children('#total_hutang').val(data.hutang.total_hutang)
+                $(x).parent().parent().children().children().children('#total').val(data.hutang.sisa)
+                $(x).parent().parent().children().children().children('#total_hutang').val(data.hutang.sisa)
             }
         })
     }

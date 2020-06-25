@@ -1,8 +1,12 @@
 <?php
 namespace App\Services\Stock;
 
+use Illuminate\Support\Collection;
 use App\Repositories\Stock\Repository;
 use App\Stock\Barang;
+use App\Stock\StokGudang;
+use App\Stock\HargaRetailHistory;
+use App\Stock\HargaGrosirHistory;
 
 class ItemService
 {
@@ -11,11 +15,16 @@ class ItemService
     {
         return Barang::all();
     }
-    public function create($data)
+    public function create($payload)
     {
-        $this->model = new Barang;
-        $this->model->save($data);
-        return $this->model;
+        $payload = collect($payload);
+        $barang = Barang::create($payload->except(['harga_retail', 'harga_grosir'])->toArray());
+        
+        $payload['item_id'] = $barang->id;
+        HargaGrosirHistory::create($payload->only(['item_id','harga_grosir'])->toArray());
+        HargaRetailHistory::create($payload->only(['item_id','harga_retail'])->toArray());
+        
+        return $barang;
     }
     public function getAllStocksQty()
     {
@@ -69,7 +78,10 @@ class ItemService
     }
     public function getStocksByWhouse($id, $whsId)
     {
-        return Barang::find($id)->warehouseStocks()->wherePivot('gudang_id', $whsId);
+        return StokGudang::with([
+            'barang',
+            'gudang'
+        ])->where('gudang_id', $whsId)->where('barang_id', $id)->first();
     }
     public function getStocksQtyByWhouse($whsId, $itemId)
     {
@@ -77,8 +89,10 @@ class ItemService
     }
     public function updateStocks($itemId, $whsId, $qty)
     {
-        $Barangtock = $this->getStocksByWhouse($itemId, $whsId);
-        $Barangtock->updateExistingPivot($whsId, ['kuantitas'=>$qty]);
+        Barang::find($itemId)->warehouseStocks()->syncWithoutDetaching([$itemId => [
+            'gudang_id' => $whsId,
+            'kuantitas' => $qty,
+        ]]);
         return 201;
     }
     public function except($columns)

@@ -22,23 +22,31 @@
     <td>pemasok</td>
     <td>{{ $retur->tanggal }}</td>
     <td>{{ $retur->total_harga }}</td>
-    <td>{{ $retur->status !=null ? $retur->status  : '-' }}</td>
+    <td>{{ $retur->status !=null ? $retur->status  : '-' }} |
+        @if ($retur->status_posting == 'sudah posting')
+            sudah posting 
+        @elseif ($retur->status_posting == 'konfirmasi')
+        <a href="/pembelian/ubahpsnret/{{$retur->id}}">posting</a>
+        @else
+        <a href="/pembelian/postingret/{{$retur->id}}">posting</a>
+        @endif
+    </td>
     <td class="d-flex justify-content-between">
-        <a id="details" href="/pembelian/returs/create">
+        <a id="details" href="/pembelian/returshow/{{$retur->id}}">
             <i style="cursor: pointer; " class="fas fa-info-circle">
                 <span></span>
             </i>
         </a>
-        <a id="edit" href="/pembelian/returs/{{$retur->id}}/edit">
+        <!-- <a id="edit" href="/pembelian/returs/{{$retur->id}}/edit">
             <i style="cursor: pointer;" class="fas fa-edit">
                 <span></span>
             </i>
-        </a>
-        <a id="delete" data-toggle="modal" data-target="#delete-{{$retur->id }}">
+        </a> -->
+        <!-- <a id="delete" data-toggle="modal" data-target="#delete-{{$retur->id }}">
             <i style="cursor: pointer;" class="fas fa-trash">
                 <span></span>
             </i>
-        </a>
+        </a> -->
     </td>
 </tr>
 

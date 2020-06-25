@@ -5,21 +5,22 @@
 @section('halaman', 'Jurnal Khusus Pembelian')
 
 @section('isi')
-<div style="overflow:auto; height: 80vh;" class="m-4">
-    <div class="d-flex justify-content-end mx-5 p-2">
-        <a class="px-2" href="">Export Excel | </a>
-        <a class="px-2" href="/pembelian/jurnals/cetak_pdf" target="_blank">Export PDF | </a>
-        <a class="px-2" href="">Print | </a>
+    <div class="d-flex justify-content-end mx-5">
+        <!-- <a class="px-2" href="">Export Excel | </a> -->
+        <a class="px-2" id="pdf" href="/pembelian/jurnals/cetak_pdf" target="_blank">Export PDF | </a>
+        <!-- <a class="px-2" href="">Print | </a> -->
     </div>
+<div style="overflow:auto; height: 80vh;" class="m-2">
     <div style="background-color: white; color: black;" class="mx-5 p-3">
-        <div class="d-flex justify-content-center m-3">
-            <p>Reksa Karya</p>
+        <center>
+        <h5>Jurnal Transaksi Pembelian Reksa Karya</h4>
             <p>Periode : 1</p>
-        </div>
-        <table class="table table-bordered">
+        </center>
+        <table class="table table-sm table-striped table-bordered">
             <thead style="background-color: #00BFA6; color:whitesmoke">
                 <tr>
-                    <th scope="col" class="p-3" style="width: 20vw;">No. Transaksi</th>
+                    <th scope="col" class="p-3" style="width: 20vw;">Tanggal</th>
+                    <th scope="col" class="p-3" style="width: 20vw;">Transaksi</th>
                     <th scope="col" class="p-3" style="width: 20vw;">Akun</th>
                     <th scope="col" class="p-3" style="width: 20vw;">Debit</th>
                     <th scope="col" class="p-3" style="width: 20vw;">Kredit</th>
@@ -30,11 +31,19 @@
                     @foreach ($jurnal as $index)
                         <tr>
                             @if ($loop->first)
+                            <td rowspan="{{$loop->count}}" >
+                                    @if ($index->penerimaan_id !=null){{$index->penerimaan->tanggal}}
+                                    @elseif ($index->faktur_id !=null){{$index->faktur->tanggal}}
+                                    @elseif ($index->retur_id !=null){{$index->retur->tanggal}}
+                                    @elseif ($index->pembayaran_id !=null){{$index->pembayaran->tanggal}}
+                                    @else -
+                                    @endif
+                            </td>
                             <td rowspan="{{$loop->count}}" class="p-2">
-                                    @if ($index->penerimaan_id !=null){{$index->penerimaan->kode_penerimaan}}
-                                    @elseif ($index->faktur_id !=null){{$index->faktur->kode_faktur}}
-                                    @elseif ($index->retur_id !=null){{$index->retur->kode_retur}}
-                                    @elseif ($index->pembayaran_id !=null){{$index->pembayaran->kode_pembayaran}}
+                                    @if ($index->penerimaan_id !=null){{$index->penerimaan->kode_penerimaan}} - penerimaan barang
+                                    @elseif ($index->faktur_id !=null){{$index->faktur->kode_faktur}} - faktur pembelian
+                                    @elseif ($index->retur_id !=null){{$index->retur->kode_retur}} - retur pembelian
+                                    @elseif ($index->pembayaran_id !=null){{$index->pembayaran->kode_pembayaran}} - pembayaran hutang
                                     @else -
                                     @endif
                             </td>
@@ -45,16 +54,23 @@
                                 @elseif ($index->akun_id == 3) biaya lain
                                 @elseif ($index->akun_id == 4) hutang
                                 @elseif ($index->akun_id == 5) potongan pembelian
+                                @elseif ($index->akun_id == 6) kas
                                 @else -
                                 @endif
                             </td>
-                            <td class="p-2">{{ $index->debit != 0 ? $index->debit : '-' }}</td>
-                            <td class="p-2">{{ $index->kredit != 0 ? $index->kredit : '-' }}</td>
+                            <td class="p-2" name="debit[]">{{ $index->debit != 0 ? $index->debit : '-' }}</td>
+                            <td class="p-2" name="kredit[]">{{ $index->kredit != 0 ? $index->kredit : '-' }}</td>
                         </tr>
                     @endforeach
                 @endforeach
+                <tr>
+                    <td colspan="3">Total</td>
+                    <td>{{$debit}}</td>
+                    <td>{{$kredit}}</td>
+                </tr>
             </tbody>
         </table>
     </div>
 </div>
+
 @endsection

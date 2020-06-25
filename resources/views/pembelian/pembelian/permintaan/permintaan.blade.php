@@ -22,7 +22,7 @@
     <td>{{ $permintaan->tanggal }}</td>
     <td>{{ $permintaan->total_harga }}</td>
     <td class="d-flex justify-content-between">
-        <a id="details" href="/pembelian/permintaans/create">
+        <a id="details" href="/pembelian/permintaanshow/{{$permintaan->id}}">
             <i style="cursor: pointer; " class="fas fa-info-circle">
                 <span></span>
             </i>
