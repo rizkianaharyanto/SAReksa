@@ -11,6 +11,7 @@ class PenggunaController extends Controller
     public function index(Request $request){
 
         $request->session()->put('page','pengguna');
+        $request->session()->put('title','Pengguna');
         return view('kepegawaian.pengguna');
     }
 }

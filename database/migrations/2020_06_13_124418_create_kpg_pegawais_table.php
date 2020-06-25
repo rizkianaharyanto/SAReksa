@@ -16,7 +16,7 @@ class CreateKpgPegawaisTable extends Migration
         Schema::create('kpg_pegawais', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('nama');
-            $table->integer('ktp');
+            $table->string('ktp');
             $table->string('email');
             $table->string('handphone');
             $table->date('masuk');

@@ -17,7 +17,7 @@ class CreateKpgUsersTable extends Migration
             $table->bigIncrements('id');
             $table->string('name')->unique();
             $table->string('email')->unique();
-            $table->integer('userable_id')->nullable();
+            $table->string('userable_id')->nullable();
             $table->string('userable_type')->nullable();
             $table->string('password');
             $table->rememberToken();

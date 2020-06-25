@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <title>{{ Session::get('title') }}</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -9,9 +10,20 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/v4-shims.css">
-    <link rel="stylesheet" type="text/css" href="{{ url('/css/kepegawaian/app.css') }}" />
 
     <link rel="stylesheet" type="text/css" href="{{ url('/css/kepegawaian/sidebar.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url('/css/kepegawaian/app.css') }}" />
+
+
+    <script type="text/javascript" src="assets/DataTables/media/js/jquery.js"></script>
+
+    <!-- datatables -->
+    <link rel="stylesheet" type="text/css" href="{{ url('/css/kepegawaian/DataTables/datatables.min.css') }}" />
+    <script src="{{ url('/css/kepegawaian/DataTables/datatables.min.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url('/css/pembelian/DataTables/datatables.min.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url('/css/pembelian/tables.css') }}" />
+    <script src="{{ url('/css/pembelian/DataTables/datatables.min.js') }}"></script>
+  
     
 </head>
 
@@ -36,7 +48,7 @@
                     <h5>. {{ Session::get('nama') }}</h5>
                 </li>
                 @if((Session::get('page'))=="dashboard")
-                    <li class="active">
+                    <li  class="active">
                         <a href="{{ url('/kepegawaian/') }}">Dashboard</a>
                     </li>
                 @else
@@ -101,7 +113,7 @@
                     </li>
                 @else
                     <li>
-                        <a href="{{ url('/kepegawaian/') }}">laporan</a>
+                        <a href="{{ url('/kepegawaian/laporan') }}">laporan</a>
                     </li>
                 @endif
 
@@ -137,6 +149,9 @@
 
         <div class="col-md-10 p5 pt-2">
             <!-- <div> -->
+ 
+            <link rel="stylesheet" type="text/css" href="{{ url('/css/kepegawaian/dashboard.css') }}" />
+            <h1 class="title"><i class="fas fa-tachometer-alt mr-2 pt-2"></i>{{ Session::get('title') }}</h1><hr>
                 @yield('content')
             <!-- </div> -->
         </div>
