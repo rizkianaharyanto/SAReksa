@@ -198,8 +198,10 @@ Route::prefix('penjualan')->group(function () {
 
     //Posting
     Route::get('/pengirimans/{idnya}/posting', 'Penjualan\PengirimansController@posting');
+    Route::get('/fakturs/{idnya}/posting', 'Penjualan\FaktursController@posting');
+    Route::get('/returs/{idnya}/posting', 'Penjualan\RetursController@posting');
+    Route::get('/pembayarans/{idnya}/posting', 'Penjualan\PembayaransController@posting');
 
-    
     // Route::get('/barangs', )
     Route::resources([
         'pelanggans' => 'Penjualan\PelanggansController',

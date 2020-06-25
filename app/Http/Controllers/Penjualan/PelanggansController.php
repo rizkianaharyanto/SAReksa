@@ -71,7 +71,8 @@ class PelanggansController extends Controller
         $piutangmasih = null;
         $pemesananpengiriman = null;
         $pemesananfaktur = null;
-
+        $pengirimanfaktur = null;
+        $fakturretur = null;
 
         $i=0;
         foreach($piutangs as $piutangs){
@@ -80,11 +81,12 @@ class PelanggansController extends Controller
                 $i++;
             }
         }
+        
         $k=0;
 
         $j=0;
         foreach($pemesanans as $pemesanans){
-            if($pemesanans->status != 'terkirim'){
+            if($pemesanans->status == 'baru' || $pemesanans->status == 'terkirim sebagian'){
                 $pemesananpengiriman[$j] = $pemesanans;
                 $j++;
             }
@@ -93,6 +95,27 @@ class PelanggansController extends Controller
                 $k++;
             }
         }
+        $l=0;
+        foreach($pengirimans as $pengirimans){
+            if($pengirimans->status == 'sudah posting'){
+                $pengirimanfaktur[$l] = $pengirimans;
+                $l++;
+            }
+        }
+        $idr = null;
+        $m=0;
+        foreach($pelanggan->returs as $returan){
+            $idr[] = $returan->faktur_id;
+          
+
+        }
+        foreach($fakturs as $fakturs){
+            if($fakturs->status_posting == 'sudah posting' && $fakturs->id != $idr[0]){
+                $fakturretur[$m] = $fakturs;
+                $m++;
+            }
+        }
+        
         // for ($i = 0 ; $i < count($piutang) ; i++) {
         //     if ($piutang[i]->total_piutang != 0){
         //         $piutangmasih[i] = $piutang[i];
@@ -104,9 +127,11 @@ class PelanggansController extends Controller
             'pelanggan' => $pelanggan, 
             'penawarans' => $penawarans, 
             'pemesanans' => $pemesananpengiriman, 
-            'pemesananfakturs' => $pemesananfaktur, 
+            'pemesananfakturs' => $pemesananfaktur,
+            'pengirimanfakturs' => $pengirimanfaktur,  
             'pengirimans'=> $pengirimans,
             'fakturs'=> $fakturs,
+            'fakturreturs' => $fakturretur,
             'piutangs' => $piutangmasih,
         ]);
     }

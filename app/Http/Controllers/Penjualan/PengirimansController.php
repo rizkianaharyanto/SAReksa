@@ -79,7 +79,7 @@ class PengirimansController extends Controller
 
         }
         return redirect('/penjualan/pengirimans');      
-    }
+    }   
 
     public function posting($idnya)
     {
@@ -94,7 +94,7 @@ class PengirimansController extends Controller
             $a = $pemesanan->barangs()->where('barang_id', $barang->id)->first()->pivot->barang_belum_diterima;
             $b = $barang->pivot->jumlah_barang;
             $belum_diterima = $a - $b;
-            // dd($a, $b, $belum_diterima);
+            // dd($barang->pivot);
             $pemesanan->barangs()->where('barang_id', $barang->id)->update(array('barang_belum_diterima' => $belum_diterima));
             if ($belum_diterima == 0) {
                 $pemesanan->barangs()->where('barang_id', $barang->id)->update(array('status_barang' => 'terkirim'));

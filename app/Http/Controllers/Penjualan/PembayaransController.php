@@ -32,7 +32,6 @@ class PembayaransController extends Controller
     {
         $pelanggans = Pelanggan::all();
         $piutangs = Piutang::all();
-
         return view('penjualan.piutang.pembayaraninsert', [
             'pelanggans' => $pelanggans,
             'piutangs' => $piutangs,
@@ -53,23 +52,9 @@ class PembayaransController extends Controller
             'pelanggan_id' => $request->pelanggan_id,
             'tanggal' => $request->tanggal,
             'total' => $request->total_harga,
+            'status_posting' => 'belum posting',
         ]);
 
-        foreach ($request->piutang_id as $index => $id) {
-            $piutang = Piutang::find($id);
-            $piutang->update([
-                'total_piutang' => $piutang->total_piutang + $request->total_harga * -1,
-            ]);
-            if ($piutang->faktur_id) {
-                $piutang->faktur()->update([
-                    'status' => 'lunas',
-                ]);
-            } elseif ($piutang->retur_id) {
-                $piutang->retur()->update([
-                    'status' => 'lunas',
-                ]);
-            }
-        }
 
         foreach ($request->piutang_id as $index => $id) {
             $pembayaran->piutangs()->attach($id, [
@@ -118,6 +103,31 @@ class PembayaransController extends Controller
         return $pdf->download('Pembayaran.pdf');
 
     }
+
+    public function posting($idnya)
+    {
+        $pembayaran = Pembayaran::find($idnya);
+        Pembayaran::where('id', $pembayaran->id)
+                    ->update(['status_posting' => 'sudah posting']);
+        //posting
+        foreach ($pembayaran->piutangs as $pembayaran) {
+            $piutang = Piutang::find($pembayaran->pivot->piutang_id);
+            $piutang->update([
+                'lunas' => $pembayaran->pivot->total,
+                'total_piutang' => $piutang->total_piutang - $pembayaran->pivot->total,
+            ]);
+            if ($piutang->faktur_id) {
+                $piutang->faktur()->update([
+                    'status' => 'lunas',
+                ]);
+            } elseif ($piutang->retur_id) {
+                $piutang->retur()->update([
+                    'status' => 'lunas',
+                ]);
+            }
+        }
+        return redirect('/penjualan/fakturs');
+    }
     /**
      * Show the form for editing the specified resource.
      *
@@ -126,10 +136,11 @@ class PembayaransController extends Controller
      */
     public function edit(Pembayaran $pembayaran)
     {
+        // dd($pembayaran->piutangs);
         return view('penjualan.piutang.pembayaranedit', [
             'pembayaran' => $pembayaran,
-            'pelanggans' => Pemasok::all(),
-            'piutangs' => Hutang::all(),
+            'pelanggans' => Pelanggan::all(),
+            'piutangs' => Piutang::all(),
         ]);
     }
 
@@ -142,7 +153,18 @@ class PembayaransController extends Controller
      */
     public function update(Request $request, Pembayaran $pembayaran)
     {
-        //
+        Pembayaran::where('id', $pembayaran->id)
+        ->update([
+            'tanggal' => $request->tanggal,
+            'total' => $request->total_harga,
+        ]);
+        $pembayaran->piutangs()->detach();
+        foreach ($request->piutang_id as $index => $id) {
+            $pembayaran->piutangs()->attach($id, [
+                'total' => $request->total_piutang[$index],
+            ]);
+        }
+        return redirect('/penjualan/pembayarans');
     }
 
     /**
@@ -153,8 +175,7 @@ class PembayaransController extends Controller
      */
     public function destroy(Pembayaran $pembayaran)
     {
-                Pembayaran::destroy($pembayaran->id);
-
+        Pembayaran::destroy($pembayaran->id);
         return redirect('/penjualan/pembayarans');
     }
 }

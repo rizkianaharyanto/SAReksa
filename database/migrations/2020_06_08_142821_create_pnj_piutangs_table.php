@@ -16,7 +16,7 @@ class CreatePnjPiutangsTable extends Migration
         Schema::create('pnj_piutangs', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('kode_piutang');
-            $table->integer('total_sisa');
+            $table->integer('total_piutang');
             $table->timestamps();
             //fk
             $table->bigInteger('pelanggan_id')->nullable();

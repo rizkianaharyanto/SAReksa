@@ -67,7 +67,6 @@ The above copyright notice and this permission notice shall be included in all c
     <!--   Core JS Files   -->
     <script src="/js/penjualan/plugins/perfect-scrollbar.jquery.min.js"></script>
     <!--  Notifications Plugin    -->
-    <script src="/js/penjualan/plugins/bootstrap-notify.js"></script>
     <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
     <script src="/js/penjualan/paper-dashboard.min.js?v=2.0.0" type="text/javascript"></script>    
     
