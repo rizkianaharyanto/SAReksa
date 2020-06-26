@@ -93,6 +93,12 @@ input[type=search]{
     margin: 1.5em 1.5em;
     border: 2px solid $accent;
     border-radius: 50px;
+}  
+input[type=search]:focus{
+    padding-right: 4em;
+    margin: 1.5em 1.5em;
+    border: 2px solid $accent;
+    border-radius: 50px;
 }   
 #table_id_paginate{
     display: inline-block;

@@ -7,35 +7,38 @@
 
 @section('content')
 @parent
-  
+
 
 <div class="placeholder">
-<button class="btn btn-primary" id="tambah-data" type="button" data-form="Tambah Data" data-toggle="modal"
-    data-target="#modal"> Tambah Data</button>
+    @section('tableButtons')
+
+    <button class="btn btn-primary" id="tambah-data" type="button" data-form="Tambah Data" data-toggle="modal"
+        data-target="#modal"> Tambah Data</button>
+    @show
 
 
-<table id="table_id" class="display table-striped">
- 
-    <thead>
-        <tr>
-            @yield('tableHeader')
-            
-            
-        </tr>
-    </thead>
-    <tbody>
-        @section('tableBody')
-            
-        @show
-    </tbody>
-</table>
-<x-stock.modal>
-    <form class=form-group action="@yield('Route').update" method="post">
-        @csrf
-        @section('modalForm')
-       
-        @show
-</x-stock.modal>
+    <table id="table_id" class="display table-striped">
+
+        <thead>
+            <tr>
+                @yield('tableHeader')
+
+
+            </tr>
+        </thead>
+        <tbody>
+            @section('tableBody')
+
+            @show
+        </tbody>
+    </table>
+    <x-stock.modal>
+        <form class=form-group action="@yield('Route').update" method="post">
+            @csrf
+            @section('modalForm')
+
+            @show
+    </x-stock.modal>
 
 </div>
 @endsection

@@ -8,9 +8,6 @@ use App\ItemPurchaseTransaction;
 
 class CogsCalculationService
 {
-
-
-
     public function FIFO($itemData, $stocks)
     {
         // return $stocks;

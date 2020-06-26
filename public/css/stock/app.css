@@ -200,58 +200,58 @@ body .sidebar.collapsed ul a li {
   display: none;
 }
 
-body .content.collapsed {
+body .main-content.collapsed {
   transition: all 0.25s ease;
   margin-left: 12vw;
 }
 
-body .content {
+body .main-content {
   line-height: 2rem;
   margin: 1.5em 1em 1.3em 19vw;
   padding: 1.5em 1em;
   transition: all 0.25s ease;
 }
 
-body .content .top-menu {
+body .main-content .top-menu {
   margin: 0 0 2em 0;
   font-size: 2em;
   height: auto;
   color: white;
 }
 
-body .content .top-menu h3 {
+body .main-content .top-menu h3 {
   display: inline;
   padding: 0 0.5em;
 }
 
-body .content .top-menu a {
+body .main-content .top-menu a {
   text-decoration: none;
 }
 
-body .content .top-menu a i {
+body .main-content .top-menu a i {
   color: white;
 }
 
-body .content .top-menu .user-info {
+body .main-content .top-menu .user-info {
   text-align: right;
   float: right;
   margin-right: 1.75em;
 }
 
-body .content .top-menu .user-info h3 {
+body .main-content .top-menu .user-info h3 {
   font-size: 1.25rem;
 }
 
-body .content .top-menu .user-info p {
+body .main-content .top-menu .user-info p {
   margin: -0.5rem 2.5em;
   font-size: 1rem;
 }
 
-body .content .top-menu .user-info i {
+body .main-content .top-menu .user-info i {
   right: 0;
 }
 
-body .content .chart-container {
+body .main-content .chart-container {
   padding: 2em;
   background-color: #464D57;
   border-radius: 20px;
@@ -262,7 +262,7 @@ body .content .chart-container {
   width: 70vw;
 }
 
-body .content .rank-table {
+body .main-content .rank-table {
   background-color: #464D57;
   display: inline-block;
   border-radius: 20px;
@@ -272,26 +272,26 @@ body .content .rank-table {
   width: 30vw;
 }
 
-body .content .rank-table h3 {
+body .main-content .rank-table h3 {
   text-align: center;
 }
 
-body .content .rank-table table {
+body .main-content .rank-table table {
   padding: 0 2.7em;
 }
 
-body .content .rank-table table th,
-body .content .rank-table table td {
+body .main-content .rank-table table th,
+body .main-content .rank-table table td {
   padding: 0.75em 2.2em;
 }
 
-body .content .rank-table table tr:first-of-type td {
+body .main-content .rank-table table tr:first-of-type td {
   border: none;
   background-color: #0DD3DC;
   color: black;
 }
 
-body .content .right-table {
+body .main-content .right-table {
   display: inline-block;
   background-color: #464D57;
   display: inline-block;
@@ -302,20 +302,20 @@ body .content .right-table {
   width: 35vw;
 }
 
-body .content .right-table h3 {
+body .main-content .right-table h3 {
   text-align: center;
 }
 
-body .content .right-table table {
+body .main-content .right-table table {
   padding: 0 5em;
 }
 
-body .content .right-table table th,
-body .content .right-table table td {
+body .main-content .right-table table th,
+body .main-content .right-table table td {
   padding: 0.75em 2.5em;
 }
 
-body .content .right-table table tr:first-of-type td {
+body .main-content .right-table table tr:first-of-type td {
   border: none;
   background-color: #0DD3DC;
   color: black;
