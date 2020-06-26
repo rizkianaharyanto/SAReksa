@@ -11,44 +11,32 @@ Data Pemasok
     @section('tableHeader')
 
     <tr>
-        <th>No</th>
         <th>Kode Pemasok</th>
         <th>Nama Pemasok</th>
+        <th>Telp</th>
+        <th>Email</th>
         <th>Alamat</th>
-        <th>Nomor Telepon</th>
-        <th>Terakhir Diubah</th>
-        <th>Opsi</th>
     </tr>
     @endsection
 
+    @section('tableButtons', '')
 
     @section('tableBody')
 
 
-        @foreach ($allData as $index => $s)
-
+        @foreach ($pemasoks as $pemasok)
         <tr>
-            <td>{{$index+1}}</td>
-            <td>{{$s->kode_supplier}}</td>
-            <td>{{$s->nama_supplier}}</td>
-            <td>{{$s->alamat}}</td>
-            <td>{{$s->no_telp}}</td>
-            <td>{{\Carbon\Carbon::parse($s->updated_at)->format('d-m-Y')}}</td>
-
-
-            <td id="options"> 
-                <span id="edit-opt">
-                    <a href="" data-form="Edit Data" data-toggle="modal" data-ctgid="{{$s->id}}" data-target=#modal> Edit</a>
-                </span> |
-                <span id="delete-opt">
-                    <meta name="csrf-token" content="{{ csrf_token() }}">
-                    <a class="delete-jquery" data-method="delete"
-                        href="{{ route('gudang.destroy', $s->id ) }}">Delete</a>
-                </span>
-            </td>
+            <td>{{ $pemasok->kode_pemasok }}</td>
+            <td>{{ $pemasok->nama_pemasok }}</td>
+            <td>{{ $pemasok->telp_pemasok }}</td>
+            <td>{{ $pemasok->email_pemasok }}</td>
+            <td>{{ $pemasok->alamat_pemasok }}</td>
         </tr>
         @endforeach
+
     @endsection
+
+
 
 @section('modalId')
 modalGudang
@@ -56,17 +44,15 @@ modalGudang
 
 @section('modalForm')
 <label for="kodePemasok">Kode Pemasok </label>
-<input class="form-control" type="text" name="kode_supplier" id="field1">
+<input class="form-control" type="text" name="kode_supplier" id="field1" value="">
 <label for="namaPemasok">Nama Pemasok </label>
 <input class="form-control" type="text" name="nama_supplier" id="field2">
 <label for="Alamat">Alamat </label>
 <textarea class="form-control" type="textarea" name="alamat" id="field3" rows="5"></textarea>
 <label for="noTelp">No Telpon:  </label>
 <input class="form-control" type="text" name="no_telp" id="field4">
-
 @endsection
 
 @section('scripts')
 @parent
-
 @endsection

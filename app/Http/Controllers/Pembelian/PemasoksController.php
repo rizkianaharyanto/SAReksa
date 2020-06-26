@@ -23,6 +23,15 @@ class PemasoksController extends Controller
         ]);
     }
 
+    public function indexbarang()
+    {
+        $pemasoks = Pemasok::all();
+
+        return view('stock.Management-Data.pemasok', [
+            'pemasoks' => $pemasoks,
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

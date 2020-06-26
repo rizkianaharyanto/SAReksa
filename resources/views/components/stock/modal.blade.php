@@ -17,7 +17,7 @@
             
                    
             </div>
-            <div class="modal-footer">
+            <div id="modal-footer" class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="submit" style="background-color: #0DD3DC" class="btn btn-primary">Tambah</button>
             </div>
