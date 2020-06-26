@@ -14,8 +14,8 @@
                                 <div class="card card-plain">
                                     <div class="card-body">
                                       <div class="d-flex justify-content-center" style="position: relative; color:#212120; margin-top:-2.5%;">
-                                        <div style="position: ">
-                                          <div class='d-flex justify-content-end' style='style=z-index: 1;; padding-bottom:1%;'>
+                                        <div >
+                                          <div class='d-flex justify-content-end' style='z-index: 1; padding-bottom:1%;'>
                                             @yield('tambah')
                                             <!-- <a data-toggle="modal" data-target="#modalFilter">
                                               <i id="tambah" onmouseover="tulisan()" class="fas fa-filter mr-4" style="font-size:25px;color:#212120;cursor: pointer;">

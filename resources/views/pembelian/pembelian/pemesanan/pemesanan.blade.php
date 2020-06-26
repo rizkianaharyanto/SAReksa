@@ -66,4 +66,9 @@ $delete = "delete-".$pemesanan->id
         <span></span>
     </i>
 </a>
+<a href="/pembelian/pemesanans/laporan">
+      <i id="filter" onmouseover="tulisan()" class="fas fa-file-alt mr-4" style="font-size:25px;color:#00BFA6;cursor: pointer;">
+        <span></span>
+      </i>
+    </a>
 @endsection

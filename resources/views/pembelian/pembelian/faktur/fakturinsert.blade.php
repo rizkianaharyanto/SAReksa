@@ -307,6 +307,7 @@
     }
 
     function checkPenerimaan(x) {
+        window.value=1;
         $("#checkBarang").css('display', 'none')
         $("#pemesanan_form").css('display', 'none')
         $("#checkPenerimaan").removeAttr('style')
@@ -434,18 +435,34 @@
                     $('#disko').val(0)
                     $('#diskoo').val(discpnm)
                     $('#diskon').css('display', 'none')
-                    $('#barang_id').val(data.barangs[0].id)
-                    $('#unit').val(data.barangs[0].pivot.unit)
-                    $('#uni').attr('placeholder',data.barangs[0].pivot.unit)
-                    $('#jumlah_barang').val(data.barangs[0].pivot.jumlah_barang)
-                    $('#harga').val(data.barangs[0].pivot.harga)
-                    for (var i = 1; i <= data.barangs.length - 1; i++) {
-                        $("#formbarang").append($("#isiformbarang0").clone().attr('id', 'isiformbarang' + i));
-                        $("#isiformbarang" + i).children().children('select').val(data.barangs[i].id)
-                        $("#isiformbarang" + i).children().children('#jumlah_barang').val(data.barangs[i].pivot.jumlah_barang)
-                        $("#isiformbarang" + i).children().children('#uni').attr('placeholder',data.barangs[i].pivot.unit)
-                        $("#isiformbarang" + i).children().children('#unit').val(data.barangs[i].pivot.unit)
-                        $("#isiformbarang" + i).children().children().children('#harga').val(data.barangs[i].pivot.harga)
+                    if($("#isiformbarang0").children().children('#jumlah_barang').val().length == 0){
+                        $('#barang_id').val(data.barangs[0].id)
+                        $('#unit').val(data.barangs[0].pivot.unit)
+                        $('#uni').attr('placeholder',data.barangs[0].pivot.unit)
+                        $('#jumlah_barang').val(data.barangs[0].pivot.jumlah_barang)
+                        $('#harga').val(data.barangs[0].pivot.harga)
+                        for (var i = 1; i <= data.barangs.length - 1; i++) {
+                            $("#formbarang").append($("#isiformbarang0").clone().attr('id', 'isiformbarang' + i));
+                            $("#isiformbarang" + i).children().children('select').val(data.barangs[i].id)
+                            $("#isiformbarang" + i).children().children('#jumlah_barang').val(data.barangs[i].pivot.jumlah_barang)
+                            $("#isiformbarang" + i).children().children('#uni').attr('placeholder',data.barangs[i].pivot.unit)
+                            $("#isiformbarang" + i).children().children('#unit').val(data.barangs[i].pivot.unit)
+                            $("#isiformbarang" + i).children().children().children('#harga').val(data.barangs[i].pivot.harga)
+                            window.value++;
+                        }
+                    }
+                    else{
+                        console.log("ada")
+                        console.log(window.value)
+                        for (var i = 0; i <= data.barangs.length-1 ; i++) {
+                            $("#formbarang").append($("#isiformbarang0").clone().attr('id', 'isiformbarang' + window.value));
+                            $("#isiformbarang" + window.value).children().children('select').val(data.barangs[i].id)
+                            $("#isiformbarang" + window.value).children().children('#jumlah_barang').val(data.barangs[i].pivot.jumlah_barang)
+                            $("#isiformbarang" + window.value).children().children('#uni').attr('placeholder',data.barangs[i].pivot.unit)
+                            $("#isiformbarang" + window.value).children().children('#unit').val(data.barangs[i].pivot.unit)
+                            $("#isiformbarang" + window.value).children().children().children('#harga').val(data.barangs[i].pivot.harga)
+                            window.value++;
+                        }
                     }
                 }
             },

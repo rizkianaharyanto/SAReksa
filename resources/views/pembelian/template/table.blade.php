@@ -9,11 +9,7 @@
       </i>
     </a> -->
     @yield('tambah')
-    <a data-toggle="modal" data-target="#modalFilter">
-      <i id="tambah" onmouseover="tulisan()" class="fas fa-filter mr-4" style="font-size:25px;color:#00BFA6;cursor: pointer;">
-        <span></span>
-      </i>
-    </a>
+    
   </div>
   <div style="position: absolute">
     <table id="table_id" class="table table-hover" style="width: 85vw">
