@@ -19,7 +19,7 @@
 @foreach ($fakturs as $faktur)
 <tr>
     <td>{{ $faktur->kode_faktur }}</td>
-    <td>pemasok</td>
+    <td>{{ $faktur->pemasok->nama_pemasok }}</td>
     <td>{{ $faktur->tanggal }}</td>
     <td>{{ $faktur->total_harga }}</td>
     <td>{{ $faktur->status !=null ? $faktur->status  : '-' }} | 

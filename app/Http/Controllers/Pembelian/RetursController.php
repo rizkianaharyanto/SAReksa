@@ -29,6 +29,22 @@ class RetursController extends Controller
         return view('pembelian.pembelian.retur.retur', compact('returs'));
     }
 
+    public function laporan()
+    {
+        $returs = Retur::all();
+
+        return view('pembelian.pembelian.retur.laporan-retur', compact('returs'));
+    }
+
+    public function cetaklaporan()
+    {
+        $returs = Retur::all();
+
+        $pdf = PDF::loadview('pembelian.pembelian.retur.cetak-laporan-retur', compact('returs'));
+
+        return $pdf->download('laporan-retur.pdf');
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -70,7 +86,7 @@ class RetursController extends Controller
             'total_harga' => $request->total_harga_keseluruhan,
         ]);
 
-        if($request->status == 'hutang'){
+        if ($request->status == 'hutang') {
             $hut = Hutang::max('id') + 1;
             $hutang = $retur->hutang()->create([
                 'kode_hutang' => 'HUT-'.$hut,
@@ -80,7 +96,7 @@ class RetursController extends Controller
                 'retur_id' => $retur->id,
                 'status' => 'hutang',
             ]);
-    
+
             $retur->update(['hutang_id' => $hutang->id]);
         }
 
@@ -104,39 +120,38 @@ class RetursController extends Controller
         Retur::where('id', $retur->id)
                 ->update(['status_posting' => 'sudah posting']);
 
-        if ($retur->status == 'hutang'){
-        $no = Jurnal::max('id') + 1;
-        for ($i = 1; $i < 5; ++$i) {
-            $jurnal = Jurnal::create([
+        if ($retur->status == 'hutang') {
+            $no = Jurnal::max('id') + 1;
+            for ($i = 1; $i < 5; ++$i) {
+                $jurnal = Jurnal::create([
                 'kode_jurnal' => 'jur'.$no,
                 'retur_id' => $retur->id,
                 'debit' => 0,
                 'kredit' => 0,
             ]);
-            if ($i == 1) {
-                $jurnal->update([
+                if ($i == 1) {
+                    $jurnal->update([
                     'kredit' => $retur->total_jenis_barang - $retur->uang_muka,
                     'akun_id' => 1, //barang
                 ]);
-            } elseif ($i == 2) {
-                $jurnal->update([
+                } elseif ($i == 2) {
+                    $jurnal->update([
                     'kredit' => $retur->biaya_lain,
                     'akun_id' => 3, //biayalain
                 ]);
-            } elseif ($i == 3) {
-                $jurnal->update([
+                } elseif ($i == 3) {
+                    $jurnal->update([
                     'debit' => $retur->hutang->total_hutang,
                     'akun_id' => 4, //hutang
                 ]);
-            } elseif ($i == 4) {
-                $jurnal->update([
+                } elseif ($i == 4) {
+                    $jurnal->update([
                     'debit' => $retur->diskon_rp,
                     'akun_id' => 5, //diskon
                 ]);
+                }
             }
-        }
-
-        }elseif($retur->status == 'lunas'){
+        } elseif ($retur->status == 'lunas') {
             $no = Jurnal::max('id') + 1;
             for ($i = 1; $i < 5; ++$i) {
                 $jurnal = Jurnal::create([

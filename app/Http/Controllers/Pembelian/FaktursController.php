@@ -29,6 +29,22 @@ class FaktursController extends Controller
         return view('pembelian.pembelian.faktur.faktur', compact('fakturs'));
     }
 
+    public function laporan()
+    {
+        $fakturs = Faktur::all();
+
+        return view('pembelian.pembelian.faktur.laporan-faktur', compact('fakturs'));
+    }
+
+    public function cetaklaporan()
+    {
+        $fakturs = Faktur::all();
+
+        $pdf = PDF::loadview('pembelian.pembelian.faktur.cetak-laporan-faktur', compact('fakturs'));
+
+        return $pdf->download('laporan-faktur.pdf');
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -83,7 +99,7 @@ class FaktursController extends Controller
                 'total_hutang' => $request->hutang,
                 'sisa' => $request->hutang,
                 'faktur_id' => $faktur->id,
-                'status' => 'hutang'
+                'status' => 'hutang',
             ]);
             $faktur->update(['hutang_id' => $hutang->id]);
         }

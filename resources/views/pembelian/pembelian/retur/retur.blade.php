@@ -19,7 +19,7 @@
 @foreach ($returs as $retur)
 <tr>
     <td>{{ $retur->kode_retur }}</td>
-    <td>pemasok</td>
+    <td>{{ $retur->pemasok->nama_pemasok }}</td>
     <td>{{ $retur->tanggal }}</td>
     <td>{{ $retur->total_harga }}</td>
     <td>{{ $retur->status !=null ? $retur->status  : '-' }} |

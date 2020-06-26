@@ -34,13 +34,26 @@ Route::prefix('pembelian')->group(function () {
     Route::get('/ubahpsnfak/{idnya}', 'Pembelian\FaktursController@ubahpsn');
     Route::get('/postingret/{idnya}', 'Pembelian\RetursController@posting');
 
-    //show details page
+    //show laporan
+    Route::get('/permintaans/laporan', 'Pembelian\PermintaansController@laporan');
+    Route::get('/pemesanans/laporan', 'Pembelian\PemesanansController@laporan');
+    Route::get('/penerimaans/laporan', 'Pembelian\PenerimaansController@laporan');
+    Route::get('/fakturs/laporan', 'Pembelian\FaktursController@laporan');
+    Route::get('/returs/laporan', 'Pembelian\RetursController@laporan');
+
+    //cetak laporan
+    Route::get('/permintaans/laporanpdf', 'Pembelian\PermintaansController@cetaklaporan');
+    Route::get('/pemesanans/laporanpdf', 'Pembelian\PemesanansController@cetaklaporan');
+    Route::get('/penerimaans/laporanpdf', 'Pembelian\PenerimaansController@cetaklaporan');
+    Route::get('/fakturs/laporanpdf', 'Pembelian\FaktursController@cetaklaporan');
+    Route::get('/returs/laporanpdf', 'Pembelian\RetursController@cetaklaporan');
+
+    //show details
     Route::get('/permintaanshow/{id}', 'Pembelian\PermintaansController@show2');
     Route::get('/pemesananshow/{id}', 'Pembelian\PemesanansController@show2');
     Route::get('/penerimaanshow/{id}', 'Pembelian\PenerimaansController@show2');
     Route::get('/fakturshow/{id}', 'Pembelian\FaktursController@show2');
     Route::get('/returshow/{id}', 'Pembelian\RetursController@show2');
-
     //cetak pdf
     Route::get('/jurnals/cetak_pdf', 'Pembelian\JurnalsController@cetak_pdf');
     Route::get('/permintaans/cetak_pdf', 'Pembelian\PermintaansController@cetak_pdf');
@@ -72,7 +85,6 @@ Route::prefix('stok')->group(function () {
     Route::get('/barangs', 'Stock\ItemResourceController@indexpembelian');
     Route::get('/gudangs', 'Stock\WarehouseController@indexpembelian');
     Route::get('/pajaks', 'Stock\TaxResourceController@indexpembelian');
-
 
     Route::get('/config', 'Stock\ConfigController@index');
     Route::get('/config/getrolepermissions/{id}', 'Stock\ConfigController@getRolePermissions');
@@ -144,11 +156,9 @@ Route::prefix('kepegawaian')->group(function () {
     Route::get('/jabatan/promosi/{id}', 'Kepegawaian\PromosiController@show');
     Route::put('/jabatan/promosi/{id}', 'Kepegawaian\PromosiController@update');
 
-
     Route::get('pegawai/tambah', 'Kepegawaian\PegawaiController@tambah');
     Route::post('pegawai/add', 'Kepegawaian\PegawaiController@add');
-    
-    
+
     Route::post('jabatan/add', 'Kepegawaian\JabatanController@add');
 
     // Route::get('/', )

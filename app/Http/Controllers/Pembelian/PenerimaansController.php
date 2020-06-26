@@ -17,6 +17,7 @@ use PDF;
 class PenerimaansController extends Controller
 {
     private $itemService;
+
     /**
      * Display a listing of the resource.
      *
@@ -26,11 +27,28 @@ class PenerimaansController extends Controller
     {
         $this->itemService = $itemService;
     }
+
     public function index()
     {
         $penerimaans = Penerimaan::all();
 
         return view('pembelian.pembelian.penerimaan.penerimaan', compact('penerimaans'));
+    }
+
+    public function laporan()
+    {
+        $penerimaans = Penerimaan::all();
+
+        return view('pembelian.pembelian.penerimaan.laporan-penerimaan', compact('penerimaans'));
+    }
+
+    public function cetaklaporan()
+    {
+        $penerimaans = Penerimaan::all();
+
+        $pdf = PDF::loadview('pembelian.pembelian.penerimaan.cetak-laporan-penerimaan', compact('penerimaans'));
+
+        return $pdf->download('laporan-penerimaan.pdf');
     }
 
     /**
@@ -91,7 +109,6 @@ class PenerimaansController extends Controller
         Penerimaan::where('id', $penerimaan->id)
                     ->update(['status' => 'konfirmasi']);
 
-
         //posting
 
         $no = Jurnal::max('id') + 1;
@@ -123,18 +140,18 @@ class PenerimaansController extends Controller
 
             //update stock
             try {
-                $this->itemService->updateStocks($barang->id,$penerimaan->gudang,$b);
+                $this->itemService->updateStocks($barang->id, $penerimaan->gudang, $b);
                 // dd("berhasil");
             } catch (\Throwable $th) {
-                dd("Gagal");
+                dd('Gagal');
             }
 
             //update harga barang
             try {
                 HargaRetailHistory::create([
-                    'item_id'  => $barang->id,
-                    'harga_retail' => $barang->pivot->harga
-                ]);               
+                    'item_id' => $barang->id,
+                    'harga_retail' => $barang->pivot->harga,
+                ]);
             } catch (\Throwable $th) {
                 throw $th;
             }
@@ -163,6 +180,7 @@ class PenerimaansController extends Controller
         } else {
             $pemesanan->update(array('status' => 'diterima'));
         }
+
         return redirect('/pembelian/penerimaans');
     }
 
