@@ -72,7 +72,7 @@
                 
             }
             else{
-                $(".modal-body form").attr('action',`/stok/Management-Data/${route}`)
+                $(".modal-body form").attr('action',`/stok/${route}`)
                 
             }
             

@@ -25,6 +25,22 @@ class PemesanansController extends Controller
         return view('pembelian.pembelian.pemesanan.pemesanan', compact('pemesanans'));
     }
 
+    public function laporan()
+    {
+        $pemesanans = Pemesanan::all();
+
+        return view('pembelian.pembelian.pemesanan.laporan-pemesanan', compact('pemesanans'));
+    }
+
+    public function cetaklaporan()
+    {
+        $pemesanans = Pemesanan::all();
+
+        $pdf = PDF::loadview('pembelian.pembelian.pemesanan.cetak-laporan-pemesanan', compact('pemesanans'));
+
+        return $pdf->download('laporan-pemesanan.pdf');
+    }
+
     /**
      * Show the form for creating a new resource.
      *

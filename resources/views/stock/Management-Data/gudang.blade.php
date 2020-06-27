@@ -3,6 +3,7 @@
 @parent
 
 @endsection
+
 @section('title')
 Data Gudang
 @endsection

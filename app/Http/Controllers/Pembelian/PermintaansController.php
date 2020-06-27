@@ -24,6 +24,22 @@ class PermintaansController extends Controller
         return view('pembelian.pembelian.permintaan.permintaan', compact('permintaans'));
     }
 
+    public function laporan()
+    {
+        $permintaans = Permintaan::all();
+
+        return view('pembelian.pembelian.permintaan.laporan-permintaan', compact('permintaans'));
+    }
+
+    public function cetaklaporan()
+    {
+        $permintaans = Permintaan::all();
+
+        $pdf = PDF::loadview('pembelian.pembelian.permintaan.cetak-laporan-permintaan', compact('permintaans'));
+
+        return $pdf->download('laporan-permintaan.pdf');
+    }
+
     /**
      * Show the form for creating a new resource.
      *

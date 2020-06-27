@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use App\Services\Stock\InventoryLedgerService;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\Stock\StockOpnameRequest;
+use App\Stock\Barang;
+use App\Stock\Gudang;
 
 class StockOpnameController extends Controller
 {
@@ -21,10 +23,11 @@ class StockOpnameController extends Controller
      */
     public function index()
     {
-        //
         $stokOp = StokOpname::all();
-        
-        return view('stock.transactions/stock-opname', compact('stokOp'));
+        $barangs = Barang::all();
+        $gudangs = Gudang::all();
+
+        return view('stock.transactions/stock-opname', ['stokOp' => $stokOp, 'barangs' => $barangs, 'gudangs' =>$gudangs]);
     }
 
     /*
@@ -34,19 +37,17 @@ class StockOpnameController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(StockOpnameService $opnameServ, ItemService $itemServ, StockOpnameRequest $req)
     {
-        //
-
         $opnameItems = $req->validated();
 
         $transData = Arr::except($opnameItems, ['item_id', 'on_hand']);
@@ -64,7 +65,7 @@ class StockOpnameController extends Controller
 
                 $stockOp->details()->attach($id, [
                     'jumlah_tercatat' => $onBook,
-                    'jumlah_fisik'    => $opnameItems['on_hand'][$index]
+                    'jumlah_fisik' => $opnameItems['on_hand'][$index],
                 ]);
             }
         } catch (\Exception $e) {
@@ -74,15 +75,14 @@ class StockOpnameController extends Controller
         }
         DB::commit();
 
-
-
         return $stockOp;
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\StockOpname  $stockOpname
+     * @param \App\StockOpname $stockOpname
+     *
      * @return \Illuminate\Http\Response
      */
     public function posting(InventoryLedgerService $invLedg, ItemService $itemServ, $id)
@@ -93,36 +93,35 @@ class StockOpnameController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\StockOpname  $stockOpname
+     * @param \App\StockOpname $stockOpname
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(StokOpname $stockOpname)
     {
-        //
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\StockOpname  $stockOpname
+     * @param \Illuminate\Http\Request $request
+     * @param \App\StockOpname         $stockOpname
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, StokOpname $stockOpname)
     {
-        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\StockOpname  $stockOpname
+     * @param \App\StockOpname $stockOpname
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(ItemService $itemServ, $id)
     {
-        //
-
         $stockOp = StokOpname::findOrFail($id);
 
         if ($stockOp['status'] == 'posted') {
@@ -130,7 +129,7 @@ class StockOpnameController extends Controller
         } else {
             DB::beginTransaction();
             try {
-                $recordedData =  $stockOp->with('details')->get()->first()->details;
+                $recordedData = $stockOp->with('details')->get()->first()->details;
                 foreach ($recordedData as $i => $data) {
                     $stock = $itemServ->getStocksQtyByWhouse($stockOp->gudang_id, $data->id);
 

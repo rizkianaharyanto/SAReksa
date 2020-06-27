@@ -19,7 +19,7 @@
 @foreach ($returs as $retur)
 <tr>
     <td>{{ $retur->kode_retur }}</td>
-    <td>pemasok</td>
+    <td>{{ $retur->pemasok->nama_pemasok }}</td>
     <td>{{ $retur->tanggal }}</td>
     <td>{{ $retur->total_harga }}</td>
     <td>{{ $retur->status !=null ? $retur->status  : '-' }} |
@@ -73,4 +73,9 @@ $delete = "delete-".$retur->id
         <span></span>
     </i>
 </a>
+<a href="/pembelian/returs/laporan">
+      <i id="filter" onmouseover="tulisan()" class="fas fa-file-alt mr-4" style="font-size:25px;color:#00BFA6;cursor: pointer;">
+        <span></span>
+      </i>
+    </a>
 @endsection

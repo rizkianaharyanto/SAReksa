@@ -3,6 +3,7 @@
 namespace App\Stock;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class StokOpname extends Model
 {

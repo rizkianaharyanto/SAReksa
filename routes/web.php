@@ -34,13 +34,26 @@ Route::prefix('pembelian')->group(function () {
     Route::get('/ubahpsnfak/{idnya}', 'Pembelian\FaktursController@ubahpsn');
     Route::get('/postingret/{idnya}', 'Pembelian\RetursController@posting');
 
-    //show details page
+    //show laporan
+    Route::get('/permintaans/laporan', 'Pembelian\PermintaansController@laporan');
+    Route::get('/pemesanans/laporan', 'Pembelian\PemesanansController@laporan');
+    Route::get('/penerimaans/laporan', 'Pembelian\PenerimaansController@laporan');
+    Route::get('/fakturs/laporan', 'Pembelian\FaktursController@laporan');
+    Route::get('/returs/laporan', 'Pembelian\RetursController@laporan');
+
+    //cetak laporan
+    Route::get('/permintaans/laporanpdf', 'Pembelian\PermintaansController@cetaklaporan');
+    Route::get('/pemesanans/laporanpdf', 'Pembelian\PemesanansController@cetaklaporan');
+    Route::get('/penerimaans/laporanpdf', 'Pembelian\PenerimaansController@cetaklaporan');
+    Route::get('/fakturs/laporanpdf', 'Pembelian\FaktursController@cetaklaporan');
+    Route::get('/returs/laporanpdf', 'Pembelian\RetursController@cetaklaporan');
+
+    //show details
     Route::get('/permintaanshow/{id}', 'Pembelian\PermintaansController@show2');
     Route::get('/pemesananshow/{id}', 'Pembelian\PemesanansController@show2');
     Route::get('/penerimaanshow/{id}', 'Pembelian\PenerimaansController@show2');
     Route::get('/fakturshow/{id}', 'Pembelian\FaktursController@show2');
     Route::get('/returshow/{id}', 'Pembelian\RetursController@show2');
-
     //cetak pdf
     Route::get('/jurnals/cetak_pdf', 'Pembelian\JurnalsController@cetak_pdf');
     Route::get('/permintaans/cetak_pdf', 'Pembelian\PermintaansController@cetak_pdf');
@@ -73,7 +86,6 @@ Route::prefix('stok')->group(function () {
     Route::get('/gudangs', 'Stock\WarehouseController@indexpembelian');
     Route::get('/pajaks', 'Stock\TaxResourceController@indexpembelian');
 
-
     Route::get('/config', 'Stock\ConfigController@index');
     Route::get('/config/getrolepermissions/{id}', 'Stock\ConfigController@getRolePermissions');
 
@@ -86,18 +98,19 @@ Route::prefix('stok')->group(function () {
             'barang' => "Stock\ItemResourceController",
             'satuan-unit' => "Stock\UnitsResourceController",
             'gudang' => "Stock\WarehouseController",
-            'pemasok' => "Stock\SuppliersResourceController",
+            // 'pemasok' => "Stock\SuppliersResourceController",
             'pajak' => "Stock\TaxResourceController",
             'coa-master' => "Stock\COAMasterController",
             'coa-type' => "Stock\COATypeController",
         ]);
+        Route::get('/pemasok', 'Pembelian\PemasoksController@indexbarang');
     });
     Route::post('/stock-opname/posting/{id}', 'Stock\StockOpnameController@posting');
     Route::resources([
-            'transfer-stock' => 'StockTransferController',
-            'stock-opname' => 'StockOpnameController',
-            'penyesuaian-stock' => 'StockAdjustmentController',
-            'pembelian' => 'ItemPurchaseTransactionController',
+            'transfer-stock' => 'Stock\StockTransferController',
+            'stock-opname' => 'Stock\StockOpnameController',
+            'penyesuaian-stock' => 'Stock\StockAdjustmentController',
+            'pembelian' => 'Stock\ItemPurchaseTransactionController',
         ]);
     Route::get('/stokbarang/{barangId}', 'Stock\ItemStockController@getStocksTotalById');
     Route::get('/stokbarangpergudang/{barangId}', 'Stock\ItemStockController@getStocksByGudang');
@@ -110,45 +123,43 @@ Route::prefix('kepegawaian')->group(function () {
     Route::get('/', 'Kepegawaian\DashboardController@index');
 
     //PPH
-    Route::get('/admin/pph/tambah','Kepegawaian\PphController@tambah');
-    Route::post('/admin/pph/store','Kepegawaian\PphController@store');
-    Route::get('/admin/pph/hapus/{pph}','Kepegawaian\PphController@destroy');
-    Route::get('/admin/pph/{pph}','Kepegawaian\PphController@show');
-    Route::put('/admin/pph/{pph}','Kepegawaian\PphController@update');
+    Route::get('/admin/pph/tambah', 'Kepegawaian\PphController@tambah');
+    Route::post('/admin/pph/store', 'Kepegawaian\PphController@store');
+    Route::get('/admin/pph/hapus/{pph}', 'Kepegawaian\PphController@destroy');
+    Route::get('/admin/pph/{pph}', 'Kepegawaian\PphController@show');
+    Route::put('/admin/pph/{pph}', 'Kepegawaian\PphController@update');
 
     //PTKP
-    Route::get('/admin/ptkp/tambah','Kepegawaian\PtkpController@tambah');
-    Route::post('/admin/ptkp/store','Kepegawaian\PtkpController@store');
-    Route::get('/admin/ptkp/hapus/{ptkp}','Kepegawaian\PtkpController@destroy');
-    Route::get('/admin/ptkp/{ptkp}','Kepegawaian\PtkpController@show');
-    Route::put('/admin/ptkp/{ptkp}','Kepegawaian\PtkpController@update');
+    Route::get('/admin/ptkp/tambah', 'Kepegawaian\PtkpController@tambah');
+    Route::post('/admin/ptkp/store', 'Kepegawaian\PtkpController@store');
+    Route::get('/admin/ptkp/hapus/{ptkp}', 'Kepegawaian\PtkpController@destroy');
+    Route::get('/admin/ptkp/{ptkp}', 'Kepegawaian\PtkpController@show');
+    Route::put('/admin/ptkp/{ptkp}', 'Kepegawaian\PtkpController@update');
 
     //AKUN
-    Route::get('/admin/akun/tambah','Kepegawaian\AkunController@tambah');
-    Route::post('/admin/akun/store','Kepegawaian\AkunController@store');
-    Route::get('/admin/akun/hapus/{akun}','Kepegawaian\AkunController@destroy');
-    Route::get('/admin/akun/{akun}','Kepegawaian\AkunController@show');
-    Route::put('/admin/akun/{akun}','Kepegawaian\AkunController@update');
+    Route::get('/admin/akun/tambah', 'Kepegawaian\AkunController@tambah');
+    Route::post('/admin/akun/store', 'Kepegawaian\AkunController@store');
+    Route::get('/admin/akun/hapus/{akun}', 'Kepegawaian\AkunController@destroy');
+    Route::get('/admin/akun/{akun}', 'Kepegawaian\AkunController@show');
+    Route::put('/admin/akun/{akun}', 'Kepegawaian\AkunController@update');
 
     //User pengguna
-    Route::get('/pengguna/tambah','Kepegawaian\UserController@tambah');
-    Route::post('/pengguna/store','Kepegawaian\UserController@store');
-    Route::get('/pengguna/hapus/{id}','Kepegawaian\UserController@destroy');
-    Route::get('/pengguna/{id}','Kepegawaian\UserController@show');
-    Route::put('/pengguna/{id}','Kepegawaian\UserController@update');
+    Route::get('/pengguna/tambah', 'Kepegawaian\UserController@tambah');
+    Route::post('/pengguna/store', 'Kepegawaian\UserController@store');
+    Route::get('/pengguna/hapus/{id}', 'Kepegawaian\UserController@destroy');
+    Route::get('/pengguna/{id}', 'Kepegawaian\UserController@show');
+    Route::put('/pengguna/{id}', 'Kepegawaian\UserController@update');
 
     //User pengguna
-    Route::get('/jabatan/promosi/tambah','Kepegawaian\PromosiController@tambah');
-    Route::post('/jabatan/promosi/store','Kepegawaian\PromosiController@store');
-    Route::get('/jabatan/promosi/hapus/{id}','Kepegawaian\PromosiController@destroy');
-    Route::get('/jabatan/promosi/{id}','Kepegawaian\PromosiController@show');
-    Route::put('/jabatan/promosi/{id}','Kepegawaian\PromosiController@update');
-
+    Route::get('/jabatan/promosi/tambah', 'Kepegawaian\PromosiController@tambah');
+    Route::post('/jabatan/promosi/store', 'Kepegawaian\PromosiController@store');
+    Route::get('/jabatan/promosi/hapus/{id}', 'Kepegawaian\PromosiController@destroy');
+    Route::get('/jabatan/promosi/{id}', 'Kepegawaian\PromosiController@show');
+    Route::put('/jabatan/promosi/{id}', 'Kepegawaian\PromosiController@update');
 
     Route::get('pegawai/tambah', 'Kepegawaian\PegawaiController@tambah');
     Route::post('pegawai/add', 'Kepegawaian\PegawaiController@add');
-    
-    
+
     Route::post('jabatan/add', 'Kepegawaian\JabatanController@add');
 
     // Route::get('/', )

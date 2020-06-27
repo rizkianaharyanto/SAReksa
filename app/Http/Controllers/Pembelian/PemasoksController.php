@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Pembelian;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Pembelian\Pemasok;
+use App\Pembelian\Pengirim;
 
 class PemasoksController extends Controller
 {
@@ -18,6 +19,15 @@ class PemasoksController extends Controller
         $pemasoks = Pemasok::all();
 
         return view('pembelian.manajemendata.pemasok', [
+            'pemasoks' => $pemasoks,
+        ]);
+    }
+
+    public function indexbarang()
+    {
+        $pemasoks = Pemasok::all();
+
+        return view('stock.Management-Data.pemasok', [
             'pemasoks' => $pemasoks,
         ]);
     }
@@ -66,15 +76,15 @@ class PemasoksController extends Controller
         $pemesanans = $pemasok->pemesanans;
         $pnmpemesanans = $pemasok->pemesanans()->whereNotIn('status', ['diterima', 'selesai'])->get();
         $fpemesanans = $pemasok->pemesanans()->where('status', 'diterima')->get();
-        foreach($fpemesanans as $index => $fakpemesanans){
+        foreach ($fpemesanans as $index => $fakpemesanans) {
             $status = $fakpemesanans->penerimaans()->where('status', 'selesai')->first();
-            if ($status == null){
+            if ($status == null) {
                 $fpemesanans[$index] = $fakpemesanans;
-            }else {
+            } else {
                 $fpemesanans[$index] = $fakpemesanans->kode_pemesanan;
             }
         }
-        
+
         $penerimaans = $pemasok->penerimaans;
         $fpenerimaans = $pemasok->penerimaans()->where('status', 'sudah posting')->get();
         $fakturs = $pemasok->fakturs;
@@ -135,7 +145,11 @@ class PemasoksController extends Controller
      */
     public function destroy(Pemasok $pemasok)
     {
+        $pengirims = $pemasok->pengirims;
         Pemasok::destroy($pemasok->id);
+        foreach ($pengirims as $pengirim) {
+            Pengirim::destroy($pengirim->id);
+        }
 
         return redirect('/pembelian/pemasoks');
     }

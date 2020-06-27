@@ -37,6 +37,8 @@
                 @method('put')
                 @csrf
                 <div id="test-l-1" class="content">
+                
+                <input type="hidden" id="status" name="status" value="baru">
                     <input type="hidden" id="kode_pemesanan" name="kode_pemesanan" placeholder="" value="{{$pemesanan->kode_pemesanan}}">
                     <div style="height: 58vh;overflow: auto; color:black" class="mt-2">
                         <div class="form-group row mx-5 mb-5">
@@ -160,12 +162,20 @@
                     <div style="height: 58vh;overflow:auto" class="mt-2">
                         <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="diskon">Diskon</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-3">
                                 <div class="input-group mb-2">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">%</div>
                                     </div>
                                     <input type="number" class="form-control" id="diskon" onchange="disc();" name="diskon"  value="{{$pemesanan->diskon}}" placeholder="-">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="input-group mb-2">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Rp</div>
+                                    </div>
+                                    <input type="number" class="form-control" id="disk" onchange="disc();" name="disk" placeholder="-">
                                 </div>
                             </div>
                         </div>
@@ -322,18 +332,28 @@
     });
 
     function disc() {
-        dis = $('#diskon').val() / 100;
+        dis = parseInt($('#diskon').val()) / 100;
         biy = parseInt($('#biaya_lain').val());
-        akhir = parseInt($('#total_harga_barang').val())
-        akhir1 = akhir - (akhir * dis)
-        akhir2 = akhir1 + biy
-        if (akhir2) {
-            $('#total_harga_kes').val(akhir2)
-            $('#total_harga_keseluruhan').val(akhir2)
-        } else {
-            $('#total_harga_kes').val(akhir1)
-            $('#total_harga_keseluruhan').val(akhir1)
+        dp = 0
+        barang = parseInt($('#total_harga_barang').val())
+        $('#akun_barang').val(barang)
+        diskon = (barang * dis)
+        $('#disk').val(diskon)
+        barangafterdiskon = barang - diskon
+        hutang = barangafterdiskon + biy - dp
+        $('#hutang').val(hutang)
+        if (hutang) {
+            $('#total_harga_kes').val(hutang)
+            $('#total_harga_keseluruhan').val(hutang)
         }
+        console.log(
+            'barang:', barang,
+            'dis:', dis,
+            'diskon:', diskon,
+            'hutang:', hutang,
+            'biaya:', biy,
+            'dp:', dp,
+        )
     }
 
 
