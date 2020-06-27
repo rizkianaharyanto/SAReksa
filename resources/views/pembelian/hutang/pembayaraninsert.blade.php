@@ -48,7 +48,7 @@
                                 <input type="date" class="form-control" id="tanggal" name="tanggal">
                             </div>
                         </div>
-                        <div class="form-group row mx-5 mb-5">
+                        <!-- <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="mata-uang">Mata Uang</label>
                             <div class="col-sm-9">
                                 <select class="form-control" id="mata_uang" name="mata_uang">
@@ -56,7 +56,7 @@
                                     <option value="">IDR</option>
                                 </select>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="modal-footer">
                         <a href="/pembelian/pembayarans">
@@ -78,17 +78,17 @@
                                 <label for="tanggal_hutang">Tanggal</label>
                                 <input type="date" class="form-control" id="tanggal_hutang" disabled>
                             </div>
-                            <div class="form-group col-md-2">
+                            <!-- <div class="form-group col-md-2">
                                 <label for="mata_uang">Mata Uang</label>
-                                <input type="number" class="form-control" id="mata_uang" disabled>
-                            </div>
+                                <input type="number" min="0" class="form-control" id="mata_uang" disabled>
+                            </div> -->
                             <div class="form-group col-md-3">
                                 <label for="total">Total</label>
                                 <div class="input-group mb-2">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" class="form-control" id="total" name="total[]" onchange="hitung()">
+                                    <input type="number" class="form-control" id="total" min="0" name="total[]" onchange="hitung()">
                                     <input type="hidden" id="total_hutang" name="total_hutang[]">
                                 </div>
                             </div>
@@ -112,7 +112,7 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Rp</div>
                                 </div>
-                                <input style="width:26vw" type="number" id="total_harga_hutang" disabled>
+                                <input style="width:26vw" type="number" min="0" id="total_harga_hutang" disabled>
                                 <input type="hidden" name="total_harga" id="total_harga">
                             </div>
                         </div>

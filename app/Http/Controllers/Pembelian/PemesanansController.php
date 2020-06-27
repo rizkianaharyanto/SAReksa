@@ -107,9 +107,30 @@ class PemesanansController extends Controller
         $barangs = $pemesanan->barangs()->wherePivot('status_barang', 'belum diterima')->get();
         $barangsfak = $pemesanan->barangs;
         $penerimaans = $pemesanan->penerimaans;
+        $total_seluruh_psn = $pemesanan->total_harga;
+        $total_harga_psn = [];
+        $subtotal_psn = 0;
+        foreach ($barangs as $index => $barang) {
+            $total_harga_psn[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
+            $subtotal_psn += $total_harga_psn[$index];
+        }
+        $total_seluruh_psnfak = $pemesanan->total_harga;
+        $total_harga_psnfak = [];
+        $subtotal_psnfak = 0;
+        foreach ($barangsfak as $index => $barang) {
+            $total_harga_psnfak[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
+            $subtotal_psnfak += $total_harga_psnfak[$index];
+        }
 
         return response()
-        ->json(['success' => true, 'pemesanan' => $pemesanan, 'barangs' => $barangs, 'barangsfak' => $barangsfak, 'penerimaans' => $penerimaans]);
+        ->json(['success' => true, 'pemesanan' => $pemesanan, 'barangs' => $barangs, 'barangsfak' => $barangsfak, 'penerimaans' => $penerimaans,
+        'total_seluruh_psn' => $total_seluruh_psn,
+        'total_harga_psn' => $total_harga_psn,
+        'subtotal_psn' => $subtotal_psn,
+        'total_seluruh_psnfak' => $total_seluruh_psnfak,
+        'total_harga_psnfak' => $total_harga_psnfak,
+        'subtotal_psnfak' => $subtotal_psnfak,
+        ]);
     }
 
     public function show2($id)

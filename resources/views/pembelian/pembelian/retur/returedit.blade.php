@@ -61,7 +61,7 @@
                             <input type="date" class="form-control" id="tanggal" placeholder="">
                         </div>
                     </div>
-                    <div class="form-group row mx-5 mb-5">
+                    <!-- <div class="form-group row mx-5 mb-5">
                         <label class="col-sm-3 col-form-label" for="mata-uang">Mata Uang</label>
                         <div class="col-sm-9">
                             <select class="form-control" id="mata-uang">
@@ -69,7 +69,7 @@
                                 <option>$</option>
                             </select>
                         </div>
-                    </div>
+                    </div> -->
                 </form>
                 <div class="modal-footer">
                     <a href="/pembelian/returs">
@@ -92,11 +92,11 @@
                             </div>
                             <div class="form-group col-md-1">
                                 <label for="jumlah_barang">QTY</label>
-                                <input type="number" class="form-control" id="jumlah_barang" placeholder="-">
+                                <input type="number" min="0" class="form-control" id="jumlah_barang" placeholder="-">
                             </div>
                             <div class="form-group col-md-1">
                                 <label for="satuan_unit">Unit</label>
-                                <input type="number" class="form-control" id="unit" disabled>
+                                <input type="number" min="0" class="form-control" id="unit" disabled>
                             </div>
                             <div class="form-group col-md-3">
                                 <label for="harga">Harga Satuan</label>
@@ -104,7 +104,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" class="form-control" id="harga" placeholder="-">
+                                    <input type="number" min="0" class="form-control" id="harga" placeholder="-">
                                 </div>
                             </div>
                             <div class="form-group col-md-3">
@@ -113,7 +113,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" class="form-control" id="total" disabled>
+                                    <input type="number" min="0" class="form-control" id="total" disabled>
                                 </div>
                             </div>
                             <div class="form-group col-md-1">
@@ -136,7 +136,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text">Rp</div>
                             </div>
-                            <input style="width:26vw" type="number" name="total_harga_penerimaan" id="total_harga_penerimaan" disabled>
+                            <input style="width:26vw" type="number" min="0" name="total_harga_penerimaan" id="total_harga_penerimaan" disabled>
                         </div>
                     </div>
                     <a href="/pembelian/returs">
@@ -155,7 +155,7 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">%</div>
                                 </div>
-                                <input type="number" class="form-control" id="diskon" placeholder="-">
+                                <input type="number" min="0" class="form-control" id="diskon" placeholder="-">
                             </div>
                         </div>
                     </div>
@@ -166,18 +166,18 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Rp</div>
                                 </div>
-                                <input type="number" class="form-control" id="biaya_lain" placeholder="-">
+                                <input type="number" min="0" class="form-control" id="biaya_lain" placeholder="-">
                             </div>
                         </div>
                     </div>
-                    <div class="form-group row mx-5 mb-5">
+                    <!-- <div class="form-group row mx-5 mb-5">
                         <label class="col-sm-3 col-form-label" for="termin_pembayaran">Termin Pembayaran</label>
                         <div class="col-sm-9">
                             <select class="form-control" id="termin_pembayaran">
                                 <option>0 % 0 Net 0</option>
                             </select>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="form-group row mx-5 mb-5" id="uang-muka-form">
                         <label class="col-sm-3 col-form-label" for="uang_muka">Uang Muka</label>
                         <div class="col-sm-9">
@@ -185,7 +185,7 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Rp</div>
                                 </div>
-                                <input type="number" class="form-control" id="uang_muka" placeholder="-">
+                                <input type="number" min="0" class="form-control" id="uang_muka" placeholder="-">
                             </div>
                         </div>
                     </div>
@@ -207,7 +207,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text">Rp</div>
                             </div>
-                            <input style="width:26vw" type="number" name="total_harga_keseluruhan" id="total_harga_keseluruhan" disabled>
+                            <input style="width:26vw" type="number" min="0" name="total_harga_keseluruhan" id="total_harga_keseluruhan" disabled>
                         </div>
                         <input class="ml-4 mt-2" type="checkbox" onclick="checkLunas(this)" />
                         <h5 class="ml-2">Lunas</h5>

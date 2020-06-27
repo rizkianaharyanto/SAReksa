@@ -100,9 +100,20 @@ class PermintaansController extends Controller
     {
         $permintaan = Permintaan::find($id);
         $barangs = $permintaan->barangs;
+        $total_seluruh_pr = $permintaan->total_harga;
+        $total_harga_pr = [];
+        $subtotal_pr = 0;
+        foreach ($barangs as $index => $barang) {
+            $total_harga_pr[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
+            $subtotal_pr += $total_harga_pr[$index];
+        }
         // $unit = $barangs->unit;
         return response()
-        ->json(['success' => true, 'permintaan' => $permintaan, 'barangs' => $barangs]);
+        ->json(['success' => true, 'permintaan' => $permintaan, 'barangs' => $barangs,
+        'total_seluruh_pr' => $total_seluruh_pr,
+        'total_harga_pr' => $total_harga_pr,
+        'subtotal_pr' => $subtotal_pr,
+        ]);
     }
 
     public function show2($id)
