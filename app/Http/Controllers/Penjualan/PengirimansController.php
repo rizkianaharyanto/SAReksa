@@ -51,6 +51,8 @@ class PengirimansController extends Controller
      */
     public function store(Request $request)
     {
+        session()->flash('message', 'Pengiriman berhasil ditambahkan');
+        session()->flash('status', 'tambah');
         $pgr = Pengiriman::max('id') + 1;
         $pengiriman = Pengiriman::create([
             'kode_pengiriman' => 'PGR-'.$pgr,
@@ -83,6 +85,8 @@ class PengirimansController extends Controller
 
     public function posting($idnya)
     {
+        session()->flash('message', 'Pengiriman berhasil diposting');
+        session()->flash('status', 'tambah');
         $pengiriman = Pengiriman::find($idnya);
         Pengiriman::where('id', $pengiriman->id)
                     ->update(['status' => 'sudah posting']);
@@ -209,6 +213,8 @@ class PengirimansController extends Controller
      */
     public function update(Request $request, Pengiriman $pengiriman)
     {
+        session()->flash('message', 'Pengiriman berhasil diubah');
+        session()->flash('status', 'tambah');
         Pengiriman::where('id', $pengiriman->id)
             ->update([
                 'kode_pengiriman' => $request->kode_pengiriman,
@@ -242,6 +248,8 @@ class PengirimansController extends Controller
      */
     public function destroy(Pengiriman $pengiriman)
     {
+        session()->flash('message', 'Pengiriman berhasil dihapus');
+        session()->flash('status', 'hapus');
         Pengiriman::destroy($pengiriman->id);
         return redirect('/penjualan/pengirimans');
     }

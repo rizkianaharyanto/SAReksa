@@ -54,6 +54,8 @@ class FaktursController extends Controller
      */
     public function store(Request $request)
     {
+        session()->flash('message', 'Faktur berhasil ditambahkan');
+        session()->flash('status', 'tambah');
         $fak = Faktur::max('id') + 1;
         $faktur = Faktur::create([
             'kode_faktur' => 'FKJ-'.$fak,
@@ -92,6 +94,8 @@ class FaktursController extends Controller
 
     public function posting($idnya)
     {
+        session()->flash('message', 'Faktur berhasil diposting');
+        session()->flash('status', 'tambah');
         $faktur = Faktur::find($idnya);
         Faktur::where('id', $faktur->id)
                     ->update(['status_posting' => 'sudah posting']);
@@ -231,6 +235,8 @@ class FaktursController extends Controller
      */
     public function update(Request $request, Faktur $faktur)
     {
+        session()->flash('message', 'Faktur berhasil diedit');
+        session()->flash('status', 'tambah');
         Faktur::where('id', $faktur->id)
         ->update([
             'pelanggan_id' => $request->pelanggan_id,
@@ -263,6 +269,8 @@ class FaktursController extends Controller
      */
     public function destroy(Faktur $faktur)
     {
+        session()->flash('message', 'Faktur berhasil dihapus');
+        session()->flash('status', 'hapus');
         Faktur::destroy($faktur->id);
         return redirect('/penjualan/fakturs');
     }

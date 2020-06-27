@@ -46,6 +46,8 @@ class PembayaransController extends Controller
      */
     public function store(Request $request)
     {
+        session()->flash('message', 'Pembayaran berhasil ditambahkan');
+        session()->flash('status', 'tambah');
         $byr = Pembayaran::max('id') + 1;
         $pembayaran = Pembayaran::create([
             'kode_pembayaran' => 'BYR-'.$byr,
@@ -81,7 +83,8 @@ class PembayaransController extends Controller
     }
 
     public function detail($id)
-    {
+    {   
+        
         $pembayaran = Pembayaran::find($id);
         $piutangs = $pembayaran->piutangs;
         // dd($total_harga, $total_seluruh);
@@ -106,6 +109,9 @@ class PembayaransController extends Controller
 
     public function posting($idnya)
     {
+        
+        session()->flash('message', 'Pembayaran berhasil diposting');
+        session()->flash('status', 'tambah');
         $pembayaran = Pembayaran::find($idnya);
         Pembayaran::where('id', $pembayaran->id)
                     ->update(['status_posting' => 'sudah posting']);
@@ -153,6 +159,9 @@ class PembayaransController extends Controller
      */
     public function update(Request $request, Pembayaran $pembayaran)
     {
+        
+        session()->flash('message', 'Pembayaran berhasil diubah');
+        session()->flash('status', 'tambah');
         Pembayaran::where('id', $pembayaran->id)
         ->update([
             'tanggal' => $request->tanggal,
@@ -175,6 +184,9 @@ class PembayaransController extends Controller
      */
     public function destroy(Pembayaran $pembayaran)
     {
+        
+        session()->flash('message', 'Pembayaran berhasil dihapus');
+        session()->flash('status', 'hapus');
         Pembayaran::destroy($pembayaran->id);
         return redirect('/penjualan/pembayarans');
     }

@@ -83,7 +83,6 @@
                                                             </div>
                                                         </div>
                                                         <div id="test-l-2" class="content">
-                                                            @if($faktur->pemesanan_id)
                                                             <div style="" id="checkBarang">
                                                                 <div style="overflow: auto; height: 41vh;" id="formbarang">
                                                                 @foreach ($faktur->barangs as $fakturbarang)
@@ -138,50 +137,6 @@
                                                                     </i>
                                                                 </div>
                                                             </div>
-                                                            @else
-                                                            <div style="display:" id="checkPenerimaan">
-                                                                <div style="overflow: auto; height: 41vh;" id="formpengiriman">
-                                                                    <div class="form-row mx-5" id="isiformpengiriman0">
-                                                                        <div class="form-group col-md-3">
-                                                                            <label for="kode_pengiriman">Pengiriman</label>
-                                                                            <select class="form-control" id="kode_pengiriman">
-                                                                                @foreach ($pengirimans as $pengiriman)
-                                                                                <option>{{ $pengiriman->kode_pengiriman }}</option>
-                                                                                @endforeach
-                                                                            </select>
-                                                                        </div>
-                                                                        <div class="form-group col-md-2">
-                                                                            <label for="tanggal_pengiriman">Tanggal</label>
-                                                                            <input type="date" class="form-control" id="tanggal_pengiriman" disabled>
-                                                                        </div>
-                                                                        <div class="form-group col-md-3">
-                                                                            <label for="nama_pelanggan">pelanggan</label>
-                                                                            <input type="text" class="form-control" id="nama_pelanggan" disabled>
-                                                                        </div>
-                                                                        <div class="form-group col-md-3">
-                                                                            <label for="total">Total</label>
-                                                                            <div class="input-group mb-2">
-                                                                                <div class="input-group-prepend">
-                                                                                    <div class="input-group-text">Rp</div>
-                                                                                </div>
-                                                                                <input type="number" class="form-control" id="total" disabled>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="form-group col-md-1">
-                                                                            <p style="color: transparent">#</p>
-                                                                            <a onclick="hapus(this)">
-                                                                                <i style="color:grey;" class="fas fa-trash"></i>
-                                                                            </a>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="alert alert-success mt-3 mb-0 p-1" id="tambahpengiriman" onmouseover="green(this)" onmouseout="grey(this)" style="cursor: pointer; font-size:15px;color: white;background-color:#212120" role='alert'>
-                                                                    <i class="fas fa-plus d-flex justify-content-center">
-                                                                        <span class="mx-2">Tambah Pengiriman</span>
-                                                                    </i>
-                                                                </div>
-                                                            </div>
-                                                            @endif
                                                             <div class="modal-footer">
                                                                 <div class="d-flex mr-auto">
                                                                     <p class="m-2">Total </p>
@@ -297,12 +252,14 @@
         console.warn('shown.bs-stepper', event)
     })
 
-    function green(x) {
-        x.className = "alert mt-3 alert-light mb-0 p-1";
+    function grey(x) {
+        x.style.background = "#212120";
+        x.style.color = "white";
     }
 
-    function grey(x) {
-        x.className = "alert mt-3 mb-0 p-1 alert-primary";
+    function green(x) {
+        x.style.background = "white";
+        x.style.color = "#212120";
     }
 
     var i = 0;
@@ -433,6 +390,70 @@
             }
         })
     }
+
+    function isipengiriman(x) {
+        console.log('minta')
+        $.ajax({
+            url: '/penjualan/pengirimans/' + $(x).val(),
+            type: 'get',
+            data: {},
+            success: function(data) {
+                console.log(data)
+                if (data.success == true) {
+                    $('#penjual_id').val(data.pengiriman.penjual_id)
+                    console.log(data.pengiriman.penjual_id)
+                    $(x).parent().parent().children().children('#tanggal_pengiriman').val(data.pengiriman.tanggal)
+                    $(x).parent().parent().children().children().children('#total_pengiriman').val(data.pengiriman.total_harga)
+                    if($("#isiformbarang0").children().children('#jumlah_barang').val().length == 0){
+                        console.log("kosong")
+                        $('#barang_id').val(data.barangs[0].id)
+                        $('#unit').val(data.barangs[0].pivot.unit)
+                        $('#uni').attr('placeholder',data.barangs[0].pivot.unit)
+                        $('#jumlah_barang').val(data.barangs[0].pivot.jumlah_barang)
+                        $('#harga').val(data.barangs[0].pivot.harga)
+                        for (var i = 1; i <= data.barangs.length - 1; i++) {
+                            $("#formbarang").append($("#isiformbarang0").clone().attr('id', 'isiformbarang' + i));
+                            $("#isiformbarang" + i).children().children('select').val(data.barangs[i].id)
+                            $("#isiformbarang" + i).children().children('#jumlah_barang').val(data.barangs[i].pivot.jumlah_barang)
+                            $("#isiformbarang" + i).children().children('#uni').attr('placeholder',data.barangs[i].pivot.unit)
+                            $("#isiformbarang" + i).children().children('#unit').val(data.barangs[i].pivot.unit)
+                            $("#isiformbarang" + i).children().children().children('#harga').val(data.barangs[i].pivot.harga)
+                            window.value++;
+                        }
+                    }
+                    else{
+                        console.log("ada")
+                        console.log(window.value)
+                        for (var i = 0; i <= data.barangs.length-1 ; i++) {
+                            $("#formbarang").append($("#isiformbarang0").clone().attr('id', 'isiformbarang' + window.value));
+                            $("#isiformbarang" + window.value).children().children('select').val(data.barangs[i].id)
+                            $("#isiformbarang" + window.value).children().children('#jumlah_barang').val(data.barangs[i].pivot.jumlah_barang)
+                            $("#isiformbarang" + window.value).children().children('#uni').attr('placeholder',data.barangs[i].pivot.unit)
+                            $("#isiformbarang" + window.value).children().children('#unit').val(data.barangs[i].pivot.unit)
+                            $("#isiformbarang" + window.value).children().children().children('#harga').val(data.barangs[i].pivot.harga)
+                            window.value++;
+                        }
+                    }
+                    // $('#barang_id').val(data.barangs[0].id)
+                    // $('#unit').val(data.barangs[0].pivot.unit)
+                    // $('#uni').attr('placeholder',data.barangs[0].pivot.unit)
+                    // $('#jumlah_barang').val(data.barangs[0].pivot.jumlah_barang)
+                    // $('#harga').val(data.barangs[0].pivot.harga)
+                    // for (var i = 1; i <= data.barangs.length - 1; i++) {
+                    //     $("#formbarang").append($("#isiformbarang0").clone().attr('id', 'isiformbarang' + i));
+                    //     $("#isiformbarang" + i).children().children('select').val(data.barangs[i].id)
+                    //     $("#isiformbarang" + i).children().children('#jumlah_barang').val(data.barangs[i].pivot.jumlah_barang)
+                    //     $("#isiformbarang" + i).children().children('#uni').attr('placeholder',data.barangs[i].pivot.unit)
+                    //     $("#isiformbarang" + i).children().children('#unit').val(data.barangs[i].pivot.unit)
+                    //     $("#isiformbarang" + i).children().children().children('#harga').val(data.barangs[i].pivot.harga)
+                    // }
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log('hmm')
+            }
+        });
+    };
 </script>
 
 @endsection

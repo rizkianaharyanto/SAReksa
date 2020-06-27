@@ -34,6 +34,7 @@ class RetursController extends Controller
      */
     public function create()
     {
+        
         return view('penjualan.penjualan.retur.returinsert', [
             'pelanggans' => Pelanggan::all(),
             'fakturs' => Faktur::all(),
@@ -52,6 +53,8 @@ class RetursController extends Controller
      */
     public function store(Request $request)
     {
+        session()->flash('message', 'Retur berhasil ditambahkan');
+        session()->flash('status', 'tambah');
         $rtp = Retur::max('id') + 1;
         $retur = Retur::create([
             'kode_retur' => 'RTP-'.$rtp,
@@ -85,6 +88,8 @@ class RetursController extends Controller
 
     public function posting($idnya)
     {
+        session()->flash('message', 'Retur berhasil diposting');
+        session()->flash('status', 'tambah');
         $retur = Retur::find($idnya);
         Retur::where('id', $retur->id)
                     ->update(['status_posting' => 'sudah posting']);
@@ -200,6 +205,8 @@ class RetursController extends Controller
      */
     public function update(Request $request, Retur $retur)
     {
+        session()->flash('message', 'Retur berhasil diubah');
+        session()->flash('status', 'tambah');
         Retur::where('id', $retur->id)
         ->update([
             'pelanggan_id' => $request->pelanggan_id,
@@ -231,6 +238,8 @@ class RetursController extends Controller
      */
     public function destroy(Retur $retur)
     {
+        session()->flash('message', 'Retur berhasil dihapus');
+        session()->flash('status', 'hapus');
         Retur::destroy($retur->id);
         return redirect('/penjualan/returs');
     }
