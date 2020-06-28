@@ -103,7 +103,7 @@ class PemesanansController extends Controller
         $pemesanan = Pemesanan::find($id);
         $gudang = Gudang::find($pemesanan->gudang);
         $barangs = $pemesanan->barangs;
-        $diskon = $pemesanan->diskon.'%';
+        $diskon = $pemesanan->diskon_rp;
         $biaya_lain = $pemesanan->biaya_lain;
         $total_seluruh = $pemesanan->total_harga;
         $total_harga = [];
@@ -130,7 +130,7 @@ class PemesanansController extends Controller
         $pemesanan = Pemesanan::find($request->id);
         $gudang = Gudang::find($pemesanan->gudang);
         $barangs = $pemesanan->barangs;
-        $diskon = $pemesanan->diskon.'%';
+        $diskon = $pemesanan->diskon_rp;
         $biaya_lain = $pemesanan->biaya_lain;
         $total_seluruh = $pemesanan->total_harga;
         $total_harga = [];

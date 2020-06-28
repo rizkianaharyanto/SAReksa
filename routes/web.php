@@ -181,7 +181,6 @@ Route::prefix('penjualan')->group(function () {
     Route::get('/', function () {
         return view('penjualan.dashboard');
     });
-
     Route::get('/barangs', 'Stock\ItemResourceController@indexpenjualan');
     Route::get('/gudangs', 'Stock\WarehouseController@indexpenjualan');
     Route::get('/pajaks', 'Stock\TaxResourceController@indexpenjualan');
@@ -207,6 +206,20 @@ Route::prefix('penjualan')->group(function () {
     Route::get('/returs/cetak_pdf', 'Penjualan\RetursController@cetak_pdf');
     Route::get('/pembayarans/cetak_pdf', 'Penjualan\PembayaransController@cetak_pdf');
 
+    //show laporan
+    Route::any('/laporans/penawaran', 'Penjualan\LaporansController@penawaran');
+    Route::any('/laporans/pemesanan', 'Penjualan\LaporansController@pemesanan');
+    Route::any('/laporans/pengiriman', 'Penjualan\LaporansController@pengiriman');
+    Route::any('/laporans/faktur', 'Penjualan\LaporansController@faktur');
+    Route::any('/laporans/retur', 'Penjualan\LaporansController@retur');
+
+    //cetak laporan
+    Route::any('/laporans/penawaranpdf', 'Penjualan\LaporansController@cetakpenawaran');
+    Route::any('/laporans/pemesananpdf', 'Penjualan\LaporansController@cetakpemesanan');
+    Route::any('/laporans/pengirimanpdf', 'Penjualan\LaporansController@cetakpengiriman');
+    Route::any('/laporans/fakturpdf', 'Penjualan\LaporansController@cetakfaktur');
+    Route::any('/laporans/returpdf', 'Penjualan\LaporansController@cetakretur');
+
     //Posting
     Route::get('/pengirimans/{idnya}/posting', 'Penjualan\PengirimansController@posting');
     Route::get('/fakturs/{idnya}/posting', 'Penjualan\FaktursController@posting');
@@ -218,6 +231,7 @@ Route::prefix('penjualan')->group(function () {
         'pelanggans' => 'Penjualan\PelanggansController',
         'penjuals' => 'Penjualan\PenjualsController',
         'jurnals' => 'Penjualan\JurnalsController',
+        'laporans' => 'Penjualan\LaporansController',
         'pemesanans' => 'Penjualan\PemesanansController',
         'pengirimans' => 'Penjualan\PengirimansController',
         'penawarans' => 'Penjualan\PenawaransController',

@@ -10,17 +10,26 @@ use App\Penjualan\Pengiriman;
 use App\Penjualan\Pemesanan;
 use App\Stock\Barang;
 use App\Stock\Gudang;
+use App\Services\Stock\ItemService;
 use App\Penjualan\Pelanggan;
 use App\Penjualan\Penjual;
+use App\Stock\HargaRetailHistory;
+
 use PDF;
 
 class PengirimansController extends Controller
 {
+    private $itemService;
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct(ItemService $itemService)
+    {
+        $this->itemService = $itemService;
+    }
+
     public function index()
     {
         $pengirimans = Pengiriman::all();
@@ -54,6 +63,7 @@ class PengirimansController extends Controller
         session()->flash('message', 'Pengiriman berhasil ditambahkan');
         session()->flash('status', 'tambah');
         $pgr = Pengiriman::max('id') + 1;
+        // dd($request->akun_barang);
         $pengiriman = Pengiriman::create([
             'kode_pengiriman' => 'PGR-'.$pgr,
             'pemesanan_id' => $request->pemesanan_id,
@@ -64,7 +74,7 @@ class PengirimansController extends Controller
             'diskon' => $request->diskon,
             'diskon_rp' => $request->disk,
             'biaya_lain' => $request->biaya_lain,
-            'total_jenis_barang' => 3,
+            'total_jenis_barang' =>  $request->akun_barang,
             'penjual_id' => $request->penjual_id,
             'total_harga' => $request->total_harga_keseluruhan,
         ]);
@@ -91,14 +101,54 @@ class PengirimansController extends Controller
         Pengiriman::where('id', $pengiriman->id)
                     ->update(['status' => 'sudah posting']);
         //posting
-        
+
+        $no = Jurnal::max('id') + 1;
+        for ($i = 1; $i < 3; ++$i) {
+            $jurnal = Jurnal::create([
+            'kode_jurnal' => 'jur'.$no,
+            'pengiriman_id' => $pengiriman->id,
+            'debit' => 0,
+            'kredit' => 0,
+        ]);
+            if ($i == 1) {
+                $jurnal->update([
+                    'kredit' => $pengiriman->total_jenis_barang,
+                    'akun_id' => 1, //barang
+                ]);
+            } elseif ($i == 2) {
+                $jurnal->update([
+                    'debit' => $pengiriman->total_jenis_barang,
+                    'akun_id' => 2, //barang belum ditagih
+                ]);
+            }
+        }
+
         $pemesanan = $pengiriman->pemesanan;
-        
+
         foreach ($pengiriman->barangs as $index => $barang) {
             $a = $pemesanan->barangs()->where('barang_id', $barang->id)->first()->pivot->barang_belum_diterima;
             $b = $barang->pivot->jumlah_barang;
             $belum_diterima = $a - $b;
             // dd($barang->pivot);
+
+            //update stock
+            try {
+                $this->itemService->updateStocks($barang->id, $pengiriman->gudang, $b);
+                // dd("berhasil");
+            } catch (\Throwable $th) {
+                dd('Gagal');
+            }
+
+            //update harga barang
+            try {
+                HargaRetailHistory::create([
+                    'item_id' => $barang->id,
+                    'harga_retail' => $barang->pivot->harga,
+                ]);
+            } catch (\Throwable $th) {
+                throw $th;
+            }
+
             $pemesanan->barangs()->where('barang_id', $barang->id)->update(array('barang_belum_diterima' => $belum_diterima));
             if ($belum_diterima == 0) {
                 $pemesanan->barangs()->where('barang_id', $barang->id)->update(array('status_barang' => 'terkirim'));
@@ -213,6 +263,7 @@ class PengirimansController extends Controller
      */
     public function update(Request $request, Pengiriman $pengiriman)
     {
+        // dd($request->akun_barang);
         session()->flash('message', 'Pengiriman berhasil diubah');
         session()->flash('status', 'tambah');
         Pengiriman::where('id', $pengiriman->id)
@@ -224,7 +275,7 @@ class PengirimansController extends Controller
                 'tanggal' => $request->tanggal,
                 'diskon' => $request->diskon,
                 'biaya_lain' => $request->biaya_lain,
-                'total_jenis_barang' => 3,
+                'total_jenis_barang' => $request->akun_barang,
                 'total_harga' => $request->total_harga_keseluruhan,
                 'penjual_id' => $request->penjual_id,
             ]);

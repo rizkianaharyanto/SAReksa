@@ -39,6 +39,7 @@
                             @if ($loop->first)
                             <td rowspan="{{$loop->count}}" >
                                     @if ($index->pengiriman_id !=null){{$index->pengiriman->tanggal}}
+                                    @elseif ($index->faktur_id !=null){{$index->faktur->tanggal}}
                                     @elseif ($index->retur_id !=null){{$index->retur->tanggal}}
                                     @elseif ($index->pembayaran_id !=null){{$index->pembayaran->tanggal}}
                                     @else -
@@ -47,11 +48,12 @@
                             <td rowspan="{{$loop->count}}" >
                                     @if ($index->pengiriman_id !=null){{$index->pengiriman->kode_pengiriman}} 
                                     <br>- pengiriman barang
+                                    @elseif ($index->faktur_id !=null){{$index->faktur->kode_faktur}} 
                                     <br>- faktur penjualan
                                     @elseif ($index->retur_id !=null){{$index->retur->kode_retur}} 
                                     <br>- retur penjualan
                                     @elseif ($index->pembayaran_id !=null){{$index->pembayaran->kode_pembayaran}} 
-                                    <br>- pembayaran hutang
+                                    <br>- pembayaran piutang
                                     @else -
                                     @endif
                             </td>

@@ -211,7 +211,7 @@ class FaktursController extends Controller
                 }
             }
         }
-
+        
         return redirect('/pembelian/fakturs');
     }
 

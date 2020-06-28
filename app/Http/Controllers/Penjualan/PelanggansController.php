@@ -79,7 +79,7 @@ class PelanggansController extends Controller
 
         $i=0;
         foreach($piutangs as $piutangs){
-            if($piutangs->total_piutang != 0){
+            if($piutangs->status == 'piutang'){
                 $piutangmasih[$i] = $piutangs;
                 $i++;
             }

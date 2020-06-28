@@ -22,9 +22,9 @@
             <li class="{{ $elementActive == 'user' || $elementActive == 'profile' ? 'active' : '' }}">
                 <a data-toggle="collapse" aria-expanded="true" href="#laravelExamples">
                     <i class="">                        <img alt='icon' width='25px' class='icon' src="/img/penjualan/storage (2).png" style="filter:invert(100%)">
-</i>
+                    </i>
                     <p>
-                            {{ __('Data Master') }}
+                        {{ __('Data Master') }}
                         <b class="caret"></b>
                     </p>
                 </a>
@@ -52,18 +52,6 @@
                             <a href="/penjualan/gudangs">
                                 <span class="sidebar-mini-icon">{{ __('GD') }}</span>
                                 <span class="sidebar-normal">{{ __(' Gudang ') }}</span>
-                            </a>
-                        </li>
-                        <li class="{{ $elementActive == 'akun' ? 'active' : '' }}">
-                            <a href="/penjualan/akuns">
-                                <span class="sidebar-mini-icon">{{ __('AK') }}</span>
-                                <span class="sidebar-normal">{{ __(' Akun ') }}</span>
-                            </a>
-                        </li>
-                        <li class="{{ $elementActive == 'pajak' ? 'active' : '' }}">
-                            <a href="/penjualan/pajaks">
-                                <span class="sidebar-mini-icon">{{ __('PJ') }}</span>
-                                <span class="sidebar-normal">{{ __(' Pajak ') }}</span>
                             </a>
                         </li>
                     </ul>
@@ -136,6 +124,15 @@
                     <p>{{ __('Jurnal') }}</p>
                 </a>
             </li>
+            <li class="{{ $elementActive == 'laporan' ? 'active' : '' }}">
+                <a href="/penjualan/laporans">
+                    <i class="">
+                    <img alt='icon' width='25px' class='icon' src="/img/penjualan/laporan.png" style="filter:invert(100%)">
+                    </i>
+                    <p>{{ __('Laporan') }}</p>
+                </a>
+            </li>
         </ul>
     </div>
 </div>
+

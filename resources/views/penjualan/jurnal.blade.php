@@ -44,6 +44,8 @@
                                                                     @if ($loop->first)
                                                                     <td rowspan="{{$loop->count}}" >
                                                                             @if ($index->pengiriman_id !=null){{$index->pengiriman->tanggal}}
+                                                                            @elseif ($index->faktur_id !=null){{$index->faktur->tanggal}}
+
                                                                             @elseif ($index->retur_id !=null){{$index->retur->tanggal}}
                                                                             @elseif ($index->pembayaran_id !=null){{$index->pembayaran->tanggal}}
                                                                             @else -
@@ -51,8 +53,9 @@
                                                                     </td>
                                                                     <td rowspan="{{$loop->count}}" class="p-2">
                                                                             @if ($index->pengiriman_id !=null){{$index->pengiriman->kode_pengiriman}} - pengiriman barang
+                                                                            @elseif ($index->faktur_id !=null){{$index->faktur->kode_faktur}} - faktur penjualan
                                                                             @elseif ($index->retur_id !=null){{$index->retur->kode_retur}} - retur penjualan
-                                                                            @elseif ($index->pembayaran_id !=null){{$index->pembayaran->kode_pembayaran}} - pembayaran hutang
+                                                                            @elseif ($index->pembayaran_id !=null){{$index->pembayaran->kode_pembayaran}} - pembayaran piutang
                                                                             @else -
                                                                             @endif
                                                                     </td>

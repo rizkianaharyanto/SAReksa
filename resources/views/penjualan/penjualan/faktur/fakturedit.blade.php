@@ -66,14 +66,6 @@
                                                                         <input type="date" value="{{$faktur->tanggal}}"  class="form-control" name="tanggal" id="tanggal" placeholder="">
                                                                     </div>
                                                                 </div>
-                                                                <div class="form-group row mx-5 mb-5">
-                                                                    <label class="col-sm-3 col-form-label" for="mata-uang">Mata Uang</label>
-                                                                    <div class="col-sm-9">
-                                                                        <select class="form-control" id="mata-uang">
-                                                                            <option>IDR</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <a href="/penjualan/fakturs">
@@ -178,14 +170,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="form-group row mx-5 mb-5">
-                                                                    <label class="col-sm-3 col-form-label" for="termin_pembayaran">Termin Pembayaran</label>
-                                                                    <div class="col-sm-9">
-                                                                        <select class="form-control" id="termin_pembayaran">
-                                                                            <option>0 % 0 Net 0</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
+                                                                
                                                                 <div class="form-group row mx-5 mb-5" id="uang-muka-form">
                                                                     <label class="col-sm-3 col-form-label" for="uang_muka">Uang Muka</label>
                                                                     <div class="col-sm-9">
@@ -316,7 +301,7 @@
         dp = parseInt($('#uang_muka').val());
         barang = parseInt($('#total_harga_barang').val())
         $('#akun_barang').val(barang)
-        diskon = (barang * dis)
+        diskon = parseInt(barang * dis)
         $('#disk').val(diskon)
         barangafterdiskon = barang - diskon
         piutang = barangafterdiskon + biy - dp

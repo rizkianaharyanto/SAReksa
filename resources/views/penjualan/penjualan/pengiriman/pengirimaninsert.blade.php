@@ -94,15 +94,6 @@
                                                                         <input type="date" class="form-control" id="tanggal" name="tanggal">
                                                                     </div>
                                                                 </div>
-                                                                <div class="form-group row mx-5 mb-5">
-                                                                    <label class="col-sm-3 col-form-label" for="mata-uang">Mata Uang</label>
-                                                                    <div class="col-sm-9">
-                                                                        <select class="form-control" id="mata-uang" name="mata_uang">
-                                                                            <option value="">--- Pilih Mata Uang ---</option>
-                                                                            <option value="" selected>IDR</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <a href="/penjualan/pemesanans">
@@ -111,7 +102,6 @@
                                                                 <a class="btn" style="background-color:#212120; color:white" onclick="stepper.next()">Selanjutnya</a>
                                                             </div>
                                                         </div>
-
                                                         <div id="test-l-2" class="content">
                                                             <div style="overflow: auto; height: 52vh;" id="formbarang">
                                                                 <div class="form-row mx-5" id="isiformbarang0">
@@ -181,12 +171,20 @@
                                                             <div style="height: 58vh;overflow:auto" class="mt-2">
                                                                 <div class="form-group row mx-5 mb-5">
                                                                     <label class="col-sm-3 col-form-label" for="diskon">Diskon</label>
-                                                                    <div class="col-sm-9">
+                                                                    <div class="col-sm-3">
                                                                         <div class="input-group mb-2">
                                                                             <div class="input-group-prepend">
                                                                                 <div class="input-group-text">%</div>
                                                                             </div>
                                                                             <input type="number" class="form-control" id="diskon" onchange="disc();" name="diskon" placeholder="-">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                        <div class="input-group mb-2">
+                                                                            <div class="input-group-prepend">
+                                                                                <div class="input-group-text">Rp</div>
+                                                                            </div>
+                                                                            <input type="number" class="form-control" id="disk" onchange="disc();" name="disk" placeholder="-">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -201,15 +199,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="form-group row mx-5 mb-5">
-                                                                    <label class="col-sm-3 col-form-label" for="termin_pembayaran">Termin Pembayaran</label>
-                                                                    <div class="col-sm-9">
-                                                                        <select class="form-control" id="termin_pembayaran" name="termin_pembayaran">
-                                                                            <option value="">--- Pilih Termin ---</option>
-                                                                            <option value="" selected>0 % 0 Net 0</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
+                                                                
                                                                 <div class="form-group row m-5 d-flex justify-content-end">
                                                                     <label class="col-sm-3 col-form-label" for="total_harga_keseluruhan">Total</label>
                                                                     <div class="col-sm-9">
@@ -310,12 +300,14 @@
                     console.log(data)
                     console.log(data.pemesanan)
                     console.log(data.barangs)
+                    console.log(data.barangs[0].pivot.barang_belum_diterima)
                     $('#gudang').val(data.pemesanan.gudang)
                     $('#penjual_id').val(data.pemesanan.penjual_id)
                     // $('#tanggal').val(data.pemesanan.tanggal)
                     // $('#mata_uang').val(data.pemesanan.mata_uang)
                     $('#diskon').val(data.pemesanan.diskon)
                     $('#status').val('sudah posting')
+                    $('#disk').val(data.pemesanan.diskon_rp)
                     $('#biaya_lain').val(data.pemesanan.biaya_lain)
                     $('#barang_id').val(data.barangs[0].id)
                     $('#unit').val(data.barangs[0].pivot.unit)
@@ -357,19 +349,31 @@
     });
 
     function disc() {
-        dis = $('#diskon').val() / 100;
+        dis = parseInt($('#diskon').val()) / 100;
         biy = parseInt($('#biaya_lain').val());
-        akhir = parseInt($('#total_harga_barang').val())
-        akhir1 = akhir - (akhir * dis)
-        akhir2 = akhir1 + biy
-        if (akhir2) {
-            $('#total_harga_kes').val(akhir2)
-            $('#total_harga_keseluruhan').val(akhir2)
-        } else {
-            $('#total_harga_kes').val(akhir1)
-            $('#total_harga_keseluruhan').val(akhir1)
+        dp = 0
+        barang = parseInt($('#total_harga_barang').val())
+    
+        $('#akun_barang').val(barang)
+        diskon = parseInt(barang * dis)
+        $('#disk').val(diskon)
+        barangafterdiskon = barang - diskon
+        piutang = barangafterdiskon + biy - dp
+        $('#piutang').val(piutang)
+        if (piutang) {
+            $('#total_harga_kes').val(piutang)
+            $('#total_harga_keseluruhan').val(piutang)
         }
+        console.log(
+            'barang:', barang,
+            'dis:', dis,
+            'diskon:', diskon,
+            'piutang:', piutang,
+            'biaya:', biy,
+            'dp:', dp,
+        )
     }
+
 
     function startCalc(x) {
         if ($(x).attr('id') == 'jumlah_barang') {

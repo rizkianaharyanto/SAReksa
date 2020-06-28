@@ -98,7 +98,7 @@ class PenawaransController extends Controller
         $penawaran = Penawaran::find($id);
         $gudang = Gudang::find($penawaran->gudang);
         $barangs = $penawaran->barangs;
-        $diskon = $penawaran->diskon.'%';
+        $diskon = $penawaran->diskon_rp;
         $biaya_lain = $penawaran->biaya_lain;
         $total_seluruh = $penawaran->total_harga;
         $total_harga = [];
@@ -125,7 +125,7 @@ class PenawaransController extends Controller
         $penawaran = Penawaran::find($request->id);
         $gudang = Gudang::find($penawaran->gudang);
         $barangs = $penawaran->barangs;
-        $diskon = $penawaran->diskon.'%';
+        $diskon = $penawaran->diskon_rp;
         $biaya_lain = $penawaran->biaya_lain;
         $total_seluruh = $penawaran->total_harga;
         $total_harga = [];

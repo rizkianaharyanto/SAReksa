@@ -46,6 +46,8 @@
                                                         @method('put')
                                                         @csrf
                                                         <div id="test-l-1" class="content">
+                                                        <input type="hidden" id="status" name="status">
+                                                        <input type="hidden" id="akun_barang" name="akun_barang">
                                                         <input type="hidden" id="kode_pengiriman" name="kode_pengiriman" placeholder="" value="{{$pengiriman->kode_pengiriman}}">
                                                             <div style="height: 58vh;overflow: auto; color:#212120" class="mt-2">
                                                                 <div class="form-group row mx-5 mb-5">
@@ -85,15 +87,6 @@
                                                                     <label class="col-sm-3 col-form-label" for="tanggal">Tanggal</label>
                                                                     <div class="col-sm-9">
                                                                         <input type="date" class="form-control" id="tanggal" name="tanggal" value="{{$pengiriman->tanggal}}">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group row mx-5 mb-5">
-                                                                    <label class="col-sm-3 col-form-label" for="mata-uang">Mata Uang</label>
-                                                                    <div class="col-sm-9">
-                                                                        <select class="form-control" id="mata-uang" name="mata_uang">
-                                                                            <option value="">--- Pilih Mata Uang ---</option>
-                                                                            <option selected value="">IDR</option>
-                                                                        </select>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -176,12 +169,20 @@
                                                             <div style="height: 58vh;overflow:auto" class="mt-2">
                                                                 <div class="form-group row mx-5 mb-5">
                                                                     <label class="col-sm-3 col-form-label" for="diskon">Diskon</label>
-                                                                    <div class="col-sm-9">
+                                                                    <div class="col-sm-3">
                                                                         <div class="input-group mb-2">
                                                                             <div class="input-group-prepend">
                                                                                 <div class="input-group-text">%</div>
                                                                             </div>
                                                                             <input type="number" class="form-control" id="diskon" onchange="disc();" name="diskon" value="{{$pengiriman->diskon}}"  placeholder="-">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                        <div class="input-group mb-2">
+                                                                            <div class="input-group-prepend">
+                                                                                <div class="input-group-text">Rp</div>
+                                                                            </div>
+                                                                            <input type="number" class="form-control" id="disk" onchange="disc();" name="disk" value="{{$pengiriman->diskon_rp}}" placeholder="-">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -196,15 +197,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="form-group row mx-5 mb-5">
-                                                                    <label class="col-sm-3 col-form-label" for="termin_pembayaran">Termin Pembayaran</label>
-                                                                    <div class="col-sm-9">
-                                                                        <select class="form-control" id="termin_pembayaran" name="termin_pembayaran">
-                                                                            <option value="">--- Pilih Termin ---</option>
-                                                                            <option value="" selected>0 % 0 Net 0</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
+                                                                
                                                                 <div class="form-group row m-5 d-flex justify-content-end">
                                                                     <label class="col-sm-3 col-form-label" for="total_harga_keseluruhan">Total</label>
                                                                     <div class="col-sm-9">
@@ -283,18 +276,28 @@
         }
     }
     function disc() {
-        dis = $('#diskon').val() / 100;
+        dis = parseInt($('#diskon').val()) / 100;
         biy = parseInt($('#biaya_lain').val());
-        akhir = parseInt($('#total_harga_barang').val())
-        akhir1 = akhir - (akhir * dis)
-        akhir2 = akhir1 + biy
-        if (akhir2) {
-            $('#total_harga_kes').val(akhir2)
-            $('#total_harga_keseluruhan').val(akhir2)
-        } else {
-            $('#total_harga_kes').val(akhir1)
-            $('#total_harga_keseluruhan').val(akhir1)
+        dp = 0
+        barang = parseInt($('#total_harga_barang').val())
+        $('#akun_barang').val(barang)
+        diskon = parseInt(barang * dis)
+        $('#disk').val(diskon)
+        barangafterdiskon = barang - diskon
+        hutang = barangafterdiskon + biy - dp
+        $('#hutang').val(hutang)
+        if (hutang) {
+            $('#total_harga_kes').val(hutang)
+            $('#total_harga_keseluruhan').val(hutang)
         }
+        console.log(
+            'barang:', barang,
+            'dis:', dis,
+            'diskon:', diskon,
+            'hutang:', hutang,
+            'biaya:', biy,
+            'dp:', dp,
+        )
     }
 
     function startCalc(x) {

@@ -57,15 +57,7 @@
                                                                         <input type="date" value="{{$pembayaran->tanggal}}" class="form-control" id="tanggal" name="tanggal">
                                                                     </div>
                                                                 </div>
-                                                                <div class="form-group row mx-5 mb-5">
-                                                                    <label class="col-sm-3 col-form-label" for="mata-uang">Mata Uang</label>
-                                                                    <div class="col-sm-9">
-                                                                        <select class="form-control" id="mata_uang" name="mata_uang">
-                                                                            <option value="">--- Pilih Mata Uang ---</option>
-                                                                            <option value="" selected>IDR</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
+                                                                
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <a href="/penjualan/pembayarans">

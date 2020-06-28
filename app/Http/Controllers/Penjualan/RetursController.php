@@ -101,6 +101,8 @@ class RetursController extends Controller
                 'pelanggan_id' => $retur->pelanggan_id,
                 'total_piutang' => $retur->total_harga * -1,
                 'retur_id' => $retur->id,
+                'status' => 'piutang',
+                'sisa' => $retur->total_harga * -1,
         ]);
             $retur->update(['piutang_id' => $piutang->id]);
         }

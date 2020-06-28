@@ -46,6 +46,7 @@ class PembayaransController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
         session()->flash('message', 'Pembayaran berhasil ditambahkan');
         session()->flash('status', 'tambah');
         $byr = Pembayaran::max('id') + 1;
@@ -60,7 +61,7 @@ class PembayaransController extends Controller
 
         foreach ($request->piutang_id as $index => $id) {
             $pembayaran->piutangs()->attach($id, [
-                'total' => $request->total_piutang[$index],
+                'total' => $request->total[$index],
             ]);
         }
 
@@ -115,24 +116,53 @@ class PembayaransController extends Controller
         $pembayaran = Pembayaran::find($idnya);
         Pembayaran::where('id', $pembayaran->id)
                     ->update(['status_posting' => 'sudah posting']);
-        //posting
-        foreach ($pembayaran->piutangs as $pembayaran) {
-            $piutang = Piutang::find($pembayaran->pivot->piutang_id);
+        // dd($pembayaran->total);
+                    //posting
+        foreach ($pembayaran->piutangs as $pembayarans) {
+            $piutang = Piutang::find($pembayarans->pivot->piutang_id);
+            $lunas = $piutang->lunas + $pembayarans->pivot->total;
+            $sisa = $piutang->sisa - $pembayarans->pivot->total;
+            // dd($pembayaran);
             $piutang->update([
-                'lunas' => $pembayaran->pivot->total,
-                'total_piutang' => $piutang->total_piutang - $pembayaran->pivot->total,
+                'lunas' => $lunas,
+                'sisa' => $sisa,
             ]);
-            if ($piutang->faktur_id) {
+            if ($sisa == 0){
+                $piutang->update([
+                    'status' => 'lunas',
+                ]);
                 $piutang->faktur()->update([
                     'status' => 'lunas',
                 ]);
-            } elseif ($piutang->retur_id) {
-                $piutang->retur()->update([
-                    'status' => 'lunas',
+            }
+            else {
+                $piutang->faktur()->update([
+                    'status' => 'dibayar sebagian',
                 ]);
             }
         }
-        return redirect('/penjualan/fakturs');
+        $no = Jurnal::max('id') + 1;
+        for ($i = 1; $i < 3; ++$i) {
+            $jurnal = Jurnal::create([
+                'kode_jurnal' => 'jur'.$no,
+                'pembayaran_id' => $pembayaran->id,
+                'debit' => 0,
+                'kredit' => 0,
+            ]);
+            // dd($pembayaran);
+            if ($i == 1) {
+                $jurnal->update([
+                    'kredit' => $pembayaran->total,
+                    'akun_id' => 4, //piutang
+                ]);
+            } elseif ($i == 2) {
+                $jurnal->update([
+                    'debit' => $pembayaran->total,
+                    'akun_id' => 6, //kas
+                ]);
+            }
+        }
+        return redirect('/penjualan/pembayarans');
     }
     /**
      * Show the form for editing the specified resource.

@@ -10,7 +10,6 @@
     <th>Kode Barang</th>
     <th>Nama Barang</th>
     <th>Harga Retail</th>
-    <th>Harga Grosir</th>
     <th>Stok Tersedia</th>
     <th style="column-width: 80px">Aksi</th>
 </tr>
@@ -22,7 +21,6 @@
     <td>{{ $barang['kode_barang']}}</td>
     <td>{{ $barang['nama_barang']}}</td>
     <td>{{ $barang['harga_retail'] }}</td>
-    <td>{{ $barang['harga_grosir'] }}</td>
     <td>{{ $barang['kuantitas_total'] !=null ? $barang['kuantitas_total'] : '-' }}</td>
     <td class="d-flex justify-content-between">
         <a id="details" data-toggle="modal" data-target="#modal" data-id="{{ $barang['id'] }}">

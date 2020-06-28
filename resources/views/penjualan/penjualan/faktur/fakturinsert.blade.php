@@ -67,15 +67,7 @@
                                                                         <input type="date" class="form-control" id="tanggal" name="tanggal">
                                                                     </div>
                                                                 </div>
-                                                                <div class="form-group row mx-5 mb-5">
-                                                                    <label class="col-sm-3 col-form-label" for="mata-uang">Mata Uang</label>
-                                                                    <div class="col-sm-9">
-                                                                        <select class="form-control" id="mata_uang" name="mata_uang">
-                                                                            <option value="">--- Pilih Mata Uang ---</option>
-                                                                            <option value="" selected>IDR</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
+                                                                
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <a href="/penjualan/fakturs">
@@ -229,15 +221,6 @@
                                                                             </div>
                                                                             <input type="number" class="form-control" name="biaya_lain" onchange="disc();" id="biaya_lain" placeholder="-">
                                                                         </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group row mx-5 mb-5">
-                                                                    <label class="col-sm-3 col-form-label" for="termin_pembayaran">Termin Pembayaran</label>
-                                                                    <div class="col-sm-9">
-                                                                        <select class="form-control" id="termin_pembayaran" name="termin_pembayaran">
-                                                                            <option value="" >--- Pilih Termin ---</option>
-                                                                            <option value="" selected>0 % 0 Net 0</option>
-                                                                        </select>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group row mx-5 mb-5" id="uang-muka-form">
@@ -449,7 +432,7 @@
                     $('#penjual_id').val(data.pengiriman.penjual_id)
                     console.log(data.pengiriman.penjual_id)
                     $(x).parent().parent().children().children('#tanggal_pengiriman').val(data.pengiriman.tanggal)
-                    $(x).parent().parent().children().children().children('#total_pengiriman').val(data.pengiriman.total_harga)
+                    $(x).parent().parent().children().children().children('#total_pengiriman').val(data.pengiriman.total_jenis_barang)
                     if($("#isiformbarang0").children().children('#jumlah_barang').val().length == 0){
                         console.log("kosong")
                         $('#barang_id').val(data.barangs[0].id)
@@ -507,20 +490,28 @@
         dp = parseInt($('#uang_muka').val());
         barang = parseInt($('#total_harga_barang').val())
         $('#akun_barang').val(barang)
-        diskon = (barang * dis)
+
+        var arr = document.getElementsByName('discpnm[]');
+        var discpnm = 0;
+        for (var i = 0; i < arr.length; i++) {
+            if (parseInt(arr[i].value))
+                discpnm += parseInt(arr[i].value);
+        }
+
+        diskon = parseInt(barang * dis) + discpnm;
         $('#disk').val(diskon)
         barangafterdiskon = barang - diskon
-        piutang = barangafterdiskon + biy - dp
-        $('#piutang').val(piutang)
-        if (piutang) {
-            $('#total_harga_kes').val(piutang)
-            $('#total_harga_keseluruhan').val(piutang)
+        hutang = barangafterdiskon + biy - dp
+        $('#hutang').val(hutang)
+        if (hutang) {
+            $('#total_harga_kes').val(hutang)
+            $('#total_harga_keseluruhan').val(hutang)
         }
         console.log(
             'barang:', barang,
             'dis:', dis,
             'diskon:', diskon,
-            'piutang:', piutang,
+            'hutang:', hutang,
             'biaya:', biy,
             'dp:', dp,
         )

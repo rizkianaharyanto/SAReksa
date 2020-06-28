@@ -50,7 +50,18 @@ The above copyright notice and this permission notice shall be included in all c
 
     <link href="https://cdn.jsdelivr.net/npm/bs-stepper/dist/css/bs-stepper.min.css" rel="stylesheet">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bs-stepper/dist/js/bs-stepper.min.js"></script>
-
+    <style>
+    /* input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+    margin: 0; 
+    } */
+    input[type=date]::-webkit-inner-spin-button, 
+    input[type=date]::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+    margin: 0; 
+    }
+</style>
 
 </head>
 

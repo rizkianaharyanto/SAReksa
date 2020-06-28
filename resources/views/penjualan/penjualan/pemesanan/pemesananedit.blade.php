@@ -87,15 +87,7 @@
                                                                         <input type="date" class="form-control" id="tanggal" name="tanggal" value="{{$pemesanan->tanggal}}">
                                                                     </div>
                                                                 </div>
-                                                                <div class="form-group row mx-5 mb-5">
-                                                                    <label class="col-sm-3 col-form-label" for="mata-uang">Mata Uang</label>
-                                                                    <div class="col-sm-9">
-                                                                        <select class="form-control" id="mata-uang" name="mata_uang">
-                                                                            <option value="">--- Pilih Mata Uang ---</option>
-                                                                            <option selected value="" selected>IDR</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
+                                                                
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <a href="/penjualan/pemesanans">
@@ -181,12 +173,20 @@
                                                             <div style="height: 58vh;overflow:auto" class="mt-2">
                                                                 <div class="form-group row mx-5 mb-5">
                                                                     <label class="col-sm-3 col-form-label"  for="diskon">Diskon</label>
-                                                                    <div class="col-sm-9">
+                                                                    <div class="col-sm-3">
                                                                         <div class="input-group mb-2">
                                                                             <div class="input-group-prepend">
                                                                                 <div class="input-group-text">%</div>
                                                                             </div>
                                                                             <input type="number" class="form-control" onchange="disc();" id="diskon"  name="diskon" value="{{$pemesanan->diskon}}"  placeholder="-">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                        <div class="input-group mb-2">
+                                                                            <div class="input-group-prepend">
+                                                                                <div class="input-group-text">Rp</div>
+                                                                            </div>
+                                                                            <input type="number" class="form-control" id="disk" onchange="disc();" name="disk"   value="{{$pemesanan->diskon_rp}}" placeholder="-">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -291,18 +291,28 @@
     }
 
     function disc() {
-        dis = $('#diskon').val() / 100;
+        dis = parseInt($('#diskon').val()) / 100;
         biy = parseInt($('#biaya_lain').val());
-        akhir = parseInt($('#total_harga_barang').val())
-        akhir1 = akhir - (akhir * dis)
-        akhir2 = akhir1 + biy
-        if (akhir2) {
-            $('#total_harga_kes').val(akhir2)
-            $('#total_harga_keseluruhan').val(akhir2)
-        } else {
-            $('#total_harga_kes').val(akhir1)
-            $('#total_harga_keseluruhan').val(akhir1)
+        dp = 0
+        barang = parseInt($('#total_harga_barang').val())
+        $('#akun_barang').val(barang)
+        diskon = parseInt(barang * dis)
+        $('#disk').val(diskon)
+        barangafterdiskon = barang - diskon
+        piutang = barangafterdiskon + biy - dp
+        $('#piutang').val(piutang)
+        if (piutang) {
+            $('#total_harga_kes').val(piutang)
+            $('#total_harga_keseluruhan').val(piutang)
         }
+        console.log(
+            'barang:', barang,
+            'dis:', dis,
+            'diskon:', diskon,
+            'piutang:', piutang,
+            'biaya:', biy,
+            'dp:', dp,
+        )
     }
 
     function startCalc(x) {
