@@ -88,6 +88,7 @@ class PenerimaansController extends Controller
             'biaya_lain' => $request->biaya_lain,
             'total_jenis_barang' => $request->akun_barang,
             'total_harga' => $request->total_harga_keseluruhan,
+            'akun_barang' => $request->akun_barang,
         ]);
 
         $pemesanan = $penerimaan->pemesanan;
@@ -195,9 +196,20 @@ class PenerimaansController extends Controller
     {
         $penerimaan = Penerimaan::find($id);
         $barangs = $penerimaan->barangs;
+        $total_seluruh_pnm = $penerimaan->total_harga;
+        $total_harga_pnm = [];
+        $subtotal_pnm = 0;
+        foreach ($barangs as $index => $barang) {
+            $total_harga_pnm[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
+            $subtotal_pnm += $total_harga_pnm[$index];
+        }
         // dd($barangs);
         return response()
-            ->json(['success' => true, 'penerimaan' => $penerimaan, 'barangs' => $barangs]);
+            ->json(['success' => true, 'penerimaan' => $penerimaan, 'barangs' => $barangs,
+            'total_seluruh_pnm' => $total_seluruh_pnm,
+            'total_harga_pnm' => $total_harga_pnm,
+            'subtotal_pnm' => $subtotal_pnm,
+            ]);
     }
 
     public function show2($id)
@@ -293,6 +305,7 @@ class PenerimaansController extends Controller
             'biaya_lain' => $request->biaya_lain,
             'total_jenis_barang' => $request->akun_barang,
             'total_harga' => $request->total_harga_keseluruhan,
+            'akun_barang' => $request->akun_barang,
             ]);
         $penerimaan->barangs()->detach();
         foreach ($request->barang_id as $index => $id) {

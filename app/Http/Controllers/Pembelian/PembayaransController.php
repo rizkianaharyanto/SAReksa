@@ -89,16 +89,23 @@ class PembayaransController extends Controller
                 $hutang->update([
                     'status' => 'lunas',
                 ]);
-            }
-            if ($hutang->faktur_id) {
                 $hutang->faktur()->update([
                     'status' => 'lunas',
                 ]);
-            } elseif ($hutang->retur_id) {
-                $hutang->retur()->update([
-                    'status' => 'lunas',
+            }else{
+                $hutang->faktur()->update([
+                    'status' => 'dibayar sebagian',
                 ]);
             }
+            // if ($hutang->faktur_id) {
+            //     $hutang->faktur()->update([
+            //         'status' => 'lunas',
+            //     ]);
+            // } elseif ($hutang->retur_id) {
+            //     $hutang->retur()->update([
+            //         'status' => 'lunas',
+            //     ]);
+            // }
         }
 
         foreach ($request->hutang_id as $index => $id) {
