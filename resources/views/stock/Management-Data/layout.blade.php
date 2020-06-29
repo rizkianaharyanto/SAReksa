@@ -55,7 +55,8 @@
 
     $(document).ready(function () {
         $('#table_id').DataTable();
-
+        $('.dataTables_filter input').attr('type', 'text');
+        
         $("#modal").on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget) // Button that triggered the modal
             var form = button.data('form') // Extract info from data-* attributes
