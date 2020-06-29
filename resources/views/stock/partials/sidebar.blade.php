@@ -29,7 +29,7 @@
             <a href="{{ route('kategori-barang.index')}}">
                 <li> Data Kategori Barang </li>
             </a>
-            <a href="{{ route('pemasok.index')}}">
+            <a href="/stok/Management-Data/pemasok">
                 <li> Data Pemasok </li>
             </a>
             <a href="{{ route('gudang.index')}}">

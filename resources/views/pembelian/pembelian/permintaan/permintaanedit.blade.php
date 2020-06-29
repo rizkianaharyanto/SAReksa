@@ -99,7 +99,7 @@
                             </div>
                             <div class="col-md-1">
                                 <label for="jumlah_barang">QTY</label>
-                                <input type="number" class="form-control" id="jumlah_barang" name="jumlah_barang[]" onfocus="startCalc(this);" onblur="stopCalc();" placeholder="-" value="{{$permintaanbarang->pivot->jumlah_barang}}">
+                                <input type="number" min="0" class="form-control" id="jumlah_barang" name="jumlah_barang[]" onfocus="startCalc(this);" onblur="stopCalc();" placeholder="-" value="{{$permintaanbarang->pivot->jumlah_barang}}">
                             </div>
                             <div class="col-md-2">
                                 <label for="satuan_unit">Unit</label>
@@ -112,7 +112,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" class="form-control" id="harga" name="harga[]" value="{{$permintaanbarang->pivot->harga}}" onfocus="startCalc(this);" onblur="stopCalc();" placeholder="-">
+                                    <input type="number" min="0" class="form-control" id="harga" name="harga[]" value="{{$permintaanbarang->pivot->harga}}" onfocus="startCalc(this);" onblur="stopCalc();" placeholder="-">
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -121,7 +121,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" class="form-control" id="total" name="total[]" disabled>
+                                    <input type="number" min="0" class="form-control" id="total" name="total[]" disabled>
                                 </div>
                             </div>
                             <div class="col-md-1">
@@ -145,7 +145,7 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Rp</div>
                                 </div>
-                                <input style="width:26vw" type="number" name="total_harga_barang" id="total_harga_barang" disabled>
+                                <input style="width:26vw" type="number" min="0" name="total_harga_barang" id="total_harga_barang" disabled>
                             </div>
                         </div>
                         <a href="/pembelian/permintaans">
@@ -164,7 +164,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">%</div>
                                     </div>
-                                    <input type="number" class="form-control" id="diskon" value="{{$permintaan->diskon}}" onchange="disc();" name="diskon" placeholder="-">
+                                    <input type="number" min="0" class="form-control" id="diskon" value="{{$permintaan->diskon}}" onchange="disc();" name="diskon" placeholder="-">
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -172,7 +172,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" class="form-control" id="disk" onchange="disc();" name="disk" placeholder="-">
+                                    <input type="number" min="0" class="form-control" id="disk" onchange="disc();" name="disk" placeholder="-">
                                 </div>
                             </div>
                         </div>
@@ -183,7 +183,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" class="form-control" name="biaya_lain" value="{{$permintaan->biaya_lain}}" onchange="disc();" id="biaya_lain" placeholder="-">
+                                    <input type="number" min="0" class="form-control" name="biaya_lain" value="{{$permintaan->biaya_lain}}" onchange="disc();" id="biaya_lain" placeholder="-">
                                 </div>
                             </div>
                         </div>
@@ -203,7 +203,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input style="width:26vw" type="number" value="{{$permintaan->total_harga}}" id="total_harga_kes" disabled>
+                                    <input style="width:26vw" type="number" min="0" value="{{$permintaan->total_harga}}" id="total_harga_kes" disabled>
                                     <input type="hidden" name="total_harga_keseluruhan" value="{{$permintaan->total_harga}}" id="total_harga_keseluruhan">
                                 </div>
                             </div>

@@ -12,6 +12,7 @@ class StepperBarang extends Component
      * @return void
      */
     public $kategoriBarang;
+
     public function __construct($kategoriBarang)
     {
         $this->kategoriBarang = $kategoriBarang;

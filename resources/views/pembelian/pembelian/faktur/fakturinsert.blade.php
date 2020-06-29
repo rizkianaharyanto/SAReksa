@@ -57,7 +57,7 @@
                                 <input type="date" class="form-control" id="tanggal" name="tanggal">
                             </div>
                         </div>
-                        <div class="form-group row mx-5 mb-5">
+                        <!-- <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="mata-uang">Mata Uang</label>
                             <div class="col-sm-9">
                                 <select class="form-control" id="mata_uang" name="mata_uang">
@@ -65,7 +65,7 @@
                                     <option value="">IDR</option>
                                 </select>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="modal-footer">
                         <a href="/pembelian/fakturs">
@@ -102,11 +102,11 @@
                                 </div>
                                 <div class="form-group col-md-1">
                                     <label for="jumlah_barang">QTY</label>
-                                    <input type="number" class="form-control" id="jumlah_barang" name="jumlah_barang[]" onfocus="startCalc(this);" onblur="stopCalc();" placeholder="-">
+                                    <input type="number" min="0" class="form-control" id="jumlah_barang" name="jumlah_barang[]" onfocus="startCalc(this);" onblur="stopCalc();" placeholder="-">
                                 </div>
                                 <div class="form-group col-md-2">
                                     <label for="satuan_unit">Unit</label>
-                                    <input type="number" class="form-control" id="uni" disabled>
+                                    <input type="number" min="0" class="form-control" id="uni" disabled>
                                     <input type="hidden" id="unit" name="unit_barang[]">
                                 </div>
                                 <div class="form-group col-md-2">
@@ -115,7 +115,7 @@
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">Rp</div>
                                         </div>
-                                        <input type="number" class="form-control" id="harga" name="harga[]" onfocus="startCalc(this);" onblur="stopCalc();" placeholder="-">
+                                        <input type="number" min="0" class="form-control" id="harga" name="harga[]" onfocus="startCalc(this);" onblur="stopCalc();" placeholder="-">
                                     </div>
                                 </div>
                                 <div class="form-group col-md-3">
@@ -124,7 +124,7 @@
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">Rp</div>
                                         </div>
-                                        <input type="number" class="form-control" id="total" name="total[]" disabled>
+                                        <input type="number" min="0" class="form-control" id="total" name="total[]" disabled>
                                     </div>
                                 </div>
                                 <div class="form-group col-md-1">
@@ -149,6 +149,7 @@
                                     <label for="tanggal_penerimaan">Tanggal</label>
                                     <input type="date" class="form-control" id="tanggal_penerimaan" disabled>
                                     <input type="hidden" id="discpnm" name="discpnm[]">
+                                    <input type="hidden" id="biypnm" name="biypnm[]">
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="total">Total</label>
@@ -156,7 +157,7 @@
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">Rp</div>
                                         </div>
-                                        <input type="number" class="form-control" id="total_penerimaan" name="total_penerimaan[]" disabled>
+                                        <input type="number" min="0" class="form-control" id="total_penerimaan" name="total_penerimaan[]" disabled>
                                     </div>
                                 </div>
                                 <div class="form-group col-md-1">
@@ -180,7 +181,7 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Rp</div>
                                 </div>
-                                <input style="width:26vw" type="number" name="total_harga_barang" id="total_harga_barang" disabled>
+                                <input style="width:26vw" type="number" min="0" name="total_harga_barang" id="total_harga_barang" disabled>
                             </div>
                         </div>
                         <a href="/pembelian/fakturs">
@@ -199,7 +200,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">%</div>
                                     </div>
-                                    <input type="number" class="form-control" id="disko" onchange="disc();" placeholder="-" disabled>
+                                    <input type="number" min="0" class="form-control" id="disko" onchange="disc();" placeholder="-" disabled>
                                     <input type="hidden" class="form-control" id="diskon" name="diskon" placeholder="-">
                                 </div>
                             </div>
@@ -208,7 +209,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" class="form-control" id="diskoo" onchange="disc();" placeholder="-" disabled>
+                                    <input type="number" min="0" class="form-control" id="diskoo" onchange="disc();" placeholder="-" disabled>
                                     <input type="hidden" class="form-control" id="disk"  name="disk" placeholder="-">
                                 </div>
                             </div>
@@ -220,11 +221,11 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" class="form-control" name="biaya_lain" onchange="disc();" id="biaya_lain" placeholder="-">
+                                    <input type="number" min="0" class="form-control" name="biaya_lain" onchange="disc();" id="biaya_lain" placeholder="-">
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group row mx-5 mb-5">
+                        <!-- <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="termin_pembayaran">Termin Pembayaran</label>
                             <div class="col-sm-9">
                                 <select class="form-control" id="termin_pembayaran" name="termin_pembayaran">
@@ -232,7 +233,7 @@
                                     <option value="">0 % 0 Net 0</option>
                                 </select>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="form-group row mx-5 mb-5" id="uang-muka-form">
                             <label class="col-sm-3 col-form-label" for="uang_muka">Uang Muka</label>
                             <div class="col-sm-9">
@@ -240,7 +241,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" class="form-control" id="uang_muka" onchange="disc()" name="uang_muka" value="0" placeholder="-">
+                                    <input type="number" min="0" class="form-control" id="uang_muka" onchange="disc()" name="uang_muka" value="0" placeholder="-">
                                 </div>
                             </div>
                         </div>
@@ -263,7 +264,7 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Rp</div>
                                 </div>
-                                <input style="width:26vw" type="number" id="total_harga_kes" disabled>
+                                <input style="width:26vw" type="number" min="0" id="total_harga_kes" disabled>
                                 <input type="hidden" name="total_harga_keseluruhan" id="total_harga_keseluruhan">
                             </div>
                             <input class="ml-4 mt-2" type="checkbox" onclick="checkLunas(this)" />
@@ -391,11 +392,15 @@
                     $('#disk').val(data.pemesanan.diskon_rp)
                     $('#diskoo').val(data.pemesanan.diskon_rp)
                     $('#biaya_lain').val(data.pemesanan.biaya_lain)
+                    $('#total_harga_barang').val(data.subtotal_psnfak)
+                    $('#total_harga_kes').val(data.total_seluruh_psnfak)
+                    $('#total_harga_keseluruhan').val(data.total_seluruh_psnfak)
                     $('#barang_id').val(data.barangsfak[0].id)
                     $('#unit').val(data.barangsfak[0].pivot.unit)
                     $('#uni').attr('placeholder',data.barangsfak[0].pivot.unit)
                     $('#jumlah_barang').val(data.barangsfak[0].pivot.jumlah_barang)
                     $('#harga').val(data.barangsfak[0].pivot.harga)
+                    $('#total').val(data.total_harga_psnfak[0])
                     for (var i = 1; i <= data.barangsfak.length - 1; i++) {
                         $("#formbarang").append($("#isiformbarang0").clone().attr('id', 'isiformbarang' + i));
                         $("#isiformbarang" + i).children().children('select').val(data.barangsfak[i].id)
@@ -403,6 +408,7 @@
                         $("#isiformbarang" + i).children().children('#unit').val(data.barangsfak[i].pivot.unit)
                         $("#isiformbarang" + i).children().children('#uni').attr('placeholder',data.barangsfak[i].pivot.unit)
                         $("#isiformbarang" + i).children().children().children('#harga').val(data.barangsfak[i].pivot.harga)
+                        $("#isiformbarang" + i).children().children().children('#total').val(data.total_harga_psnfak[i])
                     }
                     var c = data.barangsfak.length
                     console.log(c)
@@ -419,17 +425,25 @@
             type: 'get',
             data: {},
             success: function(data) {
-                console.log('a:', data.penerimaan.diskon_rp)
+                console.log(data)
                 if (data.success == true) {
                     $(x).parent().parent().children().children('#tanggal_penerimaan').val(data.penerimaan.tanggal)
-                    $(x).parent().parent().children().children().children('#total_penerimaan').val(data.penerimaan.total_harga)
+                    $(x).parent().parent().children().children().children('#total_penerimaan').val(data.penerimaan.total_jenis_barang)
                     $('#discpnm').val(data.penerimaan.diskon_rp)
+                    $('#biypnm').val(data.penerimaan.biaya_lain)
                     var arr = document.getElementsByName('discpnm[]');
                     var discpnm = 0;
                     for (var i = 0; i < arr.length; i++) {
                         if (parseInt(arr[i].value))
                             discpnm += parseInt(arr[i].value);
                     }
+                    var array = document.getElementsByName('biypnm[]');
+                    var biypnm = 0;
+                    for (var i = 0; i < array.length; i++) {
+                        if (parseInt(array[i].value))
+                            biypnm += parseInt(array[i].value);
+                    }
+                    $('#biaya_lain').val(biypnm)
                     $('#disk').val(discpnm)
                     $('#diskon').val(0)
                     $('#disko').val(0)

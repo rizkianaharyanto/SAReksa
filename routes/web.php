@@ -98,11 +98,12 @@ Route::prefix('stok')->group(function () {
             'barang' => "Stock\ItemResourceController",
             'satuan-unit' => "Stock\UnitsResourceController",
             'gudang' => "Stock\WarehouseController",
-            'pemasok' => "Stock\SuppliersResourceController",
+            // 'pemasok' => "Stock\SuppliersResourceController",
             'pajak' => "Stock\TaxResourceController",
             'coa-master' => "Stock\COAMasterController",
             'coa-type' => "Stock\COATypeController",
         ]);
+        Route::get('/pemasok', 'Pembelian\PemasoksController@indexbarang');
     });
     Route::post('/stock-opname/posting/{id}', 'Stock\StockOpnameController@posting');
     Route::resources([

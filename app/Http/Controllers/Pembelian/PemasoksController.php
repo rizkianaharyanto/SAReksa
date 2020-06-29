@@ -23,6 +23,15 @@ class PemasoksController extends Controller
         ]);
     }
 
+    public function indexbarang()
+    {
+        $pemasoks = Pemasok::all();
+
+        return view('stock.Management-Data.pemasok', [
+            'pemasoks' => $pemasoks,
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -78,7 +87,7 @@ class PemasoksController extends Controller
 
         $penerimaans = $pemasok->penerimaans;
         $fpenerimaans = $pemasok->penerimaans()->where('status', 'sudah posting')->get();
-        $fakturs = $pemasok->fakturs;
+        $fakturs = $pemasok->fakturs()->where('status', 'hutang')->get();
         $hutangs = $pemasok->hutangs()->where('status', 'hutang')->get();
 
         return response()

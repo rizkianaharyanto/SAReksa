@@ -81,7 +81,7 @@ endsection -->
                     '<fieldset class="detail-modal" disabled>' +
                     '<div class="form-group">' +
                     '<label for="telp_pengirim">Telp</label>' +
-                    '<input type="number" class="form-control" id="telp_pengirim" name="telp_pengirim" placeholder="' + datanya[index].telp_pengirim + '">' +
+                    '<input type="number" min="0" class="form-control" id="telp_pengirim" name="telp_pengirim" placeholder="' + datanya[index].telp_pengirim + '">' +
                     '</div>' +
                     '<div class="form-group">' +
                     '<label for="email_pengirim">Email</label>' +
@@ -113,7 +113,7 @@ endsection -->
                     '</div>' +
                     '<div class="form-group">' +
                     '<label for="telp_pengirim">Telp</label>' +
-                    '<input type="number" class="form-control" id="telp_pengirim" name="telp_pengirim" value="' + datanya[index].telp_pengirim + '">' +
+                    '<input type="number" min="0" class="form-control" id="telp_pengirim" name="telp_pengirim" value="' + datanya[index].telp_pengirim + '">' +
                     '</div>' +
                     '<div class="form-group">' +
                     '<label for="email_pengirim">Email</label>' +
@@ -187,7 +187,7 @@ endsection -->
     </div>
     <div class="form-group">
         <label for="telp_pengirim">Telp</label>
-        <input type="number" class="form-control" id="telp_pengirim" name="telp_pengirim" placeholder="">
+        <input type="number" min="0" class="form-control" id="telp_pengirim" name="telp_pengirim" placeholder="">
     </div>
     <div class="form-group">
         <label for="email_pengirim">Email</label>

@@ -77,7 +77,7 @@ endsection -->
                     '<fieldset class="detail-modal" disabled>' +
                     '<div class="form-group">' +
                     '<label for="telp_pemasok">Telp</label>' +
-                    '<input type="number" class="form-control" id="telp_pemasok" name="telp_pemasok" placeholder="' + datanya.pemasok.telp_pemasok + '">' +
+                    '<input type="number" min="0" class="form-control" id="telp_pemasok" name="telp_pemasok" placeholder="' + datanya.pemasok.telp_pemasok + '">' +
                     '</div>' +
                     '<div class="form-group">' +
                     '<label for="email_pemasok">Email</label>' +
@@ -109,7 +109,7 @@ endsection -->
                     '</div>' +
                     '<div class="form-group">' +
                     '<label for="telp_pemasok">Telp</label>' +
-                    '<input type="number" class="form-control" id="telp_pemasok" value="' + datanya.pemasok.telp_pemasok + '" name="telp_pemasok">' +
+                    '<input type="number" min="0" class="form-control" id="telp_pemasok" value="' + datanya.pemasok.telp_pemasok + '" name="telp_pemasok">' +
                     '</div>' +
                     '<div class="form-group">' +
                     '<label for="email_pemasok">Email</label>' +
@@ -175,7 +175,7 @@ endsection -->
     </div>
     <div class="form-group">
         <label for="telp_pemasok">Telp</label>
-        <input type="number" class="form-control" id="telp_pemasok" name="telp_pemasok" placeholder="">
+        <input type="number" class="form-control" id="telp_pemasok" min="0" name="telp_pemasok" placeholder="">
     </div>
     <div class="form-group">
         <label for="email_pemasok">Email</label>
