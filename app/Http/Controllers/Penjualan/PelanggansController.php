@@ -76,7 +76,9 @@ class PelanggansController extends Controller
         $pemesananfaktur = array();
         $pengirimanfaktur = array();
         $fakturretur = array();
+        $fakturet = $pelanggan->fakturs()->where('status', 'piutang')->where('status_posting', 'sudah posting')->get();
 
+        // dd($fakturet);
         $i=0;
         foreach($piutangs as $piutangs){
             if($piutangs->status == 'piutang'){
@@ -159,6 +161,7 @@ class PelanggansController extends Controller
             'pengirimanfakturs' => $pengirimanfaktur,  
             'pengirimans'=> $pengirimans,
             'fakturs'=> $fakturs,
+            'fakturet'=> $fakturet,
             'fakturreturs' => $fakturretur,
             'piutangs' => $piutangmasih,
         ]);

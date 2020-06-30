@@ -212,6 +212,8 @@
             type: 'get',
             data: {},
             success: function(data) {
+                                console.log(data)
+
                 $('#faktur_form').removeAttr('style')
                 for (i = 0; i < data.fakturs.length; i++) {
                     $('#faktur_id').append('<option value="' + data.fakturs[i].id + '">' + data.fakturs[i].kode_faktur + '</option>')

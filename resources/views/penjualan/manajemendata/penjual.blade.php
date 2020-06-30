@@ -27,6 +27,7 @@
                 <span></span>
             </i>
         </a>
+        @if (auth()->user()->role == 'penjualan')
         <a id="edit" data-toggle="modal" data-target="#modal" data-id="{{ $penjual->id }}" >
             <i style="cursor: pointer;" class="fas fa-edit">
                 <span></span>
@@ -37,6 +38,7 @@
                 <span></span>
             </i>
         </a>
+        @endif
     </td>
 </tr>
 @endforeach
@@ -74,7 +76,7 @@
                     '<fieldset class="detail-modal" disabled>' +
                     '<div class="form-group">' +
                     '<label for="telp_penjual">Telp</label>' +
-                    '<input type="number" class="form-control" id="telp_penjual" name="telp_penjual" placeholder="' + datanya[index].telp_penjual + '">' +
+                    '<input type="number" min="0"  class="form-control" id="telp_penjual" name="telp_penjual" placeholder="' + datanya[index].telp_penjual + '">' +
                     '</div>' +
                     '<div class="form-group">' +
                     '<label for="email_penjual">Email</label>' +
@@ -97,7 +99,7 @@
                     '<h5 class="align-self-center">Edit Sales ' + datanya[index].nama_penjual + '</h5>'
                 );
                 $('#bodymodal').html(
-                    '<form method="POST" action="/penjualan/penjuals/' + datanya[index].id + '">' +
+                    '<form autocomplete="off" method="POST" action="/penjualan/penjuals/' + datanya[index].id + '">' +
                     '@method("patch")' +
                     '@csrf' +
                     '<div class="form-group">' +
@@ -106,7 +108,7 @@
                     '</div>' +
                     '<div class="form-group">' +
                     '<label for="telp_penjual">Telp</label>' +
-                    '<input type="number" class="form-control" id="telp_penjual" name="telp_penjual" value="' + datanya[index].telp_penjual + '">' +
+                    '<input type="number" min="0" class="form-control" id="telp_penjual" name="telp_penjual" value="' + datanya[index].telp_penjual + '">' +
                     '</div>' +
                     '<div class="form-group">' +
                     '<label for="email_penjual">Email</label>' +
@@ -150,10 +152,13 @@
 
 <!-- Tambah -->
 @section('tambah')
+@if (auth()->user()->role == 'penjualan')
+
 <a data-toggle="modal" data-target="#modaltambah">
 <a data-toggle="modal" data-target="#modaltambah" class="btn" style="background-color:#212120; color:white" >Tambah</a>
         
 </a>
+@endif
 @endsection
 
 @section('judulTambah')
@@ -162,11 +167,10 @@
 
 @section('bodyTambah')
 
-<form method="POST" action="/penjualan/penjuals">
+<form method="POST" action="/penjualan/penjuals" autocomplete="off">
     @csrf
     <div class="form-group d-inline-flex">
         <i class="fas fa-user-circle mr-4" style="font-size:50px;color:#212120;"></i>
-        <input type="file" class="form-control-file align-self-center" id="foto">
     </div>
     <div class="form-group">
         <label for="nama_penjual">Nama penjual</label>
@@ -174,7 +178,7 @@
     </div>
     <div class="form-group">
         <label for="telp_penjual">Telp</label>
-        <input type="number" class="form-control" id="telp_penjual" name="telp_penjual" placeholder="">
+        <input type="number" min="0" class="form-control" id="telp_penjual" name="telp_penjual" placeholder="">
     </div>
     <div class="form-group">
         <label for="email_penjual">Email</label>

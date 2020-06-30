@@ -14,7 +14,8 @@
                             <div class="col-md-12">
                                 <div class="card card-plain">
                                     <div class="card-body">
-                                        <form action="/penjualan/pembayarans/cetak_pdf">
+                                        <form method='POST' action="/penjualan/pembayarans/cetak_pdf">
+                                            @csrf
                                             <div class="d-flex justify-content-end mx-5">
                                                 <!-- <a class="px-2" href="">Export Excel | </a> -->
                                                 <button><a class="px-2" id="pdf"  target="_blank">Export PDF | </a></button>
@@ -42,7 +43,6 @@
                                                         <thead style="background-color: #212120; color:whitesmoke" >
                                                             <tr>
                                                                 <th>Kode Piutang</th>
-                                                                <th>Tanggal Piutang</th>
                                                                 <th>Total</th>
                                                             </tr>
                                                         </thead>
@@ -50,12 +50,11 @@
                                                             @foreach ($piutangs as $index => $piutang)
                                                             <tr>
                                                                 <td>{{$piutang->kode_piutang}}</td>
-                                                                <td>{{ $piutang->pivot->tanggal ? $piutang->pivot->tanggal : '-' }}</td>
                                                                 <td>{{$piutang->pivot->total}}</td>
                                                             </tr>
                                                             @endforeach
                                                             <tr>
-                                                                <td colspan="2" class="text-right pr-3">Total</td>
+                                                                <td colspan="1" class="text-right pr-3">Total</td>
                                                                 <td id="subtotal">{{$pembayaran->total}}</td>
                                                             </tr>
                                                 

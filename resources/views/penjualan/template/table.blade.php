@@ -86,11 +86,16 @@
 
 <!-- Notif -->
 <script>
+    $(document).ready(function() {
+    var message = '{{ Session::get('message')}}';
+    console.log('')
+    })
 
     var message = '{{ Session::get('message')}}';
     var status = '{{ Session::get('status')}}';
     if(message){
       $(document).ready(function() {
+        console.log(message)
         $.notify({
         icon: "fa fa-check",
         type: 'success',

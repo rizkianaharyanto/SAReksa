@@ -11,6 +11,7 @@ use App\Penjualan\Pengiriman;
 use App\Penjualan\Pemesanan;
 use App\Penjualan\Pelanggan;
 use App\Penjualan\Penjual;
+use App\Services\Stock\ItemService;
 use App\Stock\Barang;
 use App\Stock\Gudang;
 use App\Penjualan\Pemasok;
@@ -18,6 +19,17 @@ use PDF;
 
 class FaktursController extends Controller
 {
+    private $itemService;
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function __construct(ItemService $itemService)
+    {
+        $this->itemService = $itemService;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -52,8 +64,28 @@ class FaktursController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ItemService $itmSrv,Request $request)
     {
+        //Cek
+        // dd($request);
+        $stok = 0;
+        if($request->pemesanan_id){
+            $allDataBarang = $itmSrv->getAllStocksQty();
+            // dd($allDataBarang[16]);
+            foreach ($request->barang_id as $index => $id) {
+                $kirim = $request->jumlah_barang[$index];
+                foreach($allDataBarang as $databarang){
+                    if($databarang['id'] == $id){
+                        $stok = $databarang['kuantitas_total'];
+                    }
+                }
+                if($stok < $request->jumlah_barang[$index]){
+                    session()->flash('message', 'Faktur gagal. Stok kurang');
+                    session()->flash('status', 'gagal');
+                    return redirect()->back()->with('message', 'Faktur gagal. Stok kurang');
+                }
+            };
+        }
         session()->flash('message', 'Faktur berhasil ditambahkan');
         session()->flash('status', 'tambah');
         $fak = Faktur::max('id') + 1;
@@ -64,6 +96,7 @@ class FaktursController extends Controller
             'status' => $request->status,
             'status_posting' => 'belum posting',
             'tanggal' => $request->tanggal,
+            'gudang' => $request->gudang,
             'diskon' => $request->diskon,
             'diskon_rp' => $request->disk,
             'biaya_lain' => $request->biaya_lain,
@@ -281,6 +314,7 @@ class FaktursController extends Controller
      */
     public function edit(Faktur $faktur)
     {
+        // dd($faktur);
         return view('penjualan.penjualan.faktur.fakturedit', [
             'faktur' => $faktur,
             'penjuals' => Penjual::all(),
@@ -299,8 +333,28 @@ class FaktursController extends Controller
      * @param  \App\Faktur  $faktur
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Faktur $faktur)
+    public function update(ItemService $itmSrv, Request $request, Faktur $faktur)
     {
+        //cek
+        $stok = 0;
+        if($faktur->pemesanan_id){
+            $allDataBarang = $itmSrv->getAllStocksQty();
+            // dd($allDataBarang[16]);
+            foreach ($request->barang_id as $index => $id) {
+                $kirim = $request->jumlah_barang[$index];
+                foreach($allDataBarang as $databarang){
+                    if($databarang['id'] == $id){
+                        $stok = $databarang['kuantitas_total'];
+                    }
+                }
+                if($stok < $request->jumlah_barang[$index]){
+                    session()->flash('message', 'Faktur gagal. Stok kurang');
+                    session()->flash('status', 'gagal');
+                    return redirect()->back()->with('message', 'Faktur gagal. Stok kurang');
+                }
+            };
+        }
+        // dd($request);
         session()->flash('message', 'Faktur berhasil diedit');
         session()->flash('status', 'tambah');
         Faktur::where('id', $faktur->id)
@@ -312,7 +366,7 @@ class FaktursController extends Controller
             'total_harga' => $request->total_harga_keseluruhan,
             'penjual_id' => $request->penjual_id,
             'uang_muka' => $request->uang_muka,
-            'diskon_rp' => $request->diskon_rp,
+            'diskon_rp' => $request->disk,
             'status' => $request->status,
         ]);
         $faktur->barangs()->detach();

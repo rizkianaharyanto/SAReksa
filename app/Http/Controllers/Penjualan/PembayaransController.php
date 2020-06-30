@@ -190,6 +190,7 @@ class PembayaransController extends Controller
     public function update(Request $request, Pembayaran $pembayaran)
     {
         
+        // dd($request);
         session()->flash('message', 'Pembayaran berhasil diubah');
         session()->flash('status', 'tambah');
         Pembayaran::where('id', $pembayaran->id)
@@ -200,7 +201,7 @@ class PembayaransController extends Controller
         $pembayaran->piutangs()->detach();
         foreach ($request->piutang_id as $index => $id) {
             $pembayaran->piutangs()->attach($id, [
-                'total' => $request->total_piutang[$index],
+                'total' => $request->total[$index],
             ]);
         }
         return redirect('/penjualan/pembayarans');

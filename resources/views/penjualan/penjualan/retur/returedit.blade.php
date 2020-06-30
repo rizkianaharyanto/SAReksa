@@ -33,13 +33,13 @@
                                                             <span class="bs-stepper-label">Barang</span>
                                                         </button>
                                                     </div>
-                                                    <div class="line"></div>
+                                                    <!-- <div class="line"></div>
                                                     <div class="step" data-target="#test-l-3">
                                                         <button type="button" class="btn step-trigger">
                                                             <span class="bs-stepper-circle">3</span>
                                                             <span class="bs-stepp   er-label">Biaya Lain</span>
                                                         </button>
-                                                    </div>
+                                                    </div> -->
                                                 </div>
                                                 <div class="bs-stepper-content">
                                                     <form method="POST" action="/penjualan/returs/{{$retur->id}}">
@@ -54,7 +54,7 @@
                                                                 <div class="form-group row mx-5 mb-5">
                                                                     <label class="col-sm-3 col-form-label" for="pelanggan_id">Pelanggan</label>
                                                                     <div class="col-sm-9">
-                                                                        <select class="form-control" id="pelanggan_id" name="pelanggan_id">
+                                                                        <select required class="form-control" id="pelanggan_id" name="pelanggan_id">
                                                                             <option value="">--- Pilih Pelanggan ---</option>
                                                                             @foreach ($pelanggans as $pelanggan)
                                                                             <option value="{{$pelanggan->id}}"{{ $pelanggan->id ==  "$retur->pelanggan_id" ? "selected" : "" }}>{{ $pelanggan->nama_pelanggan }}</option>
@@ -75,7 +75,7 @@
                                                                 <div class="form-group row mx-5 mb-5">
                                                                     <label class="col-sm-3 col-form-label" for="tanggal">Tanggal</label>
                                                                     <div class="col-sm-9">
-                                                                        <input type="date" class="form-control" id="tanggal" name="tanggal" value="{{$retur->tanggal}}">
+                                                                        <input required type="date" class="form-control" id="tanggal" name="tanggal" value="{{$retur->tanggal}}">
                                                                     </div>
                                                                 </div>
                                                                 
@@ -93,7 +93,7 @@
                                                                 <div class="form-row mx-5" id="isiformbarang0">
                                                                     <div class="form-group col-md-3">
                                                                         <label for="barang_id" id="lbl">Barang</label>
-                                                                        <select class="form-control" id="barang_id" onchange="isi(this)" name="barang_id[]">
+                                                                        <select required class="form-control" id="barang_id" onchange="isi(this)" name="barang_id[]">
                                                                             <option value="">--- Pilih Barang ---</option>
                                                                             @foreach ($barangs as $barang)
                                                                             <option value="{{$barang->id}}" {{$barang->id == $returbarang->pivot->barang_id ? "selected" : "" }}>{{ $barang->nama_barang }}</option>
@@ -102,7 +102,7 @@
                                                                     </div>
                                                                     <div class="form-group col-md-1">
                                                                         <label for="jumlah_barang">QTY</label>
-                                                                        <input type="number" class="form-control" id="jumlah_barang" name="jumlah_barang[]" onfocus="startCalc(this);" onblur="stopCalc();" value="{{$returbarang->pivot->jumlah_barang}}" placeholder="-">
+                                                                        <input type="number"min="0"  class="form-control" id="jumlah_barang" name="jumlah_barang[]" onfocus="startCalc(this);" onblur="stopCalc();" value="{{$returbarang->pivot->jumlah_barang}}" placeholder="-">
                                                                     </div>
                                                                     <div class="form-group col-md-2">
                                                                         <label for="satuan_unit">Unit</label>                                                                            
@@ -112,19 +112,19 @@
                                                                     <div class="form-group col-md-2">
                                                                         <label for="harga">Harga Satuan</label>
                                                                         <div class="input-group mb-2">
-                                                                            <div class="input-group-prepend">
+                                                                            <div style="height: 38px" class="input-group-prepend">
                                                                                 <div class="input-group-text">Rp</div>
                                                                             </div>
-                                                                            <input type="number" class="form-control" id="harga" name="harga[]" onfocus="startCalc(this);" value="{{$returbarang->pivot->harga}}" onblur="stopCalc();" placeholder="-">
+                                                                            <input style="height: 38px" type="number" min="0" class="form-control" id="harga" name="harga[]" onfocus="startCalc(this);" value="{{$returbarang->pivot->harga}}" onblur="stopCalc();" placeholder="-">
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-group col-md-3">
                                                                         <label for="total">Total</label>
                                                                         <div class="input-group mb-2">
-                                                                            <div class="input-group-prepend">
+                                                                            <div style="height: 38px" class="input-group-prepend">
                                                                                 <div class="input-group-text">Rp</div>
                                                                             </div>
-                                                                            <input type="number" class="form-control" id="total" name="total[]" disabled>
+                                                                            <input style="height: 38px" type="number" min="0" class="form-control" id="total" name="total[]" disabled>
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-group col-md-1">
@@ -143,86 +143,10 @@
                                                                         <div class="input-group-prepend">
                                                                             <div class="input-group-text">Rp</div>
                                                                         </div>
-                                                                        <input style="width:26vw" type="number" name="total_harga_barang" id="total_harga_barang" disabled>
-                                                                    </div>
+                                                                        <input style="width:26vw" type="number" min="0" name="total_harga_barang" id="total_harga_barang" disabled>
+                                                                        <input type="hidden" name="total_harga_barang" id="total_harga_barang">                                                                    </div>
                                                                 </div>
                                                                 <a href="/penjualan/returs">
-                                                                    <button type="button" class="btn btn-secondary">Batal</button>
-                                                                </a>
-                                                                <a class="btn" style="background-color:#212120; color:white" onclick="stepper.previous()">Sebelumnya</a>
-                                                                <a class="btn" style="background-color:#212120; color:white" onclick="stepper.next()">Selanjutnya</a>
-                                                            </div>
-                                                        </div>
-                                                        <div id="test-l-3" class="content">
-                                                            <div style="height: 58vh;overflow:auto" class="mt-2">
-                                                                <div class="form-group row mx-5 mb-5">
-                                                                    <label class="col-sm-3 col-form-label" for="diskon">Diskon</label>
-                                                                    <div class="col-sm-3">
-                                                                        <div class="input-group mb-2">
-                                                                            <div class="input-group-prepend">
-                                                                                <div class="input-group-text">%</div>
-                                                                            </div>
-                                                                            <input type="number" class="form-control" id="diskon" onchange="disc();" name="diskon" placeholder="-">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-sm-6">
-                                                                        <div class="input-group mb-2">
-                                                                            <div class="input-group-prepend">
-                                                                                <div class="input-group-text">Rp</div>
-                                                                            </div>
-                                                                            <input type="number" class="form-control" id="disk" onchange="disc();" name="disk" placeholder="-">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group row mx-5 mb-5">
-                                                                    <label class="col-sm-3 col-form-label" for="biaya_lain">Biaya lain</label>
-                                                                    <div class="col-sm-9">
-                                                                        <div class="input-group mb-2">
-                                                                            <div class="input-group-prepend">
-                                                                                <div class="input-group-text">Rp</div>
-                                                                            </div>
-                                                                            <input type="number" class="form-control" name="biaya_lain" onchange="disc();" id="biaya_lain" placeholder="-">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                
-                                                                <div class="form-group row mx-5 mb-5" id="uang-muka-form">
-                                                                    <label class="col-sm-3 col-form-label" for="uang_muka">Uang Muka</label>
-                                                                    <div class="col-sm-9">
-                                                                        <div class="input-group mb-2">
-                                                                            <div class="input-group-prepend">
-                                                                                <div class="input-group-text">Rp</div>
-                                                                            </div>
-                                                                            <input type="number" class="form-control" id="uang_muka" onchange="disc()" name="uang_muka" value="0" placeholder="-">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group row mx-5 mb-5" id="akun-form" style="display: none">
-                                                                    <label class="col-sm-3 col-form-label" for="akun">Akun</label>
-                                                                    <div class="col-sm-9">
-                                                                        <select class="form-control" id="akun">
-                                                                            <option>--- Pilih Akun ---</option>
-                                                                            <!-- foreach ($akuns as $akun)
-                                                                        <option> $akun->nama_akun </option>
-                                                                        endforeach -->
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <div class="d-flex mr-auto">
-                                                                    <p class="m-2" id="sisa">Sisa </p>
-                                                                    <div class="input-group mb-2">
-                                                                        <div class="input-group-prepend">
-                                                                            <div class="input-group-text">Rp</div>
-                                                                        </div>
-                                                                        <input style="width:26vw" type="number" id="total_harga_kes" disabled>
-                                                                        <input type="hidden" name="total_harga_keseluruhan" id="total_harga_keseluruhan">
-                                                                    </div>
-                                                                    <input class="ml-4 mt-2" type="checkbox" onclick="checkLunas(this)" />
-                                                                    <h5 class="ml-2">Lunas</h5>
-                                                                </div>
-                                                                <a href="/penjualan/fakturs">
                                                                     <button type="button" class="btn btn-secondary">Batal</button>
                                                                 </a>
                                                                 <a class="btn" style="background-color:#212120; color:white" onclick="stepper.previous()">Sebelumnya</a>
@@ -349,30 +273,30 @@
     });
 
 
-    function disc() {
-        dis = parseInt($('#diskon').val()) / 100;
-        biy = parseInt($('#biaya_lain').val());
-        dp = parseInt($('#uang_muka').val());
-        barang = parseInt($('#total_harga_barang').val())
-        $('#akun_barang').val(barang)
-        diskon = (barang * dis)
-        $('#disk').val(diskon)
-        barangafterdiskon = barang - diskon
-        piutang = barangafterdiskon + biy - dp
-        $('#piutang').val(piutang)
-        if (piutang) {
-            $('#total_harga_kes').val(piutang)
-            $('#total_harga_keseluruhan').val(piutang)
-        }
-        console.log(
-            'barang:', barang,
-            'dis:', dis,
-            'diskon:', diskon,
-            'piutang:', piutang, 
-            'biaya:', biy,
-            'dp:', dp,
-        )
-    }
+    // function disc() {
+    //     dis = parseInt($('#diskon').val()) / 100;
+    //     biy = parseInt($('#biaya_lain').val());
+    //     dp = parseInt($('#uang_muka').val());
+    //     barang = parseInt($('#total_harga_barang').val())
+    //     $('#akun_barang').val(barang)
+    //     diskon = (barang * dis)
+    //     $('#disk').val(diskon)
+    //     barangafterdiskon = barang - diskon
+    //     piutang = barangafterdiskon + biy - dp
+    //     $('#piutang').val(piutang)
+    //     if (piutang) {
+    //         $('#total_harga_kes').val(piutang)
+    //         $('#total_harga_keseluruhan').val(piutang)
+    //     }
+    //     console.log(
+    //         'barang:', barang,
+    //         'dis:', dis,
+    //         'diskon:', diskon,
+    //         'piutang:', piutang, 
+    //         'biaya:', biy,
+    //         'dp:', dp,
+    //     )
+    // }
 
 
     function startCalc(x) {
@@ -408,8 +332,10 @@
             if (parseInt(arr[i].value))
                 tot += parseInt(arr[i].value);
         }
+        console.log(tot)
         document.getElementById('total_harga_barang').value = tot;
-        document.getElementById('total_harga_keseluruhan').value = tot;
+        // document.getElementById('total_harga_keseluruhan').value = tot;
+        document.getElementById('akun_barang').value = tot;
     }
 
     function isi(x) {

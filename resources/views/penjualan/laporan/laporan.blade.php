@@ -71,12 +71,12 @@
                                                     <ul class="">
                                                         <li class="">
                                                             <div class="alert alert-primary  mb-0 p-1" id="tambahbarang" style=" font-size:15px; color:black;background-color:white">
-                                                                <span style="cursor: pointer;" class="mx-2">Piutang</span>
+                                                                <span style="cursor: pointer;" data-toggle="modal" data-target="#modalpiutang" class="mx-2">Piutang</span>
                                                             </div>                                                        
                                                         </li>
                                                         <li class="">
                                                             <div class="alert alert-primary  mb-0 p-1" id="tambahbarang" style=" font-size:15px; color:black;background-color:white">
-                                                                <span style="cursor: pointer;" class="mx-2">Pembayaran Piutang</span>
+                                                                <span style="cursor: pointer;" class="mx-2" data-toggle="modal" data-target="#modalpembayaran">Pembayaran Piutang</span>
                                                             </div>                                                        
                                                         </li>
                                                     </ul>
@@ -120,7 +120,7 @@
             </div>
             <div class="col-md-6">
                 <label for="nama_penjual">Tahun</label>
-                <input type="number" min="0" class="form-control" id="tahun" name="tahun" placeholder="" required/>
+                <input type="number" min="0" max="2022" class="form-control" id="tahun" name="tahun" placeholder="" required/>
             </div>
         </div>
       </div>
@@ -160,7 +160,7 @@
             </div>
             <div class="col-md-6">
                 <label for="nama_penjual">Tahun</label>
-                <input type="number" class="form-control" id="tahun" min="0" name="tahun" placeholder="" required/>
+                <input type="number" class="form-control" id="tahun" min="0" max="2022" name="tahun" placeholder="" required/>
             </div>
         </div>
       </div>
@@ -195,11 +195,10 @@
                     <option value="1">Januari</option><option value="2">Februari</option><option value="3">Maret</option><option value="4">April</option><option value="5">Mei</option><option value="6">Juni</option><option value="7">Juli</option>                    <option value="8">Agustus</option><option value="9">September</option><option value="10">Oktober</option><option value="11">November</option><option value="12">Desember</option>
                 </select>             
                 <!-- <input type="text" class="form-control" id="nama_penjual" name="nama_penjual" placeholder=""> -->
-
             </div>
             <div class="col-md-6">
                 <label for="nama_penjual">Tahun</label>
-                <input type="number" class="form-control" id="tahun" min="0" name="tahun" placeholder="" required/>
+                <input type="number" class="form-control" id="tahun" min="0" max="2022" name="tahun" placeholder="" required/>
             </div>
         </div>
       </div>
@@ -238,7 +237,7 @@
             </div>
             <div class="col-md-6">
                 <label for="nama_penjual">Tahun</label>
-                <input type="number" class="form-control" id="tahun" min="0" name="tahun" placeholder="" required/>
+                <input type="number" class="form-control" id="tahun" min="0" max="2022" name="tahun" placeholder="" required/>
             </div>
         </div>
       </div>
@@ -277,7 +276,80 @@
             </div>
             <div class="col-md-6">
                 <label for="nama_penjual">Tahun</label>
-                <input type="number" class="form-control" id="tahun" min="0" name="tahun" placeholder="" required/>
+                <input type="number" class="form-control" id="tahun" min="0" max="2022" name="tahun" placeholder="" required/>
+            </div>
+        </div>
+      </div>
+      <div id="footermodaltambah" class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+        <button type="submit" style="background-color:#212120" class="btn ">Ok</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+<!-- Sort Piutang-->
+<div style="color: black;" class="modal fade" id="modalpiutang" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div id="lebarmodaltambah" class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div id="judulmodal" class="modal-title d-inline-flex " id="exampleModalLongTitle">
+            <h5 class="align-self-center">Detail Piutang</h5>
+        </div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div id="bodymodal" class="modal-body">
+      <form method="POST" action="laporans/piutang">
+        @csrf
+        <div class="form-group row">
+            <label class="col-sm-3 col-form-label" for="pelanggan_id">Pelanggan </label>
+                <div class="col-sm-9">
+                  <select class="form-control" id="pelanggan_id" name="pelanggan_id">
+                                                                            <option value="">--- Pilih Pelanggan ---</option>
+                                                                            @foreach ($pelanggans as $pelanggan)
+                                                                            <option value="{{$pelanggan->id}}">{{ $pelanggan->nama_pelanggan }}</option>                                                                            @endforeach
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+      </div>
+      <div id="footermodaltambah" class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+        <button type="submit" style="background-color:#212120" class="btn ">Ok</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+<!-- Sort Pembayaran-->
+<div style="color: black;" class="modal fade" id="modalpembayaran" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div id="lebarmodaltambah" class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div id="judulmodal" class="modal-title d-inline-flex " id="exampleModalLongTitle">
+            <h5 class="align-self-center">Pembayaran Piutang</h5>
+        </div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div id="bodymodal" class="modal-body">
+      <form method="POST" action="laporans/pembayaran">
+        @csrf
+        <div class="form-row">
+            <div class="col-md-6">
+                <label for="nama_penjual">Bulan</label>
+                <select style="height: 30px" class="form-control" onchange="isi(this)" id="bulan" name="bulan">
+                    <option value="1">Januari</option><option value="2">Februari</option><option value="3">Maret</option><option value="4">April</option><option value="5">Mei</option><option value="6">Juni</option><option value="7">Juli</option>                    <option value="8">Agustus</option><option value="9">September</option><option value="10">Oktober</option><option value="11">November</option><option value="12">Desember</option>
+                </select>             
+                <!-- <input type="text" class="form-control" id="nama_penjual" name="nama_penjual" placeholder=""> -->
+            </div>
+            <div class="col-md-6">
+                <label for="nama_penjual">Tahun</label>
+                <input type="number" class="form-control" id="tahun" min="0" max="2022" name="tahun" placeholder="" required/>
             </div>
         </div>
       </div>

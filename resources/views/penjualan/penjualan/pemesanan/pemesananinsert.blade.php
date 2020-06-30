@@ -118,29 +118,29 @@
                                                                     </div>
                                                                     <div class="col-md-1">
                                                                         <label for="jumlah_barang">QTY</label>
-                                                                        <input type="number" class="form-control" id="jumlah_barang" name="jumlah_barang[]" onfocus="startCalc(this);" onblur="stopCalc();" placeholder="-">
+                                                                        <input type="number" min="0"style="height: 38px" class="form-control" id="jumlah_barang" name="jumlah_barang[]" onfocus="startCalc(this);" onblur="stopCalc();" placeholder="-">
                                                                     </div>
                                                                     <div class="col-md-2">
                                                                         <label for="satuan_unit">Unit</label>
-                                                                        <input type="number" class="form-control" id="uni" disabled>
+                                                                        <input type="number" style="height: 38px" min="0" class="form-control" id="uni" disabled>
                                                                         <input type="hidden" id="unit" name="unit_barang[]">
                                                                     </div>
                                                                     <div class="col-md-2">
                                                                         <label for="harga">Harga Satuan</label>
                                                                         <div class="input-group mb-2">
-                                                                            <div class="input-group-prepend">
+                                                                            <div style="height: 38px" class="input-group-prepend">
                                                                                 <div class="input-group-text">Rp</div>
                                                                             </div>
-                                                                            <input type="number" class="form-control" id="harga" name="harga[]" onfocus="startCalc(this);" onblur="stopCalc();" placeholder="-">
+                                                                            <input style="height: 38px" type="number"min="0" class="form-control" id="harga" name="harga[]"  onfocus="startCalc(this);" onblur="stopCalc();" placeholder="-">
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-3">
                                                                         <label for="total">Total</label>
                                                                         <div class="input-group mb-2">
-                                                                            <div class="input-group-prepend">
+                                                                            <div style="height: 38px" class="input-group-prepend">
                                                                                 <div class="input-group-text">Rp</div>
                                                                             </div>
-                                                                            <input type="number" class="form-control" id="total" name="total[]" disabled>
+                                                                            <input style="height: 38px" type="number" min="0"class="form-control" id="total" name="total[]" disabled>
                                                                         </div>
                                                                     </div>
                                                                     <input type="hidden" id="status_barang" name="status_barang[]" value="belum terkirim">
@@ -164,7 +164,7 @@
                                                                         <div class="input-group-prepend">
                                                                             <div class="input-group-text">Rp</div>
                                                                         </div>
-                                                                        <input style="width:26vw" type="number" name="total_harga_barang" id="total_harga_barang" disabled>
+                                                                        <input style="width:26vw" type="number" min="0"name="total_harga_barang" id="total_harga_barang" disabled>
                                                                     </div>
                                                                 </div>
                                                                 <a href="/penjualan/pemesanans">
@@ -183,7 +183,7 @@
                                                                             <div class="input-group-prepend">
                                                                                 <div class="input-group-text">%</div>
                                                                             </div>
-                                                                            <input type="number" class="form-control" id="diskon" onchange="disc();" name="diskon" placeholder="-">
+                                                                            <input type="number"min="0" class="form-control" max="100" id="diskon" onfocus="disc();" onchange="disc();" name="diskon" placeholder="-">
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-sm-6">
@@ -191,7 +191,7 @@
                                                                             <div class="input-group-prepend">
                                                                                 <div class="input-group-text">Rp</div>
                                                                             </div>
-                                                                            <input type="number" class="form-control" id="disk" onchange="disc();" name="disk" placeholder="-">
+                                                                            <input type="number" min="0"class="form-control" id="disk" onfocus="disc();" onchange="disc();" name="disk" placeholder="-">
                                                                         </div>
                                                                     </div>                                                                  </div>
                                                                 <div class="form-group row mx-5 mb-5">
@@ -201,7 +201,7 @@
                                                                             <div class="input-group-prepend">
                                                                                 <div class="input-group-text">Rp</div>
                                                                             </div>
-                                                                            <input type="number" class="form-control" name="biaya_lain" onchange="disc();" id="biaya_lain" placeholder="-">
+                                                                            <input type="number" min="0"class="form-control" name="biaya_lain" onfocus="disc();" onchange="disc();" id="biaya_lain" placeholder="-">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -212,7 +212,7 @@
                                                                             <div class="input-group-prepend">
                                                                                 <div class="input-group-text">Rp</div>
                                                                             </div>
-                                                                            <input style="width:26vw" type="number" id="total_harga_kes" disabled>
+                                                                            <input style="width:26vw" type="number" min="0"id="total_harga_kes" disabled>
                                                                             <input type="hidden" name="total_harga_keseluruhan" id="total_harga_keseluruhan">
                                                                         </div>
                                                                     </div>
@@ -299,6 +299,9 @@
         });
     });
 
+    window.onload = function(){
+        startCalc('#jumlah_barang');
+    }
     $("#penawaran_id").change(function() {
         $.ajax({
             url: '/penjualan/penawarans/' + $(this).val(),
@@ -317,7 +320,9 @@
                     $('#unit').val(data.barangs[0].pivot.unit)
                     $('#uni').attr('placeholder',data.barangs[0].pivot.unit)
                     $('#jumlah_barang').val(data.barangs[0].pivot.jumlah_barang)
+                    
                     $('#harga').val(data.barangs[0].pivot.harga)
+                    startCalc('#jumlah_barang');
                     $('#status_barang').val('belum terkirim')
                     for (var i = 1; i <= data.barangs.length - 1; i++) {
                         $("#formbarang").append($("#isiformbarang0").clone().attr('id', 'isiformbarang' + i));
@@ -378,6 +383,7 @@
 
 
     function startCalc(x) {
+        console.log('test')
         if ($(x).attr('id') == 'jumlah_barang') {
             a = x
             b = $(x).parent().parent().children().children().children('#harga')
@@ -402,13 +408,17 @@
     }
 
     function stopCalc() {
+        console.log('test')
+
         clearInterval(interval);
         var arr = document.getElementsByName('total[]');
         var tot = 0;
         for (var i = 0; i < arr.length; i++) {
+            console.log(arr[i].value)
             if (parseInt(arr[i].value))
                 tot += parseInt(arr[i].value);
         }
+        console.log(tot)
         document.getElementById('total_harga_barang').value = tot;
         document.getElementById('total_harga_keseluruhan').value = tot;
     }

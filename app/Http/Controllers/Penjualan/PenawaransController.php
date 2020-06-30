@@ -87,6 +87,8 @@ class PenawaransController extends Controller
     public function show($id)
     {
         $penawaran = Penawaran::find($id);
+        dd($id);
+
         $barangs = $penawaran->barangs;
         // $unit = $barangs->unit;
         return response()
@@ -122,6 +124,7 @@ class PenawaransController extends Controller
 
     public function cetak_pdf(Request $request)
     {
+        // dd($request);
         $penawaran = Penawaran::find($request->id);
         $gudang = Gudang::find($penawaran->gudang);
         $barangs = $penawaran->barangs;

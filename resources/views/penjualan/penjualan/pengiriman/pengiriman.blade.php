@@ -38,11 +38,6 @@
         </a>
         @endif
         @if($pengiriman->status == 'terkirim')
-        <a id="edit" href="/penjualan/pengirimans/{{$pengiriman->id}}/edit">
-            <i style="cursor: pointer;color: #212120" class="fas fa-edit" title='Edit'>
-                <span></span>
-            </i>
-        </a>
         <a id="edit" href="/penjualan/pengirimans/{{$pengiriman->id}}/posting">
             <i onmouseover="" style="cursor: pointer;color: #212120" class="fas fa-file-upload" title='Posting'>
                 <span></span>

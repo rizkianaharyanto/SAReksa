@@ -10,6 +10,7 @@ use App\Penjualan\Pengiriman;
 use App\Penjualan\Pemesanan;
 use App\Stock\Barang;
 use App\Stock\Gudang;
+use App\Http\Requests\Stock\CreateItemsRequest;
 use App\Services\Stock\ItemService;
 use App\Penjualan\Pelanggan;
 use App\Penjualan\Penjual;
@@ -58,8 +59,25 @@ class PengirimansController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ItemService $itmSrv, Request $request)
     {
+        //Cek Stok
+        $stok = 0;
+        $allDataBarang = $itmSrv->getAllStocksQty();
+        foreach ($request->barang_id as $index => $id) {
+            $kirim = $request->jumlah_barang[$index];
+            foreach($allDataBarang as $databarang){
+                if($databarang['id'] == $id){
+                    $stok = $databarang['kuantitas_total'];
+                }
+            }
+            if($stok < $request->jumlah_barang[$index]){
+                session()->flash('message', 'Pengiriman gagal. Stok kurang');
+                session()->flash('status', 'gagal');
+                return redirect()->back()->with('message', 'Pengiriman gagal. Stok kurang');
+            }
+        }
+        // dd($request);
         session()->flash('message', 'Pengiriman berhasil ditambahkan');
         session()->flash('status', 'tambah');
         $pgr = Pengiriman::max('id') + 1;
@@ -93,11 +111,50 @@ class PengirimansController extends Controller
         return redirect('/penjualan/pengirimans');      
     }   
 
-    public function posting($idnya)
+    public function posting(ItemService $itmSrv, $idnya)
     {
+        $stok = 0;
         session()->flash('message', 'Pengiriman berhasil diposting');
         session()->flash('status', 'tambah');
         $pengiriman = Pengiriman::find($idnya);
+        $pemesanan = $pengiriman->pemesanan;
+        $allDataBarang = $itmSrv->getAllStocksQty();
+
+        foreach ($pengiriman->barangs as $index => $barang) {
+            $a = $pemesanan->barangs()->where('barang_id', $barang->id)->first()->pivot->barang_belum_diterima;
+            $b = $barang->pivot->jumlah_barang;
+            $belum_diterima = $a - $b;
+
+            // dd($allDataBarang);
+            foreach($allDataBarang as $databarang){
+                // dd($databarang['id']);
+                if($databarang['id'] == $barang->id){
+                    $stok = $databarang['kuantitas_total'];
+                }
+            }
+
+            if($stok >= $b){
+                //update stock
+                try {
+                    $this->itemService->updateStocks($barang->id, $pengiriman->gudang, ($b*-1));
+                    // dd("berhasil");
+                } catch (\Throwable $th) {
+                    dd('Gagal');
+                }
+            }else {
+                session()->flash('message', 'Stok kurang');
+                session()->flash('status', '');
+                return redirect('/penjualan/pengirimans');
+            }
+
+            $pemesanan->barangs()->where('barang_id', $barang->id)->update(array('barang_belum_diterima' => $belum_diterima));
+            if ($belum_diterima == 0) {
+                $pemesanan->barangs()->where('barang_id', $barang->id)->update(array('status_barang' => 'terkirim'));
+            } else {
+                $pemesanan->barangs()->where('barang_id', $barang->id)->update(array('status_barang' => 'belum terkirim'));
+            }
+        }
+
         Pengiriman::where('id', $pengiriman->id)
                     ->update(['status' => 'sudah posting']);
         //posting
@@ -123,39 +180,7 @@ class PengirimansController extends Controller
             }
         }
 
-        $pemesanan = $pengiriman->pemesanan;
-
-        foreach ($pengiriman->barangs as $index => $barang) {
-            $a = $pemesanan->barangs()->where('barang_id', $barang->id)->first()->pivot->barang_belum_diterima;
-            $b = $barang->pivot->jumlah_barang;
-            $belum_diterima = $a - $b;
-            // dd($barang->pivot);
-
-            //update stock
-            try {
-                $this->itemService->updateStocks($barang->id, $pengiriman->gudang, $b);
-                // dd("berhasil");
-            } catch (\Throwable $th) {
-                dd('Gagal');
-            }
-
-            //update harga barang
-            try {
-                HargaRetailHistory::create([
-                    'item_id' => $barang->id,
-                    'harga_retail' => $barang->pivot->harga,
-                ]);
-            } catch (\Throwable $th) {
-                throw $th;
-            }
-
-            $pemesanan->barangs()->where('barang_id', $barang->id)->update(array('barang_belum_diterima' => $belum_diterima));
-            if ($belum_diterima == 0) {
-                $pemesanan->barangs()->where('barang_id', $barang->id)->update(array('status_barang' => 'terkirim'));
-            } else {
-                $pemesanan->barangs()->where('barang_id', $barang->id)->update(array('status_barang' => 'belum terkirim'));
-            }
-        }
+        
         $status = $pemesanan->barangs()->where('status_barang', 'belum terkirim')->first();
         // dd($status);
             if ($status) {
@@ -183,11 +208,10 @@ class PengirimansController extends Controller
 
     public function detail($id)
     {
-        
         $pengiriman = Pengiriman::find($id);
         $gudang = Gudang::find($pengiriman->gudang);
         $barangs = $pengiriman->barangs;
-        $diskon = $pengiriman->diskon.'%';
+        $diskon = $pengiriman->diskon_rp;
         $biaya_lain = $pengiriman->biaya_lain;
         $total_seluruh = $pengiriman->total_harga;
         $total_harga = [];
@@ -214,7 +238,7 @@ class PengirimansController extends Controller
         $pengiriman = pengiriman::find($request->id);
         $gudang = Gudang::find($pengiriman->gudang);
         $barangs = $pengiriman->barangs;
-        $diskon = $pengiriman->diskon.'%';
+        $diskon = $pengiriman->diskon_rp;
         $biaya_lain = $pengiriman->biaya_lain;
         $total_seluruh = $pengiriman->total_harga;
         $total_harga = [];
@@ -261,10 +285,29 @@ class PengirimansController extends Controller
      * @param  \App\Pengiriman  $pengiriman
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Pengiriman $pengiriman)
+    public function update(ItemService $itmSrv, Request $request, Pengiriman $pengiriman)
     {
+        $stok = 0;
+        $pemesanan = $pengiriman->pemesanan;
+        //Cek stock
+        $allDataBarang = $itmSrv->getAllStocksQty();
+        foreach ($request->barang_id as $index => $id) {
+            $kirim = $request->jumlah_barang[$index];
+            foreach($allDataBarang as $databarang){
+                if($databarang['id'] == $id){
+                    $stok = $databarang['kuantitas_total'];
+                }
+            }
+            if($stok < $request->jumlah_barang[$index]){
+                session()->flash('message', 'Pengiriman gagal. Stok kurang');
+                session()->flash('status', 'gagal');
+                return redirect()->back()->with('message', 'Pengiriman gagal. Stok kurang');
+            }
+        }
         // dd($request->akun_barang);
-        session()->flash('message', 'Pengiriman berhasil diubah');
+        
+        // dd($request);
+        session()->flash('message', 'Pengiriman berhasil dikonfirmasi');
         session()->flash('status', 'tambah');
         Pengiriman::where('id', $pengiriman->id)
             ->update([
@@ -274,6 +317,7 @@ class PengirimansController extends Controller
                 'status' => 'terkirim',
                 'tanggal' => $request->tanggal,
                 'diskon' => $request->diskon,
+                'diskon_rp' => $request->disk,
                 'biaya_lain' => $request->biaya_lain,
                 'total_jenis_barang' => $request->akun_barang,
                 'total_harga' => $request->total_harga_keseluruhan,
@@ -288,6 +332,8 @@ class PengirimansController extends Controller
                     // 'pajak' => $request->pajak[$index],
                     ]);
         }
+
+        $pemesanan->update(array('status' => 'terkirim sebagian'));
         return redirect('/penjualan/pengirimans');
     }
 

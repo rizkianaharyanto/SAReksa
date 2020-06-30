@@ -171,7 +171,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">%</div>
                                     </div>
-                                    <input type="number" min="0" class="form-control" id="diskon" onchange="disc();" name="diskon" placeholder="-">
+                                    <input type="number" min="0" class="form-control" max="100" id="diskon" onchange="disc();" name="diskon" placeholder="-">
                                 </div>
                             </div>
                             <div class="col-sm-6">

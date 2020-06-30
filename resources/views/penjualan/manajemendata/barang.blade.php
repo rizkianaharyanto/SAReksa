@@ -66,8 +66,6 @@
                     '<label for="harga_retail">Harga retail</label>' +
                     '<input type="text" id="harga_retail" harga="harga_retail" class="form-control" placeholder="' + datanya.harga_retail + '">' +
                     '</div>' +
-                    '<label for="harga_grosir">Harga grosir</label>' +
-                    '<input type="text" id="harga_grosir" harga="harga_grosir" class="form-control" placeholder="' + datanya.harga_grosir + '">' +
                     '</div>' +
                     '</fieldset>' +
                     '</form>'

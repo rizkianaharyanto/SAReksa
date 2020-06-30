@@ -36,7 +36,7 @@
                             @csrf
                         </form>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" onclick="document.getElementById('formLogOut').submit();">{{ __('Log out') }}</a>
+                            <a class="dropdown-item" href='/penjualan/logout'>{{ __('Log out') }}</a>
                         </div>
                     </div>
                 </li>

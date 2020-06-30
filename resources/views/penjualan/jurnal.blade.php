@@ -70,8 +70,8 @@
                                                                         @else -
                                                                         @endif
                                                                     </td>
-                                                                    <td class="p-2" name="debit[]">{{ $index->debit != 0 ? $index->debit : '-' }}</td>
-                                                                    <td class="p-2" name="kredit[]">{{ $index->kredit != 0 ? $index->kredit : '-' }}</td>
+                                                                    <td class="p-2" name="debit[]">{{ $index->debit != 0 ? $index->debit : '0' }}</td>
+                                                                    <td class="p-2" name="kredit[]">{{ $index->kredit != 0 ? $index->kredit : '0' }}</td>
                                                                 </tr>
                                                             @endforeach
                                                         @endforeach

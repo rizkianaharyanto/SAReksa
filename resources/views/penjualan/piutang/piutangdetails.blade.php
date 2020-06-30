@@ -13,7 +13,6 @@
     <th>Lunas</th>
     <th>Sisa</th>
     <th>Status</th>
-    <th style="column-width: 80px">Aksi</th>
 </tr>
 @endsection
 
@@ -30,9 +29,7 @@
     <td>{{ $piutang->lunas ? $piutang->lunas : '-' }}</td>
     <td>{{ $piutang->sisa ? $piutang->sisa : '-' }}</td>
     <td>{{ $piutang->status ? $piutang->status : '-' }}</td>
-    <td class="d-flex justify-content-between">
-        <i onclick="" style='color: #212120' class="fas fa-info-circle"></i>
-    </td>
+    
 </tr>
 @endforeach
 @endsection

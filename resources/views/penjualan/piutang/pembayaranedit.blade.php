@@ -35,7 +35,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="bs-stepper-content">
-                                                    <form method="POST" action="/penjualan/pembayarans">
+                                                    <form method="POST" action="/penjualan/pembayarans/{{$pembayaran->id}}">
+                                                    @method('put')
                                                         @csrf
                                                         <div id="test-l-1" class="content">
                                                             <input type="hidden" id="status" name="status">
@@ -43,7 +44,7 @@
                                                                 <div class="form-group row mx-5 mb-5">
                                                                     <label class="col-sm-3 col-form-label" for="pelanggan_id">Pelanggan</label>
                                                                     <div class="col-sm-9">
-                                                                        <select class="form-control" id="pelanggan_id" name="pelanggan_id">
+                                                                        <select disabled class="form-control" id="pelanggan_id" name="pelanggan_id">
                                                                             <option value="">--- Pilih Pelanggan ---</option>
                                                                             @foreach ($pelanggans as $pelanggan)
                                                                             <option value="{{$pelanggan->id}}"{{ $pelanggan->id ==  "$pembayaran->pelanggan_id" ? "selected" : "" }}>{{ $pelanggan->nama_pelanggan }}</option>
@@ -54,7 +55,7 @@
                                                                 <div class="form-group row mx-5 mb-5">
                                                                     <label class="col-sm-3 col-form-label" for="tanggal">Tanggal</label>
                                                                     <div class="col-sm-9">
-                                                                        <input type="date" value="{{$pembayaran->tanggal}}" class="form-control" id="tanggal" name="tanggal">
+                                                                        <input required type="date" value="{{$pembayaran->tanggal}}" class="form-control" id="tanggal" name="tanggal">
                                                                     </div>
                                                                 </div>
                                                                 
@@ -70,43 +71,22 @@
                                                             <div style="overflow: auto; height: 52vh;" id="formpiutang">
                                                             @foreach ($pembayaran->piutangs as $pembayaranpiutang)
                                                                 <div class="form-row mx-5" id="isiformpiutang0">
-                                                                    <div class="form-group col-md-3">
+                                                                    <div class="form-group col-md-6">
                                                                         <label for="piutang_id" id="lbl">Piutang</label>
-                                                                        <select class="form-control" onchange="isi(this)" onclick="hitung()" id="piutang_id" name="piutang_id[]">
-                                                                            <option value="">--- Pilih Piutang ---</option>
-                                                                        </select>
-                                                                    </div>
-                                                                    <div class="form-group col-md-3">
-                                                                        <label for="tanggal_piutang">Tanggal</label>
-                                                                        <input type="date" class="form-control" value="{{$pembayaranpiutang->tanggal}}" placeholder="{{$pembayaranpiutang->tanggal}}" place id="tanggal_piutang" disabled>
-                                                                    </div>
-                                                                    <div class="form-group col-md-2">
-                                                                        <label for="mata_uang">Mata Uang</label>
-                                                                        <input type="number" class="form-control" id="mata_uang" disabled placeholder="IDR">
-                                                                    </div>
-                                                                    <div class="form-group col-md-3">
+                                                                        <input type="hidden" style="height: 45px" class="form-control" value="{{$pembayaranpiutang->id}}" id="piutang_id" name="piutang_id[]">
+                                                                        <input type="text" style="height: 45px" class="form-control" value='{{$pembayaranpiutang->kode_piutang}}' disabled onchange="isi(this)" onclick="hitung()" id="" name="">                                                                    </div>
+                                                                    <div class="form-group col-md-6">
                                                                         <label for="total">Total</label>
                                                                         <div class="input-group mb-2">
                                                                             <div class="input-group-prepend">
                                                                                 <div class="input-group-text">Rp</div>
                                                                             </div>
-                                                                            <input type="number" class="form-control" id="total" name="total[]" disabled>
-                                                                            <input type="hidden" id="total_piutang" name="total_piutang[]">
+                                                                            <input type="number" min='0' class="form-control" id="total" value="{{$pembayaranpiutang->pivot->total}}" name="total[]" onchange="hitung()">
+                                                                            <input type="hidden" id="total_piutang" value="{{$pembayaranpiutang->sisa}}" name="total_piutang[]">
                                                                         </div>
-                                                                    </div>
-                                                                    <div class="form-group col-md-1">
-                                                                        <p style="color: transparent">#</p>
-                                                                        <a onclick="hapus(this)">
-                                                                            <i style="color:grey;" class="fas fa-trash"></i>
-                                                                        </a>
                                                                     </div>
                                                                 </div>
                                                             @endforeach
-                                                            </div>
-                                                            <div class="alert alert-primary mt-3 mb-0 p-1" id="tambahpiutang" onclick="hitung()" onmouseover="green(this)" onmouseout="grey(this)" style="cursor: point     er; font-size:15px;color: white;background-color:#212120" role='alert'>
-                                                                <i class="fas fa-plus d-flex justify-content-center">
-                                                                    <span class="mx-2">Tambah piutang</span>
-                                                                </i>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <div class="d-flex mr-auto">
@@ -123,7 +103,7 @@
                                                                     <button type="button" class="btn btn-secondary">Batal</button>
                                                                 </a>
                                                                 <a class="btn" style="background-color:#212120; color:white" onclick="stepper.previous()">Sebelumnya</a>
-                                                                <button type="submit" class="btn" onclick="hitung()" style="background-color:#212120; color:white">Tambah</button>
+                                                                <button type="submit" class="btn" onclick="hitung()" style="background-color:#212120; color:white">Edit</button>
                                                             </div>
                                                         </div>
                                                     </form>
@@ -224,6 +204,18 @@
         document.getElementById('total_harga').value = tot;
     }
 
+    $(document).ready(function hitung() {
+        console.log('hitung')
+        var arr = document.getElementsByName('total[]');
+        var tot = 0;
+        for (var i = 0; i < arr.length; i++) {
+            if (parseInt(arr[i].value))
+                tot += parseInt(arr[i].value);
+        }
+        document.getElementById('total_harga_piutang').value = tot;
+        document.getElementById('total_harga').value = tot;
+    });
+
 
     function isi(x) {
         // console.log(x)
@@ -240,8 +232,8 @@
                 } else if (data.retur) {
                     $(x).parent().parent().children().children('#tanggal_piutang').val(data.retur.tanggal)
                 }
-                $(x).parent().parent().children().children().children('#total').val(data.piutang.total_piutang)
-                $(x).parent().parent().children().children().children('#total_piutang').val(data.piutang.total_piutang)
+                $(x).parent().parent().children().children().children('#total').val(data.piutang.sisa)
+                $(x).parent().parent().children().children().children('#total_piutang').val(data.piutang.sisa)
             }
         })
     }
