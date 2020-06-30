@@ -17,10 +17,10 @@
 
 <body>
     @include('stock.partials.sidebar')
+    @section('content')
 
     <div class="main-content">
         <div class="main-container">
-            @section('content')
             <div class="top-menu">
 
                 <a href="#" onclick="toggleSidebar()"> <i class="fas fa-bars"></i></a>

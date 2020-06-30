@@ -3,9 +3,15 @@
     {{-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
       Launch demo modal
     </button> --}}
-    <link rel="stylesheet" href="{{asset('css/stock/bootstrap.css')}}">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bs-stepper/dist/css/bs-stepper.min.css">
+    <link rel="stylesheet" href="{{asset('vendor/stock/bootstrap/css/bootstrap.min.css')}}">
+    <link href="{{asset('vendor/stock/fonts/circular-std/style.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{asset('css/stock/style.css')}}">
+    <link rel="stylesheet" href="{{asset('vendor/stock/fonts/fontawesome/css/fontawesome-all.css')}}">
+
+    <link rel="stylesheet" type="text/css" href="{{ asset('vendor/stock/bootstrap-select/css/bootstrap-select.css')}}">
+
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true" data-backdrop="static">
@@ -64,12 +70,13 @@
                                     <div id="test-l-1" class="content">
                                         <div class="form-goup">
                                             <label for="kodeKategori">Kode Barang </label>
-                                            <input class="form-control" type="text" id="kodeKategori"
+                                            <input class="form-control form-control-lg" type="text" id="kodeKategori"
                                                 name="kode_barang">
                                         </div>
                                         <div class="form-group">
                                             <label for="namaKategori">Kategori Barang </label>
-                                            <select class="form-control" name="kategori_barang" id="namaKategori">
+                                            <select class="selectpicker" data-width="100%" name="kategori_barang"
+                                                id="namaKategori">
                                                 @foreach ($kategoriBarang as $itemCat)
                                                 <option value={{$itemCat->id}}>{{$itemCat->nama_kategori}}</option>
                                                 @endforeach
@@ -77,12 +84,12 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="namaBarang">Nama Barang </label>
-                                            <input class="form-control" type="text" id="kodeKategori"
+                                            <input class="form-control form-control-lg" type="text" id="kodeKategori"
                                                 name="nama_barang">
                                         </div>
                                         <div class="form-group">
                                             <label for="jenisBarang">Jenis Barang</label>
-                                            <input class="form-control" id="jenisBarang" type="text"
+                                            <input class="form-control form-control-lg" id="jenisBarang" type="text"
                                                 name="jenis_barang">
                                         </div>
                                         <div class="form-group">
@@ -115,8 +122,8 @@
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text">Rp</div>
                                                 </div>
-                                                <input type="number" min="0" class="form-control" id="hargaRetail"
-                                                    placeholder="20.000" name="harga_retail">
+                                                <input type="number" min="0" class="form-control form-control-lg"
+                                                    id="hargaRetail" placeholder="20.000" name="harga_retail">
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -125,13 +132,13 @@
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text">Rp</div>
                                                 </div>
-                                                <input type="number" min="0" class="form-control" id="hargaGrosir"
-                                                    placeholder="20.000" name="harga_grosir">
+                                                <input type="number" min="0" class="form-control form-control-lg"
+                                                    id="hargaGrosir" placeholder="20.000" name="harga_grosir">
                                             </div>
                                         </div>
                                         <div class="d-flex justify-content-end">
                                             <button type="button" class="mr-2 btn btn-primary"
-                                                onclick="previous()">Previous</button>
+                                                onclick="stepper1.previous()">Previous</button>
                                             <button type="button" class="btn btn-primary"
                                                 onclick="stepper1.next()">Next</button>
 
@@ -140,28 +147,29 @@
                                     <div id="test-l-3" class="content">
                                         <div class="form-group">
                                             <label for="akunHpp">Akun Hpp</label>
-                                            <input id="akunHpp" class="form-control" name="akun_hpp" type="text">
+                                            <input id="akunHpp" class="form-control form-control-lg" name="akun_hpp"
+                                                type="text">
                                         </div>
                                         <div class="form-group" for="akunPersediaan">
                                             <label for="akunPersediaan">Akun Persediaan</label>
-                                            <input id="akunPersediaan" class="form-control" name="akun_persediaan"
-                                                type="text">
+                                            <input id="akunPersediaan" class="form-control form-control-lg"
+                                                name="akun_persediaan" type="text">
                                         </div>
                                         <div class="form-group">
                                             <label for="akunPenjualan">Akun Penjualan</label>
-                                            <input id="akunPenjualan" class="form-control" name="akun_penjualan"
-                                                type="text">
+                                            <input id="akunPenjualan" class="form-control form-control-lg"
+                                                name="akun_penjualan" type="text">
                                         </div>
                                         <div class="form-group">
                                             <label for="akunPembelian">Akun Pembelian</label>
-                                            <input class="form-control" id="akunPembelian" name="akun_pembelian"
-                                                type="text">
+                                            <input class="form-control form-control-lg" id="akunPembelian"
+                                                name="akun_pembelian" type="text">
                                         </div>
                                         <div class="form-group"></div>
                                         <div class="d-flex justify-content-end">
 
-                                            <button type="button" class="btn btn-primary"
-                                                onclick="previous()">Previous</button>
+                                            <button type="button" class="btn mr-2 btn-primary"
+                                                onclick="stepper1.previous()">Previous</button>
                                             <button type="button" class="btn btn-primary"
                                                 onclick="stepper1.next()">Next</button>
                                         </div>
@@ -169,20 +177,20 @@
                                     <div id="test-l-4" class="content">
                                         <div class="form-group">
                                             <label for="">Pajak</label>
-                                            <input type="text" name="pajak_id" class="form-control">
+                                            <input type="text" name="pajak_id" class="form-control form-control-lg">
                                         </div>
                                         <div class="form-group">
                                             <label for="">Gambar</label>
-                                            <input name="item_image" class="form-control-file" type="file">
+                                            <input name="item_image" class="form-control form-control-lg-file"
+                                                type="file">
                                         </div>
                                         <div class="form-group"></div>
                                         <div class="d-flex justify-content-end">
 
-                                            <button type="button" class="btn btn-primary"
-                                                onclick="previous()">Previous</button>
+                                            <button type="button" class="mr-2 btn btn-primary"
+                                                onclick="stepper1.previous()">Previous</button>
 
-                                            <button type="submit" style="background-color: #0DD3DC; color: white"
-                                                class="btn">Submit</button>
+                                            <button type="submit" style="" class="btn btn-dark">Submit</button>
                                         </div>
                                     </div>
                                 </form>
@@ -197,24 +205,25 @@
     <script src="https://code.jquery.com/jquery-3.4.1.js"
         integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
-    </script>
-
-
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+    <script src="{{asset('vendor/stock/bootstrap/js/bootstrap.bundle.js')}}"></script>
+    <!-- slimscroll js-->
+    <script src="{{asset('vendor/stock/slimscroll/jquery.slimscroll.js')}}"></script>
+    <script src="{{asset('js/stock/main-js.js')}}"></script>
+
+    <script src="{{asset('vendor/stock/bootstrap-select/js/bootstrap-select.js')}}"></script>
+
+
+
     <script>
         var stepper1 = new Stepper(document.querySelector('#stepper1'))
         var stepper1Node = document.querySelector('#stepper1')
   
-        stepper1Node.addEventListener('show.bs-stepper', function (event) {
-          console.warn('show.bs-stepper', event)
-        })
-        stepper1Node.addEventListener('shown.bs-stepper', function (event) {
-          console.warn('shown.bs-stepper', event)
-        })    
       
       function next()
       {

@@ -27,7 +27,7 @@ class PemasoksController extends Controller
     {
         $pemasoks = Pemasok::all();
 
-        return view('stock.Management-Data.pemasok', [
+        return view('stock.management-data.pemasok', [
             'pemasoks' => $pemasoks,
         ]);
     }

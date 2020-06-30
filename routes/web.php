@@ -98,7 +98,7 @@ Route::prefix('stok')->group(function () {
             'barang' => "Stock\ItemResourceController",
             'satuan-unit' => "Stock\UnitsResourceController",
             'gudang' => "Stock\WarehouseController",
-            // 'pemasok' => "Stock\SuppliersResourceController",
+            'supplier' => "Stock\SuppliersResourceController",
             'pajak' => "Stock\TaxResourceController",
             'coa-master' => "Stock\COAMasterController",
             'coa-type' => "Stock\COATypeController",

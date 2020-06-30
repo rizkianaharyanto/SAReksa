@@ -25,7 +25,7 @@ class UnitsResourceController extends Controller
         //
       
         $allUnits = $this->model->all();
-        return view('stock.Management-Data/satuan-unit', compact("allUnits"));
+        return view('stock.management-data.satuan-unit', compact("allUnits"));
     }
 
     /**
