@@ -36,6 +36,7 @@
                 <span></span>
             </i>
         </a>
+        @if (auth()->user()->role == 'penjualan')
         @if($faktur->status_posting == 'belum posting')
         <a id="edit" href="/penjualan/fakturs/{{$faktur->id}}/edit">
             <i style="cursor: pointer;color:#212120" class="fas fa-edit">
@@ -53,6 +54,7 @@
                 <span></span>
             </i>
         </a>
+        @endif
     </td>
 </tr>
 
@@ -73,8 +75,9 @@ $delete = "delete-".$faktur->id
 @endsection
 
 @section('tambah')
+@if (auth()->user()->role == 'penjualan')
 <a href="/penjualan/fakturs/create">
 <a href="/penjualan/fakturs/create" class="btn" style="background-color:#212120; color:white" >Tambah</a>
-
 </a>
+@endif
 @endsection

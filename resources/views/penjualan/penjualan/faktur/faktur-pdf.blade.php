@@ -69,7 +69,7 @@
                     <td id="subtotal">{{$subtotal}}</td>
                 </tr>
                 <tr>
-                    <td colspan="4" class="text-right pr-3">diskon</td>
+                    <td colspan="4" class="text-right pr-3">Diskon</td>
                     <td id="diskon">{{$diskon}}</td>
                 </tr>
                 <tr>

@@ -25,6 +25,7 @@ class PenawaransController extends Controller
         return view('penjualan.penjualan.penawaran.penawaran', compact('penawarans'));
     }
 
+    
     /**
      * Show the form for creating a new resource.
      *
@@ -32,6 +33,7 @@ class PenawaransController extends Controller
      */
     public function create()
     {
+
         return view('penjualan.penjualan.penawaran.penawaraninsert', [
             'pelanggans' => Pelanggan::all(),
             'barangs' => Barang::all(),
@@ -48,6 +50,8 @@ class PenawaransController extends Controller
      */
     public function store(Request $request)
     {
+        session()->flash('message', 'Penawaran berhasil ditambahkan');
+        session()->flash('status', 'tambah');
         $pnw = Penawaran::max('id') + 1;
         $penawaran = Penawaran::create([
             'kode_penawaran' => 'PNW-'.$pnw,
@@ -83,6 +87,8 @@ class PenawaransController extends Controller
     public function show($id)
     {
         $penawaran = Penawaran::find($id);
+        dd($id);
+
         $barangs = $penawaran->barangs;
         // $unit = $barangs->unit;
         return response()
@@ -94,7 +100,7 @@ class PenawaransController extends Controller
         $penawaran = Penawaran::find($id);
         $gudang = Gudang::find($penawaran->gudang);
         $barangs = $penawaran->barangs;
-        $diskon = $penawaran->diskon.'%';
+        $diskon = $penawaran->diskon_rp;
         $biaya_lain = $penawaran->biaya_lain;
         $total_seluruh = $penawaran->total_harga;
         $total_harga = [];
@@ -118,10 +124,11 @@ class PenawaransController extends Controller
 
     public function cetak_pdf(Request $request)
     {
+        // dd($request);
         $penawaran = Penawaran::find($request->id);
         $gudang = Gudang::find($penawaran->gudang);
         $barangs = $penawaran->barangs;
-        $diskon = $penawaran->diskon.'%';
+        $diskon = $penawaran->diskon_rp;
         $biaya_lain = $penawaran->biaya_lain;
         $total_seluruh = $penawaran->total_harga;
         $total_harga = [];
@@ -171,6 +178,8 @@ class PenawaransController extends Controller
      */
     public function update(Request $request, Penawaran $penawaran)
     {
+        session()->flash('message', 'Penawaran berhasil diubah');
+        session()->flash('status', 'tambah');
         Penawaran::where('id', $penawaran->id)
             ->update([
                 'kode_penawaran' => $request->kode_penawaran,
@@ -209,6 +218,8 @@ class PenawaransController extends Controller
      */
     public function destroy(Penawaran $penawaran)
     {
+        session()->flash('message', 'Penawaran berhasil dihapus');
+        session()->flash('status', 'hapus');
         Penawaran::destroy($penawaran->id);
         return redirect('/penjualan/penawarans');
     }

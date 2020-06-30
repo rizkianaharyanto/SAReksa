@@ -11,7 +11,6 @@
     <th>Pelanggan</th>
     <th>Tanggal</th>
     <th>Total</th>
-    <th>Status</th>
     <th>Posting</th>
     <th style="column-width: 80px">Aksi</th>
 </tr>
@@ -24,7 +23,6 @@
     <td>{{ $retur->pelanggan->nama_pelanggan }}</td>
     <td>{{ $retur->tanggal }}</td>
     <td>{{ $retur->total_harga }}</td>
-    <td>{{ $retur->status !=null ? $retur->status  : '-' }}</td>
     <td>
         @if($retur->status_posting == 'belum posting')Belum
         @else Sudah
@@ -36,6 +34,7 @@
                 <span></span>
             </i>
         </a>
+        @if (auth()->user()->role == 'retur')
         @if($retur->status_posting == 'belum posting')
         <a id="edit" href="/penjualan/returs/{{$retur->id}}/edit">
             <i style="cursor: pointer;color:#212120" class="fas fa-edit">
@@ -53,6 +52,7 @@
                 <span></span>
             </i>
         </a>
+        @endif
     </td>
 </tr>
 
@@ -74,8 +74,9 @@ $delete = "delete-".$retur->id
 
 
 @section('tambah')
+@if (auth()->user()->role == 'retur')
 <a href="/penjualan/returs/create">
 <a href="/penjualan/returs/create" class="btn" style="background-color:#212120; color:white" >Tambah</a>
-
 </a>
+@endif
 @endsection

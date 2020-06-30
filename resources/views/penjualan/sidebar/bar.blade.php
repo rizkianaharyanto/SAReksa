@@ -8,7 +8,7 @@
                     <span class="navbar-toggler-bar bar3"></span>
                 </button>
             </div>
-            <a class="navbar-brand" href="">Sistem Informasi Penjualan</a>
+            <a class="navbar-brand" href="/penjualan/">Sistem Informasi Penjualan</a>
         </div>
         <div class="ml-2" style="font-size: 20px;">
         @yield('menu')
@@ -36,7 +36,7 @@
                             @csrf
                         </form>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" onclick="document.getElementById('formLogOut').submit();">{{ __('Log out') }}</a>
+                            <a class="dropdown-item" href='/penjualan/logout'>{{ __('Log out') }}</a>
                         </div>
                     </div>
                 </li>

@@ -46,7 +46,12 @@ return [
             'provider' => 'users',
             'hash' => false,
         ],
+        'user' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
     ],
+    
 
     /*
     |--------------------------------------------------------------------------
@@ -71,6 +76,10 @@ return [
             'model' => App\User::class,
         ],
 
+        'users' => [
+            'driver' => 'eloquent',
+            'model' => App\Penjualan\User::class,
+        ],
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',

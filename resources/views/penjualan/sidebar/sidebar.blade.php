@@ -5,8 +5,12 @@
                 <img alt='icon' class='icon'  src="/img/penjualan/avatar.png">
             </div>
         </a>
-        <a href="" class="simple-text logo-normal">
-            {{ __('ADMIN PENJUALAN') }}
+        <a href="" class="simple-text logo-normal" style='font-size:15px'>
+            @if (auth()->user()->role == 'piutang' || auth()->user()->role == 'penjualan' || auth()->user()->role == 'retur')
+                ADMIN {{auth()->user()->role}}
+            @else
+                Direksi Perusahaan
+            @endif
         </a>
     </div>
     <div class="sidebar-wrapper">
@@ -22,9 +26,9 @@
             <li class="{{ $elementActive == 'user' || $elementActive == 'profile' ? 'active' : '' }}">
                 <a data-toggle="collapse" aria-expanded="true" href="#laravelExamples">
                     <i class="">                        <img alt='icon' width='25px' class='icon' src="/img/penjualan/storage (2).png" style="filter:invert(100%)">
-</i>
+                    </i>
                     <p>
-                            {{ __('Data Master') }}
+                        {{ __('Data Master') }}
                         <b class="caret"></b>
                     </p>
                 </a>
@@ -54,21 +58,10 @@
                                 <span class="sidebar-normal">{{ __(' Gudang ') }}</span>
                             </a>
                         </li>
-                        <li class="{{ $elementActive == 'akun' ? 'active' : '' }}">
-                            <a href="/penjualan/akuns">
-                                <span class="sidebar-mini-icon">{{ __('AK') }}</span>
-                                <span class="sidebar-normal">{{ __(' Akun ') }}</span>
-                            </a>
-                        </li>
-                        <li class="{{ $elementActive == 'pajak' ? 'active' : '' }}">
-                            <a href="/penjualan/pajaks">
-                                <span class="sidebar-mini-icon">{{ __('PJ') }}</span>
-                                <span class="sidebar-normal">{{ __(' Pajak ') }}</span>
-                            </a>
-                        </li>
                     </ul>
                 </div>
             </li>
+            @if (auth()->user()->role == 'penjualan')
             <li class="{{ $elementActive == 'penawaran' ? 'active' : '' }}">
                 <a href="/penjualan/penawarans">
                     <i class="">
@@ -90,11 +83,12 @@
                 <a href="/penjualan/pengirimans">
                     <i class="">
                         <img alt='icon' width='25px' class='icon' src="/img/penjualan/pengiriman.png" style="filter:invert(100%)">
-
                     </i>
                     <p>{{ __('Pengiriman') }}</p>
                 </a>
             </li>
+            @endif
+            @if (auth()->user()->role == 'piutang' || auth()->user()->role == 'penjualan' || auth()->user()->role == 'retur')
             <li class="{{ $elementActive == 'faktur' ? 'active' : '' }}">
                 <a href="/penjualan/fakturs">
                     <i class="">
@@ -103,6 +97,8 @@
                     <p>{{ __('Faktur') }}</p>
                 </a>
             </li>
+            @endif
+            @if (auth()->user()->role == 'piutang' || auth()->user()->role == 'retur')
             <li class="{{ $elementActive == 'retur' ? 'active' : '' }}">
                 <a href="/penjualan/returs">
                     <i class="">
@@ -111,6 +107,8 @@
                     <p>{{ __('Retur Penjualan') }}</p>
                 </a>
             </li>
+            @endif
+            @if (auth()->user()->role == 'piutang')
             <li class="{{ $elementActive == 'piutang' ? 'active' : '' }}">
                 <a href="/penjualan/piutangs">
                     <i class="">
@@ -128,6 +126,8 @@
                     <p>{{ __('Pembayaran Piutang') }}</p>
                 </a>
             </li>
+            @endif
+            @if (auth()->user()->role == 'direksi')
             <li class="{{ $elementActive == 'jurnal' ? 'active' : '' }}">
                 <a href="/penjualan/jurnals">
                     <i class="">
@@ -136,6 +136,16 @@
                     <p>{{ __('Jurnal') }}</p>
                 </a>
             </li>
+            <li class="{{ $elementActive == 'laporan' ? 'active' : '' }}">
+                <a href="/penjualan/laporans">
+                    <i class="">
+                    <img alt='icon' width='25px' class='icon' src="/img/penjualan/laporan.png" style="filter:invert(100%)">
+                    </i>
+                    <p>{{ __('Laporan') }}</p>
+                </a>
+            </li>
+            @endif
         </ul>
     </div>
 </div>
+

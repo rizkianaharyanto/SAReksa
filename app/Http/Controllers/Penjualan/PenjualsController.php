@@ -41,6 +41,8 @@ class PenjualsController extends Controller
      */
     public function store(Request $request)
     {
+        session()->flash('message', 'Penjual berhasil ditambahkan');
+        session()->flash('status', 'tambah');
         $pnj = Penjual::max('id') + 1;
         $penjual = new Penjual;
         $penjual->kode_penjual = 'SAL-'.$pnj;
@@ -84,6 +86,9 @@ class PenjualsController extends Controller
      */
     public function update(Request $request,Penjual $penjual)
     {
+
+        session()->flash('message', 'Penjual berhasil diubah');
+        session()->flash('status', 'tambah');
         Penjual::where('id', $penjual->id)
             ->update([
                 'nama_penjual' => $request->nama_penjual,
@@ -104,6 +109,8 @@ class PenjualsController extends Controller
      */
     public function destroy(Penjual $penjual)
     {
+        session()->flash('message', 'Penjual berhasil dihapus');
+        session()->flash('status', 'hapus');
         Penjual::destroy($penjual->id);
         return redirect('/penjualan/penjuals');
     }

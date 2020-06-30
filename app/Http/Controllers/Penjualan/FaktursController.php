@@ -11,6 +11,7 @@ use App\Penjualan\Pengiriman;
 use App\Penjualan\Pemesanan;
 use App\Penjualan\Pelanggan;
 use App\Penjualan\Penjual;
+use App\Services\Stock\ItemService;
 use App\Stock\Barang;
 use App\Stock\Gudang;
 use App\Penjualan\Pemasok;
@@ -18,6 +19,17 @@ use PDF;
 
 class FaktursController extends Controller
 {
+    private $itemService;
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function __construct(ItemService $itemService)
+    {
+        $this->itemService = $itemService;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -52,8 +64,30 @@ class FaktursController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ItemService $itmSrv,Request $request)
     {
+        //Cek
+        // dd($request);
+        $stok = 0;
+        if($request->pemesanan_id){
+            $allDataBarang = $itmSrv->getAllStocksQty();
+            // dd($allDataBarang[16]);
+            foreach ($request->barang_id as $index => $id) {
+                $kirim = $request->jumlah_barang[$index];
+                foreach($allDataBarang as $databarang){
+                    if($databarang['id'] == $id){
+                        $stok = $databarang['kuantitas_total'];
+                    }
+                }
+                if($stok < $request->jumlah_barang[$index]){
+                    session()->flash('message', 'Faktur gagal. Stok kurang');
+                    session()->flash('status', 'gagal');
+                    return redirect()->back()->with('message', 'Faktur gagal. Stok kurang');
+                }
+            };
+        }
+        session()->flash('message', 'Faktur berhasil ditambahkan');
+        session()->flash('status', 'tambah');
         $fak = Faktur::max('id') + 1;
         $faktur = Faktur::create([
             'kode_faktur' => 'FKJ-'.$fak,
@@ -62,11 +96,12 @@ class FaktursController extends Controller
             'status' => $request->status,
             'status_posting' => 'belum posting',
             'tanggal' => $request->tanggal,
+            'gudang' => $request->gudang,
             'diskon' => $request->diskon,
             'diskon_rp' => $request->disk,
             'biaya_lain' => $request->biaya_lain,
             'uang_muka' => $request->uang_muka,
-            // 'total_jenis_barang' => 3,
+            'akun_barang' => $request->akun_barang,
             'total_harga' => $request->total_harga_keseluruhan,
             'penjual_id' => $request->penjual_id,
         ]);
@@ -92,6 +127,8 @@ class FaktursController extends Controller
 
     public function posting($idnya)
     {
+        session()->flash('message', 'Faktur berhasil diposting');
+        session()->flash('status', 'tambah');
         $faktur = Faktur::find($idnya);
         Faktur::where('id', $faktur->id)
                     ->update(['status_posting' => 'sudah posting']);
@@ -103,6 +140,8 @@ class FaktursController extends Controller
                 'pelanggan_id' => $faktur->pelanggan_id,
                 'total_piutang' => $faktur->total_harga,
                 'faktur_id' => $faktur->id,
+                'sisa' => $faktur->total_harga,
+                'status' => 'piutang',
         ]);
             $faktur->update(['piutang_id' => $piutang->id]);
         }
@@ -131,6 +170,70 @@ class FaktursController extends Controller
             }
         }
 
+        //Jurnals
+        if ($faktur->status == 'piutang') {
+            $no = Jurnal::max('id') + 1;
+            for ($i = 1; $i < 5; ++$i) {
+                $jurnal = Jurnal::create([
+                        'kode_jurnal' => 'jur'.$no,
+                        'faktur_id' => $faktur->id,
+                        'debit' => 0,
+                        'kredit' => 0,
+                    ]);
+                if ($i == 1) {
+                    $jurnal->update([
+                            'kredit' => $faktur->akun_barang - $faktur->uang_muka,
+                            'akun_id' => 1, //barang
+                        ]);
+                } elseif ($i == 2) {
+                    $jurnal->update([
+                            'kredit' => $faktur->biaya_lain,
+                            'akun_id' => 3, //biayalain
+                        ]);
+                } elseif ($i == 3) {
+                    $jurnal->update([
+                            'debit' => $faktur->piutang->total_piutang,
+                            'akun_id' => 4, //piutang
+                        ]);
+                } elseif ($i == 4) {
+                    $jurnal->update([
+                            'debit' => $faktur->diskon_rp,
+                            'akun_id' => 5, //diskon
+                        ]);
+                }
+            }
+        } elseif ($faktur->status == 'lunas') {
+            $no = Jurnal::max('id') + 1;
+            for ($i = 1; $i < 5; ++$i) {
+                $jurnal = Jurnal::create([
+                        'kode_jurnal' => 'jur'.$no,
+                        'faktur_id' => $faktur->id,
+                        'debit' => 0,
+                        'kredit' => 0,
+                    ]);
+                if ($i == 1) {
+                    $jurnal->update([
+                            'debit' => $faktur->akun_barang - $faktur->uang_muka,
+                            'akun_id' => 1, //barang
+                        ]);
+                } elseif ($i == 2) {
+                    $jurnal->update([
+                            'debit' => $faktur->biaya_lain,
+                            'akun_id' => 3, //biayalain
+                        ]);
+                } elseif ($i == 3) {
+                    $jurnal->update([
+                            'kredit' => $faktur->hutang->total_hutang,
+                            'akun_id' => 6, //kas
+                        ]);
+                } elseif ($i == 4) {
+                    $jurnal->update([
+                            'kredit' => $faktur->diskon_rp,
+                            'akun_id' => 5, //diskon
+                        ]);
+                }
+            }
+        }
         return redirect('/penjualan/fakturs');
     }
     /**
@@ -211,6 +314,7 @@ class FaktursController extends Controller
      */
     public function edit(Faktur $faktur)
     {
+        // dd($faktur);
         return view('penjualan.penjualan.faktur.fakturedit', [
             'faktur' => $faktur,
             'penjuals' => Penjual::all(),
@@ -229,8 +333,30 @@ class FaktursController extends Controller
      * @param  \App\Faktur  $faktur
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Faktur $faktur)
+    public function update(ItemService $itmSrv, Request $request, Faktur $faktur)
     {
+        //cek
+        $stok = 0;
+        if($faktur->pemesanan_id){
+            $allDataBarang = $itmSrv->getAllStocksQty();
+            // dd($allDataBarang[16]);
+            foreach ($request->barang_id as $index => $id) {
+                $kirim = $request->jumlah_barang[$index];
+                foreach($allDataBarang as $databarang){
+                    if($databarang['id'] == $id){
+                        $stok = $databarang['kuantitas_total'];
+                    }
+                }
+                if($stok < $request->jumlah_barang[$index]){
+                    session()->flash('message', 'Faktur gagal. Stok kurang');
+                    session()->flash('status', 'gagal');
+                    return redirect()->back()->with('message', 'Faktur gagal. Stok kurang');
+                }
+            };
+        }
+        // dd($request);
+        session()->flash('message', 'Faktur berhasil diedit');
+        session()->flash('status', 'tambah');
         Faktur::where('id', $faktur->id)
         ->update([
             'pelanggan_id' => $request->pelanggan_id,
@@ -240,7 +366,7 @@ class FaktursController extends Controller
             'total_harga' => $request->total_harga_keseluruhan,
             'penjual_id' => $request->penjual_id,
             'uang_muka' => $request->uang_muka,
-            'diskon_rp' => $request->diskon_rp,
+            'diskon_rp' => $request->disk,
             'status' => $request->status,
         ]);
         $faktur->barangs()->detach();
@@ -263,6 +389,8 @@ class FaktursController extends Controller
      */
     public function destroy(Faktur $faktur)
     {
+        session()->flash('message', 'Faktur berhasil dihapus');
+        session()->flash('status', 'hapus');
         Faktur::destroy($faktur->id);
         return redirect('/penjualan/fakturs');
     }
