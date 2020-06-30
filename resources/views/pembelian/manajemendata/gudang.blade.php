@@ -4,6 +4,11 @@
 
 @section('halaman', 'Gudang')
 
+@section('path')
+<li><a href="#">Manajemen Data</a></li>
+<li class="active">Data Gudang</li>
+@endsection
+
 @section('thead')
 <tr>
     <th>Kode Gudang</th>
@@ -23,9 +28,9 @@
     <td>{{ $gudang->status }}</td>
     <!-- <td class="d-flex justify-content-between">
         <a id="details" data-toggle="modal" data-target="#modal" data-id="{{ $gudang->id }}">
-            <i onmouseover="tulisan()" style="cursor: pointer;" class="fas fa-info-circle">
+            <button class="btn-info"><i style="cursor: pointer;" class="fas fa-info-circle">
                 <span></span>
-            </i>
+            </i></button>
         </a>
     </td> -->
 </tr>

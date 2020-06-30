@@ -36,6 +36,15 @@ class RetursController extends Controller
         return view('pembelian.pembelian.retur.laporan-retur', compact('returs'));
     }
 
+    public function laporanfilter(Request $date)
+    {
+        $returs = Retur::select("pbl_returs.*")
+            ->whereBetween('tanggal', [$date->start, $date->end])
+            ->get();
+
+            return view('pembelian.pembelian.retur.laporan-retur', compact('returs'));
+    }
+
     public function cetaklaporan()
     {
         $returs = Retur::all();

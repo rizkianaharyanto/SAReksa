@@ -18,8 +18,9 @@ Route::get('/', function () {
 });
 
 Route::prefix('pembelian')->group(function () {
+    
     Route::get('/', function () {
-        return view('pembelian.dashboard');
+        return view('pembelian.template.templatebaru');
     });
 
     Route::get('/ambilgudang', 'Pembelian\GudangsController@ambil');
@@ -36,10 +37,15 @@ Route::prefix('pembelian')->group(function () {
 
     //show laporan
     Route::get('/permintaans/laporan', 'Pembelian\PermintaansController@laporan');
+    Route::get('/permintaans/laporanfilter', 'Pembelian\PermintaansController@laporanfilter');
     Route::get('/pemesanans/laporan', 'Pembelian\PemesanansController@laporan');
+    Route::get('/pemesanans/laporanfilter', 'Pembelian\PemesanansController@laporanfilter');
     Route::get('/penerimaans/laporan', 'Pembelian\PenerimaansController@laporan');
+    Route::get('/penerimaans/laporanfilter', 'Pembelian\PenerimaansController@laporanfilter');
     Route::get('/fakturs/laporan', 'Pembelian\FaktursController@laporan');
+    Route::get('/fakturs/laporanfilter', 'Pembelian\FaktursController@laporanfilter');
     Route::get('/returs/laporan', 'Pembelian\RetursController@laporan');
+    Route::get('/returs/laporanfilter', 'Pembelian\RetursController@laporanfilter');
 
     //cetak laporan
     Route::get('/permintaans/laporanpdf', 'Pembelian\PermintaansController@cetaklaporan');

@@ -32,6 +32,15 @@ class PemesanansController extends Controller
         return view('pembelian.pembelian.pemesanan.laporan-pemesanan', compact('pemesanans'));
     }
 
+    public function laporanfilter(Request $date)
+    {
+        $pemesanans = Pemesanan::select("pbl_pemesanans.*")
+            ->whereBetween('tanggal', [$date->start, $date->end])
+            ->get();
+
+            return view('pembelian.pembelian.pemesanan.laporan-pemesanan', compact('pemesanans'));
+    }
+
     public function cetaklaporan()
     {
         $pemesanans = Pemesanan::all();

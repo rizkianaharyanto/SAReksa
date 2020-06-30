@@ -4,6 +4,11 @@
 
 @section('halaman', 'Faktur')
 
+@section('path')
+<li><a href="#">Transaksi</a></li>
+<li class="active">Faktur</li>
+@endsection
+
 @section('thead')
 <tr>
     <th>Kode Faktur</th>
@@ -33,16 +38,26 @@
     </td>
     <td class="d-flex justify-content-between">
         <a id="details" href="/pembelian/fakturshow/{{$faktur->id}}">
-            <i style="cursor: pointer; " class="fas fa-info-circle">
-                <span></span>
-            </i>
+            <button class="btn-info">
+    
+                <i style="cursor: pointer; " class="fas fa-info-circle">
+                        <span></span>
+                    </i>
+            </button>
         </a>
         @if($faktur->status_posting == null)
         <!-- <a id="edit" href="/pembelian/fakturs/{{$faktur->id}}/edit">
-            <i style="cursor: pointer;" class="fas fa-edit">
-                <span></span>
-            </i>
+            <button class="btn-warning">        
+                <i style="cursor: pointer;" class="fas fa-edit">
+                    <span></span>
+                </i>
+        </button>
         </a>
+        <form method="POST" action="/pembelian/fakturs/{{$faktur->id}}">
+            @method('delete')
+            @csrf
+            <button type="submit" class="btn btn-danger">Hapus</button>
+        </form>
         <a id="delete" data-toggle="modal" data-target="#delete-{{$faktur->id}}">
             <i style="cursor: pointer;" class="fas fa-trash">
                 <span></span>
@@ -70,13 +85,7 @@ $delete = "delete-".$faktur->id
 
 @section('tambah')
 <a href="/pembelian/fakturs/create">
-    <i class="fas fa-plus mr-4" style="font-size:30px;color:#00BFA6; cursor: pointer;">
-        <span></span>
-    </i>
+    <button class="btn-sm btn-info">Tambah</button>
 </a>
-<a href="/pembelian/fakturs/laporan">
-      <i id="filter" onmouseover="tulisan()" class="fas fa-file-alt mr-4" style="font-size:25px;color:#00BFA6;cursor: pointer;">
-        <span></span>
-      </i>
-    </a>
+
 @endsection

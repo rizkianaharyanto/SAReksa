@@ -4,6 +4,11 @@
 
 @section('halaman', 'Hutang')
 
+@section('path')
+<li><a href="#">Hutang</a></li>
+<li class="active">Hutang</li>
+@endsection
+
 @section('thead')
 <tr>
     <th>Pemasok</th>
@@ -23,7 +28,9 @@
     <td>{{ $sisas[$index]['sisa']}}</td>
     <td class="d-flex justify-content-between">
         <a href="/pembelian/hutangs/{{$pemasok->id}}">
-            <i onclick="" class="fas fa-info-circle"></i>
+        <button class="btn-outline-info">
+            <i class="fas fa-info-circle"></i>
+        </button>
         </a>
     </td>
 </tr>

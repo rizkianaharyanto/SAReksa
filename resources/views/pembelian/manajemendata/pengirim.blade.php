@@ -8,6 +8,11 @@
 <a href="/pembelian/pengirim/create">Tambah Pengirim</a>
 endsection -->
 
+@section('path')
+<li><a href="#">Manajemen Data</a></li>
+<li class="active">Data Pengirim</li>
+@endsection
+
 @section('thead')
 <tr>
     <th>Kode Pengirim</th>
@@ -27,19 +32,19 @@ endsection -->
     <td>{{ $pengirim->telp_pengirim }}</td>
     <td class="d-flex justify-content-between">
         <a id="details" data-toggle="modal" data-target="#modal" data-id="{{ $pengirim->id }}" data-sup="{{ $pengirim->pemasok->nama_pemasok }}">
-            <i style="cursor: pointer;" class="fas fa-info-circle">
+            <button class="btn-info"><i style="cursor: pointer;" class="fas fa-info-circle">
                 <span></span>
-            </i>
+            </i></button>
         </a>
         <a id="edit" data-toggle="modal" data-target="#modal" data-id="{{ $pengirim->id }}" data-sup="{{ $pengirim->pemasok->nama_pemasok }}">
-            <i style="cursor: pointer;" class="fas fa-edit">
+            <button class="btn-warning"><i style="cursor: pointer;" class="fas fa-edit">
                 <span></span>
-            </i>
+            </i></button>
         </a>
         <a id="delete" data-toggle="modal" data-target="#modal" data-id="{{ $pengirim->id }}">
-            <i style="cursor: pointer;" class="fas fa-trash">
+            <button class="btn-danger"><i style="cursor: pointer;" class="fas fa-trash">
                 <span></span>
-            </i>
+            </i></button>
         </a>
     </td>
 </tr>
@@ -163,9 +168,7 @@ endsection -->
 <!-- Tambah -->
 @section('tambah')
 <a data-toggle="modal" data-target="#modaltambah">
-    <i id="tambah" class="fas fa-plus mr-4" style="font-size:30px;color:#00BFA6; cursor: pointer;">
-        <span></span>
-    </i>
+<button class="btn-sm btn-info">Tambah</button>
 </a>
 @endsection
 

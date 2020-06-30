@@ -36,6 +36,15 @@ class FaktursController extends Controller
         return view('pembelian.pembelian.faktur.laporan-faktur', compact('fakturs'));
     }
 
+    public function laporanfilter(Request $date)
+    {
+        $fakturs = Faktur::select("pbl_fakturs.*")
+            ->whereBetween('tanggal', [$date->start, $date->end])
+            ->get();
+
+            return view('pembelian.pembelian.faktur.laporan-faktur', compact('fakturs'));
+    }
+
     public function cetaklaporan()
     {
         $fakturs = Faktur::all();
@@ -70,6 +79,7 @@ class FaktursController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
         $fak = Faktur::max('id') + 1;
         $faktur = Faktur::create([
             'kode_faktur' => 'FAK-'.$fak,
@@ -102,6 +112,7 @@ class FaktursController extends Controller
                 'status' => 'hutang',
             ]);
             $faktur->update(['hutang_id' => $hutang->id]);
+            
         }
 
         if ($request->pemesanan_id) {
@@ -200,7 +211,7 @@ class FaktursController extends Controller
                         ]);
                 } elseif ($i == 3) {
                     $jurnal->update([
-                            'kredit' => $faktur->hutang->total_hutang,
+                            'kredit' => $faktur->total_harga,
                             'akun_id' => 6, //kas
                         ]);
                 } elseif ($i == 4) {
