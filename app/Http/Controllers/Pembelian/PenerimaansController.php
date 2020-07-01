@@ -42,6 +42,15 @@ class PenerimaansController extends Controller
         return view('pembelian.pembelian.penerimaan.laporan-penerimaan', compact('penerimaans'));
     }
 
+    public function laporanfilter(Request $date)
+    {
+        $penerimaans = Penerimaan::select("pbl_penerimaans.*")
+            ->whereBetween('tanggal', [$date->start, $date->end])
+            ->get();
+
+            return view('pembelian.pembelian.penerimaan.laporan-penerimaan', compact('penerimaans'));
+    }
+
     public function cetaklaporan()
     {
         $penerimaans = Penerimaan::all();

@@ -1,8 +1,14 @@
 @extends('pembelian.template.table')
 
-@section('judul', 'Hutang')
+@section('judul', 'Hutang Details')
 
 @section('halaman', 'Hutang')
+
+@section('path')
+<li><a href="#">Hutang</a></li>
+<li><a href="/pembelian/hutangs">Hutang</a></li>
+<li class="active">Hutang Details</li>
+@endsection
 
 @section('thead')
 <tr>

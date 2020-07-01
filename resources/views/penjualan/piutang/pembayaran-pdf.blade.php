@@ -45,7 +45,6 @@
             <thead style="background-color: #212120; color:whitesmoke" >
             <tr>
                                                                 <th>Kode Piutang</th>
-                                                                <th>Tanggal Piutang</th>
                                                                 <th>Total</th>
                                                             </tr>
                                                         </thead>
@@ -53,12 +52,11 @@
                                                             @foreach ($piutangs as $index => $piutang)
                                                             <tr>
                                                                 <td>{{$piutang->kode_piutang}}</td>
-                                                                <td>{{ $piutang->pivot->tanggal ? $piutang->pivot->tanggal : '-' }}</td>
                                                                 <td>{{$piutang->pivot->total}}</td>
                                                             </tr>
                                                             @endforeach
                                                             <tr>
-                                                                <td colspan="2" class="text-right pr-3">Total</td>
+                                                                <td colspan="1" class="text-right pr-3">Total</td>
                                                                 <td id="subtotal">{{$pembayaran->total}}</td>
                                                             </tr>
             </tbody>

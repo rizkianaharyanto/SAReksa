@@ -1,13 +1,19 @@
-@extends('pembelian.template.template')
+@extends('pembelian.template.templatebaru')
 
-@section('judul', 'tambah')
+@section('judul', 'Tambah Faktur')
 
 @section('halaman', 'Tambah Faktur')
+
+@section('path')
+<li><a href="#">Transaksi</a></li>
+<li><a href="/pembelian/fakturs">Faktur</a></li>
+<li class="active">Tambah Faktur</li>
+@endsection
 
 @section('isi')
 
 <div class="d-flex justify-content-center">
-    <div id="stepper" class="bs-stepper align-self-end" style=" width:80vw; max-height:60vh; color:black;">
+    <div id="stepper" class="bs-stepper align-self-end" style=" width:70vw; color:black;">
         <div class="bs-stepper-header">
             <div class="step" data-target="#test-l-1">
                 <button type="button" class="btn step-trigger">
@@ -39,7 +45,7 @@
                     <input type="hidden" id="status" name="status" value="hutang">
                     <input type="hidden" id="akun_barang" name="akun_barang">
                     <input type="hidden" id="hutang" name="hutang">
-                    <div style="height: 58vh;overflow: auto; color:black" class="mt-2">
+                    <div style="overflow: auto; color:black" class="mt-2">
                         <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="pemasok_id">Pemasok</label>
                             <div class="col-sm-9">
@@ -89,7 +95,7 @@
                     </div>
                     <hr>
                     <div style="display:none" id="checkBarang">
-                        <div style="overflow: auto; height: 41vh;" id="formbarang">
+                        <div style="overflow: auto; " id="formbarang">
                             <div class="form-row mx-5" id="isiformbarang0">
                                 <div class="form-group col-md-3">
                                     <label for="barang_id" id="lbl">Barang</label>
@@ -137,7 +143,7 @@
                         </div>
                     </div>
                     <div style="display:none" id="checkPenerimaan">
-                        <div style="overflow: auto; height: 41vh;" id="formpenerimaan">
+                        <div style="overflow: auto; " id="formpenerimaan">
                             <div class="form-row mx-5" id="isiformpenerimaan0">
                                 <div class="form-group col-md-3">
                                     <label for="penerimaan_id">Penerimaan</label>
@@ -192,7 +198,7 @@
                     </div>
                 </div>
                 <div id="test-l-3" class="content">
-                    <div style="height: 58vh;overflow:auto" class="mt-2">
+                    <div style="overflow:auto" class="mt-2">
                         <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="diskon">Diskon</label>
                             <div class="col-sm-3">
@@ -245,17 +251,17 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group row mx-5 mb-5" id="akun-form" style="display: none">
+                        <!-- <div class="form-group row mx-5 mb-5" id="akun-form" style="display: none">
                             <label class="col-sm-3 col-form-label" for="akun">Akun</label>
                             <div class="col-sm-9">
                                 <select class="form-control" id="akun">
                                     <option>--- Pilih Akun ---</option>
-                                    <!-- foreach ($akuns as $akun)
+                                    foreach ($akuns as $akun)
                                 <option> $akun->nama_akun </option>
-                                endforeach -->
+                                endforeach
                                 </select>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="modal-footer">
                         <div class="d-flex mr-auto">

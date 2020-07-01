@@ -4,6 +4,11 @@
 
 @section('halaman', 'Jurnal Khusus Pembelian')
 
+@section('path')
+<li><a href="#">Laporan & Jurnal</a></li>
+<li class="active">Jurnal</li>
+@endsection
+
 @section('isi')
     <div class="d-flex justify-content-end mx-5">
         <!-- <a class="px-2" href="">Export Excel | </a> -->

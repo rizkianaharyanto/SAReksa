@@ -49,6 +49,7 @@
                                                         <input type="hidden" id="pelanggan_id" name="pelanggan_id" value="{{ $faktur->pelanggan_id }}">
                                                         <input type="hidden" id="penjual_id" name="penjual_id" value="{{ $faktur->penjual_id }}">
                                                         <input type="hidden" id="status" name="status" value="{{ $faktur->status }}">
+                                                        <input type="hidden" id="piutang" name="piutang">
                                                             <div style="height: 58vh;overflow: auto; color:black" class="mt-2">
                                                                 <div class="form-group row mx-5 mb-5">
                                                                     <label class="col-sm-3 col-form-label" for="pelanggan_id">Pelanggan</label>
@@ -66,14 +67,6 @@
                                                                         <input type="date" value="{{$faktur->tanggal}}"  class="form-control" name="tanggal" id="tanggal" placeholder="">
                                                                     </div>
                                                                 </div>
-                                                                <div class="form-group row mx-5 mb-5">
-                                                                    <label class="col-sm-3 col-form-label" for="mata-uang">Mata Uang</label>
-                                                                    <div class="col-sm-9">
-                                                                        <select class="form-control" id="mata-uang">
-                                                                            <option>IDR</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <a href="/penjualan/fakturs">
@@ -83,7 +76,6 @@
                                                             </div>
                                                         </div>
                                                         <div id="test-l-2" class="content">
-                                                            @if($faktur->pemesanan_id)
                                                             <div style="" id="checkBarang">
                                                                 <div style="overflow: auto; height: 41vh;" id="formbarang">
                                                                 @foreach ($faktur->barangs as $fakturbarang)
@@ -98,29 +90,29 @@
                                                                         </div>
                                                                         <div class="form-group col-md-1">
                                                                             <label for="jumlah_barang">QTY</label>
-                                                                            <input type="number" class="form-control"  onfocus="startCalc(this);" onblur="stopCalc();"  id="jumlah_barang" name="jumlah_barang[]" value="{{$fakturbarang->pivot->jumlah_barang}}" placeholder="-">
+                                                                            <input type="number"style="height: 38px"  min="0" class="form-control"  onfocus="startCalc(this);" onblur="stopCalc();"  id="jumlah_barang" name="jumlah_barang[]" value="{{$fakturbarang->pivot->jumlah_barang}}" placeholder="-">
                                                                         </div>
                                                                         <div class="form-group col-md-1">
                                                                             <label for="satuan_unit">Unit</label>
-                                                                            <input type="text" class="form-control" id="uni" value='' placeholder="{{$fakturbarang->pivot->unit}}" disabled>
+                                                                            <input type="text" style="height: 38px" class="form-control" id="uni" value='' placeholder="{{$fakturbarang->pivot->unit}}" disabled>
                                                                             <input type="hidden" value="{{$fakturbarang->pivot->unit}}" id="unit" name="unit_barang[]">
                                                                         </div>
                                                                         <div class="form-group col-md-3">
                                                                             <label for="harga">Harga Satuan</label>
                                                                             <div class="input-group mb-2">
-                                                                                <div class="input-group-prepend">
+                                                                                <div style="height: 38px" class="input-group-prepend">
                                                                                     <div class="input-group-text">Rp</div>
                                                                                 </div>
-                                                                                <input type="number" class="form-control" onfocus="startCalc(this);" onblur="stopCalc();" id="harga" name="harga[]" value="{{$fakturbarang->pivot->harga}}"  placeholder="-">
+                                                                                <input style="height: 38px" type="number"min="0" class="form-control" onfocus="startCalc(this);" onblur="stopCalc();" id="harga" name="harga[]" value="{{$fakturbarang->pivot->harga}}"  placeholder="-">
                                                                             </div>
                                                                         </div>
                                                                         <div class="form-group col-md-3">
                                                                             <label for="total">Total</label>
                                                                             <div class="input-group mb-2">
-                                                                                <div class="input-group-prepend">
+                                                                                <div style="height: 38px" class="input-group-prepend">
                                                                                     <div class="input-group-text">Rp</div>
                                                                                 </div>
-                                                                                <input type="number" class="form-control" id="total" name="total[]" disabled>
+                                                                                <input style="height: 38px" type="number" min="0"class="form-control" id="total" name="total[]" disabled>
                                                                             </div>
                                                                         </div>
                                                                         <div class="form-group col-md-1">
@@ -132,56 +124,8 @@
                                                                     </div>
                                                                     @endforeach
                                                                 </div>
-                                                                <div class="alert alert-success mt-3 mb-0 p-1" id="tambahbarang" onmouseover="green(this)" onmouseout="grey(this)" style="cursor: pointer; font-size:15px;color: white;background-color:#212120" role='alert'>
-                                                                    <i class="fas fa-plus d-flex justify-content-center">
-                                                                        <span class="mx-2">Tambah Barang</span>
-                                                                    </i>
-                                                                </div>
+                                                                
                                                             </div>
-                                                            @else
-                                                            <div style="display:" id="checkPenerimaan">
-                                                                <div style="overflow: auto; height: 41vh;" id="formpengiriman">
-                                                                    <div class="form-row mx-5" id="isiformpengiriman0">
-                                                                        <div class="form-group col-md-3">
-                                                                            <label for="kode_pengiriman">Pengiriman</label>
-                                                                            <select class="form-control" id="kode_pengiriman">
-                                                                                @foreach ($pengirimans as $pengiriman)
-                                                                                <option>{{ $pengiriman->kode_pengiriman }}</option>
-                                                                                @endforeach
-                                                                            </select>
-                                                                        </div>
-                                                                        <div class="form-group col-md-2">
-                                                                            <label for="tanggal_pengiriman">Tanggal</label>
-                                                                            <input type="date" class="form-control" id="tanggal_pengiriman" disabled>
-                                                                        </div>
-                                                                        <div class="form-group col-md-3">
-                                                                            <label for="nama_pelanggan">pelanggan</label>
-                                                                            <input type="text" class="form-control" id="nama_pelanggan" disabled>
-                                                                        </div>
-                                                                        <div class="form-group col-md-3">
-                                                                            <label for="total">Total</label>
-                                                                            <div class="input-group mb-2">
-                                                                                <div class="input-group-prepend">
-                                                                                    <div class="input-group-text">Rp</div>
-                                                                                </div>
-                                                                                <input type="number" class="form-control" id="total" disabled>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="form-group col-md-1">
-                                                                            <p style="color: transparent">#</p>
-                                                                            <a onclick="hapus(this)">
-                                                                                <i style="color:grey;" class="fas fa-trash"></i>
-                                                                            </a>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="alert alert-success mt-3 mb-0 p-1" id="tambahpengiriman" onmouseover="green(this)" onmouseout="grey(this)" style="cursor: pointer; font-size:15px;color: white;background-color:#212120" role='alert'>
-                                                                    <i class="fas fa-plus d-flex justify-content-center">
-                                                                        <span class="mx-2">Tambah Pengiriman</span>
-                                                                    </i>
-                                                                </div>
-                                                            </div>
-                                                            @endif
                                                             <div class="modal-footer">
                                                                 <div class="d-flex mr-auto">
                                                                     <p class="m-2">Total </p>
@@ -189,7 +133,7 @@
                                                                         <div class="input-group-prepend">
                                                                             <div class="input-group-text">Rp</div>
                                                                         </div>
-                                                                        <input style="width:26vw" type="number" name="total_harga_barang" id="total_harga_barang" disabled>
+                                                                        <input style="width:26vw" type="number" min="0"name="total_harga_barang" id="total_harga_barang" disabled>
                                                                     </div>
                                                                 </div>
                                                                 <a href="/penjualan/fakturs">
@@ -200,70 +144,73 @@
                                                             </div>
                                                         </div>
                                                         <div id="test-l-3" class="content">
-                                                            <div style="height: 58vh;overflow:auto" class="mt-2">
-                                                                <div class="form-group row mx-5 mb-5">
-                                                                    <label class="col-sm-3 col-form-label" for="diskon">Diskon</label>
-                                                                    <div class="col-sm-9">
-                                                                        <div class="input-group mb-2">
-                                                                            <div class="input-group-prepend">
-                                                                                <div class="input-group-text">%</div>
-                                                                            </div>
-                                                                            <input type="number" class="form-control" id="diskon" onchange="disc();" name="diskon" value="{{$faktur->diskon}}" placeholder="-">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group row mx-5 mb-5">
-                                                                    <label class="col-sm-3 col-form-label" for="biaya_lain">Biaya lain</label>
-                                                                    <div class="col-sm-9">
-                                                                        <div class="input-group mb-2">
-                                                                            <div class="input-group-prepend">
-                                                                                <div class="input-group-text">Rp</div>
-                                                                            </div>
-                                                                            <input type="number" class="form-control" name="biaya_lain" onchange="disc();" value="{{$faktur->biaya_lain}}" id="biaya_lain" placeholder="-">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group row mx-5 mb-5">
-                                                                    <label class="col-sm-3 col-form-label" for="termin_pembayaran">Termin Pembayaran</label>
-                                                                    <div class="col-sm-9">
-                                                                        <select class="form-control" id="termin_pembayaran">
-                                                                            <option>0 % 0 Net 0</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group row mx-5 mb-5" id="uang-muka-form">
-                                                                    <label class="col-sm-3 col-form-label" for="uang_muka">Uang Muka</label>
-                                                                    <div class="col-sm-9">
-                                                                        <div class="input-group mb-2">
-                                                                            <div class="input-group-prepend">
-                                                                                <div class="input-group-text">Rp</div>
-                                                                            </div>
-                                                                            <input type="number" class="form-control" value="{{$faktur->uang_muka}}" id="uang_muka" name="uang_muka" onchange="disc()" placeholder="0">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group row mx-5 mb-5" id="akun-form" style="display: none">
-                                                                    <label class="col-sm-3 col-form-label" for="akun">Akun</label>
-                                                                    <div class="col-sm-9">
-                                                                        <select class="form-control" id="akun">
-                                                                        
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <div class="d-flex mr-auto">
-                                                                    <p class="m-2" id="sisa">Sisa </p>
-                                                                    <div class="input-group mb-2">
-                                                                        <div class="input-group-prepend">
-                                                                            <div class="input-group-text">Rp</div>
-                                                                        </div>
-                                                                        <input style="width:26vw" type="number" id="total_harga_kes" disabled>
-                                                                        <input type="hidden" name="total_harga_keseluruhan" id="total_harga_keseluruhan">
-                                                                    </div>
-                                                                    <input class="ml-4 mt-2" type="checkbox" onclick="checkLunas(this)" />
-                                                                    <h5 class="ml-2">Lunas</h5>
-                                                                </div>
+                                                        <div style="height: 58vh;overflow:auto" class="mt-2">
+                        <div class="form-group row mx-5 mb-5">
+                            <label class="col-sm-3 col-form-label" for="diskon">Diskon</label>
+                            <div class="col-sm-3">
+                                <div class="input-group mb-2">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">%</div>
+                                    </div>
+                                    <input type="number" min="0" max="100" class="form-control" value="{{$faktur->diskon}}"  id="disko" onchange="disc();" placeholder="-" disabled>
+                                    <input type="hidden" class="form-control" id="diskon" name="diskon"value="{{$faktur->diskon}}"  placeholder="-">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="input-group mb-2">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Rp</div>
+                                    </div>
+                                    <input type="number" min="0" class="form-control" id="diskoo" onchange="disc();" placeholder="-" disabled>
+                                    <input type="hidden" class="form-control" id="disk"  name="disk" placeholder="-">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row mx-5 mb-5">
+                            <label class="col-sm-3 col-form-label" for="biaya_lain">Biaya lain</label>
+                            <div class="col-sm-9">
+                                <div class="input-group mb-2">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Rp</div>
+                                    </div>
+                                    <input type="number" min="0" class="form-control" name="biaya_lain" onchange="disc();" value="{{$faktur->biaya_lain}}" id="biaya_lain" placeholder="-">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="form-group row mx-5 mb-5">
+                            <label class="col-sm-3 col-form-label" for="termin_pembayaran">Termin Pembayaran</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" id="termin_pembayaran" name="termin_pembayaran">
+                                    <option value="">--- Pilih Termin ---</option>
+                                    <option value="">0 % 0 Net 0</option>
+                                </select>
+                            </div>
+                        </div> -->
+                        <div class="form-group row mx-5 mb-5" id="uang-muka-form">
+                            <label class="col-sm-3 col-form-label" for="uang_muka">Uang Muka</label>
+                            <div class="col-sm-9">
+                                <div class="input-group mb-2">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Rp</div>
+                                    </div>
+                                    <input type="number" min="0" class="form-control" id="uang_muka" onchange="disc()" name="uang_muka" value="{{$faktur->uang_muka}}"  placeholder="-">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="d-flex mr-auto">
+                            <p class="m-2" id="sisa">Sisa </p>
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Rp</div>
+                                </div>
+                                <input style="width:26vw" type="number" min="0" id="total_harga_kes" disabled>
+                                <input type="hidden" name="total_harga_keseluruhan" id="total_harga_keseluruhan">
+                            </div>
+                            <input class="ml-4 mt-2" type="checkbox" onclick="checkLunas(this)" />
+                            <h5 class="ml-2">Lunas</h5>
+                        </div>        
                                                                 <a href="/penjualan/fakturs">
                                                                     <button type="button" class="btn btn-secondary">Batal</button>
                                                                 </a>
@@ -287,6 +234,33 @@
 </div>
 
 <script>
+var message = '{{ Session::get('message')}}';
+    var status = '{{ Session::get('status')}}';
+    if(message){
+      $(document).ready(function() {
+        console.log(message)
+        $.notify({
+        icon: "fa fa-times",
+        type: 'success',
+        message: message
+      },{
+          timer: 200,
+          placement: {
+              from: 'top',
+              align: 'right'
+          },
+          template: '<div class="alert alert-danger alert-with-icon alert-dismissible fade show" data-notify="container">' +
+                    '<button type="button" aria-hidden="true" class="close" data-dismiss="alert" aria-label="Close">'+
+                    '<i class="fa fa-remove fa-5x"></i>'+
+                    '</button>'+
+                    '<span data-notify="icon" class="{0}"></span>'+
+                    '<span data-notify="message">{2}</span>'+
+                  '</div>'
+        });
+      });
+      
+    }    
+    
     var stepperNode = document.querySelector('#stepper')
     var stepper = new Stepper(document.querySelector('#stepper'))
 
@@ -297,12 +271,14 @@
         console.warn('shown.bs-stepper', event)
     })
 
-    function green(x) {
-        x.className = "alert mt-3 alert-light mb-0 p-1";
+    function grey(x) {
+        x.style.background = "#212120";
+        x.style.color = "white";
     }
 
-    function grey(x) {
-        x.className = "alert mt-3 mb-0 p-1 alert-primary";
+    function green(x) {
+        x.style.background = "white";
+        x.style.color = "#212120";
     }
 
     var i = 0;
@@ -354,25 +330,35 @@
     }
 
     function disc() {
-        dis = parseInt($('#diskon').val()) / 100;
+    dis = parseInt($('#diskon').val()) / 100;
+    console.log(dis)
         biy = parseInt($('#biaya_lain').val());
         dp = parseInt($('#uang_muka').val());
         barang = parseInt($('#total_harga_barang').val())
         $('#akun_barang').val(barang)
-        diskon = (barang * dis)
+
+        var arr = document.getElementsByName('discpnm[]');
+        var discpnm = 0;
+        for (var i = 0; i < arr.length; i++) {
+            if (parseInt(arr[i].value))
+                discpnm += parseInt(arr[i].value);
+        }
+
+        diskon = parseInt(barang * dis) + discpnm;
         $('#disk').val(diskon)
+        $('#diskoo').val(diskon)
         barangafterdiskon = barang - diskon
-        piutang = barangafterdiskon + biy - dp
-        $('#piutang').val(piutang)
-        if (piutang) {
-            $('#total_harga_kes').val(piutang)
-            $('#total_harga_keseluruhan').val(piutang)
+        hutang = barangafterdiskon + biy - dp
+        $('#hutang').val(hutang)
+        if (hutang) {
+            $('#total_harga_kes').val(hutang)
+            $('#total_harga_keseluruhan').val(hutang)
         }
         console.log(
             'barang:', barang,
             'dis:', dis,
             'diskon:', diskon,
-            'piutang:', piutang,
+            'hutang:', hutang,
             'biaya:', biy,
             'dp:', dp,
         )
@@ -415,8 +401,8 @@
         }
         document.getElementById('total_harga_barang').value = tot;
         document.getElementById('total_harga_keseluruhan').value = tot;
-        document.getElementById('akun_barang').value = tot;
     }
+
 
     function isi(x) {
         console.log('isi')
@@ -433,6 +419,70 @@
             }
         })
     }
+
+    function isipengiriman(x) {
+        console.log('minta')
+        $.ajax({
+            url: '/penjualan/pengirimans/' + $(x).val(),
+            type: 'get',
+            data: {},
+            success: function(data) {
+                console.log(data)
+                if (data.success == true) {
+                    $('#penjual_id').val(data.pengiriman.penjual_id)
+                    console.log(data.pengiriman.penjual_id)
+                    $(x).parent().parent().children().children('#tanggal_pengiriman').val(data.pengiriman.tanggal)
+                    $(x).parent().parent().children().children().children('#total_pengiriman').val(data.pengiriman.total_harga)
+                    if($("#isiformbarang0").children().children('#jumlah_barang').val().length == 0){
+                        console.log("kosong")
+                        $('#barang_id').val(data.barangs[0].id)
+                        $('#unit').val(data.barangs[0].pivot.unit)
+                        $('#uni').attr('placeholder',data.barangs[0].pivot.unit)
+                        $('#jumlah_barang').val(data.barangs[0].pivot.jumlah_barang)
+                        $('#harga').val(data.barangs[0].pivot.harga)
+                        for (var i = 1; i <= data.barangs.length - 1; i++) {
+                            $("#formbarang").append($("#isiformbarang0").clone().attr('id', 'isiformbarang' + i));
+                            $("#isiformbarang" + i).children().children('select').val(data.barangs[i].id)
+                            $("#isiformbarang" + i).children().children('#jumlah_barang').val(data.barangs[i].pivot.jumlah_barang)
+                            $("#isiformbarang" + i).children().children('#uni').attr('placeholder',data.barangs[i].pivot.unit)
+                            $("#isiformbarang" + i).children().children('#unit').val(data.barangs[i].pivot.unit)
+                            $("#isiformbarang" + i).children().children().children('#harga').val(data.barangs[i].pivot.harga)
+                            window.value++;
+                        }
+                    }
+                    else{
+                        console.log("ada")
+                        console.log(window.value)
+                        for (var i = 0; i <= data.barangs.length-1 ; i++) {
+                            $("#formbarang").append($("#isiformbarang0").clone().attr('id', 'isiformbarang' + window.value));
+                            $("#isiformbarang" + window.value).children().children('select').val(data.barangs[i].id)
+                            $("#isiformbarang" + window.value).children().children('#jumlah_barang').val(data.barangs[i].pivot.jumlah_barang)
+                            $("#isiformbarang" + window.value).children().children('#uni').attr('placeholder',data.barangs[i].pivot.unit)
+                            $("#isiformbarang" + window.value).children().children('#unit').val(data.barangs[i].pivot.unit)
+                            $("#isiformbarang" + window.value).children().children().children('#harga').val(data.barangs[i].pivot.harga)
+                            window.value++;
+                        }
+                    }
+                    // $('#barang_id').val(data.barangs[0].id)
+                    // $('#unit').val(data.barangs[0].pivot.unit)
+                    // $('#uni').attr('placeholder',data.barangs[0].pivot.unit)
+                    // $('#jumlah_barang').val(data.barangs[0].pivot.jumlah_barang)
+                    // $('#harga').val(data.barangs[0].pivot.harga)
+                    // for (var i = 1; i <= data.barangs.length - 1; i++) {
+                    //     $("#formbarang").append($("#isiformbarang0").clone().attr('id', 'isiformbarang' + i));
+                    //     $("#isiformbarang" + i).children().children('select').val(data.barangs[i].id)
+                    //     $("#isiformbarang" + i).children().children('#jumlah_barang').val(data.barangs[i].pivot.jumlah_barang)
+                    //     $("#isiformbarang" + i).children().children('#uni').attr('placeholder',data.barangs[i].pivot.unit)
+                    //     $("#isiformbarang" + i).children().children('#unit').val(data.barangs[i].pivot.unit)
+                    //     $("#isiformbarang" + i).children().children().children('#harga').val(data.barangs[i].pivot.harga)
+                    // }
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log('hmm')
+            }
+        });
+    };
 </script>
 
 @endsection

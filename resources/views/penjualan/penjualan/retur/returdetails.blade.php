@@ -15,7 +15,9 @@
                             <div class="col-md-12">
                                 <div class="card card-plain">
                                     <div class="card-body">
-                                        <form action="/penjualan/returs/cetak_pdf">
+                                        <form method='POST' action="/penjualan/returs/cetak_pdf">
+                                        @csrf
+
                                             <div class="d-flex justify-content-end mx-5">
                                                 <!-- <a class="px-2" href="">Export Excel | </a> -->
                                                 <button><a class="px-2" id="pdf"  target="_blank">Export PDF | </a></button>
@@ -62,23 +64,7 @@
                                                                     <td>{{$total_harga[$index]}}</td>
                                                                 </tr>
                                                             @endforeach
-                                                            <tr>
-                                                                <td colspan="4" class="text-right pr-3">Sub total</td>
-                                                                <td id="subtotal">{{$subtotal}}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td colspan="4" class="text-right pr-3">diskon</td>
-                                                                <td id="diskon">{{$diskon}}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td colspan="4" class="text-right pr-3">Biaya lain</td>
-                                                                <td id="biaya_lain">{{$biaya_lain}}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td colspan="4" class="text-right pr-3">Uang Muka</td>
-                                                                <td id="uang_muka">{{$uang_muka}}</td>
-                                                            </tr>
-                                                            <tr>
+                                                            
                                                                 <td colspan="4" class="text-right pr-3">Total</td>
                                                                 <td id="total_seluruh">{{$total_seluruh}}</td>
                                                             </tr>

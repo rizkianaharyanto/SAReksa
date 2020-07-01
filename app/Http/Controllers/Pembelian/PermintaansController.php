@@ -31,6 +31,15 @@ class PermintaansController extends Controller
         return view('pembelian.pembelian.permintaan.laporan-permintaan', compact('permintaans'));
     }
 
+    public function laporanfilter(Request $date)
+    {
+        $permintaans = Permintaan::select("pbl_permintaans.*")
+            ->whereBetween('tanggal', [$date->start, $date->end])
+            ->get();
+
+        return view('pembelian.pembelian.permintaan.laporan-permintaan', compact('permintaans'));
+    }
+
     public function cetaklaporan()
     {
         $permintaans = Permintaan::all();

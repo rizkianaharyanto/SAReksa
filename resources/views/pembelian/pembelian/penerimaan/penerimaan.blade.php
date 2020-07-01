@@ -4,6 +4,11 @@
 
 @section('halaman', 'Penerimaan Barang')
 
+@section('path')
+<li><a href="#">Transaksi</a></li>
+<li class="active">Penerimaan</li>
+@endsection
+
 @section('thead')
 <tr>
     <th>Kode Penerimaan</th>
@@ -35,22 +40,34 @@
     </td>
     <td class="d-flex justify-content-between">
         <a id="details" href="/pembelian/penerimaanshow/{{$penerimaan->id}}">
-            <i style="cursor: pointer; " class="fas fa-info-circle">
-                <span></span>
-            </i>
+            <button class="btn-info">
+                <i style="cursor: pointer; " class="fas fa-info-circle">
+                    <span></span>
+                </i>
+            </button>
         </a>
         @if($penerimaan->status == null)
         <a id="edit" href="/pembelian/penerimaans/{{$penerimaan->id}}/edit">
+        <button class="btn-warning">
             <i style="cursor: pointer;" class="fas fa-edit">
                 <span></span>
             </i>
+        </button>
         </a>
-        <a id="delete" data-toggle="modal" data-target="#delete-{{$penerimaan->id }}">
+        <form method="POST" action="/pembelian/penerimaans/{{$penerimaan->id}}">
+            @method('delete')
+            @csrf
+            <button type="submit" class="btn-danger"><i style="cursor: pointer;" class="fas fa-trash">
+                <span></span>
+            </i></button>
+        </form>
+        <!-- <a id="delete" data-toggle="modal" data-target="#delete-{{$penerimaan->id }}">
             <i style="cursor: pointer;" class="fas fa-trash">
                 <span></span>
             </i>
-        </a>
+        </a> -->
         @endif
+        
     </td>
 </tr>
 
@@ -73,13 +90,7 @@ $delete = "delete-".$penerimaan->id
 
 @section('tambah')
 <a href="/pembelian/penerimaans/create">
-    <i class="fas fa-plus mr-4" style="font-size:30px;color:#00BFA6; cursor: pointer;">
-        <span></span>
-    </i>
+<button class="btn-sm btn-info">Tambah</button>
 </a>
-<a href="/pembelian/penerimaans/laporan">
-      <i id="filter" onmouseover="tulisan()" class="fas fa-file-alt mr-4" style="font-size:25px;color:#00BFA6;cursor: pointer;">
-        <span></span>
-      </i>
-    </a>
+
 @endsection

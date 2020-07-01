@@ -50,6 +50,8 @@ class PemesanansController extends Controller
      */
     public function store(Request $request)
     {
+        $request->session()->flash('message', 'Pemesanan berhasil ditambahkan');
+        $request->session()->flash('status', 'tambah');
         $pms = Pemesanan::max('id') + 1;
         $pemesanan = Pemesanan::create([
             'kode_pemesanan' => 'PMS-'.$pms,
@@ -76,6 +78,7 @@ class PemesanansController extends Controller
                 // 'pajak' => $request->pajak[$index],
                 'status_barang' => $request->status_barang[$index],
             ]);
+            
         }
         return redirect('/penjualan/pemesanans');
     }
@@ -100,7 +103,7 @@ class PemesanansController extends Controller
         $pemesanan = Pemesanan::find($id);
         $gudang = Gudang::find($pemesanan->gudang);
         $barangs = $pemesanan->barangs;
-        $diskon = $pemesanan->diskon.'%';
+        $diskon = $pemesanan->diskon_rp;
         $biaya_lain = $pemesanan->biaya_lain;
         $total_seluruh = $pemesanan->total_harga;
         $total_harga = [];
@@ -127,7 +130,7 @@ class PemesanansController extends Controller
         $pemesanan = Pemesanan::find($request->id);
         $gudang = Gudang::find($pemesanan->gudang);
         $barangs = $pemesanan->barangs;
-        $diskon = $pemesanan->diskon.'%';
+        $diskon = $pemesanan->diskon_rp;
         $biaya_lain = $pemesanan->biaya_lain;
         $total_seluruh = $pemesanan->total_harga;
         $total_harga = [];
@@ -150,6 +153,12 @@ class PemesanansController extends Controller
         return $pdf->download('Pemesanan.pdf');
     }
 
+    public function cek(Request $request)
+    {
+        $pemesanans = Pemesanan::whereMonth('tanggal','6')->get();
+        
+        return view('penjualan.penjualan.pemesanan.pemesanan', compact('pemesanans'));
+    }
     /**
      * Show the form for editing the specified resource.
      *
@@ -177,6 +186,8 @@ class PemesanansController extends Controller
      */
     public function update(Request $request, Pemesanan $pemesanan)
     {
+        $request->session()->flash('message', 'Pemesanan berhasil diubah');
+        $request->session()->flash('status', 'tambah');
         Pemesanan::where('id', $pemesanan->id)
             ->update([
                 'kode_pemesanan' => $request->kode_pemesanan,
@@ -211,6 +222,8 @@ class PemesanansController extends Controller
      */
     public function destroy(Pemesanan $pemesanan)
     {
+        session()->flash('message', 'Pemesanan berhasil dihapus');
+        session()->flash('status', 'hapus');
         Pemesanan::destroy($pemesanan->id);
         return redirect('/penjualan/pemesanans');
     }

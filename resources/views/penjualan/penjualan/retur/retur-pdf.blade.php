@@ -65,22 +65,6 @@
                     </tr>
                 @endforeach
                 <tr>
-                    <td colspan="4" class="text-right pr-3">Sub total</td>
-                    <td id="subtotal">{{$subtotal}}</td>
-                </tr>
-                <tr>
-                    <td colspan="4" class="text-right pr-3">diskon</td>
-                    <td id="diskon">{{$diskon}}</td>
-                </tr>
-                <tr>
-                    <td colspan="4" class="text-right pr-3">Biaya lain</td>
-                    <td id="biaya_lain">{{$biaya_lain}}</td>
-                </tr>
-                <tr>
-                    <td colspan="4" class="text-right pr-3">Uang Muka</td>
-                    <td id="uang_muka">{{$uang_muka}}</td>
-                </tr>
-                <tr>
                     <td colspan="4" class="text-right pr-3">Total</td>
                     <td id="total_seluruh">{{$total_seluruh}}</td>
                 </tr>

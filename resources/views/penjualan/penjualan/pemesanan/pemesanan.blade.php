@@ -6,6 +6,7 @@
 @section('menu', 'Pemesanan')
 
 @section('thead')
+
 <tr>
     <th>Kode Penawaran</th>
     <th>Pelanggan</th>
@@ -65,3 +66,4 @@ $delete = "delete-".$pemesanan->id
 
 </a>
 @endsection
+
