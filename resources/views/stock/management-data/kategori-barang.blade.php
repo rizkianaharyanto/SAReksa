@@ -35,12 +35,20 @@
         </span>
         |
         <span id="delete-opt">
-            <meta name="csrf-token" content="{{ csrf_token() }}">
-            <a class="delete-jquery" data-method="delete"
-                href="{{ route('kategori-barang.destroy', $k->id ) }}">Delete</a>
+            <a class="delete-jquery" data-toggle="modal" data-target="#modalDelete{{$k->id}}">Delete</a>
         </span>
     </td>
 </tr>
+@php
+$action = '/stok/Management-Data/kategori-barang/'.$k->id;
+
+@endphp
+<x-stock.modal-stock-delete :deleteAction="$action" :id="$k->id">
+    <x-slot name="header">
+        {{$k->nama_kategori}}
+    </x-slot>
+
+</x-stock.modal-stock-delete>
 @endforeach
 @endsection
 

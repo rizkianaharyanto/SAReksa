@@ -47,6 +47,6 @@ class ItemCategoryController extends Controller
     {
         //
         $this->model->delete($id);
-        return "Success";
+        return redirect()->back();
     }
 }

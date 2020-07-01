@@ -4,48 +4,62 @@
 @parent
 @endsection
 
+
 @section('title','Stok Opname')
 
 @section('table-header')
 <tr>
-    <th>Tanggal</th>
+    <th>#</th>
     <th>Kode Referensi</th>
     <th>Gudang</th>
     <th>Deskripsi</th>
     <th>Departemen</th>
+    <th>Tanggal</th>
     <th>Opsi</th>
 </tr>
 @endsection
 
 
 @section('table-body')
-@foreach ($stokOp as $op)
+@foreach ($stokOp as $i=> $op)
 <tr>
-    <td>{{$op->created_at->toDateString()}}</td>
+    <td>{{$i+1}}</td>
     <td>{{ $op->kode_ref }}</td>
     <td>{{ $op->gudang->kode_gudang}}</td>
     <td> {{ $op->deskripsi }} </td>
     <td> {{ $op->departemen }} </td>
+    <td>{{$op->created_at->toDateString()}}</td>
     <td>
-        <span>
-            <a href="" data-form="Edit Data" data-toggle="modal" data-target=#modal> Edit
-            </a>
-        </span> |
-        <span>
-            <meta name="csrf-token" content="{{ csrf_token() }}">
-            <a class="delete-jquery" data-method="delete" href="{{ route('stock-opname.destroy', $op->id ) }}">Delete
-            </a>
-        </span>
+        <center>
+            <div class="dropright">
+
+                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    <i class="menu-icon fas fa-ellipsis-h"></i>
+                </button>
+                <div class="dropdown-menu">
+                    <!-- Dropdown menu links -->
+                    <a class="dropdown-item" href="" data-form="Edit Data"> Edit</a>
+                    <a class="delete-jquery dropdown-item" data-method="delete"
+                        href="{{ route('barang.destroy', $op->id ) }}">Delete</a>
+                    <a class="dropdown-item " href="/stok/stock-opname/{{$op->id}}">Details</a>
+                    <a class="dropdown-item " href="/stok/stock-opname/{{$op->id}}">Posting</a>
+
+                </div>
+            </div>
+        </center>
     </td>
 </tr>
 @endforeach
 @endsection
+@if ($errors->any())
 
+@endif
 @section('modal-form')
 @parent
 @section('modal-content')
 
-@section('modal-form-action','/stok/Management-Data/gudang')
+@section('modal-form-action','/stok/stock-opname')
 @section('modal-form-method','POST')
 
 <label for="field1">Kode Referensi </label>
@@ -66,15 +80,15 @@
     <div id="isibarangs" class="d-flex m-2">
         <div class="m-3">
             <label for="field4">Barang</label>
-            <select class="form-control" name="item_id[]" id="field4">
+            <select class="selectpicker" name="item_id[]" id="field4">
                 @foreach($barangs as $barang)
                 <option value="{{$barang->id}}">{{$barang->nama_barang}}</option>
                 @endforeach
             </select>
         </div>
         <div class="m-3">
-            <label for="field4">Jumlah Fisik</label>
-            <input type="number" name="on_hand[]">
+            <label for="field4">Hasil Stok Opname</label>
+            <input type="number" class="form-control" name="on_hand[]">
         </div>
     </div>
 </div>

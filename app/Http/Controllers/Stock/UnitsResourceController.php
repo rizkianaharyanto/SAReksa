@@ -93,6 +93,6 @@ class UnitsResourceController extends Controller
     {
         //
         $itc = $this->model->delete($id);
-        return "Success";
+        return redirect()->back();
     }
 }

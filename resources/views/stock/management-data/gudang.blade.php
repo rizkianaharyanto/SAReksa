@@ -43,11 +43,19 @@
             <a href="" data-form="Edit Data" data-toggle="modal" data-ctgid="{{$w->id}}" data-target=#modal> Edit</a>
         </span> |
         <span id="delete-opt">
-            <meta name="csrf-token" content="{{ csrf_token() }}">
-            <a class="delete-jquery" data-method="delete" href="{{ route('gudang.destroy', $w->id ) }}">Delete</a>
+            <a class="delete-jquery" data-toggle="modal" data-target="#modalDelete{{$w->id}}">Delete</a>
         </span>
     </td>
-</tr>
+</tr>@php
+$action = '/stok/Management-Data/gudang/'.$w->id;
+
+@endphp
+<x-stock.modal-stock-delete :deleteAction="$action" :id="$w->id">
+    <x-slot name="header">
+        {{$w->kode_gudang}}
+    </x-slot>
+
+</x-stock.modal-stock-delete>
 @endforeach
 @endsection
 

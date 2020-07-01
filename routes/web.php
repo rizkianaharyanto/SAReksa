@@ -18,7 +18,6 @@ Route::get('/', function () {
 });
 
 Route::prefix('pembelian')->group(function () {
-    
     Route::get('/', function () {
         return view('pembelian.template.templatebaru');
     });
@@ -112,12 +111,13 @@ Route::prefix('stok')->group(function () {
         Route::get('/pemasok', 'Pembelian\PemasoksController@indexbarang');
     });
     Route::post('/stock-opname/posting/{id}', 'Stock\StockOpnameController@posting');
+    
     Route::resources([
             'transfer-stock' => 'Stock\StockTransferController',
             'stock-opname' => 'Stock\StockOpnameController',
             'penyesuaian-stock' => 'Stock\StockAdjustmentController',
             'pembelian' => 'Stock\ItemPurchaseTransactionController',
-        ]);
+    ], ['middleware' => 'web']);
     Route::get('/stokbarang/{barangId}', 'Stock\ItemStockController@getStocksTotalById');
     Route::get('/stokbarangpergudang/{barangId}', 'Stock\ItemStockController@getStocksByGudang');
     Route::get('/token', function () {
@@ -192,8 +192,10 @@ Route::prefix('penjualan')->group(function () {
     Route::get('/register', 'Penjualan\LoginController@daftar')->middleware('guest');
     Route::get('/login', 'Penjualan\LoginController@login')->middleware('guest')->name('login');
     Route::get('/logout', 'Penjualan\LoginController@logout')->middleware('auth');
-    Route::post('/register', 'Penjualan\LoginController@postdaftar')->middleware('guest');;
-    Route::post('/login', 'Penjualan\LoginController@postlogin')->middleware('guest');;
+    Route::post('/register', 'Penjualan\LoginController@postdaftar')->middleware('guest');
+    ;
+    Route::post('/login', 'Penjualan\LoginController@postlogin')->middleware('guest');
+    ;
     Route::get('/barangs', 'Stock\ItemResourceController@indexpenjualan')->middleware('auth');
     Route::get('/gudangs', 'Stock\WarehouseController@indexpenjualan')->middleware('auth');
     Route::resource('/pelanggans', 'Penjualan\PelanggansController')->middleware('auth');
@@ -206,7 +208,7 @@ Route::prefix('penjualan')->group(function () {
     Route::any('/returs/cetak_pdf', 'Penjualan\RetursController@cetak_pdf')->middleware('auth');
     
     //Admin Faktur
-    Route::group(['middleware' => ['auth','checkRole:penjualan']], function(){
+    Route::group(['middleware' => ['auth','checkRole:penjualan']], function () {
         Route::resource('/pemesanans', 'Penjualan\PemesanansController');
         Route::resource('/pengirimans', 'Penjualan\PengirimansController');
         Route::resource('/penawarans', 'Penjualan\PenawaransController');
@@ -222,23 +224,23 @@ Route::prefix('penjualan')->group(function () {
     });
 
     //Admin Retur
-    Route::group(['middleware' => ['auth','checkRole:retur']], function(){
+    Route::group(['middleware' => ['auth','checkRole:retur']], function () {
         Route::get('/returs/{idnya}/posting', 'Penjualan\RetursController@posting');
     });
 
     //Admin Piutang
-    Route::group(['middleware' => ['auth','checkRole:piutang']], function(){
+    Route::group(['middleware' => ['auth','checkRole:piutang']], function () {
         Route::resource('/piutangs', 'Penjualan\PiutangsController');
         Route::get('/showpiutang/{id}', 'Penjualan\PiutangsController@showpembayaran');
         Route::resource('/pembayarans', 'Penjualan\PembayaransController');
         Route::get('/pembayarans/{idnya}/posting', 'Penjualan\PembayaransController@posting');
         Route::get('/pembayarandetails/{id}', 'Penjualan\PembayaransController@detail');
-        Route::any('/pembayarans/cetak_pdf', 'Penjualan\PembayaransController@cetak_pdf');    
+        Route::any('/pembayarans/cetak_pdf', 'Penjualan\PembayaransController@cetak_pdf');
     });
 
     //Dikersi Perusahaan
-    Route::group(['middleware' => ['auth','checkRole:direksi']], function(){
-    //show laporan
+    Route::group(['middleware' => ['auth','checkRole:direksi']], function () {
+        //show laporan
         Route::any('/laporans/penawaran', 'Penjualan\LaporansController@penawaran');
         Route::any('/laporans/pemesanan', 'Penjualan\LaporansController@pemesanan');
         Route::any('/laporans/pengiriman', 'Penjualan\LaporansController@pengiriman');

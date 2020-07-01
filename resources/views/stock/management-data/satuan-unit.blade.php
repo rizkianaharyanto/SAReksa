@@ -37,25 +37,33 @@ Data Satuan Unit
             <a href="" data-form="Edit Data" data-toggle="modal" data-ctgid="{{$u->id}}" data-target=#modal> Edit</a>
         </span> |
         <span id="delete-opt">
-            <meta name="csrf-token" content="{{ csrf_token() }}">
-            <a class="delete-jquery" data-method="delete" href="{{ route('satuan-unit.destroy', $u->id ) }}">Delete</a>
+            <a class="delete-jquery" data-toggle="modal" data-target="#modalDelete{{$u->id}}">Delete</a>
         </span>
     </td>
 </tr>
+@php
+$action = '/stok/Management-Data/satuan-unit/'.$u->id;
 
+@endphp
+<x-stock.modal-stock-delete :deleteAction="$action" :id="$u->id">
+    <x-slot name="header">
+        {{$u->nama_satuan}}
+    </x-slot>
+
+</x-stock.modal-stock-delete>
 @endforeach
 @endsection
 
 
 @section('modal-form')
 @parent
-    @section('modal-content')
-            @section('modal-form-action','/stok/Management-Data/satuan-unit')
-            @section('modal-form-method','POST')
-            <label for="namaSatuan">Nama Satuan </label>
-            <input class="form-control" type="text" name="nama_satuan" id="namaSatuan">
+@section('modal-content')
+@section('modal-form-action','/stok/Management-Data/satuan-unit')
+@section('modal-form-method','POST')
+<label for="namaSatuan">Nama Satuan </label>
+<input class="form-control" type="text" name="nama_satuan" id="namaSatuan">
 
-    @endsection
+@endsection
 @endsection
 
 @section('scripts')

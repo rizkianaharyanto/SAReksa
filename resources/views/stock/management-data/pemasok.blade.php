@@ -33,6 +33,7 @@ Data Pemasok
     <td>{{ $pemasok->email_pemasok }}</td>
     <td>{{ $pemasok->alamat_pemasok }}</td>
 </tr>
+
 @endforeach
 
 @endsection

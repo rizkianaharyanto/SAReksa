@@ -58,6 +58,6 @@ class WarehouseController extends Controller
     {
         //
         $this->model->delete($id);
-        return "Success";
+        return redirect()->back();
     }
 }

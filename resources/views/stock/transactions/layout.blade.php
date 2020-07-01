@@ -9,6 +9,11 @@
 
 @endsection
 @section('main-content')
+@if (session('status'))
+<div class="alert alert-warning">
+    {{ session('status') }}
+</div>
+@endif
 <div class="row">
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">

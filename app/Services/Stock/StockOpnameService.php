@@ -13,7 +13,15 @@ class StockOpnameService
     }
     public function makeTransJournal($data)
     {
-        return $this->stockOp->create($data)->id;
+        return $this->stockOp->create($data->toArray())->id;
+    }
+
+    public function get($id)
+    {
+        return StokOpname::with([
+            'details',
+            'gudang'
+        ])->find($id);
     }
 
     public function editTrans($data, $id)
