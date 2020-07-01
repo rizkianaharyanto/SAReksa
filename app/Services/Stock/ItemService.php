@@ -85,7 +85,7 @@ class ItemService
     }
     public function getStocksQtyByWhouse($whsId, $itemId)
     {
-        return $this->getStocksByWhouse($itemId, $whsId)->first()->pivot->kuantitas;
+        return $stocks =  $this->getStocksByWhouse($itemId, $whsId) ? $this->getStocksByWhouse($itemId, $whsId)->kuantitas : 0 ;
     }
     public function updateStocks($itemId, $whsId, $qty)
     {

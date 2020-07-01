@@ -24,7 +24,7 @@ class StockOpnameRequest extends FormRequest
     public function rules()
     {
         return [
-            'kode_ref'          => 'required|alphanum',
+            'kode_ref'          => 'required|string',
             'gudang_id'         => 'required|integer',
             'deskripsi'         => 'string',
             'departemen'        => 'string',

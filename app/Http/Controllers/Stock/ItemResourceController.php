@@ -29,7 +29,7 @@ class ItemResourceController extends Controller
         $categories = KategoriBarang::all();
         $units = SatuanUnit::all();
         $gudangs = Gudang::all();
-        return view('stock.Management-Data/barang', [
+        return view('stock.management-data/barang', [
             'barang'=>$allItem,
             'kategoriBarang' => $categories,
             'satuanUnit' => $units,
