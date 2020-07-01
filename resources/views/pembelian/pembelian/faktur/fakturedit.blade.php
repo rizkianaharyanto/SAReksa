@@ -1,13 +1,19 @@
-@extends('pembelian.template.template')
+@extends('pembelian.template.templatebaru')
 
-@section('judul', 'edit')
+@section('judul', 'Ubah Faktur')
 
-@section('halaman', 'Edit Faktur')
+@section('halaman', 'Ubah Faktur')
+
+@section('path')
+<li><a href="#">Transaksi</a></li>
+<li><a href="/pembelian/fakturs">Faktur</a></li>
+<li class="active">Ubah Faktur</li>
+@endsection
 
 @section('isi')
 
 <div class="d-flex justify-content-center">
-    <div id="stepper" class="bs-stepper align-self-end" style=" width:80vw; max-height:60vh; color:black;">
+    <div id="stepper" class="bs-stepper align-self-end" style=" width:70vw; color:black;">
         <div class="bs-stepper-header">
             <div class="step" data-target="#test-l-1">
                 <button type="button" class="btn step-trigger">
@@ -34,7 +40,7 @@
         </div>
         <div class="bs-stepper-content">
             <div id="test-l-1" class="content">
-                <form style="height: 58vh;overflow: auto; color:black" class="mt-2">
+                <form style="overflow: auto; color:black" class="mt-2">
                     <div class="form-group row mx-5 mb-5">
                         <label class="col-sm-3 col-form-label" for="nama_pemasok">pemasok</label>
                         <div class="col-sm-9">
@@ -89,7 +95,7 @@
                 </div>
                 <hr>
                 <div style="display:none" id="checkBarang">
-                    <form style="overflow: auto; height: 41vh;" id="formbarang">
+                    <form style="overflow: auto; " id="formbarang">
                         <div class="form-row mx-5" id="isiformbarang0">
                             <div class="form-group col-md-3">
                                 <label for="nama_barang" id="lbl">Barang</label>
@@ -140,7 +146,7 @@
                     </div>
                 </div>
                 <div style="display:none" id="checkPenerimaan">
-                    <form style="overflow: auto; height: 41vh;" id="formpenerimaan">
+                    <form style="overflow: auto; " id="formpenerimaan">
                         <div class="form-row mx-5" id="isiformpenerimaan0">
                             <div class="form-group col-md-3">
                                 <label for="kode_penerimaan">Penerimaan</label>

@@ -18,8 +18,9 @@ Route::get('/', function () {
 });
 
 Route::prefix('pembelian')->group(function () {
+    
     Route::get('/', function () {
-        return view('pembelian.dashboard');
+        return view('pembelian.template.templatebaru');
     });
 
     Route::get('/ambilgudang', 'Pembelian\GudangsController@ambil');
@@ -36,10 +37,15 @@ Route::prefix('pembelian')->group(function () {
 
     //show laporan
     Route::get('/permintaans/laporan', 'Pembelian\PermintaansController@laporan');
+    Route::get('/permintaans/laporanfilter', 'Pembelian\PermintaansController@laporanfilter');
     Route::get('/pemesanans/laporan', 'Pembelian\PemesanansController@laporan');
+    Route::get('/pemesanans/laporanfilter', 'Pembelian\PemesanansController@laporanfilter');
     Route::get('/penerimaans/laporan', 'Pembelian\PenerimaansController@laporan');
+    Route::get('/penerimaans/laporanfilter', 'Pembelian\PenerimaansController@laporanfilter');
     Route::get('/fakturs/laporan', 'Pembelian\FaktursController@laporan');
+    Route::get('/fakturs/laporanfilter', 'Pembelian\FaktursController@laporanfilter');
     Route::get('/returs/laporan', 'Pembelian\RetursController@laporan');
+    Route::get('/returs/laporanfilter', 'Pembelian\RetursController@laporanfilter');
 
     //cetak laporan
     Route::get('/permintaans/laporanpdf', 'Pembelian\PermintaansController@cetaklaporan');
@@ -178,52 +184,80 @@ Route::prefix('kepegawaian')->group(function () {
 });
 
 Route::prefix('penjualan')->group(function () {
-    Route::get('/', function () {
-        return view('penjualan.dashboard');
+    Route::get('/', 'Penjualan\LoginController@dashboard')->middleware('auth')->name('home');
+
+    Route::get('/fakturs/{id}/edit', 'Penjualan\RetursController@edit')->middleware(['auth','checkRole:retur']);
+    Route::get('/fakturs/{id}/edit', 'Penjualan\FaktursController@edit')->middleware(['auth','checkRole:penjualan']);
+
+    Route::get('/register', 'Penjualan\LoginController@daftar')->middleware('guest');
+    Route::get('/login', 'Penjualan\LoginController@login')->middleware('guest')->name('login');
+    Route::get('/logout', 'Penjualan\LoginController@logout')->middleware('auth');
+    Route::post('/register', 'Penjualan\LoginController@postdaftar')->middleware('guest');;
+    Route::post('/login', 'Penjualan\LoginController@postlogin')->middleware('guest');;
+    Route::get('/barangs', 'Stock\ItemResourceController@indexpenjualan')->middleware('auth');
+    Route::get('/gudangs', 'Stock\WarehouseController@indexpenjualan')->middleware('auth');
+    Route::resource('/pelanggans', 'Penjualan\PelanggansController')->middleware('auth');
+    Route::resource('/penjuals', 'Penjualan\PenjualsController')->middleware('auth');
+    Route::resource('/fakturs', 'Penjualan\FaktursController');
+    Route::resource('/returs', 'Penjualan\RetursController');
+    Route::get('/fakturdetails/{id}', 'Penjualan\FaktursController@detail')->middleware('auth');
+    Route::any('/fakturs/cetak_pdf', 'Penjualan\FaktursController@cetak_pdf')->middleware('auth');
+    Route::get('/returdetails/{id}', 'Penjualan\RetursController@detail')->middleware('auth');
+    Route::any('/returs/cetak_pdf', 'Penjualan\RetursController@cetak_pdf')->middleware('auth');
+    
+    //Admin Faktur
+    Route::group(['middleware' => ['auth','checkRole:penjualan']], function(){
+        Route::resource('/pemesanans', 'Penjualan\PemesanansController');
+        Route::resource('/pengirimans', 'Penjualan\PengirimansController');
+        Route::resource('/penawarans', 'Penjualan\PenawaransController');
+       
+        Route::any('/penawarans/cetak_pdf', 'Penjualan\PenawaransController@cetak_pdf');
+        Route::any('/pemesanans/cetak_pdf', 'Penjualan\PemesanansController@cetak_pdf');
+        Route::any('/pengirimans/cetak_pdf', 'Penjualan\PengirimansController@cetak_pdf');
+        Route::get('/penawarandetails/{id}', 'Penjualan\PenawaransController@detail');
+        Route::get('/pemesanandetails/{id}', 'Penjualan\PemesanansController@detail');
+        Route::get('/pengirimandetails/{id}', 'Penjualan\PengirimansController@detail');
+        Route::get('/pengirimans/{idnya}/posting', 'Penjualan\PengirimansController@posting');
+        Route::get('/fakturs/{idnya}/posting', 'Penjualan\FaktursController@posting');
     });
 
-    Route::get('/barangs', 'Stock\ItemResourceController@indexpenjualan');
-    Route::get('/gudangs', 'Stock\WarehouseController@indexpenjualan');
-    Route::get('/pajaks', 'Stock\TaxResourceController@indexpenjualan');
+    //Admin Retur
+    Route::group(['middleware' => ['auth','checkRole:retur']], function(){
+        Route::get('/returs/{idnya}/posting', 'Penjualan\RetursController@posting');
+    });
 
-    Route::get('/ambilgudang', 'Penjualan\GudangsController@ambil');
-    Route::get('/ambilbarang', 'Penjualan\BarangsController@ambil');
-    Route::get('/showpiutang/{id}', 'Penjualan\PiutangsController@showpembayaran');
+    //Admin Piutang
+    Route::group(['middleware' => ['auth','checkRole:piutang']], function(){
+        Route::resource('/piutangs', 'Penjualan\PiutangsController');
+        Route::get('/showpiutang/{id}', 'Penjualan\PiutangsController@showpembayaran');
+        Route::resource('/pembayarans', 'Penjualan\PembayaransController');
+        Route::get('/pembayarans/{idnya}/posting', 'Penjualan\PembayaransController@posting');
+        Route::get('/pembayarandetails/{id}', 'Penjualan\PembayaransController@detail');
+        Route::any('/pembayarans/cetak_pdf', 'Penjualan\PembayaransController@cetak_pdf');    
+    });
 
-    //show details page
-    Route::get('/penawarandetails/{id}', 'Penjualan\PenawaransController@detail');
-    Route::get('/pemesanandetails/{id}', 'Penjualan\PemesanansController@detail');
-    Route::get('/pengirimandetails/{id}', 'Penjualan\PengirimansController@detail');
-    Route::get('/fakturdetails/{id}', 'Penjualan\FaktursController@detail');
-    Route::get('/returdetails/{id}', 'Penjualan\RetursController@detail');
-    Route::get('/pembayarandetails/{id}', 'Penjualan\PembayaransController@detail');
-
-    //cetak pdf
-    Route::get('/jurnals/cetak_pdf', 'Penjualan\JurnalsController@cetak_pdf');
-    Route::get('/penawarans/cetak_pdf', 'Penjualan\PenawaransController@cetak_pdf');
-    Route::get('/pemesanans/cetak_pdf', 'Penjualan\PemesanansController@cetak_pdf');
-    Route::get('/pengirimans/cetak_pdf', 'Penjualan\PengirimansController@cetak_pdf');
-    Route::get('/fakturs/cetak_pdf', 'Penjualan\FaktursController@cetak_pdf');
-    Route::get('/returs/cetak_pdf', 'Penjualan\RetursController@cetak_pdf');
-    Route::get('/pembayarans/cetak_pdf', 'Penjualan\PembayaransController@cetak_pdf');
-
-    //Posting
-    Route::get('/pengirimans/{idnya}/posting', 'Penjualan\PengirimansController@posting');
-    Route::get('/fakturs/{idnya}/posting', 'Penjualan\FaktursController@posting');
-    Route::get('/returs/{idnya}/posting', 'Penjualan\RetursController@posting');
-    Route::get('/pembayarans/{idnya}/posting', 'Penjualan\PembayaransController@posting');
-
-    // Route::get('/barangs', )
-    Route::resources([
-        'pelanggans' => 'Penjualan\PelanggansController',
-        'penjuals' => 'Penjualan\PenjualsController',
-        'jurnals' => 'Penjualan\JurnalsController',
-        'pemesanans' => 'Penjualan\PemesanansController',
-        'pengirimans' => 'Penjualan\PengirimansController',
-        'penawarans' => 'Penjualan\PenawaransController',
-        'fakturs' => 'Penjualan\FaktursController',
-        'returs' => 'Penjualan\RetursController',
-        'piutangs' => 'Penjualan\PiutangsController',
-        'pembayarans' => 'Penjualan\PembayaransController',
-    ]);
+    //Dikersi Perusahaan
+    Route::group(['middleware' => ['auth','checkRole:direksi']], function(){
+    //show laporan
+        Route::any('/laporans/penawaran', 'Penjualan\LaporansController@penawaran');
+        Route::any('/laporans/pemesanan', 'Penjualan\LaporansController@pemesanan');
+        Route::any('/laporans/pengiriman', 'Penjualan\LaporansController@pengiriman');
+        Route::any('/laporans/faktur', 'Penjualan\LaporansController@faktur');
+        Route::any('/laporans/retur', 'Penjualan\LaporansController@retur');
+        Route::any('/laporans/piutang', 'Penjualan\LaporansController@piutang');
+        Route::any('/laporans/pembayaran', 'Penjualan\LaporansController@pembayaran');
+        
+        //Data master
+        //cetak laporan
+        Route::any('/laporans/penawaranpdf', 'Penjualan\LaporansController@cetakpenawaran');
+        Route::any('/laporans/pemesananpdf', 'Penjualan\LaporansController@cetakpemesanan');
+        Route::any('/laporans/pengirimanpdf', 'Penjualan\LaporansController@cetakpengiriman');
+        Route::any('/laporans/fakturpdf', 'Penjualan\LaporansController@cetakfaktur');
+        Route::any('/laporans/returpdf', 'Penjualan\LaporansController@cetakretur');
+        Route::any('/laporans/piutangpdf', 'Penjualan\LaporansController@cetakpiutang');
+        Route::any('/laporans/pembayaranpdf', 'Penjualan\LaporansController@cetakpembayaran');
+        Route::any('/laporans', 'Penjualan\LaporansController@index');
+        Route::any('/jurnals', 'Penjualan\JurnalsController@index');
+        Route::get('/jurnals/cetak_pdf', 'Penjualan\JurnalsController@cetak_pdf');
+    });
 });

@@ -15,7 +15,8 @@
                             <div class="col-md-12">
                                 <div class="card card-plain">
                                     <div class="card-body">
-                                        <form action="/penjualan/penawarans/cetak_pdf">
+                                        <form method='POST' action="/penjualan/penawarans/cetak_pdf">
+                                        @csrf
                                             <div class="d-flex justify-content-end mx-5">
                                                 <!-- <a class="px-2" href="">Export Excel | </a> -->
                                                 <button><a class="px-2" id="pdf"  target="_blank">Export PDF | </a></button>

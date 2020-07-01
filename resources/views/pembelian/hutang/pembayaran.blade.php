@@ -4,6 +4,11 @@
 
 @section('halaman', 'Pembayaran Hutang')
 
+@section('path')
+<li><a href="#">Hutang</a></li>
+<li class="active">Pembayaran Hutang</li>
+@endsection
+
 @section('thead')
 <tr>
     <th>Kode Pembayaran</th>
@@ -23,9 +28,9 @@
     <td>{{ $pembayaran->total }}</td>
     <td class="d-flex justify-content-between">
         <a id="details" href="/pembelian/pembayarans/create">
-            <i style="cursor: pointer; " class="fas fa-info-circle">
+            <button class="btn-outline-info"><i style="cursor: pointer; " class="fas fa-info-circle">
                 <span></span>
-            </i>
+            </i></button>
         </a>
         <!-- <a id="edit" href="/pembelian/pembayarans/{{$pembayaran->id}}/edit">
             <i style="cursor: pointer;" class="fas fa-edit">
@@ -58,13 +63,7 @@ $delete = "delete-".$pembayaran->id
 
 @section('tambah')
 <a href="/pembelian/pembayarans/create">
-    <i class="fas fa-plus mr-4" style="font-size:30px;color:#00BFA6; cursor: pointer;">
-        <span></span>
-    </i>
+    <button class="btn-sm btn-outline-info">Tambah</button>
 </a>
-<a href="/pembelian/pembayarans/laporan">
-      <i id="filter" onmouseover="tulisan()" class="fas fa-file-alt mr-4" style="font-size:25px;color:#00BFA6;cursor: pointer;">
-        <span></span>
-      </i>
-    </a>
+
 @endsection

@@ -1,13 +1,19 @@
-@extends('pembelian.template.template')
+@extends('pembelian.template.templatebaru')
 
-@section('judul', 'Edit')
+@section('judul', 'Ubah Penerimaan')
 
-@section('halaman', 'Edit Penerimaan')
+@section('halaman', 'Ubah Penerimaan')
+
+@section('path')
+<li><a href="#">Transaksi</a></li>
+<li><a href="/pembelian/penerimaans">Penerimaan</a></li>
+<li class="active">Ubah Penerimaan</li>
+@endsection
 
 @section('isi')
 
 <div class="d-flex justify-content-center">
-    <div id="stepper" class="bs-stepper align-self-end" style=" width:80vw; max-height:60vh; color:black;">
+    <div id="stepper" class="bs-stepper align-self-end" style=" width:70vw;  color:black;">
         <div class="bs-stepper-header">
             <div class="step" data-target="#test-l-1">
                 <button type="button" class="btn step-trigger">
@@ -39,7 +45,7 @@
                 <div id="test-l-1" class="content">
                     <input type="hidden" id="status" name="status">
                     <input type="hidden" id="akun_barang" name="akun_barang">
-                    <div style="height: 58vh;overflow: auto; color:black" class="mt-2">
+                    <div style="overflow: auto; color:black" class="mt-2">
                         <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="pemasok_id">pemasok</label>
                             <div class="col-sm-9">
@@ -87,7 +93,7 @@
                 </div>
 
                 <div id="test-l-2" class="content">
-                    <div style="overflow: auto; height: 52vh;" id="formbarang">
+                    <div style="overflow: auto; " id="formbarang">
                     @foreach ($penerimaan->barangs as $penerimaanbarang)
                         <div class="form-row mx-5" id="isiformbarang0">
                             <div class="form-group col-md-3">
@@ -153,7 +159,7 @@
                     </div>
                 </div>
                 <div id="test-l-3" class="content">
-                    <div style="height: 58vh;overflow:auto" class="mt-2">
+                    <div style="overflow:auto" class="mt-2">
                         <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="diskon">Diskon</label>
                             <div class="col-sm-3">

@@ -26,6 +26,7 @@ The above copyright notice and this permission notice shall be included in all c
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/v4-shims.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
     <title>
         {{ __('Sistem Informasi Penjualan') }}
@@ -50,7 +51,18 @@ The above copyright notice and this permission notice shall be included in all c
 
     <link href="https://cdn.jsdelivr.net/npm/bs-stepper/dist/css/bs-stepper.min.css" rel="stylesheet">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bs-stepper/dist/js/bs-stepper.min.js"></script>
-
+    <style>
+    /* input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+    margin: 0; 
+    } */
+    input[type=date]::-webkit-inner-spin-button, 
+    input[type=date]::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+    margin: 0; 
+    }
+</style>
 
 </head>
 
@@ -67,6 +79,7 @@ The above copyright notice and this permission notice shall be included in all c
     <!--   Core JS Files   -->
     <script src="/js/penjualan/plugins/perfect-scrollbar.jquery.min.js"></script>
     <!--  Notifications Plugin    -->
+    <script src="/js/penjualan/plugins/bootstrap-notify.js"></script>
     <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
     <script src="/js/penjualan/paper-dashboard.min.js?v=2.0.0" type="text/javascript"></script>    
     

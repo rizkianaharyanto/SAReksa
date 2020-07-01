@@ -4,6 +4,11 @@
 
 @section('halaman', 'Pajak')
 
+@section('path')
+<li><a href="#">Manajemen Data</a></li>
+<li class="active">Data Pajak</li>
+@endsection
+
 @section('thead')
 <tr>
     <th>Nama Pajak</th>
@@ -19,9 +24,9 @@
     <td>{{ $pajak->rate }}</td>
     <!-- <td class="d-flex justify-content-between">
         <a id="details" data-toggle="modal" data-target="#modal" data-id="{{ $pajak->id }}">
-            <i onmouseover="tulisan()" style="cursor: pointer;" class="fas fa-info-circle">
+            <button class="btn-info"><i style="cursor: pointer;" class="fas fa-info-circle">
                 <span></span>
-            </i>
+            </i></button>
         </a>
     </td> -->
 </tr>

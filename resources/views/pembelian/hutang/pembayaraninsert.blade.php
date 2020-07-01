@@ -1,13 +1,19 @@
-@extends('pembelian.template.template')
+@extends('pembelian.template.templatebaru')
 
-@section('judul', 'tambah')
+@section('judul', 'Tambah Pembayaran')
 
 @section('halaman', 'Tambah Pembayaran')
+
+@section('path')
+<li><a href="#">Transaksi</a></li>
+<li><a href="/pembelian/pembayarans">Pembayaran</a></li>
+<li class="active">Tambah Pembayaran</li>
+@endsection
 
 @section('isi')
 
 <div class="d-flex justify-content-center">
-    <div id="stepper" class="bs-stepper align-self-end" style=" width:80vw; max-height:60vh; color:black;">
+    <div id="stepper" class="bs-stepper align-self-end" style=" width:70vw; color:black;">
         <div class="bs-stepper-header">
             <div class="step" data-target="#test-l-1">
                 <button type="button" class="btn step-trigger">
@@ -30,7 +36,7 @@
                 @csrf
                 <div id="test-l-1" class="content">
                     <input type="hidden" id="status" name="status">
-                    <div style="height: 58vh;overflow: auto; color:black" class="mt-2">
+                    <div style="overflow: auto; color:black" class="mt-2">
                         <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="pemasok_id">pemasok</label>
                             <div class="col-sm-9">
@@ -66,7 +72,7 @@
                     </div>
                 </div>
                 <div id="test-l-2" class="content">
-                    <div style="overflow: auto; height: 52vh;" id="formhutang">
+                    <div style="overflow: auto; " id="formhutang">
                         <div class="form-row mx-5" id="isiformhutang0">
                             <div class="form-group col-md-3">
                                 <label for="hutang_id" id="lbl">Hutang</label>

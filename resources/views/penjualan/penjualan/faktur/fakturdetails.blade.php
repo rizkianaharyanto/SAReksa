@@ -14,7 +14,8 @@
                             <div class="col-md-12">
                                 <div class="card card-plain">
                                     <div class="card-body">
-                                        <form action="/penjualan/fakturs/cetak_pdf">
+                                        <form method='POST' action="/penjualan/fakturs/cetak_pdf">
+                                            @csrf
                                             <div class="d-flex justify-content-end mx-5">
                                                 <!-- <a class="px-2" href="">Export Excel | </a> -->
                                                 <button><a class="px-2" id="pdf"  target="_blank">Export PDF | </a></button>
@@ -66,7 +67,7 @@
                                                                 <td id="subtotal">{{$subtotal}}</td>
                                                             </tr>
                                                             <tr>
-                                                                <td colspan="4" class="text-right pr-3">diskon</td>
+                                                                <td colspan="4" class="text-right pr-3">Diskon</td>
                                                                 <td id="diskon">{{$diskon}}</td>
                                                             </tr>
                                                             <tr>

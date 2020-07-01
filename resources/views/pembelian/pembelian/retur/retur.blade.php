@@ -4,6 +4,11 @@
 
 @section('halaman', 'Retur Pembelian')
 
+@section('path')
+<li><a href="#">Transaksi</a></li>
+<li class="active">Retur</li>
+@endsection
+
 @section('thead')
 <tr>
     <th>Kode Retur</th>
@@ -33,15 +38,26 @@
     </td>
     <td class="d-flex justify-content-between">
         <a id="details" href="/pembelian/returshow/{{$retur->id}}">
-            <i style="cursor: pointer; " class="fas fa-info-circle">
-                <span></span>
-            </i>
+            <button class="btn-info">
+                <i style="cursor: pointer; " class="fas fa-info-circle">
+                        <span></span>
+                    </i>
+                </button>
         </a>
         <!-- <a id="edit" href="/pembelian/returs/{{$retur->id}}/edit">
-            <i style="cursor: pointer;" class="fas fa-edit">
-                <span></span>
-            </i>
+            <button class="btn-warning">
+                <i style="cursor: pointer;" class="fas fa-edit">
+                    <span></span>
+                </i>
+            </button>
         </a> -->
+        <!-- <form method="POST" action="/pembelian/returs/{{$retur->id}}">
+            @method('delete')
+            @csrf
+            <button type="submit" class="btn-danger"><i style="cursor: pointer;" class="fas fa-trash">
+                <span></span>
+            </i></button>
+        </form> -->
         <!-- <a id="delete" data-toggle="modal" data-target="#delete-{{$retur->id }}">
             <i style="cursor: pointer;" class="fas fa-trash">
                 <span></span>
@@ -69,13 +85,7 @@ $delete = "delete-".$retur->id
 
 @section('tambah')
 <a href="/pembelian/returs/create">
-    <i class="fas fa-plus mr-4" style="font-size:30px;color:#00BFA6; cursor: pointer;">
-        <span></span>
-    </i>
+<button class="btn-sm btn-info">Tambah</button>
 </a>
-<a href="/pembelian/returs/laporan">
-      <i id="filter" onmouseover="tulisan()" class="fas fa-file-alt mr-4" style="font-size:25px;color:#00BFA6;cursor: pointer;">
-        <span></span>
-      </i>
-    </a>
+
 @endsection
