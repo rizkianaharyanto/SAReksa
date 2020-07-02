@@ -52,7 +52,7 @@ class StockOpnameController extends Controller
         if (!$stockOpname) {
             return redirect('/stok/stock-opname')->with('status', 'Data Transaksi tersebut tidak ditemukan');
         }
-        return view('stock.transactions.transfer-stock.details', compact('stockOpname'));
+        return view('stock.transactions.stock-opname.details', compact('stockOpname'));
     }
 
     /**
@@ -115,12 +115,15 @@ class StockOpnameController extends Controller
      */
     public function edit(StokOpname $stockOpname)
     {
-        $stockOpname = StockOpname::with([
+        $stockOpname = StokOpname::with([
             'details'
             ])
-        ->findOrFail($stockOpname);
+        ->find($stockOpname);
+        $gudangs = Gudang::all();
 
-        return $stockOpname;
+        // dd($stockOpname);
+
+        return view('stock.transactions.stock-opname.edit', ['stockOpname' => $stockOpname, 'gudangs' =>$gudangs]);
     }
 
     /**
