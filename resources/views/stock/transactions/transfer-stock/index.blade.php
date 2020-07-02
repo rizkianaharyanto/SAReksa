@@ -73,13 +73,15 @@
 <label for="field1">Kode Referensi </label>
 <input class="form-control" type="text" name="kode_ref" value="TRF-{{count($allData)+1}}" id="field1">
 <label for="field2">Gudang Asal</label>
-<select class="form-control selectpicker" name="gudang_asal" id="field2">
+<select class="form-control selectpicker" name="gudang_asal" id="gudang_id">
+    <option value="">--- Pilih Gudang ---</option>
     @foreach($gudangs as $gudang)
     <option value="{{$gudang->id}}">{{$gudang->kode_gudang}}</option>
     @endforeach
 </select>
 <label for="field3">Gudang Tujuan</label>
 <select class="form-control" name="gudang_tujuan" id="field3">
+    <option value="">--- Pilih Gudang ---</option>
     @foreach($gudangs as $gudang)
     <option value="{{$gudang->id}}">{{$gudang->kode_gudang}}</option>
     @endforeach
@@ -94,10 +96,8 @@
     <div id="isibarangs" class="d-flex m-2">
         <div class="m-3">
             <label for="field6">Barang</label>
-            <select class="form-control" name="barang_id[]" id="field6">
-                @foreach($barangs as $barang)
-                <option value="{{$barang->id}}">{{$barang->nama_barang}}</option>
-                @endforeach
+            <select class="form-control" name="barang_id[]" id="item_id">
+                <option value="">--- Pilih Barang ---</option>
             </select>
         </div>
         <div class="m-3">
@@ -122,6 +122,22 @@
     $("#formbarang").append($("#isibarangs").clone());
 }
 
+$("#gudang_id").change(function(){
+    $.ajax({
+        url: '/stok/getstocksbywarehouse/' + $(this).val(),
+        type: 'get',
+        retur: {},
+        success: function(data) {
+                console.log(data)
+                console.log(data.length)
+            $('#item_id').empty()
+            $("#item_id").append('<option value="">--- Pilih Barang ---</option>')
+            for (i = 0; i < data.length; i++) {
+                $("#item_id").append('<option value="' + data[i].barang.id + '">' + data[i].barang.nama_barang + '</option>')
+            }
+        }
+    })
+})
 </script>
 <script>
     const title = "@yield('title')".toLowerCase().replace('data','').trim().replace(' ','-');
