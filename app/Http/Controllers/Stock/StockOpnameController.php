@@ -52,7 +52,7 @@ class StockOpnameController extends Controller
         if (!$stockOpname) {
             return redirect('/stok/stock-opname')->with('status', 'Data Transaksi tersebut tidak ditemukan');
         }
-        return view('stock.transactions.stock-opname.details', compact('stockOpname'));
+        return view('stock.transactions.transfer-stock.details', compact('stockOpname'));
     }
 
     /**

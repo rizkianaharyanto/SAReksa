@@ -12,30 +12,34 @@
                         Menu
                     </li>
                     <li class="nav-item ">
-                        <a class="nav-link active" href="/stok"><i class="fa fa-fw fa-user-circle"></i>Dashboard</a>
+                        <a class="nav-link active" id="link-dashboard" href="/stok"><i
+                                class="fa fa-fw fa-user-circle"></i>Dashboard</a>
 
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false"
-                            data-target="#submenu-2" aria-controls="submenu-2"><i
+                        <a class="nav-link" id="link-manajemen-data" href="#" data-toggle="collapse"
+                            aria-expanded="false" data-target="#submenu-2" aria-controls="submenu-2"><i
                                 class="fa fa-fw fa-rocket"></i>Manajemen Data</a>
                         <div id="submenu-2" class="collapse submenu" style="">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{route('satuan-unit.index')}}">Satuan Unit <span
+                                    <a class="nav-link" id="link-satuan-unit"
+                                        href="{{route('satuan-unit.index')}}">Satuan Unit <span
                                             class="badge badge-secondary">New</span></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('kategori-barang.index')}}">Kategori Barang</a>
+                                    <a class="nav-link" id="link-kategori-barang"
+                                        href="{{ route('kategori-barang.index')}}">Kategori Barang</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/stok/Management-Data/pemasok">Pemasok</a>
+                                    <a class="nav-link" id="link-pemasok"
+                                        href="/stok/Management-Data/pemasok">Pemasok</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('gudang.index')}}">Gudang</a>
+                                    <a class="nav-link" id="link-gudang" href="{{ route('gudang.index')}}">Gudang</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('barang.index')}}">Barang</a>
+                                    <a class="nav-link" id="link-barang" href="{{ route('barang.index')}}">Barang</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="#">Pajak</a>
@@ -49,17 +53,21 @@
                         Transaksi
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('stock-opname.index')}}"><i class="fas fa-fw fa-file"></i> Stok Opname
+                        <a class="nav-link" id="link-stok-opname" href="{{route('stock-opname.index')}}"><i
+                                class="fas fa-fw fa-file"></i> Stok Opname
                         </a>
 
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-fw fa-file"></i> Transfer Stok
+                        <a class="nav-link" id="link-transfer-stock" href="{{route('transfer-stock.index')}}"><i
+                                class="fas fa-fw fa-file"></i>
+                            Transfer Stok
                         </a>
 
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-fw fa-file"></i> Penyesuaian Stok
+                        <a class="nav-link" id="link-penyesuaian-stok" href="{{route('penyesuaian-stock.index')}}"><i
+                                class="fas fa-fw fa-file"></i> Penyesuaian Stok
                         </a>
 
                     </li>

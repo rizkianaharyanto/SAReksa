@@ -5,7 +5,7 @@
 @endsection
 
 
-@section('title','Stok Opname')
+@section('title','Penyesuaian Stok')
 
 @section('table-header')
 <tr>
@@ -21,14 +21,14 @@
 
 
 @section('table-body')
-@foreach ($stokOp as $i=> $op)
+@foreach ($stockAdjustments as $i => $stockAdjustment)
 <tr>
-    <td>{{$i+1}}</td>
-    <td>{{ $op->kode_ref }}</td>
-    <td>{{ $op->gudang->kode_gudang}}</td>
-    <td> {{ $op->deskripsi }} </td>
-    <td> {{ $op->departemen }} </td>
-    <td>{{$op->created_at->toDateString()}}</td>
+    <td> {{$i+1}}</td>
+    <td> {{ $stockAdjustment->kode_ref }}</td>
+    <td> {{ $stockAdjustment->gudang->kode_gudang}}</td>
+    <td> {{ $stockAdjustment->deskripsi }} </td>
+    <td> {{ $stockAdjustment->departemen }} </td>
+    <td> {{  $stockAdjustment->created_at->toDateString()}}</td>
     <td>
         <center>
             <div class="dropright">
@@ -41,9 +41,9 @@
                     <!-- Dropdown menu links -->
                     <a class="dropdown-item" href="" data-form="Edit Data"> Edit</a>
                     <a class="delete-jquery dropdown-item" data-method="delete"
-                        href="{{ route('barang.destroy', $op->id ) }}">Delete</a>
-                    <a class="dropdown-item " href="/stok/stock-opname/{{$op->id}}">Details</a>
-                    <a class="dropdown-item " href="/stok/stock-opname/{{$op->id}}">Posting</a>
+                        href="{{ route('barang.destroy', $stockAdjustments->id ) }}">Delete</a>
+                    <a class="dropdown-item " href="/stok/stock-opname/{{$stockAdjustments->id}}">Details</a>
+                    <a class="dropdown-item " href="/stok/stock-opname/{{$stockAdjustments->id}}">Posting</a>
 
                 </div>
             </div>
@@ -63,19 +63,20 @@
 @section('modal-form-method','POST')
 
 <label for="field1">Kode Referensi </label>
-<input class="form-control" type="text" name="kode_ref" id="field1">
-<label for="field2">Gudang </label>
-<select class="form-control selectpicker" name="gudang_id" id="field4">
+<input class="form-control" type="text" name="kode_ref" value="TRF-{{count($stockAdjustments)+1}}" id="field1">
+<label for="gudang">Gudang </label>
+<select onchange="populateBarangs()" class="form-control selectpicker" name="warehouse_id" id="gudang">
     @foreach($gudangs as $gudang)
     <option value="{{$gudang->id}}">{{$gudang->kode_gudang}}</option>
     @endforeach
 </select>
 <label for="field3">Deskripsi: </label>
 <input class="form-control" type="text" name="deskripsi" id="field3">
-<label for="field4">Departemen</label>
-<input class="form-control" type="text" name="departemen" id="field3">
-<label for="field4">akun_penyesuaian</label>
-<input class="form-control" type="text" name="akun_penyesuaian" id="field3">
+{{-- <label for="field4">Departemen</label>
+<input class="form-control" type="text" name="departemen" id="field3"> --}}
+{{-- <label for="field4">akun_penyesuaian</label>
+<input class="form-control" type="text" name="akun_penyesuaian" id="field3"> --}}
+<p>{{$gudangs[0]->items}}</p>
 <div id="formbarang" class="d-flex flex-column">
     <div id="isibarangs" class="d-flex">
         <div class="m-3">
@@ -87,8 +88,9 @@
             </select>
         </div>
         <div class="m-3">
-            <label for="field4">Hasil Stok Opname</label>
-            <input type="number" class="form-control" name="on_hand[]">
+            <label for="field4">Selisih Stok</label>
+            <input type="number" class="form-control" placeholder="( gunakan minus(-) jika stok berkurang"
+                name="quantity_diff[]">
         </div>
     </div>
 
@@ -104,6 +106,9 @@
 @parent
 
 <script>
+    function populateBarangs() {
+        
+    }
     function tambah(){
     $("#formbarang").append($("#isibarangs").clone());
 }

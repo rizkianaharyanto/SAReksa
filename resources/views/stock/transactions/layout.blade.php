@@ -38,11 +38,12 @@
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0">@yield('title') - Anda Dapat Mengexport ke bentuk yang anda inginkan</h5>
+                <h5 class="mb-0">@yield('title') </h5>
                 @section('button-tambah-data')
 
                 <button class="btn btn-primary" data-toggle="modal" data-target="#modal">Tambah data</button>
                 @show
+                <p>- Anda Dapat Mengexport ke bentuk yang anda inginkan -</p>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -77,7 +78,7 @@
     @section('modal-form')
 
     <x-stock.modal>
-        <form action="@yield('modal-form-action')" method="@yield('modal-form-method')">
+        <form id="transactionForm" action="@yield('modal-form-action')" method="@yield('modal-form-method')">
             @csrf
             @section('modal-content')
 

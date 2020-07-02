@@ -13,12 +13,11 @@ use App\Stock\Gudang;
 
 class ItemResourceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-
+    private $service;
+    public function __construct(ItemService $service)
+    {
+        $this->service = $service;
+    }
     public function index(ItemService $item)
     {
         // $allItem = $item->all();
@@ -89,6 +88,11 @@ class ItemResourceController extends Controller
         return $barang;
     }
 
+    public function getStocksByWarehouse($warehouseId)
+    {
+        $stocks = $this->service->getAllStocksByWhouse($warehouseId);
+        return $stocks;
+    }
     /**
      * Show the form for editing the specified resource.
      *

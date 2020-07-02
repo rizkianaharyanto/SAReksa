@@ -78,7 +78,14 @@
 @section('scripts')
 @parent
 <script src="{{asset('js/stock/jquery.mask.min.js')}}"></script>
-
+<script>
+    const title = "@yield('title')".toLowerCase().replace('data','').trim();
+    const idSidebarLink = `link-${title}`.trim();
+    console.log(idSidebarLink);
+    $('#link-dashboard').removeClass('active');
+    $(`#link-manajemen-data`).addClass('active');
+    $(`#${idSidebarLink}`).addClass('active')
+</script>
 <script>
     $('.harga').html();
       $('.harga').mask('000.000.000.000', {reverse: true});

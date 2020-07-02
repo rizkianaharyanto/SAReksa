@@ -3,9 +3,7 @@
 @parent
 
 @endsection
-@section('title')
-Data Pemasok
-@endsection
+@section('title','Data Pemasok')
 
 @section('button-tambah-data','')
 
@@ -57,4 +55,12 @@ modalGudang
 
 @section('scripts')
 @parent
+<script>
+    const title = "@yield('title')".toLowerCase().replace('data','').trim();
+    const idSidebarLink = `link-${title}`.trim();
+    console.log(idSidebarLink);
+    $('#link-dashboard').removeClass('active');
+    $(`#link-manajemen-data`).addClass('active');
+    $(`#${idSidebarLink}`).addClass('active')
+</script>
 @endsection

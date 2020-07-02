@@ -67,5 +67,13 @@ $action = '/stok/Management-Data/kategori-barang/'.$k->id;
 
 @section('scripts')
 @parent
+<script>
+    const title = "@yield('title')".toLowerCase().replace('data','').trim().replace(' ','-');
+    const idSidebarLink = `link-${title}`.trim();
+    console.log(idSidebarLink);
+    $('#link-dashboard').removeClass('active');
+    $(`#link-manajemen-data`).addClass('active');
+    $(`#${idSidebarLink}`).addClass('active')
+</script>
 
 @endsection

@@ -1,6 +1,7 @@
 <?php
 namespace App\Services\Stock;
 
+use Illuminate\Support\Facades\DB;
 use App\Repositories\Stock\Repository;
 use App\Stock\TransferStok;
 use App\Stock\Barang;
@@ -17,31 +18,36 @@ class StockTransferService
     }
     public function all()
     {
-        return $this->model->all();
+        $transferStok = TransferStok::with([
+           'items',
+           'asal',
+           'tujuan'
+        ])->get();
+        return $transferStok;
     }
     public function make($data)
     {
-        $itemId = $data['item_id'];
-        $newStockTrf = $this->model;
-        $stockTransfer = $newStockTrf::create([
-            'kode_transfer' => $data['kode_transfer'],
+        $itemIds = $data['barang_id'];
+        $stockTransfer = TransferStok::create([
+            'kode_ref'      => $data['kode_ref'],
             'gudang_asal'   => $data['gudang_asal'],
             'gudang_tujuan' => $data['gudang_tujuan'],
             'deskripsi'     => $data['deskripsi'],
             'departemen'    => $data['departemen'],
+            'akun_penyesuaian' => $data['akun_penyesuaian']
         ]);
 
         $stocksData = [
             'asal'      => $stockTransfer['gudang_asal'],
             'tujuan'    => $stockTransfer['gudang_tujuan'],
-            'item_id'   => $itemId,
+            'barang_id'   => $itemIds,
             'quantity'  => $data['qty']
         ];
 
         $condition = 0;
         DB::beginTransaction();
         try {
-            foreach ($itemId as $index => $id) {
+            foreach ($itemIds as $index => $id) {
                 $from = $stocksData['asal'];
                 $to = $stocksData['tujuan'];
                 $qtyFrom = $this->itemServ->getStocksQtyByWhouse($stocksData['asal'], $id);
@@ -55,7 +61,7 @@ class StockTransferService
                 } else {
                     $condition = 1;
                 }
-                $stockTransfer->items()->attach($id, ['quantity' => $data['qty'][$index]]);
+                $stockTransfer->items()->attach($id, ['kuantitas' => $data['qty'][$index]]);
             }
         } catch (\Exception $e) {
             DB::rollback();
@@ -66,6 +72,15 @@ class StockTransferService
         
         
 
-        return $newStockTrf;
+        return $stockTransfer::with('details');
+    }
+    public function get($id)
+    {
+        $stockTransfer = TransferStok::with([
+            'items',
+            'asal',
+            'tujuan'
+            ])->find($id);
+        return $stockTransfer;
     }
 }

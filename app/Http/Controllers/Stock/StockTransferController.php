@@ -3,13 +3,22 @@
 namespace App\Http\Controllers\Stock;
 
 use App\Http\Controllers\Controller;
-use App\Stock\TransferStok;
 use Illuminate\Http\Request;
 use App\Services\Stock\StockTransferService;
 use App\Http\Requests\Stock\CreateStockTransferRequest;
+use App\Stock\TransferStok;
+use App\Stock\Gudang;
+use App\Stock\Barang;
 
 class StockTransferController extends Controller
 {
+    private $service;
+    
+    public function __construct(StockTransferService $service)
+    {
+        $this->service = $service;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -19,7 +28,13 @@ class StockTransferController extends Controller
     {
         //
         $allData = $stockTf->all();
-        return view('transfer-stock', compact($allData));
+        $gudangs = Gudang::all();
+        $barangs = Barang::all();
+        return view('stock.transactions.transfer-stock.index', [
+            'allData' => $allData,
+            'gudangs' => $gudangs,
+            'barangs' => $barangs
+            ]);
     }
 
     /**
@@ -43,7 +58,8 @@ class StockTransferController extends Controller
     {
         //
         $input = $req->validated();
-        return $stockTf->make($input);
+        $stockTf->make($input);
+        return redirect()->back();
     }
 
     /**
@@ -52,9 +68,13 @@ class StockTransferController extends Controller
      * @param  \App\StockTransfer  $stockTransfer
      * @return \Illuminate\Http\Response
      */
-    public function show(StockTransfer $stockTransfer)
+    public function show($id)
     {
-        //
+        $transferStock = $this->service->get($id);
+        if (!$transferStock) {
+            return redirect('/stok/transfer-stock')->with('status', 'Data Transaksi tersebut tidak ditemukan');
+        }
+        return view('stock.transactions.transfer-stock.details', compact('transferStock'));
     }
 
   

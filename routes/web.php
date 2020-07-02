@@ -86,7 +86,7 @@ Route::prefix('stok')->group(function () {
     Route::get('/', function () {
         return view('stock.dashboard');
     });
-
+    Route::get('/getstocksbywarehouse/{warehouseId}', 'Stock\ItemResourceController@getStocksByWarehouse');
     Route::get('/barangs', 'Stock\ItemResourceController@indexpembelian');
     Route::get('/gudangs', 'Stock\WarehouseController@indexpembelian');
     Route::get('/pajaks', 'Stock\TaxResourceController@indexpembelian');
