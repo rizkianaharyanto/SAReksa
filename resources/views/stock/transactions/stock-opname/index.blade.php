@@ -65,7 +65,8 @@
 <label for="field1">Kode Referensi </label>
 <input class="form-control" type="text" name="kode_ref" id="field1">
 <label for="field2">Gudang </label>
-<select class="form-control selectpicker" name="gudang_id" id="field4">
+<select class="form-control selectpicker" name="gudang_id" id="gudang_id">
+    <option value="">--- Pilih Gudang ---</option>
     @foreach($gudangs as $gudang)
     <option value="{{$gudang->id}}">{{$gudang->kode_gudang}}</option>
     @endforeach
@@ -80,10 +81,8 @@
     <div id="isibarangs" class="d-flex">
         <div class="m-3">
             <label for="field4">Barang</label>
-            <select class="selectpicker" name="item_id[]" id="field4">
-                @foreach($barangs as $barang)
-                <option value="{{$barang->id}}">{{$barang->nama_barang}}</option>
-                @endforeach
+            <select class="form-control" name="item_id[]" id="item_id">
+                <option value="">--- Pilih Barang ---</option>
             </select>
         </div>
         <div class="m-3">
@@ -107,6 +106,23 @@
     function tambah(){
     $("#formbarang").append($("#isibarangs").clone());
 }
+
+$("#gudang_id").change(function(){
+    $.ajax({
+        url: '/stok/getstocksbywarehouse/' + $(this).val(),
+        type: 'get',
+        retur: {},
+        success: function(data) {
+                console.log(data)
+                console.log(data.length)
+            $('#item_id').empty()
+            $("#item_id").append('<option value="">--- Pilih Barang ---</option>')
+            for (i = 0; i < data.length; i++) {
+                $("#item_id").append('<option value="' + data[i].barang.id + '">' + data[i].barang.nama_barang + '</option>')
+            }
+        }
+    })
+})
 
 </script>
 <script>
