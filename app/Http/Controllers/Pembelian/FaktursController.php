@@ -38,11 +38,11 @@ class FaktursController extends Controller
 
     public function laporanfilter(Request $date)
     {
-        $fakturs = Faktur::select("pbl_fakturs.*")
+        $fakturs = Faktur::select('pbl_fakturs.*')
             ->whereBetween('tanggal', [$date->start, $date->end])
             ->get();
 
-            return view('pembelian.pembelian.faktur.laporan-faktur', compact('fakturs'));
+        return view('pembelian.pembelian.faktur.laporan-faktur', compact('fakturs'));
     }
 
     public function cetaklaporan()
@@ -93,7 +93,7 @@ class FaktursController extends Controller
             'uang_muka' => $request->uang_muka,
             'akun_barang' => $request->akun_barang,
             'total_harga' => $request->total_harga_keseluruhan,
-            'hutang' => $request->hutang,
+            'hutangnya' => $request->hutang,
         ]);
 
         if ($request->penerimaan_id) {
@@ -113,7 +113,6 @@ class FaktursController extends Controller
                 'status' => 'hutang',
             ]);
             $faktur->update(['hutang_id' => $hutang->id]);
-            
         }
 
         if ($request->pemesanan_id) {
@@ -160,6 +159,7 @@ class FaktursController extends Controller
             }
         }
 
+        // dd($faktur->hutang);
         if ($faktur->status == 'hutang') {
             $no = Jurnal::max('id') + 1;
             for ($i = 1; $i < 5; ++$i) {
@@ -212,7 +212,7 @@ class FaktursController extends Controller
                         ]);
                 } elseif ($i == 3) {
                     $jurnal->update([
-                            'kredit' => $faktur->hutang,
+                            'kredit' => $faktur->hutangnya,
                             'akun_id' => 6, //kas
                         ]);
                 } elseif ($i == 4) {
@@ -223,7 +223,7 @@ class FaktursController extends Controller
                 }
             }
         }
-        
+
         return redirect('/pembelian/fakturs');
     }
 

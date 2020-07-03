@@ -88,11 +88,11 @@ class RetursController extends Controller
             'gudang' => 'gudang',
             'tanggal' => $request->tanggal,
             'diskon' => 0,
-            // 'diskon_rp' => $request->disk,
+            'diskon_rp' => $request->diskon,
             'biaya_lain' => 0,
             // 'uang_muka' => $request->uang_muka,
             'total_jenis_barang' => $request->akun_barang,
-            'total_harga' => $request->akun_barang,
+            'total_harga' => $request->hutang,
         ]);
 
         // if ($request->status == 'hutang') {
@@ -126,12 +126,12 @@ class RetursController extends Controller
     public function posting($idnya)
     {
         $retur = Retur::find($idnya);
-        // dd($retur);
+        $hutang = Hutang::where('faktur_id', $retur->faktur_id)->first();
+        // dd($hutang);
+        $idhut = $hutang->id;
         Retur::where('id', $retur->id)
-                ->update(['status_posting' => 'sudah posting']);
+                ->update(['status_posting' => 'sudah posting', 'hutang_id' => $idhut]);
 
-                $hutang = Hutang::where('faktur_id', $retur->faktur_id)->first();
-                // dd($hutang);
                 $sisa = $hutang->sisa - $retur->total_harga;
                 $hutang->update([
                     'lunas' => $retur->total_harga,
@@ -179,12 +179,12 @@ class RetursController extends Controller
                     'akun_id' => 4, //hutang
                 ]);
                 } 
-                // elseif ($i == 4) {
-                //     $jurnal->update([
-                //     'debit' => $retur->diskon_rp,
-                //     'akun_id' => 5, //diskon
-                // ]);
-                // }
+                elseif ($i == 4) {
+                    $jurnal->update([
+                    'debit' => $retur->diskon_rp,
+                    'akun_id' => 5, //diskon
+                ]);
+                }
             }
         // } elseif ($retur->status == 'lunas') {
         //     $no = Jurnal::max('id') + 1;

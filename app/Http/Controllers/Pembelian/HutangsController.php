@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Pembelian\Hutang;
 use App\Pembelian\Pemasok;
 use App\Pembelian\Pembayaran;
+use App\Pembelian\Retur;
 use Illuminate\Support\Arr;
 
 use PDF;
@@ -167,26 +168,52 @@ class HutangsController extends Controller
         $pembayarans = $hutang->pembayarans;
         // $total_seluruh = $pembayaran->total;
         // dd($total_harga, $total_seluruh);
+        $returs = Retur::where('hutang_id', $hutang->id)->get();
+        // dd($returs);
+        $lunas=0;
+        foreach ($pembayarans as $pembayaran){
+            $lunas += $pembayaran->pivot->total;
+        }
+        foreach ($returs as $retur){
+            $lunas += $retur->total_harga;
+        }
+        $sisa= $hutang->total_hutang - $lunas;
         return view('pembelian.hutang.kartu-hutang', [
             'hutang' => $hutang,
             'pembayarans' => $pembayarans,
-            // 'total_seluruh' => $total_seluruh,
+            'returs' => $returs,
+            'lunas' => $lunas,
+            'sisa' => $sisa,
         ]);
     }
 
     public function cetak_pdf(Request $request)
     {
-        $pembayaran = Pembayaran::find($request->id);
-        $hutangs = $pembayaran->hutangs;
-        $total_seluruh = $pembayaran->total;
-        $pdf = PDF::loadview('pembelian.hutang.pembayaran-pdf', [
-            'pembayaran' => $pembayaran,
-            'hutangs' => $hutangs,
-            'total_seluruh' => $total_seluruh,
-            ]);
+        $hutang = Hutang::find($request->id);
+        // dd($hutang->pembayarans);
+        $pembayarans = $hutang->pembayarans;
+        // $total_seluruh = $pembayaran->total;
+        // dd($total_harga, $total_seluruh);
+        $returs = Retur::where('hutang_id', $hutang->id)->get();
+        // dd($returs);
+        $lunas=0;
+        foreach ($pembayarans as $pembayaran){
+            $lunas += $pembayaran->pivot->total;
+        }
+        foreach ($returs as $retur){
+            $lunas += $retur->total_harga;
+        }
+        $sisa= $hutang->total_hutang - $lunas;
+        $pdf = PDF::loadview('pembelian.hutang.kartu-hutang-pdf', [
+            'hutang' => $hutang,
+            'pembayarans' => $pembayarans,
+            'returs' => $returs,
+            'lunas' => $lunas,
+            'sisa' => $sisa,
+        ]);
             
 
-        return $pdf->download('pembayaran.pdf');
+        return $pdf->download('kartu-hutang.pdf');
     }
 
     /**

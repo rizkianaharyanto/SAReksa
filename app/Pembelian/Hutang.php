@@ -15,7 +15,7 @@ class Hutang extends Model
 
     public function pembayarans()
     {
-        return $this->belongsToMany('App\Pembelian\Pembayaran', 'pbl_pembayaran_details');
+        return $this->belongsToMany('App\Pembelian\Pembayaran', 'pbl_pembayaran_details')->withPivot('total')->withTimestamps();
     }
 
     public function faktur()

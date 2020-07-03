@@ -14,7 +14,7 @@ class AddHutangToPblFaktursTable extends Migration
     public function up()
     {
         Schema::table('pbl_fakturs', function (Blueprint $table) {
-            $table->integer('hutang')->nullable();
+            $table->integer('hutangnya')->nullable();
         });
     }
 
@@ -26,7 +26,6 @@ class AddHutangToPblFaktursTable extends Migration
     public function down()
     {
         Schema::table('pbl_fakturs', function (Blueprint $table) {
-            //
         });
     }
 }

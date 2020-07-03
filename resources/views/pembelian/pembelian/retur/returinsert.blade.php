@@ -140,16 +140,24 @@
                             <span class="mx-2">Tambah Barang</span>
                         </i>
                     </div>
-                    <div class="modal-footer">
-                        <div class="d-flex mr-auto">
-                            <p class="m-2">Total </p>
-                            <div class="input-group mb-2">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">Rp</div>
+                    <div class="modal-footer">   
+                            <div class="d-flex mr-auto">
+                                <div class="d-flex flex-column">
+                                    <div class="d-flex">
+                                        <p class="m-2">Total </p>
+                                        <div class="input-group mb-2">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">Rp</div>
+                                            </div>
+                                            <input style="width:26vw" type="number" min="0" name="total_harga_barang" id="total_harga_barang" disabled> 
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between ml-5">
+                                        <div id="diskon_ui">Diskon : Rp 0</div>
+                                        <input type="hidden" id="diskon" name="diskon" >
+                                    </div>
                                 </div>
-                                <input style="width:26vw" type="number" min="0" name="total_harga_barang" id="total_harga_barang" disabled>
                             </div>
-                        </div>
                         <a href="/pembelian/returs">
                             <button type="button" class="btn btn-secondary">Batal</button>
                         </a>
@@ -237,7 +245,8 @@
             success: function(data) {
                 if (data.success == true) {
                     console.log(data)
-                    // $('#diskon').val(data.faktur.diskon)
+                    $('#diskon').val(data.faktur.diskon_rp)
+                    $('#diskon_ui').html('Diskon : ' +data.faktur.diskon_rp)
                     // $('#biaya_lain').val(data.faktur.biaya_lain)
                     $('#barang_id').val(data.barangs[0].id)
                     $('#tambahbarang').detach()
@@ -322,8 +331,10 @@
             if (parseInt(arr[i].value))
                 tot += parseInt(arr[i].value);
         }
-        document.getElementById('total_harga_barang').value = tot;
-        // document.getElementById('total_harga_keseluruhan').value = tot;
+        var diskon = $("#diskon").val();
+        console.log('diskon', diskon);
+        document.getElementById('total_harga_barang').value = tot - diskon;
+        document.getElementById('hutang').value = tot - diskon;
         document.getElementById('akun_barang').value = tot;
         console.log(arr)
     }

@@ -56,7 +56,7 @@
                                                     <tr>
                                                         <td>{{$hutang->kode_hutang ? $hutang->kode_hutang : '-' }}</td>
                                                         <td>{{$hutang->faktur->kode_faktur ? $hutang->faktur->kode_faktur : '-' }}</td>
-                                                        <td>{{ $hutang->total_hutang ? $hutang->total_hutang : '-' }}</td>
+                                                        <td>{{ $hutang->pivot->total ? $hutang->pivot->total : '-' }}</td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
