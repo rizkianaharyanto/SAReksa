@@ -167,6 +167,10 @@ class PemesanansController extends Controller
      */
     public function edit(Pemesanan $pemesanan)
     {
+        // dd($pemesanan);
+        if($pemesanan->status != 'baru'){
+            return redirect()->back();
+        }
         return view('penjualan.penjualan.pemesanan.pemesananedit', [
             'pemesanan' => $pemesanan,
             'pelanggans' => Pelanggan::all(),

@@ -24,31 +24,33 @@
     <td>{{ $pengiriman->tanggal }}</td>
     <td>{{ $pengiriman->total_harga }}</td>
     <td>{{ $pengiriman->status !=null ? $pengiriman->status  : '-' }}</td>
-    <td class="d-flex justify-content-between">
-        <a id="details" href="/penjualan/pengirimandetails/{{$pengiriman->id}}">
+    <td class="d-flex justify-content-left">
+        <a title="Details" id="details" class="mr-5" href="/penjualan/pengirimandetails/{{$pengiriman->id}}">
             <i style="cursor: pointer;color: #212120 " class="fas fa-info-circle">
                 <span></span>
             </i>
         </a>
         @if($pengiriman->status == 'dalam pengiriman')
-        <a id="edit"  href="/penjualan/pengirimans/{{$pengiriman->id}}/edit" title='Konfirmasi'>
+        <a title="Konfirmasi" id="edit" class="mr-5"  href="/penjualan/pengirimans/{{$pengiriman->id}}/edit" title='Konfirmasi'>
             <i style="cursor: pointer;color: #212120" class="fas fa-check">
                 <span></span>
             </i>
         </a>
         @endif
         @if($pengiriman->status == 'terkirim')
-        <a id="edit" href="/penjualan/pengirimans/{{$pengiriman->id}}/posting">
+        <a id="edit" title="Posting" class="mr-5"  href="/penjualan/pengirimans/{{$pengiriman->id}}/posting">
             <i onmouseover="" style="cursor: pointer;color: #212120" class="fas fa-file-upload" title='Posting'>
                 <span></span>
             </i>
         </a>
         @endif
-        <a id="delete" data-toggle="modal" data-target="#delete-{{$pengiriman->id }}">
+        @if($pengiriman->status == 'dalam pengiriman')
+        <a title="Delete" id="delete" class="mr"   data-toggle="modal" data-target="#delete-{{$pengiriman->id }}">
             <i style="cursor: pointer;color: #212120" class="fas fa-trash">
                 <span></span>
             </i>
         </a>
+        @endif
     </td>
 </tr>
 

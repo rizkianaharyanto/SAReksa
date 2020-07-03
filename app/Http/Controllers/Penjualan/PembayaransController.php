@@ -110,10 +110,12 @@ class PembayaransController extends Controller
 
     public function posting($idnya)
     {
-        
+        $pembayaran = Pembayaran::find($idnya);
+        if($pembayaran->status_posting=='sudah posting'){
+            return redirect()->back();
+        }
         session()->flash('message', 'Pembayaran berhasil diposting');
         session()->flash('status', 'tambah');
-        $pembayaran = Pembayaran::find($idnya);
         Pembayaran::where('id', $pembayaran->id)
                     ->update(['status_posting' => 'sudah posting']);
         // dd($pembayaran->total);
@@ -172,6 +174,10 @@ class PembayaransController extends Controller
      */
     public function edit(Pembayaran $pembayaran)
     {
+        if ( $pembayaran->status_posting =='sudah posting'){
+            return redirect()->back();
+        }
+
         // dd($pembayaran->piutangs);
         return view('penjualan.piutang.pembayaranedit', [
             'pembayaran' => $pembayaran,

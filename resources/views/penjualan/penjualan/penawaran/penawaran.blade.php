@@ -23,17 +23,17 @@
     <td>{{ $penawaran->tanggal }}</td>
     <td>{{ $penawaran->total_harga }}</td>
     <td class="d-flex justify-content-between">
-        <a id="details" href="/penjualan/penawarandetails/{{$penawaran->id}}">
+        <a title="Details" id="details" href="/penjualan/penawarandetails/{{$penawaran->id}}">
             <i style="cursor: pointer;color:#212120 " class="fas fa-info-circle">
                 <span></span>
             </i>
         </a>
-        <a id="edit" href="/penjualan/penawarans/{{$penawaran->id}}/edit">
+        <a title="Edit" id="edit" href="/penjualan/penawarans/{{$penawaran->id}}/edit">
             <i style="cursor: pointer;color:#212120" class="fas fa-edit">
                 <span></span>
             </i>
         </a>
-        <a id="delete" data-toggle="modal" data-target="#delete-{{$penawaran->id }}">
+        <a title="Hapus" id="delete" data-toggle="modal" data-target="#delete-{{$penawaran->id }}">
             <i style="cursor: pointer; color:#212120" class="fas fa-trash">
                 <span></span>
             </i>

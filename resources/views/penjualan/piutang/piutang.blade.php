@@ -24,7 +24,7 @@
     <td> {{ $sisas[$index]['sisa']}} </td>
     <td class="d-flex justify-content-between">
         <a href="/penjualan/piutangs/{{$pelanggan->id}}">
-            <i onclick="" style='color: #212120' class="fas fa-info-circle" ></i>
+            <i title="Details" onclick="" style='color: #212120' class="fas fa-info-circle" ></i>
         </a>
     </td>
 </tr>

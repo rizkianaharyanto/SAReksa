@@ -9,14 +9,14 @@
 <div class="content">
         <div class="row">
             <div class="col-md-12">
-                <div class="">
+                <div class="card">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="card card-plain">
+                                <div class="card card-plain" style='margin-bottom:-40px'>
                                     <div class="card-body">
                                         <div class="d-flex justify-content-center">
-                                            <div id="stepper" class="bs-stepper align-self-end" style=" width:80vw; max-height:60vh; color:#212120;">
+                                            <div id="stepper" class="bs-stepper align-self-end" style=" width:80vw; max-height:; color:#212120;">
                                                 <div class="bs-stepper-header">
                                                     <div class="step" data-target="#test-l-1">
                                                         <button type="button" class="btn step-trigger">
@@ -46,7 +46,8 @@
                                                         @csrf
                                                         <div id="test-l-1" class="content">
                                                             <input type="hidden" id="status" name="status">
-                                                            <input type="hidden" id="akun_barang" name="akun_barang">                                                            <div style="height: 58vh;overflow: auto; color:#212120" class="mt-2">
+                                                            <input type="hidden" id="akun_barang" name="akun_barang">                                                           
+                                                            <div style="height: ;overflow: auto; color:#212120" class="mt-2">
                                                                 <div class="form-group row mx-5 mb-5">
                                                                     <label class="col-sm-3 col-form-label" for="pelanggan_id">Pelanggan </label>
                                                                     <div class="col-sm-9">
@@ -103,7 +104,7 @@
                                                             </div>
                                                         </div>
                                                         <div id="test-l-2" class="content">
-                                                            <div style="overflow: auto; height: 52vh;" id="formbarang">
+                                                            <div style="overflow: auto; height: ;" id="formbarang">
                                                                 <div class="form-row mx-5" id="isiformbarang0">
                                                                     <div class="col-md-3">
                                                                         <label for="barang_id" id="lbl">Barang</label>
@@ -168,7 +169,7 @@
                                                             </div>
                                                         </div>
                                                         <div id="test-l-3" class="content">
-                                                            <div style="height: 58vh;overflow:auto" class="mt-2">
+                                                            <div style="height: ;overflow:auto" class="mt-2">
                                                                 <div class="form-group row mx-5 mb-5">
                                                                     <label class="col-sm-3 col-form-label" for="diskon">Diskon</label>
                                                                     <div class="col-sm-3">

@@ -3,7 +3,7 @@
 ])
 
 @section('judul', 'Gudang')
-
+@section('menu','Gudang')
 @section('halaman', 'Gudang')
 
 @section('thead')

@@ -22,18 +22,18 @@
     <td>{{ $penjual->nama_penjual }}</td>
     <td>{{ $penjual->telp_penjual }}</td>
     <td class="d-flex justify-content-between">
-        <a id="details" data-toggle="modal" data-target="#modal" data-id="{{ $penjual->id }}" >
+        <a title="Details" id="details" data-toggle="modal" data-target="#modal" data-id="{{ $penjual->id }}" >
             <i style="cursor: pointer;" class="fas fa-info-circle">
                 <span></span>
             </i>
         </a>
         @if (auth()->user()->role == 'penjualan')
-        <a id="edit" data-toggle="modal" data-target="#modal" data-id="{{ $penjual->id }}" >
+        <a title="Edit" id="edit" data-toggle="modal" data-target="#modal" data-id="{{ $penjual->id }}" >
             <i style="cursor: pointer;" class="fas fa-edit">
                 <span></span>
             </i>
         </a>
-        <a id="delete" data-toggle="modal" data-target="#modal" data-id="{{ $penjual->id }}">
+        <a title="Delete" id="delete" data-toggle="modal" data-target="#modal" data-id="{{ $penjual->id }}">
             <i style="cursor: pointer;" class="fas fa-trash">
                 <span></span>
             </i>

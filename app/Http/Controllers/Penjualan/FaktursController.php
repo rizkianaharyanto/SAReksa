@@ -127,9 +127,13 @@ class FaktursController extends Controller
 
     public function posting($idnya)
     {
+        $faktur = Faktur::find($idnya);
+
+        if($faktur->status_posting=='sudah posting'){
+            return redirect()->back();
+        }
         session()->flash('message', 'Faktur berhasil diposting');
         session()->flash('status', 'tambah');
-        $faktur = Faktur::find($idnya);
         Faktur::where('id', $faktur->id)
                     ->update(['status_posting' => 'sudah posting']);
         //posting
@@ -244,6 +248,7 @@ class FaktursController extends Controller
      */
     public function show($id)
     {
+        
         $faktur = Faktur::find($id);
         $barangs = $faktur->barangs;
         return response()
@@ -314,6 +319,12 @@ class FaktursController extends Controller
      */
     public function edit(Faktur $faktur)
     {
+        if($faktur->status_posting=='sudah posting' || auth()->user()->role == 'piutang' || auth()->user()->role == 'retur'){
+            return redirect()->back();
+        }
+        // dd($faktur);
+        $faktus = faktur::find($faktur);
+        // dd($faktus);
         // dd($faktur);
         return view('penjualan.penjualan.faktur.fakturedit', [
             'faktur' => $faktur,
@@ -336,6 +347,7 @@ class FaktursController extends Controller
     public function update(ItemService $itmSrv, Request $request, Faktur $faktur)
     {
         //cek
+        dd($faktur);
         $stok = 0;
         if($faktur->pemesanan_id){
             $allDataBarang = $itmSrv->getAllStocksQty();

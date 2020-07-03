@@ -14,7 +14,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="card card-plain">
+                                <div class="card card-plain" style="height:30vh">
                                     <div class="card-body">
                                         <div class='container form-group row mx-5 mb-5'>
                                             <div class='col-sm-4'>

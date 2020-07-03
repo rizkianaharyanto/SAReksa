@@ -100,10 +100,12 @@ class RetursController extends Controller
 
     public function posting($idnya)
     {
-        
+        $retur = Retur::find($idnya);
+        if($retur->status_posting=='sudah posting'){
+            return redirect()->back();
+        }
         session()->flash('message', 'Retur berhasil diposting');
         session()->flash('status', 'tambah');
-        $retur = Retur::find($idnya);
         // dd($retur);
         foreach ($retur->barangs as $index => $barang) {
             $b = $barang->pivot->jumlah_barang;
@@ -242,6 +244,10 @@ class RetursController extends Controller
      */
     public function edit(Retur $retur)
     {
+        if (auth()->user()->role == 'piutang' || $retur->status_posting =='sudah posting'){
+            return redirect()->back();
+        }
+
         return view('penjualan.penjualan.retur.returedit', [
             'retur' => $retur,
             'pelanggans' => Pelanggan::all(),

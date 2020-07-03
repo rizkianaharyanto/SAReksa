@@ -186,9 +186,6 @@ Route::prefix('kepegawaian')->group(function () {
 Route::prefix('penjualan')->group(function () {
     Route::get('/', 'Penjualan\LoginController@dashboard')->middleware('auth')->name('home');
 
-    Route::get('/fakturs/{id}/edit', 'Penjualan\RetursController@edit')->middleware(['auth','checkRole:retur']);
-    Route::get('/fakturs/{id}/edit', 'Penjualan\FaktursController@edit')->middleware(['auth','checkRole:penjualan']);
-
     Route::get('/register', 'Penjualan\LoginController@daftar')->middleware('guest');
     Route::get('/login', 'Penjualan\LoginController@login')->middleware('guest')->name('login');
     Route::get('/logout', 'Penjualan\LoginController@logout')->middleware('auth');

@@ -29,29 +29,31 @@
         @endif
     </td>
     <td class="d-flex justify-content-between">
-        <a id="details" href="/penjualan/returdetails/{{$retur->id}}">
+        <a title="Details"id="details" href="/penjualan/returdetails/{{$retur->id}}">
             <i style="cursor: pointer;color:#212120 " class="fas fa-info-circle">
                 <span></span>
             </i>
         </a>
         @if (auth()->user()->role == 'retur')
         @if($retur->status_posting == 'belum posting')
-        <a id="edit" href="/penjualan/returs/{{$retur->id}}/edit">
+        <a title="Edit"id="edit" href="/penjualan/returs/{{$retur->id}}/edit">
             <i style="cursor: pointer;color:#212120" class="fas fa-edit">
                 <span></span>
             </i>
         </a>
-        <a id="edit"  href="/penjualan/returs/{{$retur->id}}/posting" title='Posting'>
+        <a title="Posting" id="edit"  href="/penjualan/returs/{{$retur->id}}/posting" title='Posting'>
         <i onmouseover="" style="cursor: pointer;color: #212120" class="fas fa-file-upload" title='Posting'>
                 <span></span>
             </i>
         </a>
         @endif
-        <a id="delete" data-toggle="modal" data-target="#delete-{{$retur->id }}">
+        @if($retur->status_posting == 'belum posting')
+        <a title="Delete"id="delete" data-toggle="modal" data-target="#delete-{{$retur->id }}">
             <i style="cursor: pointer;color:#212120" class="fas fa-trash">
                 <span></span>
             </i>
         </a>
+        @endif
         @endif
     </td>
 </tr>

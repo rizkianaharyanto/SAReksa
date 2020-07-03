@@ -96,7 +96,7 @@ class PengirimansController extends Controller
             'penjual_id' => $request->penjual_id,
             'total_harga' => $request->total_harga_keseluruhan,
         ]);
-
+            
         // dd($jurnal);
         $pemesanan = $pengiriman->pemesanan;
         foreach ($request->barang_id as $index => $id) {
@@ -113,47 +113,16 @@ class PengirimansController extends Controller
 
     public function posting(ItemService $itmSrv, $idnya)
     {
+        $pengiriman = Pengiriman::find($idnya);
+
+        if($pengiriman->status == 'sudah posting' || $pengiriman->status == 'selesai' || $pengiriman->status == 'dalam pengiriman'){
+            return redirect()->back();
+        }
         $stok = 0;
         session()->flash('message', 'Pengiriman berhasil diposting');
         session()->flash('status', 'tambah');
-        $pengiriman = Pengiriman::find($idnya);
         $pemesanan = $pengiriman->pemesanan;
         $allDataBarang = $itmSrv->getAllStocksQty();
-
-        foreach ($pengiriman->barangs as $index => $barang) {
-            $a = $pemesanan->barangs()->where('barang_id', $barang->id)->first()->pivot->barang_belum_diterima;
-            $b = $barang->pivot->jumlah_barang;
-            $belum_diterima = $a - $b;
-
-            // dd($allDataBarang);
-            foreach($allDataBarang as $databarang){
-                // dd($databarang['id']);
-                if($databarang['id'] == $barang->id){
-                    $stok = $databarang['kuantitas_total'];
-                }
-            }
-
-            if($stok >= $b){
-                //update stock
-                try {
-                    $this->itemService->updateStocks($barang->id, $pengiriman->gudang, ($b*-1));
-                    // dd("berhasil");
-                } catch (\Throwable $th) {
-                    dd('Gagal');
-                }
-            }else {
-                session()->flash('message', 'Stok kurang');
-                session()->flash('status', '');
-                return redirect('/penjualan/pengirimans');
-            }
-
-            $pemesanan->barangs()->where('barang_id', $barang->id)->update(array('barang_belum_diterima' => $belum_diterima));
-            if ($belum_diterima == 0) {
-                $pemesanan->barangs()->where('barang_id', $barang->id)->update(array('status_barang' => 'terkirim'));
-            } else {
-                $pemesanan->barangs()->where('barang_id', $barang->id)->update(array('status_barang' => 'belum terkirim'));
-            }
-        }
 
         Pengiriman::where('id', $pengiriman->id)
                     ->update(['status' => 'sudah posting']);
@@ -179,15 +148,6 @@ class PengirimansController extends Controller
                 ]);
             }
         }
-
-        
-        $status = $pemesanan->barangs()->where('status_barang', 'belum terkirim')->first();
-        // dd($status);
-            if ($status) {
-                $pemesanan->update(array('status' => 'terkirim sebagian'));
-            }else{
-                $pemesanan->update(array('status' => 'terkirim'));
-            }
         
         return redirect('/penjualan/pengirimans');
     }
@@ -269,6 +229,9 @@ class PengirimansController extends Controller
      */
     public function edit(Pengiriman $pengiriman)
     {
+        if($pengiriman->status != 'dalam pengiriman' ){
+            return redirect()->back();
+        }
         return view('penjualan.penjualan.pengiriman.pengirimanedit', [
             'pengiriman' => $pengiriman,
             'pelanggans' => Pelanggan::all(),
@@ -306,7 +269,7 @@ class PengirimansController extends Controller
         }
         // dd($request->akun_barang);
         
-        // dd($request);
+        // dd($pemesanan->barangs);
         session()->flash('message', 'Pengiriman berhasil dikonfirmasi');
         session()->flash('status', 'tambah');
         Pengiriman::where('id', $pengiriman->id)
@@ -333,7 +296,31 @@ class PengirimansController extends Controller
                     ]);
         }
 
-        $pemesanan->update(array('status' => 'terkirim sebagian'));
+        foreach ($pengiriman->barangs as $index => $barang) {
+            $a = $pemesanan->barangs()->where('barang_id', $barang->id)->first()->pivot->barang_belum_diterima;
+            $b = $barang->pivot->jumlah_barang;
+            $belum_diterima = $a - $b;
+            try {
+                $this->itemService->updateStocks($barang->id, $pengiriman->gudang, ($b*-1));
+                // dd("berhasil");
+            } catch (\Throwable $th) {
+                dd('Gagal');
+            }
+
+            $pemesanan->barangs()->where('barang_id', $barang->id)->update(array('barang_belum_diterima' => $belum_diterima));
+            if ($belum_diterima == 0) {
+                $pemesanan->barangs()->where('barang_id', $barang->id)->update(array('status_barang' => 'terkirim'));
+            } else {
+                $pemesanan->barangs()->where('barang_id', $barang->id)->update(array('status_barang' => 'belum terkirim'));
+            }
+        }
+        $status = $pemesanan->barangs()->where('status_barang', 'belum terkirim')->first();
+        // dd($status);
+            if ($status) {
+                $pemesanan->update(array('status' => 'terkirim sebagian'));
+            }else{
+                $pemesanan->update(array('status' => 'terkirim'));
+            }
         return redirect('/penjualan/pengirimans');
     }
 
