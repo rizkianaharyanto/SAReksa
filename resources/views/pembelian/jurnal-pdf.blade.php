@@ -22,8 +22,8 @@
 		<h5>Jurnal Transaksi Pembelian Reksa Karya</h4>
 	</center>
 
-	<table class="table table-sm table-striped table-bordered">
-            <thead style="background-color: #00BFA6; color:whitesmoke" >
+	<table class="table table-sm table-bordered">
+            <thead >
                 <tr>
                     <th>Tanggal</th>
                     <th>Transaksi</th>
@@ -35,6 +35,11 @@
             <tbody>
                 @foreach ($jurnals as $jurnal)
                     @foreach ($jurnal as $index)
+                        @if($index->debit == 0 && $index->kredit == 0)
+                        <tr>
+                            
+                        </tr>
+                        @else
                         <tr>
                             @if ($loop->first)
                             <td rowspan="{{$loop->count}}" >
@@ -71,6 +76,7 @@
                             <td >{{ $index->debit != 0 ? $index->debit : '-' }}</td>
                             <td >{{ $index->kredit != 0 ? $index->kredit : '-' }}</td>
                         </tr>
+                        @endif
                     @endforeach
                 @endforeach
                 <tr>

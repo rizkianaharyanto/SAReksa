@@ -178,6 +178,16 @@ class PermintaansController extends Controller
             ]);
 
         return $pdf->download('permintaan.pdf');
+        // return view('pembelian.pembelian.permintaan.permintaan-pdf', [
+        //     'permintaan' => $permintaan,
+        //     'gudang' => $gudang,
+        //     'barangs' => $barangs,
+        //     'diskon' => $diskon,
+        //     'biaya_lain' => $biaya_lain,
+        //     'total_harga' => $total_harga,
+        //     'subtotal' => $subtotal,
+        //     'total_seluruh' => $total_seluruh,
+        //     ]);
     }
 
     /**

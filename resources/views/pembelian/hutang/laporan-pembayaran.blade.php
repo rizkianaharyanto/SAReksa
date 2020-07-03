@@ -2,17 +2,17 @@
 
 @section('judul', 'Laporan')
 
-@section('halaman', 'Laporan pemesanan')
+@section('halaman', 'Laporan Pembayaran')
 
 @section('path')
 <li><a href="#">Laporan & Jurnal</a></li>
-<li><a href="#">Laporan Pemesanan</a></li>
-<li class="active">Laporan Pemesanan</li>
+<li><a href="#">Laporan Pembayaran</a></li>
+<li class="active">Laporan Pembayaran Hutang</li>
 @endsection
 
 @section('isi')
 <div class=" mx-5 dt-buttons">
-    <form class="d-flex" action="/pembelian/pemesanans/laporanfilter" method="get">
+    <form class="d-flex" action="/pembelian/pembayarans/laporanfilter" method="get">
         @csrf
         <input class="form-control m-2" type="date" name="start">
         <input class="form-control m-2" type="date" name="end">
@@ -25,49 +25,46 @@
     <button class="dt-button button-html5 button-print" aria-controls="example" tabindex="0"><span>Print</span></button> -->
 </div>
 
-<form action="/pembelian/pemesanans/laporanpdf">
-
+<form action="/pembelian/pembayarans/laporanpdf">
 <div class="d-flex justify-content-end mx-5">
     <button class="btn btn-outline-info m-2 "><a class="px-2" id="pdf"  target="_blank">Export PDF </a></button>
 </div>
 <div  class="m-2">
     <div style="background-color: white; color: black;" class="mx-5 p-3">
     <center class="mb-4">
-		<h5>Laporan Pemesanan</h5>
-        <!-- <input type="hidden" name="id" value="{pemesanan->id}}"> -->
+		<h5>Laporan Pembayaran Hutang</h5>
+        <!-- <input type="hidden" name="id" value="{pembayaran->id}}"> -->
     </center>
     <!-- <table class="table table-sm">
             <tbody>
             <tr>
-                <td>Kode pemesanan : {pemesanan->kode_pemesanan}}</td>
-                <td>Pemasok : {pemesanan->pemasok->nama_pemasok}}</td>
+                <td>Kode pembayaran : {pembayaran->kode_pembayaran}}</td>
+                <td>Pemasok : {pembayaran->pemasok->nama_pemasok}}</td>
             </tr>
             <tr>
-                <td>Tanggal : {pemesanan->tanggal}}</td>
-                <td>Status : {pemesanan->status}}</td>
+                <td>Tanggal : {pembayaran->tanggal}}</td>
+                <td>Status : {pembayaran->status}}</td>
             </tr>
             </tbody>
         </table> -->
 
 	<table class="table table-striped ">
-            <thead  >
+            <thead >
                 <tr>
-                    <th>Kode Pemesanan</th>
-                    <th>pemasok</th>
+                    <th>Kode Pembayaran</th>
+                    <th>Supplier</th>
                     <th>Tanggal</th>
                     <th>Total</th>
-                    <th>Status</th>
                 </tr>
             </thead>
             <tbody>
-            @foreach ($pemesanans as $pemesanan)
-                <tr>
-                    <td>{{ $pemesanan->kode_pemesanan }}</td>
-                    <td>{{ $pemesanan->pemasok->nama_pemasok }}</td>
-                    <td>{{ $pemesanan->tanggal }}</td>
-                    <td>{{ $pemesanan->total_harga }}</td>
-                    <td>{{ $pemesanan->status !=null ? $pemesanan->status  : '-' }}</td>
-                </tr>
+                @foreach ($pembayarans as $pembayaran)
+                    <tr>
+                        <td>{{ $pembayaran->kode_pembayaran }}</td>
+                        <td>{{ $pembayaran->pemasok->nama_pemasok }}</td>
+                        <td>{{ $pembayaran->tanggal }}</td>
+                        <td>{{ $pembayaran->total }}</td>
+                    </tr>
                 @endforeach
             </tbody>
         </table>

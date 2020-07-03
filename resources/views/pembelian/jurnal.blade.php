@@ -12,17 +12,17 @@
 @section('isi')
     <div class="d-flex justify-content-end mx-5">
         <!-- <a class="px-2" href="">Export Excel | </a> -->
-        <a class="px-2" id="pdf" href="/pembelian/jurnals/cetak_pdf" target="_blank">Export PDF | </a>
+        <a class="btn btn-outline-info" id="pdf" href="/pembelian/jurnals/cetak_pdf" target="_blank">Export PDF</a>
         <!-- <a class="px-2" href="">Print | </a> -->
     </div>
-<div style="overflow:auto; height: 80vh;" class="m-2">
+<div  class="m-2">
     <div style="background-color: white; color: black;" class="mx-5 p-3">
         <center>
         <h5>Jurnal Transaksi Pembelian Reksa Karya</h4>
             <p>Periode : 1</p>
         </center>
-        <table class="table table-sm table-striped table-bordered">
-            <thead style="background-color: #00BFA6; color:whitesmoke">
+        <table class="table table-sm table-bordered ">
+            <thead >
                 <tr>
                     <th scope="col" class="p-3" style="width: 20vw;">Tanggal</th>
                     <th scope="col" class="p-3" style="width: 20vw;">Transaksi</th>
@@ -34,6 +34,10 @@
             <tbody>
                 @foreach ($jurnals as $jurnal)
                     @foreach ($jurnal as $index)
+                        @if($index->debit == 0 && $index->kredit == 0)
+                        <tr>
+                        </tr>
+                        @else
                         <tr>
                             @if ($loop->first)
                             <td rowspan="{{$loop->count}}" >
@@ -66,6 +70,7 @@
                             <td class="p-2" name="debit[]">{{ $index->debit != 0 ? $index->debit : '-' }}</td>
                             <td class="p-2" name="kredit[]">{{ $index->kredit != 0 ? $index->kredit : '-' }}</td>
                         </tr>
+                        @endif
                     @endforeach
                 @endforeach
                 <tr>

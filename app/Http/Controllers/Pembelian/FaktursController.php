@@ -93,6 +93,7 @@ class FaktursController extends Controller
             'uang_muka' => $request->uang_muka,
             'akun_barang' => $request->akun_barang,
             'total_harga' => $request->total_harga_keseluruhan,
+            'hutang' => $request->hutang,
         ]);
 
         if ($request->penerimaan_id) {
@@ -211,7 +212,7 @@ class FaktursController extends Controller
                         ]);
                 } elseif ($i == 3) {
                     $jurnal->update([
-                            'kredit' => $faktur->total_harga,
+                            'kredit' => $faktur->hutang,
                             'akun_id' => 6, //kas
                         ]);
                 } elseif ($i == 4) {
