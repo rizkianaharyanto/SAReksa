@@ -1,103 +1,112 @@
-@extends('stock.layout')
+@extends('stock.standard-layout')
 @section('css')
 @parent
-<link rel="stylesheet" href="{{ asset('css/stock/mgmt-data.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('vendor/stock/datatables/css/dataTables.bootstrap4.css')}}">
+<link rel="stylesheet" type="text/css" href="{{ asset('vendor/stock/datatables/css/buttons.bootstrap4.css')}}">
+<link rel="stylesheet" type="text/css" href="{{ asset('vendor/stock/datatables/css/select.bootstrap4.css')}}">
+<link rel="stylesheet" type="text/css" href="{{ asset('vendor/stock/datatables/css/fixedHeader.bootstrap4.css')}}">
+<link rel="stylesheet" type="text/css" href="{{ asset('vendor/stock/bootstrap-select/css/bootstrap-select.css')}}">
+
 @endsection
+@section('main-content')
+@if (session('status'))
+<div class="alert alert-warning">
+    {{ session('status') }}
+</div>
+@endif
+<div class="row">
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="page-header">
+                <h2 class="pageheader-title">@yield('title')</h2>
+                <p class="pageheader-text"></p>
+                <div class="page-breadcrumb">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Transaksi</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">@yield('title')</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- data table  -->
+    <!-- ============================================================== -->
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">@yield('title') </h5>
+                @section('button-tambah-data')
 
+                <button class="btn btn-primary" data-toggle="modal" data-target="#modal">Tambah data</button>
+                @show
+                <p>- Anda Dapat Mengexport ke bentuk yang anda inginkan -</p>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="example" class="table table-striped table-bordered second" style="width:100%">
+                        <thead>
+                            <tr>
+                                @section('table-header')
 
-@section('content')
-@parent
+                                @show
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @section('table-body')
 
+                            @show
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                @section('table-footer')
 
-<div class="placeholder">
-    @section('tableButtons')
+                                @endsection
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- end data table  -->
+    <!-- ============================================================== -->
+    @section('modal-form')
 
-    <button class="btn btn-primary" id="tambah-data" type="button" data-form="Tambah Data" data-toggle="modal"
-        data-target="#modal"> Tambah Data</button>
-    @show
-
-
-    <table id="table_id" class="display table-striped">
-
-        <thead>
-            <tr>
-                @yield('tableHeader')
-
-
-            </tr>
-        </thead>
-        <tbody>
-            @section('tableBody')
-
-            @show
-        </tbody>
-    </table>
     <x-stock.modal>
-        <form id="formroute" class=form-group action="@yield('Route').update" method="post">
+        <form id="transactionForm" action="@yield('modal-form-action')" method="@yield('modal-form-method')">
             @csrf
-            @section('modalForm')
+            @section('modal-content')
 
             @show
     </x-stock.modal>
 
+    @show
 </div>
 @endsection
-
 @section('scripts')
 @parent
-<script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-<script src="{{asset('js/stock/http_request_on_link.js')}}"></script>
 
-<script>
-    var route = $('title').html().replace("Data",'').toLowerCase().trim().replace(' ','-');
-    console.log(route);
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+<script src="{{asset('vendor/stock/datatables/js/dataTables.bootstrap4.min.js')}}"></script>
+<script src="{{asset('vendor/stock/multi-select/js/jquery.multi-select.js')}}"></script>
 
-
-    $(document).ready(function () {
-        $('#table_id').DataTable();
-
-        $("#modal").on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget) // Button that triggered the modal
-            var form = button.data('form') // Extract info from data-* attributes
-            let thedata = [];
-            if (form.trim() == "Edit Data") {
-                td = button.parent().parent().parent().find("td:not(:last-child)")
-                td.each( function () {
-                thedata.push($(this).html().trim());
-                
-                })
-                console.log(button.data('ctgid'))
-                $(".modal-body form").attr('action',route+'/'+button.data('ctgid'))
-                $(".modal-body form").prepend("<input type='hidden' name='_method' value='PUT'>")
-                
-            }
-            else{
-                $(".modal-body form").attr('action',`/stok/${route}`)
-                
-            }
-            
-            var modal = $(this);
-            modal.find('#modalTitle').html('Form ' + form)
-            
-            $('#kodeKategori').val("Kodenya");
-            thedata.forEach((v,index,arr) => {
-                if(index == 0 || index == arr.length-1 ){
-                }
-                else{
-                    // console.log(`${index+1}`)
-                    $(`#field${index}`).val(v);
-                    thedata = [];
-
-                }
-            });
-            // console.log(thedata.slice(-1));
-        });
-    $('#modal').on('hide.bs.modal', (e) => {
-        document.querySelector('form').reset()
-    } )
-
-      
-    });
-</script>
+<script src="{{asset('vendor/stock/datatables/js/buttons.bootstrap4.min.js')}}"></script>
+<script src="{{asset('vendor/stock/datatables/js/data-table.js')}}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.colVis.min.js"></script>
+<script src="https://cdn.datatables.net/rowgroup/1.0.4/js/dataTables.rowGroup.min.js"></script>
+<script src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js"></script>
+<script src="https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"></script>
+<script src="{{asset('vendor/stock/bootstrap-select/js/bootstrap-select.js')}}"></script>
 
 @endsection

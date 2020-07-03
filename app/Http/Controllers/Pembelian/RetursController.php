@@ -241,6 +241,7 @@ class RetursController extends Controller
     public function show2($id)
     {
         $retur = retur::find($id);
+        $faktur = Faktur::find($retur->faktur_id);
         $barangs = $retur->barangs;
         $diskon = $retur->diskon_rp;
         $biaya_lain = $retur->biaya_lain;
@@ -255,6 +256,7 @@ class RetursController extends Controller
         // dd($total_harga, $total_seluruh);
         return view('pembelian.pembelian.retur.returdetails', [
             'retur' => $retur,
+            'faktur' => $faktur,
             'barangs' => $barangs,
             'diskon' => $diskon,
             'biaya_lain' => $biaya_lain,
@@ -268,6 +270,7 @@ class RetursController extends Controller
     public function cetak_pdf(Request $request)
     {
         $retur = retur::find($request->id);
+        $faktur = Faktur::find($retur->faktur_id);
         $barangs = $retur->barangs;
         $diskon = $retur->diskon_rp;
         $biaya_lain = $retur->biaya_lain;
@@ -281,6 +284,7 @@ class RetursController extends Controller
         }
         $pdf = PDF::loadview('pembelian.pembelian.retur.retur-pdf', [
             'retur' => $retur,
+            'faktur' => $faktur,
             'barangs' => $barangs,
             'diskon' => $diskon,
             'biaya_lain' => $biaya_lain,

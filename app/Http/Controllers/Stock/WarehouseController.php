@@ -20,7 +20,7 @@ class WarehouseController extends Controller
         //
       
         $allData = $this->model->all();
-        return view('stock.Management-Data/gudang', compact("allData"));
+        return view('stock.management-data/gudang', compact("allData"));
     }
 
     public function indexpembelian()
@@ -58,6 +58,6 @@ class WarehouseController extends Controller
     {
         //
         $this->model->delete($id);
-        return "Success";
+        return redirect()->back();
     }
 }

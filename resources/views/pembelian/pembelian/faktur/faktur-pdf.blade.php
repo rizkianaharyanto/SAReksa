@@ -22,67 +22,108 @@
         }
     </style>
 </head>
-<body class="m-5">
+<body>
     <div class="page">
-	<center class="mb-4">
-		<h5>Faktur</h4>
-        <input type="hidden" name="id" value="{{$faktur->id}}">
-    </center>
-    <table class="table table-sm">
-            <tbody>
-            <tr>
-                <td>Kode faktur : {{$faktur->kode_faktur}}</td>
-                <td>Pemasok : {{$faktur->pemasok->nama_pemasok}}</td>
-            </tr>
-            <tr>
-                <td>Tanggal : {{$faktur->tanggal}}</td>
-                <td>Status : {{$faktur->status}}</td>
-            </tr>
-            </tbody>
-        </table>
-
-	<table class="table table-striped table-bordered">
-            <thead style="background-color: #00BFA6; color:whitesmoke" >
-                <tr>
-                    <th>Nama Barang</th>
-                    <th>QTY</th>
-                    <th>Unit</th>
-                    <th>Harga</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($barangs as $index => $barang)
-                    <tr>
-                        <td>{{$barang->nama_barang ? $barang->nama_barang : '-' }}</td>
-                        <td>{{$barang->pivot->jumlah_barang ? $barang->pivot->jumlah_barang : '-' }}</td>
-                        <td>{{ $barang->pivot->unit ? $barang->pivot->unit : '-' }}</td>
-                        <td>{{ $barang->pivot->harga ? $barang->pivot->harga : '-' }}</td>
-                        <td>{{$total_harga[$index]}}</td>
-                    </tr>
-                @endforeach
-                <tr>
-                    <td colspan="4" class="text-right pr-3">Sub total</td>
-                    <td id="subtotal">{{$subtotal}}</td>
-                </tr>
-                <tr>
-                    <td colspan="4" class="text-right pr-3">diskon</td>
-                    <td id="diskon">{{$diskon}}</td>
-                </tr>
-                <tr>
-                    <td colspan="4" class="text-right pr-3">Biaya lain</td>
-                    <td id="biaya_lain">{{$biaya_lain}}</td>
-                </tr>
-                <tr>
-                    <td colspan="4" class="text-right pr-3">Uang Muka</td>
-                    <td id="uang_muka">{{$uang_muka}}</td>
-                </tr>
-                <tr>
-                    <td colspan="4" class="text-right pr-3">Total</td>
-                    <td id="total_seluruh">{{$total_seluruh}}</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="row">
+            <div class="offset-xl-2 col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="card row">
+                    <div class="col">
+                                <div class="card-header p-4">
+                                     <a class="pt-2 d-inline-block">Faktur Pembelian</a>
+                                    <input type="hidden" name="id" value="{{$faktur->id}}">
+                                    <div class="float-right"> <h3 class="mb-0">{{$faktur->kode_faktur}}</h3>
+                                    {{$faktur->tanggal}}</div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row mb-4">
+                                        <div class="col-sm-6">
+                                            <h5 class="mb-3">Pemasok:</h5>                                            
+                                            <h3 class="text-dark mb-1">{{$faktur->pemasok->nama_pemasok}}</h3>
+                                         
+                                            <div>{{$faktur->pemasok->alamat_pemasok}}</div>
+                                            <div>Phone: {{$faktur->pemasok->telp_pemasok}}</div>
+                                        </div>
+                                        <div class="col-sm-6 float-right">
+                                            <h5 class="mb-3">Status:</h5>
+                                            <!-- <h3 class="text-dark mb-1"></h3>                                             -->
+                                            <div>{{$faktur->status}}</div>
+                                            <!-- <div>Phone: $gudang->no_telp</div> -->
+                                        </div>
+                                    </div>
+                                    <div class="table-responsive-sm">
+                                        <table class="table table-striped">
+                                            <thead >
+                                                <tr>
+                                                    <th>Nama Barang</th>
+                                                    <th>QTY</th>
+                                                    <th>Unit</th>
+                                                    <th>Harga</th>
+                                                    <th>Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($barangs as $index => $barang)
+                                                    <tr>
+                                                        <td>{{$barang->nama_barang ? $barang->nama_barang : '-' }}</td>
+                                                        <td>{{$barang->pivot->jumlah_barang ? $barang->pivot->jumlah_barang : '-' }}</td>
+                                                        <td>{{ $barang->pivot->unit ? $barang->pivot->unit : '-' }}</td>
+                                                        <td>{{ $barang->pivot->harga ? $barang->pivot->harga : '-' }}</td>
+                                                        <td>{{$total_harga[$index]}}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-4 col-sm-5">
+                                        </div>
+                                        <div class="col-lg-4 col-sm-5 ml-auto">
+                                            <table class="table table-clear">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="left">
+                                                            <strong class="text-dark">Subtotal</strong>
+                                                        </td>
+                                                        <td class="right">{{$subtotal}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="left">
+                                                            <strong class="text-dark">Diskon</strong>
+                                                        </td>
+                                                        <td class="right">{{$diskon}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="left">
+                                                            <strong class="text-dark">Biaya Lain</strong>
+                                                        </td>
+                                                        <td class="right">{{$biaya_lain}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="left">
+                                                            <strong class="text-dark">Uang Muka</strong>
+                                                        </td>
+                                                        <td class="right">{{$uang_muka}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="left">
+                                                            <strong class="text-dark">Total</strong>
+                                                        </td>
+                                                        <td class="right">
+                                                            <strong class="text-dark">{{$total_seluruh}}</strong>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            <!-- <div class="card-footer bg-white">
+                                <p class="mb-0">2983 Glenview Drive Corpus Christi, TX 78476</p>
+                            </div> -->
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
 </body>
 </html>

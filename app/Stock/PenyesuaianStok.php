@@ -10,6 +10,10 @@ class PenyesuaianStok extends Model
     protected $table = "stk_penyesuaian_stok";
     public function details()
     {
-        return $this->belongsToMany('App\Items', 'detail_penyesuaian_stok', 'stock_adjustment_id', 'item_id');
+        return $this->belongsToMany('App\Stock\Items', 'detail_penyesuaian_stok', 'stock_adjustment_id', 'item_id');
+    }
+    public function gudang()
+    {
+        return $this->belongsTo('App\Stock\Gudang', 'warehouse_id');
     }
 }

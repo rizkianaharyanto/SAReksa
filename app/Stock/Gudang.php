@@ -12,6 +12,6 @@ class Gudang extends Model
     protected $guarded = [];
     public function items()
     {
-        return $this->belongsToMany('App\Stock\Barang', 'stok_gudang', 'gudang_id', 'barang_id');
+        return $this->belongsToMany('App\Stock\Barang', 'stk_stok_gudang', 'gudang_id', 'barang_id');
     }
 }

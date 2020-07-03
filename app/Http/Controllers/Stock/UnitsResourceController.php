@@ -25,7 +25,7 @@ class UnitsResourceController extends Controller
         //
       
         $allUnits = $this->model->all();
-        return view('stock.Management-Data/satuan-unit', compact("allUnits"));
+        return view('stock.management-data.satuan-unit', compact("allUnits"));
     }
 
     /**
@@ -93,6 +93,6 @@ class UnitsResourceController extends Controller
     {
         //
         $itc = $this->model->delete($id);
-        return "Success";
+        return redirect()->back();
     }
 }

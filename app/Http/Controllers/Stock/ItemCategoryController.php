@@ -21,7 +21,7 @@ class ItemCategoryController extends Controller
        
         $allData = $this->model->all();
         // dd($allData);
-        return view('stock.Management-Data.kategori-barang', compact("allData"));
+        return view('stock.management-data.kategori-barang', compact("allData"));
     }
     public function store(ItemCategoryRequest $request)
     {
@@ -47,6 +47,6 @@ class ItemCategoryController extends Controller
     {
         //
         $this->model->delete($id);
-        return "Success";
+        return redirect()->back();
     }
 }

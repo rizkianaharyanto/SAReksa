@@ -9,6 +9,8 @@ use App\Pembelian\Pemasok;
 use Illuminate\Http\Request;
 use App\Pembelian\Pembayaran;
 
+use PDF;
+
 class PembayaransController extends Controller
 {
     /**
@@ -22,6 +24,32 @@ class PembayaransController extends Controller
 
         return view('pembelian.hutang.pembayaran', compact('pembayarans'));
     }
+
+    public function laporan()
+    {
+        $pembayarans = Pembayaran::all();
+
+        return view('pembelian.hutang.laporan-pembayaran', compact('pembayarans'));
+    }
+
+    public function laporanfilter(Request $date)
+    {
+        $pembayarans = Pembayaran::select("pbl_pembayarans.*")
+            ->whereBetween('tanggal', [$date->start, $date->end])
+            ->get();
+
+            return view('pembelian.hutang.laporan-pembayaran', compact('pembayarans'));
+    }
+
+    public function cetaklaporan()
+    {
+        $pembayarans = Pembayaran::all();
+
+        $pdf = PDF::loadview('pembelian.hutang.cetak-laporan-pembayaran', compact('pembayarans'));
+
+        return $pdf->download('laporan-pembayaran.pdf');
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -126,6 +154,35 @@ class PembayaransController extends Controller
      */
     public function show($id)
     {
+    }
+
+    public function show2($id)
+    {
+        $pembayaran = Pembayaran::find($id);
+        // dd($pembayaran->hutangs);
+        $hutangs = $pembayaran->hutangs;
+        $total_seluruh = $pembayaran->total;
+        // dd($total_harga, $total_seluruh);
+        return view('pembelian.hutang.pembayarandetails', [
+            'pembayaran' => $pembayaran,
+            'hutangs' => $hutangs,
+            'total_seluruh' => $total_seluruh,
+        ]);
+    }
+
+    public function cetak_pdf(Request $request)
+    {
+        $pembayaran = Pembayaran::find($request->id);
+        $hutangs = $pembayaran->hutangs;
+        $total_seluruh = $pembayaran->total;
+        $pdf = PDF::loadview('pembelian.hutang.pembayaran-pdf', [
+            'pembayaran' => $pembayaran,
+            'hutangs' => $hutangs,
+            'total_seluruh' => $total_seluruh,
+            ]);
+            
+
+        return $pdf->download('pembayaran.pdf');
     }
 
     /**

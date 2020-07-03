@@ -18,7 +18,6 @@ Route::get('/', function () {
 });
 
 Route::prefix('pembelian')->group(function () {
-    
     Route::get('/', function () {
         return view('pembelian.template.templatebaru');
     });
@@ -46,6 +45,10 @@ Route::prefix('pembelian')->group(function () {
     Route::get('/fakturs/laporanfilter', 'Pembelian\FaktursController@laporanfilter');
     Route::get('/returs/laporan', 'Pembelian\RetursController@laporan');
     Route::get('/returs/laporanfilter', 'Pembelian\RetursController@laporanfilter');
+    Route::get('/pembayarans/laporan', 'Pembelian\PembayaransController@laporan');
+    Route::get('/pembayarans/laporanfilter', 'Pembelian\PembayaransController@laporanfilter');
+    Route::get('/hutangs/laporan', 'Pembelian\HutangsController@laporan');
+    Route::get('/hutangs/laporanfilter', 'Pembelian\HutangsController@laporanfilter');
 
     //cetak laporan
     Route::get('/permintaans/laporanpdf', 'Pembelian\PermintaansController@cetaklaporan');
@@ -53,6 +56,8 @@ Route::prefix('pembelian')->group(function () {
     Route::get('/penerimaans/laporanpdf', 'Pembelian\PenerimaansController@cetaklaporan');
     Route::get('/fakturs/laporanpdf', 'Pembelian\FaktursController@cetaklaporan');
     Route::get('/returs/laporanpdf', 'Pembelian\RetursController@cetaklaporan');
+    Route::get('/pembayarans/laporanpdf', 'Pembelian\PembayaransController@cetaklaporan');
+    Route::get('/hutangs/laporanpdf', 'Pembelian\HutangsController@cetaklaporan');
 
     //show details
     Route::get('/permintaanshow/{id}', 'Pembelian\PermintaansController@show2');
@@ -60,6 +65,9 @@ Route::prefix('pembelian')->group(function () {
     Route::get('/penerimaanshow/{id}', 'Pembelian\PenerimaansController@show2');
     Route::get('/fakturshow/{id}', 'Pembelian\FaktursController@show2');
     Route::get('/returshow/{id}', 'Pembelian\RetursController@show2');
+    Route::get('/pembayaranshow/{id}', 'Pembelian\PembayaransController@show2');
+    Route::get('/hutangshow/{id}', 'Pembelian\HutangsController@show2');
+
     //cetak pdf
     Route::get('/jurnals/cetak_pdf', 'Pembelian\JurnalsController@cetak_pdf');
     Route::get('/permintaans/cetak_pdf', 'Pembelian\PermintaansController@cetak_pdf');
@@ -67,6 +75,8 @@ Route::prefix('pembelian')->group(function () {
     Route::get('/penerimaans/cetak_pdf', 'Pembelian\PenerimaansController@cetak_pdf');
     Route::get('/fakturs/cetak_pdf', 'Pembelian\FaktursController@cetak_pdf');
     Route::get('/returs/cetak_pdf', 'Pembelian\RetursController@cetak_pdf');
+    Route::get('/pembayarans/cetak_pdf', 'Pembelian\PembayaransController@cetak_pdf');
+    Route::get('/hutangs/cetak_pdf', 'Pembelian\HutangsController@cetak_pdf');
 
     // Route::get('/barangs', )
     Route::resources([
@@ -87,7 +97,7 @@ Route::prefix('stok')->group(function () {
     Route::get('/', function () {
         return view('stock.dashboard');
     });
-
+    Route::get('/getstocksbywarehouse/{warehouseId}', 'Stock\ItemResourceController@getStocksByWarehouse');
     Route::get('/barangs', 'Stock\ItemResourceController@indexpembelian');
     Route::get('/gudangs', 'Stock\WarehouseController@indexpembelian');
     Route::get('/pajaks', 'Stock\TaxResourceController@indexpembelian');
@@ -104,7 +114,7 @@ Route::prefix('stok')->group(function () {
             'barang' => "Stock\ItemResourceController",
             'satuan-unit' => "Stock\UnitsResourceController",
             'gudang' => "Stock\WarehouseController",
-            // 'pemasok' => "Stock\SuppliersResourceController",
+            'supplier' => "Stock\SuppliersResourceController",
             'pajak' => "Stock\TaxResourceController",
             'coa-master' => "Stock\COAMasterController",
             'coa-type' => "Stock\COATypeController",
@@ -112,12 +122,13 @@ Route::prefix('stok')->group(function () {
         Route::get('/pemasok', 'Pembelian\PemasoksController@indexbarang');
     });
     Route::post('/stock-opname/posting/{id}', 'Stock\StockOpnameController@posting');
+    
     Route::resources([
             'transfer-stock' => 'Stock\StockTransferController',
             'stock-opname' => 'Stock\StockOpnameController',
             'penyesuaian-stock' => 'Stock\StockAdjustmentController',
             'pembelian' => 'Stock\ItemPurchaseTransactionController',
-        ]);
+    ], ['middleware' => 'web']);
     Route::get('/stokbarang/{barangId}', 'Stock\ItemStockController@getStocksTotalById');
     Route::get('/stokbarangpergudang/{barangId}', 'Stock\ItemStockController@getStocksByGudang');
     Route::get('/token', function () {
@@ -189,8 +200,10 @@ Route::prefix('penjualan')->group(function () {
     Route::get('/register', 'Penjualan\LoginController@daftar')->middleware('guest');
     Route::get('/login', 'Penjualan\LoginController@login')->middleware('guest')->name('login');
     Route::get('/logout', 'Penjualan\LoginController@logout')->middleware('auth');
-    Route::post('/register', 'Penjualan\LoginController@postdaftar')->middleware('guest');;
-    Route::post('/login', 'Penjualan\LoginController@postlogin')->middleware('guest');;
+    Route::post('/register', 'Penjualan\LoginController@postdaftar')->middleware('guest');
+    ;
+    Route::post('/login', 'Penjualan\LoginController@postlogin')->middleware('guest');
+    ;
     Route::get('/barangs', 'Stock\ItemResourceController@indexpenjualan')->middleware('auth');
     Route::get('/gudangs', 'Stock\WarehouseController@indexpenjualan')->middleware('auth');
     Route::resource('/pelanggans', 'Penjualan\PelanggansController')->middleware('auth');
@@ -203,7 +216,7 @@ Route::prefix('penjualan')->group(function () {
     Route::any('/returs/cetak_pdf', 'Penjualan\RetursController@cetak_pdf')->middleware('auth');
     
     //Admin Faktur
-    Route::group(['middleware' => ['auth','checkRole:penjualan']], function(){
+    Route::group(['middleware' => ['auth','checkRole:penjualan']], function () {
         Route::resource('/pemesanans', 'Penjualan\PemesanansController');
         Route::resource('/pengirimans', 'Penjualan\PengirimansController');
         Route::resource('/penawarans', 'Penjualan\PenawaransController');
@@ -219,23 +232,23 @@ Route::prefix('penjualan')->group(function () {
     });
 
     //Admin Retur
-    Route::group(['middleware' => ['auth','checkRole:retur']], function(){
+    Route::group(['middleware' => ['auth','checkRole:retur']], function () {
         Route::get('/returs/{idnya}/posting', 'Penjualan\RetursController@posting');
     });
 
     //Admin Piutang
-    Route::group(['middleware' => ['auth','checkRole:piutang']], function(){
+    Route::group(['middleware' => ['auth','checkRole:piutang']], function () {
         Route::resource('/piutangs', 'Penjualan\PiutangsController');
         Route::get('/showpiutang/{id}', 'Penjualan\PiutangsController@showpembayaran');
         Route::resource('/pembayarans', 'Penjualan\PembayaransController');
         Route::get('/pembayarans/{idnya}/posting', 'Penjualan\PembayaransController@posting');
         Route::get('/pembayarandetails/{id}', 'Penjualan\PembayaransController@detail');
-        Route::any('/pembayarans/cetak_pdf', 'Penjualan\PembayaransController@cetak_pdf');    
+        Route::any('/pembayarans/cetak_pdf', 'Penjualan\PembayaransController@cetak_pdf');
     });
 
     //Dikersi Perusahaan
-    Route::group(['middleware' => ['auth','checkRole:direksi']], function(){
-    //show laporan
+    Route::group(['middleware' => ['auth','checkRole:direksi']], function () {
+        //show laporan
         Route::any('/laporans/penawaran', 'Penjualan\LaporansController@penawaran');
         Route::any('/laporans/pemesanan', 'Penjualan\LaporansController@pemesanan');
         Route::any('/laporans/pengiriman', 'Penjualan\LaporansController@pengiriman');

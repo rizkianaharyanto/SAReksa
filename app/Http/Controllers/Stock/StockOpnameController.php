@@ -2,20 +2,27 @@
 
 namespace App\Http\Controllers\Stock;
 
-use Illuminate\Support\Arr;
 use App\Http\Controllers\Controller;
-use App\Stock\StokOpname;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+use App\Http\Requests\Stock\StockOpnameRequest;
 use App\Services\Stock\ItemService;
 use App\Services\Stock\StockOpnameService;
-use Illuminate\Http\Request;
 use App\Services\Stock\InventoryLedgerService;
-use Illuminate\Support\Facades\DB;
-use App\Http\Requests\Stock\StockOpnameRequest;
+use App\Stock\StokOpname;
 use App\Stock\Barang;
 use App\Stock\Gudang;
+use App\Stock\DetailStokOpname;
 
 class StockOpnameController extends Controller
 {
+    private $service;
+
+    public function __construct(StockOpnameService $stockService)
+    {
+        $this->service = $stockService;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -23,11 +30,11 @@ class StockOpnameController extends Controller
      */
     public function index()
     {
-        $stokOp = StokOpname::all();
+        $stokOp = StokOpname::with('details')->get();
         $barangs = Barang::all();
         $gudangs = Gudang::all();
 
-        return view('stock.transactions/stock-opname', ['stokOp' => $stokOp, 'barangs' => $barangs, 'gudangs' =>$gudangs]);
+        return view('stock.transactions.stock-opname.index', ['stokOp' => $stokOp, 'barangs' => $barangs, 'gudangs' =>$gudangs]);
     }
 
     /*
@@ -39,6 +46,15 @@ class StockOpnameController extends Controller
     {
     }
 
+    public function show($id)
+    {
+        $stockOpname = $this->service->get($id);
+        if (!$stockOpname) {
+            return redirect('/stok/stock-opname')->with('status', 'Data Transaksi tersebut tidak ditemukan');
+        }
+        return view('stock.transactions.stock-opname.details', compact('stockOpname'));
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -48,24 +64,24 @@ class StockOpnameController extends Controller
      */
     public function store(StockOpnameService $opnameServ, ItemService $itemServ, StockOpnameRequest $req)
     {
+        // return $req;
         $opnameItems = $req->validated();
-
-        $transData = Arr::except($opnameItems, ['item_id', 'on_hand']);
-        // return $transData;
+        $opnameItems = collect($opnameItems);
+        $transData = $opnameItems->except(['item_id','on_hand']);
         $stockOp = StokOpname::findOrFail($opnameServ->makeTransJournal($transData));
-        //  $opnameServ->makeTransJournal($transData);
 
-        $itemId = $opnameItems['item_id'];
+        $itemIds = $opnameItems['item_id'];
         $whouseId = $opnameItems['gudang_id'];
         DB::beginTransaction();
         try {
-            foreach ($itemId as $index => $id) {
+            foreach ($itemIds as $index => $id) {
                 $onBook = $itemServ->getStocksQtyByWhouse($opnameItems['gudang_id'], $id);
                 $itemServ->updateStocks($id, $whouseId, $opnameItems['on_hand'][$index]);
 
                 $stockOp->details()->attach($id, [
                     'jumlah_tercatat' => $onBook,
-                    'jumlah_fisik' => $opnameItems['on_hand'][$index],
+                    'jumlah_fisik'    => $opnameItems['on_hand'][$index],
+                    'selisih'         => $opnameItems['on_hand'][$index]- $onBook
                 ]);
             }
         } catch (\Exception $e) {
@@ -75,7 +91,7 @@ class StockOpnameController extends Controller
         }
         DB::commit();
 
-        return $stockOp;
+        return redirect()->back();
     }
 
     /**
@@ -99,6 +115,15 @@ class StockOpnameController extends Controller
      */
     public function edit(StokOpname $stockOpname)
     {
+        $stockOpname = StokOpname::with([
+            'details'
+            ])
+        ->find($stockOpname);
+        $gudangs = Gudang::all();
+
+        // dd($stockOpname);
+
+        return view('stock.transactions.stock-opname.edit', ['stockOpname' => $stockOpname, 'gudangs' =>$gudangs]);
     }
 
     /**
@@ -109,7 +134,7 @@ class StockOpnameController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, StokOpname $stockOpname)
+    public function update(StockOpnameRequest $req, StokOpname $stockOpname)
     {
     }
 
