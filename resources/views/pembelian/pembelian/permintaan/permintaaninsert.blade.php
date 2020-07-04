@@ -160,8 +160,8 @@
                 </div>
                 <div id="test-l-3" class="content">
                     <div style="overflow:auto" class="mt-2">
-                        
-                    <div class="form-group row mx-5 mb-5">
+
+                        <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="diskon">Diskon</label>
                             <div class="col-sm-3">
                                 <div class="input-group mb-2">

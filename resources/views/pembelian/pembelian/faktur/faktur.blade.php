@@ -27,9 +27,9 @@
     <td>{{ $faktur->pemasok->nama_pemasok }}</td>
     <td>{{ $faktur->tanggal }}</td>
     <td>{{ $faktur->total_harga }}</td>
-    <td>{{ $faktur->status !=null ? $faktur->status  : '-' }} | 
+    <td>{{ $faktur->status !=null ? $faktur->status  : '-' }} |
         @if ($faktur->status_posting == 'sudah posting')
-            sudah posting 
+        sudah posting
         @elseif ($faktur->status_posting == 'konfirmasi')
         <a href="/pembelian/ubahpsnfak/{{$faktur->id}}">posting</a>
         @else
@@ -39,10 +39,10 @@
     <td class="d-flex justify-content-between">
         <a id="details" href="/pembelian/fakturshow/{{$faktur->id}}">
             <button class="btn-info">
-    
+
                 <i style="cursor: pointer; " class="fas fa-info-circle">
-                        <span></span>
-                    </i>
+                    <span></span>
+                </i>
             </button>
         </a>
         @if(auth()->user()->role->role_name == 'Admin Pembelian')

@@ -82,7 +82,7 @@ class FaktursController extends Controller
         // dd($request);
         $fak = Faktur::max('id') + 1;
         $faktur = Faktur::create([
-            'kode_faktur' => 'FAK-'.$fak,
+            'kode_faktur' => 'FAK-' . $fak,
             'pemesanan_id' => $request->pemesanan_id,
             'pemasok_id' => $request->pemasok_id,
             'status' => $request->status,
@@ -105,7 +105,7 @@ class FaktursController extends Controller
         if ($request->status == 'hutang') {
             $hut = Hutang::max('id') + 1;
             $hutang = $faktur->hutang()->create([
-                'kode_hutang' => 'HUT-'.$hut,
+                'kode_hutang' => 'HUT-' . $hut,
                 'pemasok_id' => $faktur->pemasok_id,
                 'total_hutang' => $request->hutang,
                 'sisa' => $request->hutang,
@@ -146,7 +146,7 @@ class FaktursController extends Controller
     {
         $faktur = Faktur::find($idnya);
         Faktur::where('id', $faktur->id)
-                    ->update(['status_posting' => 'sudah posting']);
+            ->update(['status_posting' => 'sudah posting']);
 
         $penerimaan = $faktur->penerimaans;
         foreach ($faktur->penerimaans as $penerimaan) {
@@ -164,62 +164,62 @@ class FaktursController extends Controller
             $no = Jurnal::max('id') + 1;
             for ($i = 1; $i < 5; ++$i) {
                 $jurnal = Jurnal::create([
-                        'kode_jurnal' => 'jur'.$no,
-                        'faktur_id' => $faktur->id,
-                        'debit' => 0,
-                        'kredit' => 0,
-                    ]);
+                    'kode_jurnal' => 'jur' . $no,
+                    'faktur_id' => $faktur->id,
+                    'debit' => 0,
+                    'kredit' => 0,
+                ]);
                 if ($i == 1) {
                     $jurnal->update([
-                            'debit' => $faktur->akun_barang - $faktur->uang_muka,
-                            'akun_id' => 1, //barang
-                        ]);
+                        'debit' => $faktur->akun_barang - $faktur->uang_muka,
+                        'akun_id' => 1, //barang
+                    ]);
                 } elseif ($i == 2) {
                     $jurnal->update([
-                            'debit' => $faktur->biaya_lain,
-                            'akun_id' => 3, //biayalain
-                        ]);
+                        'debit' => $faktur->biaya_lain,
+                        'akun_id' => 3, //biayalain
+                    ]);
                 } elseif ($i == 3) {
                     $jurnal->update([
-                            'kredit' => $faktur->hutang->total_hutang,
-                            'akun_id' => 4, //hutang
-                        ]);
+                        'kredit' => $faktur->hutang->total_hutang,
+                        'akun_id' => 4, //hutang
+                    ]);
                 } elseif ($i == 4) {
                     $jurnal->update([
-                            'kredit' => $faktur->diskon_rp,
-                            'akun_id' => 5, //diskon
-                        ]);
+                        'kredit' => $faktur->diskon_rp,
+                        'akun_id' => 5, //diskon
+                    ]);
                 }
             }
         } elseif ($faktur->status == 'lunas') {
             $no = Jurnal::max('id') + 1;
             for ($i = 1; $i < 5; ++$i) {
                 $jurnal = Jurnal::create([
-                        'kode_jurnal' => 'jur'.$no,
-                        'faktur_id' => $faktur->id,
-                        'debit' => 0,
-                        'kredit' => 0,
-                    ]);
+                    'kode_jurnal' => 'jur' . $no,
+                    'faktur_id' => $faktur->id,
+                    'debit' => 0,
+                    'kredit' => 0,
+                ]);
                 if ($i == 1) {
                     $jurnal->update([
-                            'debit' => $faktur->akun_barang - $faktur->uang_muka,
-                            'akun_id' => 1, //barang
-                        ]);
+                        'debit' => $faktur->akun_barang - $faktur->uang_muka,
+                        'akun_id' => 1, //barang
+                    ]);
                 } elseif ($i == 2) {
                     $jurnal->update([
-                            'debit' => $faktur->biaya_lain,
-                            'akun_id' => 3, //biayalain
-                        ]);
+                        'debit' => $faktur->biaya_lain,
+                        'akun_id' => 3, //biayalain
+                    ]);
                 } elseif ($i == 3) {
                     $jurnal->update([
-                            'kredit' => $faktur->hutangnya,
-                            'akun_id' => 6, //kas
-                        ]);
+                        'kredit' => $faktur->hutangnya,
+                        'akun_id' => 6, //kas
+                    ]);
                 } elseif ($i == 4) {
                     $jurnal->update([
-                            'kredit' => $faktur->diskon_rp,
-                            'akun_id' => 5, //diskon
-                        ]);
+                        'kredit' => $faktur->diskon_rp,
+                        'akun_id' => 5, //diskon
+                    ]);
                 }
             }
         }
@@ -293,7 +293,7 @@ class FaktursController extends Controller
             'total_harga' => $total_harga,
             'subtotal' => $subtotal,
             'total_seluruh' => $total_seluruh,
-            ]);
+        ]);
 
         return $pdf->download('faktur.pdf');
     }

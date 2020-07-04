@@ -27,8 +27,8 @@
     <td class="d-flex justify-content-center">
         <a id="details" data-toggle="modal" data-target="#modal" data-id="{{ $akun->id }}">
             <button class="btn-info"><i style="cursor: pointer;" class="fas fa-info-circle">
-                <span></span>
-            </i></button>
+                    <span></span>
+                </i></button>
         </a>
     </td>
 </tr>

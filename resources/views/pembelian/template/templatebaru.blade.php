@@ -36,7 +36,7 @@
     <link rel="stylesheet" type="text/css" href="{{ url('/css/pembelian/DataTables/datatables.min.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ url('/css/pembelian/tables.css') }}" />
     <link href="https://cdn.jsdelivr.net/npm/bs-stepper/dist/css/bs-stepper.min.css" rel="stylesheet">
-    
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <link rel="stylesheet" href="{{url('css/pembelian/assets/css/style.css')}}">
@@ -46,35 +46,35 @@
     <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/v4-shims.css">
-    
+
     <!-- <link rel="stylesheet" type="text/css" href="{{ url('/css/pembelian/sidebar.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ url('/css/pembelian/page.css') }}" /> -->
-    
+
     <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="{{ url('/css/dataTables.bootstrap4.min.css') }}" />
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script> -->
-    
+
     <link rel="stylesheet" type="text/css" href="{{ url('/css/pembelian/DataTables/datatables.min.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ url('/css/pembelian/tables.css') }}" />
     <link href="https://cdn.jsdelivr.net/npm/bs-stepper/dist/css/bs-stepper.min.css" rel="stylesheet">
-    
-    
+
+
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
     <script src="{{ url('/css/pembelian/DataTables/datatables.min.js') }}"></script>
-    
-    
+
+
     <script src="{{url('css/pembelian/vendors/chart.js/dist/Chart.bundle.min.js')}}"></script>
     <script src="{{url('css/pembelian/assets/js/dashboard.js')}}"></script>
     <script src="{{url('css/pembelian/assets/js/widgets.js')}}"></script>
     <script src="{{url('css/pembelian/vendors/jqvmap/dist/jquery.vmap.min.js')}}"></script>
     <script src="{{url('css/pembelian/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js')}}"></script>
     <script src="{{url('css/pembelian/vendors/jqvmap/dist/maps/jquery.vmap.world.js')}}"></script>
-    
+
     <script src="{{url('css/pembelian/vendors/jquery/dist/jquery.min.js')}}"></script>
     <script src="{{url('css/pembelian/vendors/popper.js/dist/umd/popper.min.js')}}"></script>
     <script src="{{url('css/pembelian/vendors/bootstrap/dist/js/bootstrap.min.js')}}"></script>
@@ -87,46 +87,47 @@
 </head>
 
 <body>
-<!-- modal -->
-<div style="color: black;" class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div id="lebarmodal" class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <div id="judulmodal" class="modal-title d-inline-flex" id="exampleModalLongTitle"></div>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div id="bodymodal" class="modal-body">
+    <!-- modal -->
+    <div style="color: black;" class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div id="lebarmodal" class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div id="judulmodal" class="modal-title d-inline-flex" id="exampleModalLongTitle"></div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="bodymodal" class="modal-body">
 
-      </div>
-      <div id="footermodal" class="modal-footer">
+                </div>
+                <div id="footermodal" class="modal-footer">
 
-      </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 
-<!-- tambah -->
-<div style="color: black;" class="modal fade" id="modaltambah" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div id="lebarmodaltambah" class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <div id="judulmodal" class="modal-title d-inline-flex" id="exampleModalLongTitle">@yield('judulTambah')</div>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div id="bodymodal" class="modal-body">
-        @yield('bodyTambah')
-      </div>
-      <div id="footermodaltambah" class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-        <button type="submit" class="btn btn-primary">Tambah</button>
-      </div></form>
+    <!-- tambah -->
+    <div style="color: black;" class="modal fade" id="modaltambah" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div id="lebarmodaltambah" class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div id="judulmodal" class="modal-title d-inline-flex" id="exampleModalLongTitle">@yield('judulTambah')</div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="bodymodal" class="modal-body">
+                    @yield('bodyTambah')
+                </div>
+                <div id="footermodaltambah" class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Tambah</button>
+                </div>
+                </form>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 
 
     <!-- Left Panel -->
@@ -158,7 +159,7 @@
                             <li><a href="/stok/gudangs">Data gudang</a></li>
                         </ul>
                     </li>
-                    
+
                     @if(auth()->user()->role->role_name == 'Admin Pembelian')
                     <h3 class="menu-title">Transaksi</h3><!-- /.menu-title -->
                     <li><a href="/pembelian/permintaans"> <i class="menu-icon fa fa-envelope-open-text"></i>Permintaan Penawaran Harga</a></li>
@@ -213,7 +214,7 @@
                 <div class="col-sm-7">
                     <a id="menuToggle" class="menutoggle pull-left"><i class="fa fa fa-tasks"></i></a>
                     <div class="header-left">
-                    <h5>Sistem Manajemen Pembelian</h5>
+                        <h5>Sistem Manajemen Pembelian</h5>
                         <!-- <button class="search-trigger"><i class="fa fa-search"></i></button>
                         <div class="form-inline">
                             <form class="search-form">
@@ -230,8 +231,8 @@
                         <div class="d-flex">
                             <p class="mt-2">{{auth()->user()->role->role_name}} |</p>
                             <a class="nav-link" href="/pembelian/auth/logout"><i class="fa fa-power-off"></i> Logout</a>
+                        </div>
                     </div>
-                </div>
 
                 </div>
             </div>
@@ -240,26 +241,26 @@
         <!-- Header-->
 
         <div class="breadcrumbs d-flex justify-content-end">
-                <div class="page-header float-left">
-                    <div class="page-title">
-                        <ol class="breadcrumb text-right">
-                            <li><a href="/pembelian/">Dashboard</a></li>
-                            @yield('path')
-                        </ol>
-                    </div>
+            <div class="page-header float-left">
+                <div class="page-title">
+                    <ol class="breadcrumb text-right">
+                        <li><a href="/pembelian/">Dashboard</a></li>
+                        @yield('path')
+                    </ol>
                 </div>
+            </div>
         </div>
 
         <div class="content mt-3">
-            
-                                @yield('isi')
-                        
+
+            @yield('isi')
+
         </div> <!-- .content -->
     </div><!-- /#right-panel -->
 
     <!-- Right Panel -->
 
-    
+
     <script>
         (function($) {
             "use strict";
@@ -277,12 +278,10 @@
                 normalizeFunction: 'polynomial'
             });
         })(jQuery);
-
-        
     </script>
 
 
-    
+
 </body>
 
 </html>

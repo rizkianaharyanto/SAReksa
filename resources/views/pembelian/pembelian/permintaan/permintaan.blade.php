@@ -28,23 +28,23 @@
     <td>{{ $permintaan->total_harga }}</td>
     <td class="d-flex justify-content-between">
         <a id="details" href="/pembelian/permintaanshow/{{$permintaan->id}}">
-        <button class="btn-info">
-            <i style="cursor: pointer; " class="fas fa-info-circle">
+            <button class="btn-info">
+                <i style="cursor: pointer; " class="fas fa-info-circle">
                     <span></span>
                 </i>
             </button>
         </a>
         <a id="edit" href="/pembelian/permintaans/{{$permintaan->id}}/edit">
             <button class="btn-warning"><i style="cursor: pointer;" class="fas fa-edit">
-                <span></span>
-            </i></button>
+                    <span></span>
+                </i></button>
         </a>
         <form method="POST" action="/pembelian/permintaans/{{$permintaan->id}}">
             @method('delete')
             @csrf
             <button type="submit" class="btn-danger"><i style="cursor: pointer;" class="fas fa-trash">
-                <span></span>
-            </i></button>
+                    <span></span>
+                </i></button>
         </form>
         <!-- <a id="delete" data-toggle="modal" data-target="#delete-{{$permintaan->id }}">
             <i style="cursor: pointer;" class="fas fa-trash">
@@ -74,7 +74,7 @@ $delete = "delete-".$permintaan->id
 
 @section('tambah')
 <a href="/pembelian/permintaans/create">
-<button class="btn-sm btn-info">Tambah</button>
+    <button class="btn-sm btn-info">Tambah</button>
 </a>
 
 @endsection

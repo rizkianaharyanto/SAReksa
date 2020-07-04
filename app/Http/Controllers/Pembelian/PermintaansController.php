@@ -75,7 +75,7 @@ class PermintaansController extends Controller
     {
         $pr = Permintaan::max('id') + 1;
         $permintaan = Permintaan::create([
-            'kode_permintaan' => 'PR-'.$pr,
+            'kode_permintaan' => 'PR-' . $pr,
             'pemasok_id' => $request->pemasok_id,
             'gudang' => $request->gudang,
             'tanggal' => $request->tanggal,
@@ -118,11 +118,12 @@ class PermintaansController extends Controller
         }
         // $unit = $barangs->unit;
         return response()
-        ->json(['success' => true, 'permintaan' => $permintaan, 'barangs' => $barangs,
-        'total_seluruh_pr' => $total_seluruh_pr,
-        'total_harga_pr' => $total_harga_pr,
-        'subtotal_pr' => $subtotal_pr,
-        ]);
+            ->json([
+                'success' => true, 'permintaan' => $permintaan, 'barangs' => $barangs,
+                'total_seluruh_pr' => $total_seluruh_pr,
+                'total_harga_pr' => $total_harga_pr,
+                'subtotal_pr' => $subtotal_pr,
+            ]);
     }
 
     public function show2($id)
@@ -175,7 +176,7 @@ class PermintaansController extends Controller
             'total_harga' => $total_harga,
             'subtotal' => $subtotal,
             'total_seluruh' => $total_seluruh,
-            ]);
+        ]);
 
         return $pdf->download('permintaan.pdf');
         // return view('pembelian.pembelian.permintaan.permintaan-pdf', [

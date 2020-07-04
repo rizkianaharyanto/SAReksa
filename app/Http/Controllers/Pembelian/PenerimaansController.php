@@ -48,7 +48,7 @@ class PenerimaansController extends Controller
             ->whereBetween('tanggal', [$date->start, $date->end])
             ->get();
 
-            return view('pembelian.pembelian.penerimaan.laporan-penerimaan', compact('penerimaans'));
+        return view('pembelian.pembelian.penerimaan.laporan-penerimaan', compact('penerimaans'));
     }
 
     public function cetaklaporan()
@@ -86,7 +86,7 @@ class PenerimaansController extends Controller
     {
         $pnm = Penerimaan::max('id') + 1;
         $penerimaan = Penerimaan::create([
-            'kode_penerimaan' => 'PNM-'.$pnm,
+            'kode_penerimaan' => 'PNM-' . $pnm,
             'pemesanan_id' => $request->pemesanan_id,
             // 'status' => $request->status,
             'pemasok_id' => $request->pemasok_id,
@@ -117,18 +117,18 @@ class PenerimaansController extends Controller
     {
         $penerimaan = Penerimaan::find($idnya);
         Penerimaan::where('id', $penerimaan->id)
-                    ->update(['status' => 'konfirmasi']);
+            ->update(['status' => 'konfirmasi']);
 
         //posting
 
         $no = Jurnal::max('id') + 1;
         for ($i = 1; $i < 3; ++$i) {
             $jurnal = Jurnal::create([
-            'kode_jurnal' => 'jur'.$no,
-            'penerimaan_id' => $penerimaan->id,
-            'debit' => 0,
-            'kredit' => 0,
-        ]);
+                'kode_jurnal' => 'jur' . $no,
+                'penerimaan_id' => $penerimaan->id,
+                'debit' => 0,
+                'kredit' => 0,
+            ]);
             if ($i == 1) {
                 $jurnal->update([
                     'debit' => $penerimaan->total_jenis_barang,
@@ -181,7 +181,7 @@ class PenerimaansController extends Controller
     {
         $penerimaan = Penerimaan::find($idnya);
         Penerimaan::where('id', $penerimaan->id)
-                    ->update(['status' => 'sudah posting']);
+            ->update(['status' => 'sudah posting']);
         $pemesanan = $penerimaan->pemesanan;
         $status = $pemesanan->barangs()->where('status_barang', 'belum diterima')->first();
         // dd($status);
@@ -214,10 +214,11 @@ class PenerimaansController extends Controller
         }
         // dd($barangs);
         return response()
-            ->json(['success' => true, 'penerimaan' => $penerimaan, 'barangs' => $barangs,
-            'total_seluruh_pnm' => $total_seluruh_pnm,
-            'total_harga_pnm' => $total_harga_pnm,
-            'subtotal_pnm' => $subtotal_pnm,
+            ->json([
+                'success' => true, 'penerimaan' => $penerimaan, 'barangs' => $barangs,
+                'total_seluruh_pnm' => $total_seluruh_pnm,
+                'total_harga_pnm' => $total_harga_pnm,
+                'subtotal_pnm' => $subtotal_pnm,
             ]);
     }
 
@@ -271,7 +272,7 @@ class PenerimaansController extends Controller
             'total_harga' => $total_harga,
             'subtotal' => $subtotal,
             'total_seluruh' => $total_seluruh,
-            ]);
+        ]);
 
         return $pdf->download('penerimaan.pdf');
     }
@@ -303,8 +304,10 @@ class PenerimaansController extends Controller
      */
     public function update(Request $request, Penerimaan $penerimaan)
     {
-        Penerimaan::where('id', $penerimaan->id)
-            ->update([
+        $pnm = Penerimaan::max('id') + 1;
+        $penerimaan = Penerimaan::create([
+            'kode_penerimaan' => 'PNM-' . $pnm,
+            'pemesanan_id' => $request->pemesanan_id,
             // 'status' => $request->status,
             'pemasok_id' => $request->pemasok_id,
             'gudang' => $request->gudang,
@@ -315,15 +318,16 @@ class PenerimaansController extends Controller
             'total_jenis_barang' => $request->akun_barang,
             'total_harga' => $request->total_harga_keseluruhan,
             'akun_barang' => $request->akun_barang,
-            ]);
-        $penerimaan->barangs()->detach();
+        ]);
+
+        $pemesanan = $penerimaan->pemesanan;
         foreach ($request->barang_id as $index => $id) {
             $penerimaan->barangs()->attach($id, [
                 'jumlah_barang' => $request->jumlah_barang[$index],
                 'harga' => $request->harga[$index],
                 'unit' => $request->unit_barang[$index],
                 // 'pajak' => $request->pajak[$index],
-                ]);
+            ]);
         }
 
         return redirect('/pembelian/penerimaans');

@@ -38,7 +38,7 @@ class PemesanansController extends Controller
             ->whereBetween('tanggal', [$date->start, $date->end])
             ->get();
 
-            return view('pembelian.pembelian.pemesanan.laporan-pemesanan', compact('pemesanans'));
+        return view('pembelian.pembelian.pemesanan.laporan-pemesanan', compact('pemesanans'));
     }
 
     public function cetaklaporan()
@@ -76,7 +76,7 @@ class PemesanansController extends Controller
     {
         $psn = Pemesanan::max('id') + 1;
         $pemesanan = Pemesanan::create([
-            'kode_pemesanan' => 'PSN-'.$psn,
+            'kode_pemesanan' => 'PSN-' . $psn,
             'pemasok_id' => $request->pemasok_id,
             'gudang' => $request->gudang,
             'tanggal' => $request->tanggal,
@@ -132,14 +132,15 @@ class PemesanansController extends Controller
         }
 
         return response()
-        ->json(['success' => true, 'pemesanan' => $pemesanan, 'barangs' => $barangs, 'barangsfak' => $barangsfak, 'penerimaans' => $penerimaans,
-        'total_seluruh_psn' => $total_seluruh_psn,
-        'total_harga_psn' => $total_harga_psn,
-        'subtotal_psn' => $subtotal_psn,
-        'total_seluruh_psnfak' => $total_seluruh_psnfak,
-        'total_harga_psnfak' => $total_harga_psnfak,
-        'subtotal_psnfak' => $subtotal_psnfak,
-        ]);
+            ->json([
+                'success' => true, 'pemesanan' => $pemesanan, 'barangs' => $barangs, 'barangsfak' => $barangsfak, 'penerimaans' => $penerimaans,
+                'total_seluruh_psn' => $total_seluruh_psn,
+                'total_harga_psn' => $total_harga_psn,
+                'subtotal_psn' => $subtotal_psn,
+                'total_seluruh_psnfak' => $total_seluruh_psnfak,
+                'total_harga_psnfak' => $total_harga_psnfak,
+                'subtotal_psnfak' => $subtotal_psnfak,
+            ]);
     }
 
     public function show2($id)
@@ -192,7 +193,7 @@ class PemesanansController extends Controller
             'total_harga' => $total_harga,
             'subtotal' => $subtotal,
             'total_seluruh' => $total_seluruh,
-            ]);
+        ]);
 
         return $pdf->download('pemesanan.pdf');
     }

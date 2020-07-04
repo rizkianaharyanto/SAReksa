@@ -28,12 +28,11 @@
     <td>{{ $sisas[$index]['sisa']}}</td>
     <td class="d-flex justify-content-between">
         <a href="/pembelian/hutangs/{{$pemasok->id}}">
-        <button class="btn-outline-info">
-            <i class="fas fa-info-circle"></i>
-        </button>
+            <button class="btn-outline-info">
+                <i class="fas fa-info-circle"></i>
+            </button>
         </a>
     </td>
 </tr>
 @endforeach
 @endsection
-

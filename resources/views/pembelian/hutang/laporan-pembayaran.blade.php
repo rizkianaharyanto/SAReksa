@@ -26,49 +26,36 @@
 </div>
 
 <form action="/pembelian/pembayarans/laporanpdf">
-<div class="d-flex justify-content-end mx-5">
-    <button class="btn btn-outline-info m-2 "><a class="px-2" id="pdf"  target="_blank">Export PDF </a></button>
-</div>
-<div  class="m-2">
-    <div style="background-color: white; color: black;" class="mx-5 p-3">
-    <center class="mb-4">
-		<h5>Laporan Pembayaran Hutang</h5>
-        <!-- <input type="hidden" name="id" value="{pembayaran->id}}"> -->
-    </center>
-    <!-- <table class="table table-sm">
-            <tbody>
-            <tr>
-                <td>Kode pembayaran : {pembayaran->kode_pembayaran}}</td>
-                <td>Pemasok : {pembayaran->pemasok->nama_pemasok}}</td>
-            </tr>
-            <tr>
-                <td>Tanggal : {pembayaran->tanggal}}</td>
-                <td>Status : {pembayaran->status}}</td>
-            </tr>
-            </tbody>
-        </table> -->
+    <div class="d-flex justify-content-end mx-5">
+        <button class="btn btn-outline-info m-2 "><a class="px-2" id="pdf" target="_blank">Export PDF </a></button>
+    </div>
+    <div class="m-2">
+        <div style="background-color: white; color: black;" class="mx-5 p-3">
+            <center class="mb-4">
+                <h5>Laporan Pembayaran Hutang</h5>
+            </center>
 
-	<table class="table table-striped ">
-            <thead >
-                <tr>
-                    <th>Kode Pembayaran</th>
-                    <th>Supplier</th>
-                    <th>Tanggal</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($pembayarans as $pembayaran)
+            <table class="table table-striped ">
+                <thead>
+                    <tr>
+                        <th>Kode Pembayaran</th>
+                        <th>Supplier</th>
+                        <th>Tanggal</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($pembayarans as $pembayaran)
                     <tr>
                         <td>{{ $pembayaran->kode_pembayaran }}</td>
                         <td>{{ $pembayaran->pemasok->nama_pemasok }}</td>
                         <td>{{ $pembayaran->tanggal }}</td>
                         <td>{{ $pembayaran->total }}</td>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 </form>
 @endsection

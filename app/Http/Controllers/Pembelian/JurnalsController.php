@@ -19,7 +19,7 @@ class JurnalsController extends Controller
         $jurnals = Jurnal::all()->groupBy('kode_jurnal');
         $debit = 0;
         $kredit = 0;
-        foreach (Jurnal::all() as $jurnal){
+        foreach (Jurnal::all() as $jurnal) {
             $debit += $jurnal->debit;
             $kredit += $jurnal->kredit;
         }
@@ -38,7 +38,7 @@ class JurnalsController extends Controller
         $jurnals = Jurnal::all()->groupBy('kode_jurnal');
         $debit = 0;
         $kredit = 0;
-        foreach (Jurnal::all() as $jurnal){
+        foreach (Jurnal::all() as $jurnal) {
             $debit += $jurnal->debit;
             $kredit += $jurnal->kredit;
         }

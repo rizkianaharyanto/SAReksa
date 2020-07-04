@@ -39,7 +39,7 @@
             </div>
         </div>
         <div class="bs-stepper-content">
-        <form method="POST" action="/pembelian/penerimaans/{{$penerimaan->id}}">
+            <form method="POST" action="/pembelian/penerimaans/{{$penerimaan->id}}">
                 @method('put')
                 @csrf
                 <div id="test-l-1" class="content">
@@ -94,7 +94,7 @@
 
                 <div id="test-l-2" class="content">
                     <div style="overflow: auto; " id="formbarang">
-                    @foreach ($penerimaan->barangs as $penerimaanbarang)
+                        @foreach ($penerimaan->barangs as $penerimaanbarang)
                         <div class="form-row mx-5" id="isiformbarang0">
                             <div class="form-group col-md-3">
                                 <label for="barang_id" id="lbl">Barang</label>
@@ -167,7 +167,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">%</div>
                                     </div>
-                                    <input type="number" min="0" class="form-control" id="diskon" onchange="disc();" name="diskon"  value="{{$penerimaan->diskon}}" placeholder="-">
+                                    <input type="number" min="0" class="form-control" id="diskon" onchange="disc();" name="diskon" value="{{$penerimaan->diskon}}" placeholder="-">
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -298,7 +298,7 @@
                     $('#barang_id').val(data.barangs[0].id)
                     $('#tambahbarang').detach()
                     $('#unit').val(data.barangs[0].pivot.unit)
-                    $('#uni').attr('placeholder',data.barangs[0].pivot.unit)
+                    $('#uni').attr('placeholder', data.barangs[0].pivot.unit)
                     $('#jumlah_barang').val(data.barangs[0].pivot.barang_belum_diterima)
                     $('#harga').val(data.barangs[0].pivot.harga)
                     $('#total').val(data.total_harga_psn[0])

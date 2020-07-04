@@ -26,50 +26,37 @@
 </div>
 
 <form action="/pembelian/hutangs/laporanpdf">
-@csrf
-<div class="d-flex justify-content-end mx-5">
-    <button class="btn btn-outline-info m-2 "><a class="px-2" id="pdf"  target="_blank">Export PDF </a></button>
-</div>
-<div  class="m-2">
-    <div style="background-color: white; color: black;" class="mx-5 p-3">
-    <center class="mb-4">
-		<h5>Laporan Hutang </h5>
-        <!-- <input type="hidden" name="id" value="{hutang->id}}"> -->
-    </center>
-    <!-- <table class="table table-sm">
-            <tbody>
-            <tr>
-                <td>Kode Hutang : {Hutang->kode_Hutang}}</td>
-                <td>Pemasok : {Hutang->pemasok->nama_pemasok}}</td>
-            </tr>
-            <tr>
-                <td>Tanggal : {Hutang->tanggal}}</td>
-                <td>Status : {Hutang->status}}</td>
-            </tr>
-            </tbody>
-        </table> -->
+    @csrf
+    <div class="d-flex justify-content-end mx-5">
+        <button class="btn btn-outline-info m-2 "><a class="px-2" id="pdf" target="_blank">Export PDF </a></button>
+    </div>
+    <div class="m-2">
+        <div style="background-color: white; color: black;" class="mx-5 p-3">
+            <center class="mb-4">
+                <h5>Laporan Hutang </h5>
+            </center>
 
-	<table class="table table-striped ">
-            <thead >
-                <tr>
-                    <th>Pemasok</th>
-                    <th>Total Hutang</th>
-                    <th>Lunas</th>
-                    <th>Sisa Hutang</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($pemasoks as $index => $pemasok)
+            <table class="table table-striped ">
+                <thead>
+                    <tr>
+                        <th>Pemasok</th>
+                        <th>Total Hutang</th>
+                        <th>Lunas</th>
+                        <th>Sisa Hutang</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($pemasoks as $index => $pemasok)
                     <tr>
                         <td>{{ $pemasok->nama_pemasok }}</td>
                         <td>{{ $totals[$index]['total_hutang']}}</td>
                         <td>{{ $lunass[$index]['lunas']}}</td>
                         <td>{{ $sisas[$index]['sisa']}}</td>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 </form>
 @endsection

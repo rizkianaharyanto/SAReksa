@@ -29,10 +29,10 @@
     <td class="d-flex justify-content-between">
         <a id="details" href="/pembelian/pembayaranshow/{{$pembayaran->id}}">
             <button class="btn-info">
-    
+
                 <i style="cursor: pointer; " class="fas fa-info-circle">
-                        <span></span>
-                    </i>
+                    <span></span>
+                </i>
             </button>
         </a>
         <!-- <a id="edit" href="/pembelian/pembayarans/{{$pembayaran->id}}/edit">

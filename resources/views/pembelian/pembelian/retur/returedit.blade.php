@@ -86,55 +86,55 @@
             </div>
 
             <div id="test-l-2" class="content">
-                    <form style="overflow: auto; " id="formbarang">
-                        <div class="form-row mx-5" id="isiformbarang0">
-                            <div class="form-group col-md-3">
-                                <label for="nama_barang" id="lbl">Barang</label>
-                                <select class="form-control" id="nama_barang">
-                                    @foreach ($barangs as $barang)
-                                    <option>{{ $barang->nama_barang }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group col-md-1">
-                                <label for="jumlah_barang">QTY</label>
-                                <input type="number" min="0" class="form-control" id="jumlah_barang" placeholder="-">
-                            </div>
-                            <div class="form-group col-md-1">
-                                <label for="satuan_unit">Unit</label>
-                                <input type="number" min="0" class="form-control" id="unit" disabled>
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label for="harga">Harga Satuan</label>
-                                <div class="input-group mb-2">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text">Rp</div>
-                                    </div>
-                                    <input type="number" min="0" class="form-control" id="harga" placeholder="-">
+                <form style="overflow: auto; " id="formbarang">
+                    <div class="form-row mx-5" id="isiformbarang0">
+                        <div class="form-group col-md-3">
+                            <label for="nama_barang" id="lbl">Barang</label>
+                            <select class="form-control" id="nama_barang">
+                                @foreach ($barangs as $barang)
+                                <option>{{ $barang->nama_barang }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group col-md-1">
+                            <label for="jumlah_barang">QTY</label>
+                            <input type="number" min="0" class="form-control" id="jumlah_barang" placeholder="-">
+                        </div>
+                        <div class="form-group col-md-1">
+                            <label for="satuan_unit">Unit</label>
+                            <input type="number" min="0" class="form-control" id="unit" disabled>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="harga">Harga Satuan</label>
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Rp</div>
                                 </div>
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label for="total">Total</label>
-                                <div class="input-group mb-2">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text">Rp</div>
-                                    </div>
-                                    <input type="number" min="0" class="form-control" id="total" disabled>
-                                </div>
-                            </div>
-                            <div class="form-group col-md-1">
-                                <p style="color: transparent">#</p>
-                                <a onclick="hapus(this)">
-                                    <i style="color:grey;" class="fas fa-trash"></i>
-                                </a>
+                                <input type="number" min="0" class="form-control" id="harga" placeholder="-">
                             </div>
                         </div>
-                    </form>
-                    <div class="alert alert-primary mt-3 mb-0 p-1" id="tambahbarang" onmouseover="green(this)" onmouseout="grey(this)" style="cursor: pointer; font-size:15px;">
-                        <i class="fas fa-plus d-flex justify-content-center">
-                            <span class="mx-2">Tambah Barang</span>
-                        </i>
+                        <div class="form-group col-md-3">
+                            <label for="total">Total</label>
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Rp</div>
+                                </div>
+                                <input type="number" min="0" class="form-control" id="total" disabled>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-1">
+                            <p style="color: transparent">#</p>
+                            <a onclick="hapus(this)">
+                                <i style="color:grey;" class="fas fa-trash"></i>
+                            </a>
+                        </div>
                     </div>
+                </form>
+                <div class="alert alert-primary mt-3 mb-0 p-1" id="tambahbarang" onmouseover="green(this)" onmouseout="grey(this)" style="cursor: pointer; font-size:15px;">
+                    <i class="fas fa-plus d-flex justify-content-center">
+                        <span class="mx-2">Tambah Barang</span>
+                    </i>
+                </div>
                 <div class="modal-footer">
                     <div class="d-flex mr-auto">
                         <p class="m-2">Total </p>

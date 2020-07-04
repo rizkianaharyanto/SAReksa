@@ -38,7 +38,7 @@ class PembayaransController extends Controller
             ->whereBetween('tanggal', [$date->start, $date->end])
             ->get();
 
-            return view('pembelian.hutang.laporan-pembayaran', compact('pembayarans'));
+        return view('pembelian.hutang.laporan-pembayaran', compact('pembayarans'));
     }
 
     public function cetaklaporan()
@@ -79,7 +79,7 @@ class PembayaransController extends Controller
         // dd($request);
         $byr = Pembayaran::max('id') + 1;
         $pembayaran = Pembayaran::create([
-            'kode_pembayaran' => 'BYR-'.$byr,
+            'kode_pembayaran' => 'BYR-' . $byr,
             'pemasok_id' => $request->pemasok_id,
             'tanggal' => $request->tanggal,
             'total' => $request->total_harga,
@@ -88,7 +88,7 @@ class PembayaransController extends Controller
         $no = Jurnal::max('id') + 1;
         for ($i = 1; $i < 3; ++$i) {
             $jurnal = Jurnal::create([
-                'kode_jurnal' => 'jur'.$no,
+                'kode_jurnal' => 'jur' . $no,
                 'pembayaran_id' => $pembayaran->id,
                 'debit' => 0,
                 'kredit' => 0,
@@ -113,14 +113,14 @@ class PembayaransController extends Controller
                 'lunas' => $request->total[$index],
                 'sisa' => $sisa,
             ]);
-            if ($sisa == 0){
+            if ($sisa == 0) {
                 $hutang->update([
                     'status' => 'lunas',
                 ]);
                 $hutang->faktur()->update([
                     'status' => 'lunas',
                 ]);
-            }else{
+            } else {
                 $hutang->faktur()->update([
                     'status' => 'dibayar sebagian',
                 ]);
@@ -179,8 +179,8 @@ class PembayaransController extends Controller
             'pembayaran' => $pembayaran,
             'hutangs' => $hutangs,
             'total_seluruh' => $total_seluruh,
-            ]);
-            
+        ]);
+
 
         return $pdf->download('pembayaran.pdf');
     }

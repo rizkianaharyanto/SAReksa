@@ -147,7 +147,7 @@
                             <div class="form-row mx-5" id="isiformpenerimaan0">
                                 <div class="form-group col-md-3">
                                     <label for="penerimaan_id">Penerimaan</label>
-                                    <select class="form-control" id="penerimaan_id" onchange="isipenerimaan(this)" name="penerimaan_id[]" >
+                                    <select class="form-control" id="penerimaan_id" onchange="isipenerimaan(this)" name="penerimaan_id[]">
                                         <option value="">--- Pilih Penerimaan ---</option>
                                     </select>
                                 </div>
@@ -216,7 +216,7 @@
                                         <div class="input-group-text">Rp</div>
                                     </div>
                                     <input type="number" min="0" class="form-control" id="diskoo" onchange="disc();" placeholder="-" disabled>
-                                    <input type="hidden" class="form-control" id="disk"  name="disk" placeholder="-">
+                                    <input type="hidden" class="form-control" id="disk" name="disk" placeholder="-">
                                 </div>
                             </div>
                         </div>
@@ -314,7 +314,7 @@
     }
 
     function checkPenerimaan(x) {
-        window.value=1;
+        window.value = 1;
         $("#checkBarang").css('display', 'none')
         $("#pemesanan_form").css('display', 'none')
         $("#checkPenerimaan").removeAttr('style')
@@ -369,11 +369,11 @@
             success: function(data) {
                 console.log(data)
                 for (i = 0; i < data.fpemesanans.length; i++) {
-                    if (data.fpemesanans[i].id == null){
+                    if (data.fpemesanans[i].id == null) {
                         $('#pemesanan_id').append('<option value="">' + data.fpemesanans[i] + '(Buat Berdasarkan Penerimaan)</option>')
-                    }else{
+                    } else {
                         $('#pemesanan_id').append('<option value="' + data.fpemesanans[i].id + '">' + data.fpemesanans[i].kode_pemesanan + '</option>')
-                    }  
+                    }
                 }
                 for (a = 0; a < data.fpenerimaans.length; a++) {
                     $('#penerimaan_id').append('<option value="' + data.fpenerimaans[a].id + '">' + data.fpenerimaans[a].kode_penerimaan + '</option>')
@@ -403,7 +403,7 @@
                     $('#total_harga_keseluruhan').val(data.total_seluruh_psnfak)
                     $('#barang_id').val(data.barangsfak[0].id)
                     $('#unit').val(data.barangsfak[0].pivot.unit)
-                    $('#uni').attr('placeholder',data.barangsfak[0].pivot.unit)
+                    $('#uni').attr('placeholder', data.barangsfak[0].pivot.unit)
                     $('#jumlah_barang').val(data.barangsfak[0].pivot.jumlah_barang)
                     $('#harga').val(data.barangsfak[0].pivot.harga)
                     $('#total').val(data.total_harga_psnfak[0])
@@ -412,7 +412,7 @@
                         $("#isiformbarang" + i).children().children('select').val(data.barangsfak[i].id)
                         $("#isiformbarang" + i).children().children('#jumlah_barang').val(data.barangsfak[i].pivot.jumlah_barang)
                         $("#isiformbarang" + i).children().children('#unit').val(data.barangsfak[i].pivot.unit)
-                        $("#isiformbarang" + i).children().children('#uni').attr('placeholder',data.barangsfak[i].pivot.unit)
+                        $("#isiformbarang" + i).children().children('#uni').attr('placeholder', data.barangsfak[i].pivot.unit)
                         $("#isiformbarang" + i).children().children().children('#harga').val(data.barangsfak[i].pivot.harga)
                         $("#isiformbarang" + i).children().children().children('#total').val(data.total_harga_psnfak[i])
                     }
@@ -455,30 +455,29 @@
                     $('#disko').val(0)
                     $('#diskoo').val(discpnm)
                     $('#diskon').css('display', 'none')
-                    if($("#isiformbarang0").children().children('#jumlah_barang').val().length == 0){
+                    if ($("#isiformbarang0").children().children('#jumlah_barang').val().length == 0) {
                         $('#barang_id').val(data.barangs[0].id)
                         $('#unit').val(data.barangs[0].pivot.unit)
-                        $('#uni').attr('placeholder',data.barangs[0].pivot.unit)
+                        $('#uni').attr('placeholder', data.barangs[0].pivot.unit)
                         $('#jumlah_barang').val(data.barangs[0].pivot.jumlah_barang)
                         $('#harga').val(data.barangs[0].pivot.harga)
                         for (var i = 1; i <= data.barangs.length - 1; i++) {
                             $("#formbarang").append($("#isiformbarang0").clone().attr('id', 'isiformbarang' + i));
                             $("#isiformbarang" + i).children().children('select').val(data.barangs[i].id)
                             $("#isiformbarang" + i).children().children('#jumlah_barang').val(data.barangs[i].pivot.jumlah_barang)
-                            $("#isiformbarang" + i).children().children('#uni').attr('placeholder',data.barangs[i].pivot.unit)
+                            $("#isiformbarang" + i).children().children('#uni').attr('placeholder', data.barangs[i].pivot.unit)
                             $("#isiformbarang" + i).children().children('#unit').val(data.barangs[i].pivot.unit)
                             $("#isiformbarang" + i).children().children().children('#harga').val(data.barangs[i].pivot.harga)
                             window.value++;
                         }
-                    }
-                    else{
+                    } else {
                         console.log("ada")
                         console.log(window.value)
-                        for (var i = 0; i <= data.barangs.length-1 ; i++) {
+                        for (var i = 0; i <= data.barangs.length - 1; i++) {
                             $("#formbarang").append($("#isiformbarang0").clone().attr('id', 'isiformbarang' + window.value));
                             $("#isiformbarang" + window.value).children().children('select').val(data.barangs[i].id)
                             $("#isiformbarang" + window.value).children().children('#jumlah_barang').val(data.barangs[i].pivot.jumlah_barang)
-                            $("#isiformbarang" + window.value).children().children('#uni').attr('placeholder',data.barangs[i].pivot.unit)
+                            $("#isiformbarang" + window.value).children().children('#uni').attr('placeholder', data.barangs[i].pivot.unit)
                             $("#isiformbarang" + window.value).children().children('#unit').val(data.barangs[i].pivot.unit)
                             $("#isiformbarang" + window.value).children().children().children('#harga').val(data.barangs[i].pivot.harga)
                             window.value++;

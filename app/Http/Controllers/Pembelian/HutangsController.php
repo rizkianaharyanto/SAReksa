@@ -41,10 +41,10 @@ class HutangsController extends Controller
         }
         // dd($totals);
         return view('pembelian.hutang.hutang', [
-           'pemasoks' => $pemasoks,
-           'totals' => $totals,
-           'lunass' => $lunass,
-           'sisas' => $sisas,
+            'pemasoks' => $pemasoks,
+            'totals' => $totals,
+            'lunass' => $lunass,
+            'sisas' => $sisas,
         ]);
     }
 
@@ -74,7 +74,7 @@ class HutangsController extends Controller
             'totals' => $totals,
             'lunass' => $lunass,
             'sisas' => $sisas,
-         ]);
+        ]);
     }
 
     // public function laporanfilter(Request $date)
@@ -113,7 +113,7 @@ class HutangsController extends Controller
             'totals' => $totals,
             'lunass' => $lunass,
             'sisas' => $sisas,
-         ]);
+        ]);
 
         return $pdf->download('laporan-hutang.pdf');
     }
@@ -158,7 +158,7 @@ class HutangsController extends Controller
         $retur = $hutang->retur;
         $faktur = $hutang->faktur;
         return response()
-        ->json(['success'=> true, 'hutang' => $hutang, 'retur' => $retur, 'faktur' => $faktur]);
+            ->json(['success' => true, 'hutang' => $hutang, 'retur' => $retur, 'faktur' => $faktur]);
     }
 
     public function show2($id)
@@ -170,14 +170,14 @@ class HutangsController extends Controller
         // dd($total_harga, $total_seluruh);
         $returs = Retur::where('hutang_id', $hutang->id)->get();
         // dd($returs);
-        $lunas=0;
-        foreach ($pembayarans as $pembayaran){
+        $lunas = 0;
+        foreach ($pembayarans as $pembayaran) {
             $lunas += $pembayaran->pivot->total;
         }
-        foreach ($returs as $retur){
+        foreach ($returs as $retur) {
             $lunas += $retur->total_harga;
         }
-        $sisa= $hutang->total_hutang - $lunas;
+        $sisa = $hutang->total_hutang - $lunas;
         return view('pembelian.hutang.kartu-hutang', [
             'hutang' => $hutang,
             'pembayarans' => $pembayarans,
@@ -196,14 +196,14 @@ class HutangsController extends Controller
         // dd($total_harga, $total_seluruh);
         $returs = Retur::where('hutang_id', $hutang->id)->get();
         // dd($returs);
-        $lunas=0;
-        foreach ($pembayarans as $pembayaran){
+        $lunas = 0;
+        foreach ($pembayarans as $pembayaran) {
             $lunas += $pembayaran->pivot->total;
         }
-        foreach ($returs as $retur){
+        foreach ($returs as $retur) {
             $lunas += $retur->total_harga;
         }
-        $sisa= $hutang->total_hutang - $lunas;
+        $sisa = $hutang->total_hutang - $lunas;
         $pdf = PDF::loadview('pembelian.hutang.kartu-hutang-pdf', [
             'hutang' => $hutang,
             'pembayarans' => $pembayarans,
@@ -211,7 +211,7 @@ class HutangsController extends Controller
             'lunas' => $lunas,
             'sisa' => $sisa,
         ]);
-            
+
 
         return $pdf->download('kartu-hutang.pdf');
     }
