@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('base');
 
 Route::prefix('pembelian')->group(function () {
     Route::get('/', function () {
@@ -96,7 +96,14 @@ Route::prefix('pembelian')->group(function () {
 Route::prefix('stok')->group(function () {
     Route::get('/', function () {
         return view('stock.dashboard');
+    })->middleware('auth.stock');
+    Route::get('/login', 'Stock\LoginController@index');
+
+    Route::prefix('auth')->group(function () {
+        Route::post('/login', 'Stock\LoginController@login');
+        Route::get('/logout', 'Stock\LoginController@logout');
     });
+
     Route::get('/getstocksbywarehouse/{warehouseId}', 'Stock\ItemResourceController@getStocksByWarehouse');
     Route::get('/barangs', 'Stock\ItemResourceController@indexpembelian');
     Route::get('/gudangs', 'Stock\WarehouseController@indexpembelian');

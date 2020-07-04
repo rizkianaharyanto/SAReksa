@@ -16,10 +16,13 @@
                                 class="fa fa-fw fa-user-circle"></i>Dashboard</a>
 
                     </li>
+                    @if(auth()->user()->role->role_name == 'Admin Gudang')
+
                     <li class="nav-item">
                         <a class="nav-link" id="link-manajemen-data" href="#" data-toggle="collapse"
                             aria-expanded="false" data-target="#submenu-2" aria-controls="submenu-2"><i
                                 class="fa fa-fw fa-rocket"></i>Manajemen Data</a>
+
                         <div id="submenu-2" class="collapse submenu" style="">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
@@ -48,7 +51,8 @@
                             </ul>
                         </div>
                     </li>
-
+                    @endif
+                    @if(auth()->user()->role->role_name == 'Operator Gudang')
                     <li class="nav-divider">
                         Transaksi
                     </li>
@@ -81,9 +85,14 @@
                         </a>
 
                     </li>
+                    @endif
+                    @if(auth()->user()->role->role_name == 'Admin Gudang' && auth()->user()->role->role_name == 'Direksi
+                    Perusahaan')
+
                     <li class="nav-divider">
                         Laporan
                     </li>
+                    @endif
 
                 </ul>
             </div>

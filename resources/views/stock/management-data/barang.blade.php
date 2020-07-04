@@ -4,7 +4,9 @@
 @parent
 @endsection
 @section('button-tambah-data')
-<button class="btn btn-info" data-toggle="modal" data-target="#exampleModal"> Tambah Data Barang</button>
+<button class="btn btn-info" style="background-color: #349eac" data-toggle="modal" data-target="#exampleModal"> Tambah
+    Data Barang</button>
+<p> - Anda Dapat Mengexport ke bentuk yang anda inginkan - </p>
 
 @endsection
 @section('table-header')

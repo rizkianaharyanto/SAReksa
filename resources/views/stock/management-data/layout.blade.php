@@ -34,9 +34,10 @@
                 <h5 class="mb-0">@yield('title')</h5>
                 @section('button-tambah-data')
 
-                <button class="btn btn-primary" data-toggle="modal" data-target="#modal">Tambah data</button>
+                <button class="btn btn-primary" style="background-color: #349eac" data-toggle="modal"
+                    data-target="#modal">Tambah
+                    data</button>
                 @show
-                <p> - Anda Dapat Mengexport ke bentuk yang anda inginkan - </p>
             </div>
             <div class="card-body">
                 <div class="table-responsive">

@@ -57,13 +57,14 @@
             </x-slot>
         </x-stock.master-data.modal-edit>
     </td>
-</tr>
-<x-stock.modal-stock-delete :deleteAction="$action" :id="$u->id">
-    <x-slot name="header">
-        {{$u->nama_satuan}}
-    </x-slot>
 
-</x-stock.modal-stock-delete>
+    <x-stock.modal-stock-delete :deleteAction="$action" :id="$u->id">
+        <x-slot name="header">
+            {{$u->nama_satuan}}
+        </x-slot>
+
+    </x-stock.modal-stock-delete>
+</tr>
 @endforeach
 @endsection
 

@@ -4,10 +4,9 @@ namespace App\Http\Middleware;
 
 use Illuminate\Support\Facades\Auth;
 
-
 use Closure;
 
-class CheckRole
+class AuthStock
 {
     /**
      * Handle an incoming request.
@@ -16,11 +15,11 @@ class CheckRole
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next, $role)
+    public function handle($request, Closure $next)
     {
-        if (Auth::user()->role->role_name == $role) {
-            return $next($request);
+        if (!Auth::check()) {
+            return redirect('/stok/login')->with('message', 'Anda Belum Login');
         }
-        return redirect('/penjualan');
+        return $next($request);
     }
 }
