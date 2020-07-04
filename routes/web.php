@@ -139,8 +139,8 @@ Route::prefix('stok')->group(function () {
     Route::get('/stokbarang/{barangId}', 'Stock\ItemStockController@getStocksTotalById');
     Route::get('/stokbarangpergudang/{barangId}', 'Stock\ItemStockController@getStocksByGudang');
     
-    Route::prefix('/reports')->group(function () {
-        Route::get('/kartu-stock', 'Stock\ReportsController@index');
+    Route::group(['prefix' => '/reports', 'as' => 'reports.'], function () {
+        Route::get('/kartu-stock', ['as' => 'kartu-stock','uses' => 'Stock\KartuStockController@index']);
     });
 
     //DELETE AFTER
