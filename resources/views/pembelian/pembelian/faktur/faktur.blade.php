@@ -45,6 +45,7 @@
                     </i>
             </button>
         </a>
+        @if(auth()->user()->role->role_name == 'Admin Pembelian')
         @if($faktur->status_posting == null)
         <!-- <a id="edit" href="/pembelian/fakturs/{{$faktur->id}}/edit">
             <button class="btn-warning">        
@@ -63,6 +64,7 @@
                 <span></span>
             </i>
         </a> -->
+        @endif
         @endif
     </td>
 </tr>
@@ -83,9 +85,11 @@ $delete = "delete-".$faktur->id
 
 @endsection
 
+@if(auth()->user()->role->role_name == 'Admin Pembelian')
 @section('tambah')
 <a href="/pembelian/fakturs/create">
     <button class="btn-sm btn-info">Tambah</button>
 </a>
 
 @endsection
+@endif

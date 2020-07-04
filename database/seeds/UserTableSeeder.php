@@ -26,6 +26,30 @@ class UserTableSeeder extends Seeder
             "password"  => Hash::make('test'),
             "role_id"   => '2'
         ]);
+        User::create([
+            'name'      => "Admin Pembelian",
+            'email'     => "pembelian@gmail.com",
+            "password"  => Hash::make('test'),
+            "role_id"   => '3'
+        ]);
+        User::create([
+            'name'      => "Admin Retur",
+            'email'     => "retur@gmail.com",
+            "password"  => Hash::make('test'),
+            "role_id"   => '4'
+        ]);
+        User::create([
+            'name'      => "Admin Hutang",
+            'email'     => "hutang@gmail.com",
+            "password"  => Hash::make('test'),
+            "role_id"   => '5'
+        ]);
+        User::create([
+            'name'      => "Direksi Perusahaan",
+            'email'     => "direksi@gmail.com",
+            "password"  => Hash::make('test'),
+            "role_id"   => '6'
+        ]);
 
         DB::table('roles')->insert([
             'role_name'     => 'Operator Gudang',

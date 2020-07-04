@@ -64,6 +64,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'checkRole' => \App\Http\Middleware\CheckRole::class,
-        'auth.stock' => \App\Http\Middleware\AuthStock::class
+        'auth.stock' => \App\Http\Middleware\AuthStock::class,
+        'auth.pembelian' => \App\Http\Middleware\AuthPembelian::class,
     ];
 }

@@ -35,6 +35,8 @@ endsection -->
                 <span></span>
             </i></button>
         </a>
+        
+        @if(auth()->user()->role->role_name == 'Admin Pembelian')
         <a id="edit" data-toggle="modal" data-target="#modal" data-id="{{ $pemasok->id }}">
             <button class="btn-warning"><i style="cursor: pointer;" class="fas fa-edit">
                 <span></span>
@@ -45,6 +47,7 @@ endsection -->
                 <span></span>
             </i></button>
         </a>
+        @endif
     </td>
 </tr>
 @endforeach
@@ -153,12 +156,15 @@ endsection -->
 </script>
 @endsection
 
+
+@if(auth()->user()->role->role_name == 'Admin Pembelian')
 <!-- Tambah -->
 @section('tambah')
 <a data-toggle="modal" data-target="#modaltambah">
 <button class="btn-sm btn-info">Tambah</button>
 </a>
 @endsection
+@endif
 
 @section('judulTambah')
 <h5 class="align-self-center">Tambah Pemasok</h5>
