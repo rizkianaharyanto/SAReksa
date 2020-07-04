@@ -1,43 +1,27 @@
-@extends('stock.reports.layout')
+<!DOCTYPE html>
+<html lang="en">
 
-@section('title','Kartu Stock')
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-@section('isi')
+    <link rel="stylesheet" href="{{asset('vendor/stock/bootstrap/css/bootstrap.min.css')}}">
+    <link href="{{asset('vendor/stock/fonts/circular-std/style.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{asset('css/stock/style.css')}}">
+    <link rel="stylesheet" href="{{asset('vendor/stock/fonts/fontawesome/css/fontawesome-all.css')}}">
+    <link rel="stylesheet" href="{{asset('vendor/stock/vector-map/jqvmap.css')}}">
+    <link rel="stylesheet" href="{{asset('vendor/stock/jvectormap/jquery-jvectormap-2.0.2.css')}}">
+    <link rel="stylesheet" href="{{asset('vendor/stock/fonts/flag-icon-css/flag-icon.min.css')}}">
 
-<form action="/stok/reports/kartu-stock/export" class="d-flex justify-content-end" >
-                @if($barang ?? '')
-                <input type="hidden" name="id" value="{{$barang->id}}">
-                <input type="hidden" name="tanggal" value="">
-                <button type="submit" class="btn btn-primary my-2">Export PDF</button>
-                @else
-                @endif
-            </form>
-<div class="row">
-        <!-- ============================================================== -->
-        <div class="col-xl-4 col-lg-12 col-md-4 col-sm-12 col-12">
-            <div class="card">
-                <h5 class="card-header">Filter</h5>
-                <div class="card-body">
-                    <form action="/stok/reports/kartu-stock/filter" class="form-group">
-                            <label for="barang">Barang</label>
-                            <select class="form-control" name="barang" id="barang">
-                                <option value="">--- Pilih Barang ---</option>
-                                @foreach ($barangs as $barangfilter)
-                                <option value="{{$barangfilter->id}}">{{$barangfilter->nama_barang}}</option>
-                                @endforeach
-                            </select>
-                            <label for="barang">Tanggal</label>
-                            <input class="form-control" type="date" name="tanggal">
-                            <button type="submit" class="btn btn-block btn-primary my-3">Filter</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <!-- ============================================================== -->
-        
-        <!-- ============================================================== -->
-        <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12">
-                <div class="card">
+    <title>Sistem Mangement Stock Reksa Karya</title>
+
+
+</head>
+
+<body>
+    
+<div class="card">
                     <div class="card-header p-4">
                         <a class="pt-2 d-inline-block" href="/stok">SMS REKSA</a>
 
@@ -57,13 +41,10 @@
                             </div>
                             <div class="col-sm-6">
                                 <h5 class="mb-3">Barang:</h5>
-                                @if($barang ?? '')
                                 <h3 class="text-dark mb-1">{{$barang->nama_barang}}</h3>
                                 <!-- <div>$barang->alamat_barang</div>
                                 <div>Email: $barang->email_barang</div>
                                 <div>Phone: $barang->telp_barang</div> -->
-                                @else
-                                @endif
                             </div>
                         </div>
                         <div class="table-responsive-sm">
@@ -85,7 +66,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if($details)
+                                    @if($details ?? '')
                                     @foreach ($details as  $detail)
                                         @foreach ($detail as $index)
                                             <tr>
@@ -154,7 +135,9 @@
                         <p class="mb-0">2983 Glenview Drive Corpus Christi, TX 78476</p>
                     </div>
                 </div>
-        </div>
-        <!-- ============================================================== -->
-    </div>
-@endsection
+
+    
+
+</body>
+
+</html>

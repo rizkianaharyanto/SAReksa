@@ -148,6 +148,8 @@ Route::prefix('stok')->group(function () {
   
     Route::group(['prefix' => '/reports', 'as' => 'reports.'], function () {
         Route::get('/kartu-stock', ['as' => 'kartu-stock','uses' => 'Stock\KartuStockController@index']);
+        Route::get('/kartu-stock/filter', 'Stock\KartuStockController@filter');
+        Route::get('/kartu-stock/export', 'Stock\KartuStockController@export');
     });
 
     //DELETE AFTER

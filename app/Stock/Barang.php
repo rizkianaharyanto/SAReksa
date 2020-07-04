@@ -47,17 +47,17 @@ class Barang extends Model
 
     public function stockOpname()
     {
-        return $this->belongsToMany('App\Stock\StokOpname', 'detail_stok_opname', 'item_id', 'stock_opname_id');
+        return $this->belongsToMany('App\Stock\StokOpname', 'stk_detail_stok_opname', 'item_id', 'stock_opname_id')->withPivot('jumlah_tercatat', 'jumlah_fisik', 'selisih');
     }
 
     public function stockTransfer()
     {
-        return $this->belongsToMany('App\Stock\StokTransfer', 'detail_transfer_stok', 'item_id', 'transfer_stock_id');
+        return $this->belongsToMany('App\Stock\TransferStok', 'stk_detail_transfer_stok', 'barang_id', 'transfer_stok_id')->withPivot('kuantitas');
     }
 
     public function penyesuaianStok()
     {
-        return $this->belongsToMany('App\Stock\PenyesuaianStok', 'detail_pergerakan_stok', 'item_id', 'penyesuaian_stok_id');
+        return $this->belongsToMany('App\Stock\PenyesuaianStok', 'stk_detail_penyesuaian_stok', 'item_id', 'stock_adjustment_id')->withPivot('quantity_diff');
     }
 
     public function warehouseStocks()
