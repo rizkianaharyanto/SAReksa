@@ -138,6 +138,7 @@
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
                     <i class="fa fa-bars"></i>
                 </button>
+                <h5 class="navbar-brand">SMP</h5>
                 <!-- <a class="navbar-brand" href="./"><img src="{{url('css/pembelian/images/logo.png')}}" alt="Logo"></a>
                 <a class="navbar-brand hidden" href="./"><img src="{{url('css/pembelian/images/logo2.png')}}" alt="Logo"></a> -->
             </div>
@@ -179,6 +180,8 @@
                             <li><a href="/pembelian/penerimaans/laporan">Laporan Penerimaan</a></li>
                             <li><a href="/pembelian/fakturs/laporan">Laporan Faktur</a></li>
                             <li><a href="/pembelian/returs/laporan">Laporan Retur</a></li>
+                            <li><a href="/pembelian/pembayarans/laporan">Laporan Pembayaran</a></li>
+                            <li><a href="/pembelian/hutangs/laporan">Laporan Hutang</a></li>
                         </ul>
                     </li>
                     <li><a href="/pembelian/jurnals"> <i class="menu-icon fa fa-file-alt"></i>Jurnal</a></li>
@@ -243,21 +246,9 @@
         </div>
 
         <div class="content mt-3">
-            <div class="animated fadeIn">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="d-flex justify-content-between">
-                                <strong class="card-title">@yield('judul')</strong>
-                                  @yield('tambah')
-                                </div>
-                            </div>
+            
                                 @yield('isi')
-                        </div>
-                    </div>    
-                </div>
-            </div>
+                        
         </div> <!-- .content -->
     </div><!-- /#right-panel -->
 

@@ -22,6 +22,6 @@ class Pembayaran extends Model
 
     public function hutangs()
     {
-        return $this->belongsToMany('App\Pembelian\Hutang', 'pbl_pembayaran_details');
+        return $this->belongsToMany('App\Pembelian\Hutang', 'pbl_pembayaran_details')->withPivot('total')->withTimestamps();
     }
 }

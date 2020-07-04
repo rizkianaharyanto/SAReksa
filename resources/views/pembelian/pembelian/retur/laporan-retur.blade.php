@@ -10,30 +10,31 @@
 <li class="active">Laporan Retur Pembelian</li>
 @endsection
 
-@section('tambah')
-<div class="d-flex justify-content-end mx-5">
-<form class="d-flex" action="/pembelian/returs/laporanfilter" method="get">
+@section('isi')
+
+<div class=" mx-5">
+    <form class="d-flex" action="/pembelian/returs/laporanfilter" method="get">
         @csrf
         <input class="form-control m-2" type="date" name="start">
         <input class="form-control m-2" type="date" name="end">
         <button class="btn btn-outline-info m-2" type="submit">Filter</button>
     </form>
-    <button class="btn btn-outline-info m-2"><a class="px-2" id="pdf"  target="_blank">Export PDF </a></button>
     <!-- <a class="px-2" href="">Export Excel | </a> -->
-        <!-- <a class="px-2" href="">Print | </a> -->
-        <!-- <button class="dt-button button-html5 button-excel" aria-controls="example" tabindex="0"><span>Excel</span></button>
-        <button class="dt-button button-html5 button-pdf" aria-controls="example" tabindex="0"><span>PDF</span></button>
-        <button class="dt-button button-html5 button-print" aria-controls="example" tabindex="0"><span>Print</span></button> -->
-    </div>
-@endsection
+    <!-- <a class="px-2" href="">Print | </a> -->
+    <!-- <button class="dt-button button-html5 button-excel" aria-controls="example" tabindex="0"><span>Excel</span></button>
+    <button class="dt-button button-html5 button-pdf" aria-controls="example" tabindex="0"><span>PDF</span></button>
+    <button class="dt-button button-html5 button-print" aria-controls="example" tabindex="0"><span>Print</span></button> -->
+</div>
 
-@section('isi')
 <form action="/pembelian/returs/laporanpdf">
-    
-<div style="overflow:auto; height: 80vh;" class="m-2">
+<div class="d-flex justify-content-end mx-5">
+    <button class="btn btn-outline-info m-2 "><a class="px-2" id="pdf"  target="_blank">Export PDF </a></button>
+</div>
+
+<div  class="m-2">
     <div style="background-color: white; color: black;" class="mx-5 p-3">
     <center class="mb-4">
-		<h5>Laporan retur</h5>
+		<h5>Laporan Retur Pembelian</h5>
         <!-- <input type="hidden" name="id" value="{retur->id}}"> -->
     </center>
     <!-- <table class="table table-sm">
@@ -49,8 +50,8 @@
             </tbody>
         </table> -->
 
-	<table id="example" class="table table-striped table-bordered">
-            <thead style="background-color: #00BFA6; color:whitesmoke" >
+	<table id="example" class="table table-striped">
+            <thead  >
                 <tr>
                     <th>Kode Retur</th>
                     <th>pemasok</th>
