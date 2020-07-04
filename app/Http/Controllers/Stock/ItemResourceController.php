@@ -25,6 +25,7 @@ class ItemResourceController extends Controller
             'unit:id,nama_satuan',
             'kategori'
             ])->get();
+            
         $categories = KategoriBarang::all();
         $units = SatuanUnit::all();
         $gudangs = Gudang::all();
@@ -124,8 +125,7 @@ class ItemResourceController extends Controller
     public function destroy($id)
     {
         //
-        $itc = $this->modelName::find($id);
-        $itc->delete();
-        return "Success";
+        $this->service->delete($id);
+        return redirect()->back();
     }
 }

@@ -85,9 +85,10 @@ class StockTransferController extends Controller
      * @param  \App\StockTransfer  $stockTransfer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, StockTransfer $stockTransfer)
+    public function update(CreateStockTransferRequest $request, $id)
     {
-        //
+        return $this->service->update($request->validated(), $id);
+        
     }
 
     /**

@@ -29,8 +29,8 @@ class StockOpnameRequest extends FormRequest
             'deskripsi'         => 'string',
             'departemen'        => 'string',
             'akun_penyesuaian'  => 'required|integer',
-            'item_id'           => 'array|required_with:on_hand',
-            'on_hand'           => 'array|required_with:item_id'
+            'item_id'           => 'array|required|required_with:on_hand',
+            'on_hand'           => 'array|required|required_with:item_id'
             //
         ];
     }

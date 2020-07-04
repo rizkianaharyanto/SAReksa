@@ -24,8 +24,9 @@ class CreateTaxRequest extends FormRequest
     public function rules()
     {
         return [
-            'nama' => 'required|unique:App\PajakBarang,nama|string',
-            //
+            'jenis_pajak' => 'required|unique:App\stock\PajakBarang,jenis_pajak|string',
+            'deskripsi'   => 'string',
+            'tarif'       => 'required|numeric'
         ];
     }
     public function messages()

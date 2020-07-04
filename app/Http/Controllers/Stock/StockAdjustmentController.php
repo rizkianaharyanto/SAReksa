@@ -35,6 +35,14 @@ class StockAdjustmentController extends Controller
         );
     }
 
+    public function show($id)
+    {
+        $stockAdjustment =  $this->service->getById($id);
+        if (!$stockAdjustment) {
+            return redirect('/stok/penyesuaian-stock')->with('status', 'Data Transaksi tersebut tidak ditemukan');
+        }
+        return view('stock.transactions.penyesuaian-stok.details', compact('stockAdjustment'));
+    }
     public function store(CreateStockAdjustmentRequest $req, ItemService $itemServ)
     {
         //Make Transaction Record
@@ -56,6 +64,6 @@ class StockAdjustmentController extends Controller
                 ]);
         }
        
-        return $stockAdjust;
+        return redirect()->back();
     }
 }

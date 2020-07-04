@@ -39,7 +39,7 @@ class ItemCategoryController extends Controller
     {
         //
         $input = $request->only($this->model->getModel()->fillable);
-       
+        $this->model->update($input, $id);
         return redirect()->back();
     }
 

@@ -9,23 +9,23 @@
                 <a class="pt-2 d-inline-block" href="index.html">SMS REKSA</a>
 
                 <div class="float-right">
-                    <h3 class="mb-0">Invoice {{$stockOpname->kode_ref}}</h3>
-                    {{$stockOpname->created_at}}
+                    <h3 class="mb-0">Invoice {{$stockAdjustment->kode_ref}}</h3>
+                    {{$stockAdjustment->created_at}}
                 </div>
             </div>
             <div class="card-body">
                 <div class="row mb-4">
                     <div class="col-sm-6">
                         <h5 class="mb-3">Gudang:</h5>
-                        <h3 class="text-dark mb-1">{{$stockOpname->gudang->kode_gudang}}</h3>
+                        <h3 class="text-dark mb-1">{{$stockAdjustment->gudang->kode_gudang}}</h3>
 
-                        <div>{{$stockOpname->gudang->alamat}}</div>
-                        <div>{{$stockOpname->gudang->no_telp}}</div>
+                        <div>{{$stockAdjustment->gudang->alamat}}</div>
+                        <div>{{$stockAdjustment->gudang->no_telp}}</div>
                     </div>
                     <div class="col-sm-6">
                         <h5 class="mb-3">Keterangan:</h5>
                         <h3 class="text-dark mb-1">Penanggung Jawab: <br> Anthony K. Friel</h3>
-                        <div>{{$stockOpname->deskripsi}}</div>
+                        <div>{{$stockAdjustment->deskripsi}}</div>
                     </div>
                 </div>
                 <div class="table-responsive-sm">
@@ -36,26 +36,24 @@
                                 <th>Item</th>
                                 <th>Harga Barang (Rp)</th>
                                 <th class="right">Satuan Unit</th>
-                                <th class="center">Jumlah Tercatat</th>
-                                <th class="right">Jumlah Fisik </th>
-                                <th>Selisih</th>
+                                <th class="center">Perbedaan Kuantitas</th>
                                 <th>Debit (Akun Barang)</th>
                                 <th>Kredit(Akun Barang)</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($stockOpname->details as $i => $item)
+                            @foreach ($stockAdjustment->details as $i => $item)
                             <tr>
                                 <td>{{$i+1}}</td>
                                 <td>{{$item->nama_barang}}</td>
                                 <td>{{$item->nilai_barang}}</td>
                                 <td>{{$item->unit->nama_satuan}}</td>
-                                <td>{{$item->pivot->jumlah_tercatat}}</td>
-                                <td>{{$item->pivot->jumlah_fisik}}</td>
-                                <td>{{$item->pivot->selisih}}</td>
-                                <td>@if($item->pivot->selisih * $item->nilai_barang >= 0)
-                                    {{$item->pivot->selisih * $item->nilai_barang}}
-                                    @endif
+                                <td>@if($item->pivot->quantity_diff > 0)
+                                    + {{$item->pivot->quantity_diff}}
+                                    @elseif($item->pivot->quantity_diff < 0) + {{$item->pivot->quantity_diff}} @else 0
+                                        @endif </td> <td>@if($item->pivot->selisih * $item->nilai_barang >= 0)
+                                        {{$item->pivot->selisih * $item->nilai_barang}}
+                                        @endif
                                 </td>
                                 <td>@if($item->pivot->selisih * $item->nilai_barang < 0)
                                         {{$item->pivot->selisih * $item->nilai_barang}} @else - @endif </td> </tr>
@@ -69,7 +67,7 @@
                                                         <td class="left">
                                                             <strong class="text-dark">Total Barang</strong>
                                                         </td>
-                                                        <td class="right">{{count($stockOpname->details)}}</td>
+                                                        <td class="right">{{count($stockAdjustment->details)}}</td>
                                                     </tr>
                                                     {{-- <tr>
                                                         <td class="left">

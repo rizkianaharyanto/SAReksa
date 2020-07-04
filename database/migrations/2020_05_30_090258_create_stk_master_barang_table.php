@@ -30,6 +30,7 @@ class CreateStkMasterBarangTable extends Migration
             $table->bigInteger('supplier_id');
             $table->float('nilai_barang', 10, 4)->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

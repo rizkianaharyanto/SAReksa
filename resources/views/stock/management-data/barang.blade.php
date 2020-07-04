@@ -17,7 +17,6 @@
     <th>Nama Barang</th>
     <th>Satuan Unit</th>
     <th>Harga Satuan</th>
-    <th>Harga Grosir</th>
     <th>Nilai Barang</th>
     <th>Created at</th>
     <th>Updated At</th>
@@ -38,7 +37,6 @@
     <td>{{ $i->nama_barang }}</td>
     <td>{{ $i->unit->nama_satuan }}</td>
     <td class="harga">{{$i->harga_retail}}</td>
-    <td class="harga">{{$i->harga_grosir}}</td>
     <td class="harga">{{$i->nilai_barang}}</td>
     <td class=>{{$i->created_at->toDateString()}}</td>
     <td class=>{{\Carbon\Carbon::parse($i->updated_at)->format('d-m-Y')}}</td>
@@ -55,40 +53,56 @@
             <div class="dropdown-menu">
                 <!-- Dropdown menu links -->
                 <a class="dropdown-item" href="" data-form="Edit Data"> Edit</a>
-                <a class="delete-jquery dropdown-item" data-method="delete"
-                    href="{{ route('barang.destroy', $i->id ) }}">Delete</a>
+                <a class="delete-jquery dropdown-item" data-toggle="modal"
+                    data-target="#modalDelete{{$i->id}}">Delete</a>
                 <a class="dropdown-item " href="#">Details</a>
+
+                <a class="delete-jquery"">Delete</a>
             </div>
         </div>
 
 
 </tr>
-@endforeach
-@endsection
+
+@php
+$action = '/stok/Management-Data/barang/'.$i->id;
+
+@endphp
+<x-stock.modal-stock-delete :deleteAction=" $action" :id="$i->id">
+                    <x-slot name="header">
+                        {{$i->nama_barang}}
+                    </x-slot>
+                    <x-slot name="body">
+                        Seluruh Stok Barang Akan Terhapus Jika Anda Menghapus Barang Ini
+                    </x-slot>
+                    </x-stock.modal-stock-delete>
+                    @endforeach
+                    @endsection
 
 
 
-@section('modalForm')
+                    @section('modalForm')
 
 
-@endsection
+                    @endsection
 
-<x-stock.stepper-barang :kategoriBarang="$kategoriBarang" :satuanUnit="$satuanUnit" :gudangs="$gudangs">
-</x-stock.stepper-barang>
-@section('scripts')
-@parent
-<script src="{{asset('js/stock/jquery.mask.min.js')}}"></script>
-<script>
-    const title = "@yield('title')".toLowerCase().replace('data','').trim();
-    const idSidebarLink = `link-${title}`.trim();
-    console.log(idSidebarLink);
-    $('#link-dashboard').removeClass('active');
-    $(`#link-manajemen-data`).addClass('active');
-    $(`#${idSidebarLink}`).addClass('active')
-</script>
-<script>
-    $('.harga').html();
-      $('.harga').mask('000.000.000.000', {reverse: true});
+                    <x-stock.stepper-barang :kategoriBarang="$kategoriBarang" :satuanUnit="$satuanUnit"
+                        :gudangs="$gudangs">
+                    </x-stock.stepper-barang>
+                    @section('scripts')
+                    @parent
+                    <script src="{{asset('js/stock/jquery.mask.min.js')}}"></script>
+                    <script>
+                        const title = "@yield('title')".toLowerCase().replace('data','').trim();
+const idSidebarLink = `link-${title}`.trim();
+console.log(idSidebarLink);
+$('#link-dashboard').removeClass('active');
+$(`#link-manajemen-data`).addClass('active');
+$(`#${idSidebarLink}`).addClass('active')
+                    </script>
+                    <script>
+                        $('.harga').html();
+$('.harga').mask('000.000.000.000', {reverse: true});
 
-</script>
-@endsection
+                    </script>
+                    @endsection

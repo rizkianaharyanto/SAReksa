@@ -83,4 +83,24 @@ class StockTransferService
             ])->find($id);
         return $stockTransfer;
     }
+
+    public function update($payload, $id)
+    {
+        $payload = collect($payload);
+
+        $stockOpname = TransferStok::with([
+            'items',
+            'asal',
+            'tujuan'
+        ])->findOrFail($id);
+
+        $transactionPayload = $payload->except(['kode_ref','item_id','quantity_diff']);
+        $stockOpname->update($transactionPayload->toArray());
+        $itemPayload = $payload->only(['item_id', 'on_hand']);
+        if ($itemPayload) {
+            $this->updateStockOpnameItems($stockOpname, $itemPayload);
+        }
+
+        return $this->get($id);
+    }
 }

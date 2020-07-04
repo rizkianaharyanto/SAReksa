@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddSelisihToStkDetailStokOpnameTable extends Migration
+class AddStatusToStkStokOpnameTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddSelisihToStkDetailStokOpnameTable extends Migration
      */
     public function up()
     {
-        Schema::table('stk_detail_stok_opname', function (Blueprint $table) {
-            $table->integer('selisih')->nullable();
+        Schema::table('stk_stok_opname', function (Blueprint $table) {
+            $table->enum('status', ['belum diposting', 'sudah posting']);
         });
     }
 
@@ -25,8 +25,8 @@ class AddSelisihToStkDetailStokOpnameTable extends Migration
      */
     public function down()
     {
-        Schema::table('stk_detail_stok_opname', function (Blueprint $table) {
-            $table->dropColumn('selisih');
+        Schema::table('stk_stok_opname', function (Blueprint $table) {
+            $table->dropColumn('status');
         });
     }
 }

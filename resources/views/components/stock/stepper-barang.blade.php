@@ -48,10 +48,12 @@
                                         <span class="bs-stepper-label">Akun</span>
                                     </button>
                                 </div>
+                                <div class="line"></div>
+
                                 <div class="step" data-target="#test-l-4">
                                     <button type="button" class="btn step-trigger">
                                         <span class="bs-stepper-circle">4</span>
-                                        <span class="bs-stepper-label">Akun</span>
+                                        <span class="bs-stepper-label">Lainnya</span>
                                     </button>
                                 </div>
                             </div>
@@ -65,18 +67,19 @@
                                     </ul>
                                 </div>
                                 @endif
-                                <form method="POST" action="/stok/Management-Data/barang">
+                                <form method="POST" id="formBarang" action="/stok/Management-Data/barang">
                                     @CSRF
                                     <div id="test-l-1" class="content">
                                         <div class="form-goup">
                                             <label for="kodeKategori">Kode Barang </label>
-                                            <input class="form-control form-control-lg" type="text" id="kodeKategori"
+                                            <input required data-parsley-trigger="focusout"
+                                                class="form-control form-control-lg" type="text" id="kodeKategori"
                                                 name="kode_barang">
                                         </div>
                                         <div class="form-group">
                                             <label for="namaKategori">Kategori Barang </label>
-                                            <select class="selectpicker" data-width="100%" name="kategori_barang"
-                                                id="namaKategori">
+                                            <select required class="selectpicker" data-parsley-trigger="focusout"
+                                                data-width="100%" name="kategori_barang" id="namaKategori">
                                                 @foreach ($kategoriBarang as $itemCat)
                                                 <option value={{$itemCat->id}}>{{$itemCat->nama_kategori}}</option>
                                                 @endforeach
@@ -84,17 +87,20 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="namaBarang">Nama Barang </label>
-                                            <input class="form-control form-control-lg" type="text" id="kodeKategori"
+                                            <input required class="form-control form-control-lg"
+                                                data-parsley-trigger="focusout" type="text" id="kodeKategori"
                                                 name="nama_barang">
                                         </div>
                                         <div class="form-group">
                                             <label for="jenisBarang">Jenis Barang</label>
-                                            <input class="form-control form-control-lg" id="jenisBarang" type="text"
+                                            <input required class="form-control form-control-lg"
+                                                data-parsley-trigger="focusout" id="jenisBarang" type="text"
                                                 name="jenis_barang">
                                         </div>
                                         <div class="form-group">
                                             <label for="satuanUnit">Satuan Unit </label>
-                                            <select class="form-control" name="satuan_unit" id="satuanUnit">
+                                            <select required data-parsley-trigger="focusout" class="form-control"
+                                                name="satuan_unit" id="satuanUnit">
                                                 @foreach ($satuanUnit as $unit)
                                                 <option value={{$unit->id}}>{{$unit->nama_satuan}}</option>
                                                 @endforeach
@@ -102,7 +108,8 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="supplier">Supplier</label>
-                                            <select class="form-control" name="supplier_id" id="supplier">
+                                            <select data-parsley-trigger="focusout" required class="form-control"
+                                                name="supplier_id" id="supplier">
                                                 @foreach ($gudangs as $gudang)
                                                 <option value={{$gudang->id}}>{{$gudang->kode_gudang}}</option>
                                                 @endforeach
@@ -122,8 +129,9 @@
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text">Rp</div>
                                                 </div>
-                                                <input type="number" min="0" class="form-control form-control-lg"
-                                                    id="hargaRetail" placeholder="20.000" name="harga_retail">
+                                                <input required data-parsley-trigger="focusout" type="number" min="0"
+                                                    class="form-control form-control-lg" id="hargaRetail"
+                                                    placeholder="20.000" name="harga_retail">
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -132,8 +140,9 @@
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text">Rp</div>
                                                 </div>
-                                                <input type="number" min="0" class="form-control form-control-lg"
-                                                    id="hargaGrosir" placeholder="20.000" name="harga_grosir">
+                                                <input required data-parsley-trigger="focusout" type="number" min="0"
+                                                    class="form-control form-control-lg" id="hargaGrosir"
+                                                    placeholder="20.000" name="harga_grosir">
                                             </div>
                                         </div>
                                         <div class="d-flex justify-content-end">
@@ -201,22 +210,26 @@
             </div>
         </div>
     </div>
+    <script src="{{asset('vendor/stock/jquery/jquery-3.3.1.min.js')}}"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bs-stepper/dist/js/bs-stepper.min.js"></script>
 
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
-    </script>
+
     <script src="{{asset('vendor/stock/bootstrap/js/bootstrap.bundle.js')}}"></script>
     <!-- slimscroll js-->
     <script src="{{asset('vendor/stock/slimscroll/jquery.slimscroll.js')}}"></script>
+    <script src="{{asset('vendor/stock/parsley/parsley.js')}}"></script>
+
     <script src="{{asset('js/stock/main-js.js')}}"></script>
 
     <script src="{{asset('vendor/stock/bootstrap-select/js/bootstrap-select.js')}}"></script>
 
-
+    <script>
+        $('#formBarang').parsley();
+    </script>
 
     <script>
         var stepper1 = new Stepper(document.querySelector('#stepper1'))

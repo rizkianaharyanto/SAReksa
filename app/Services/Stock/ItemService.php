@@ -2,6 +2,8 @@
 namespace App\Services\Stock;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+
 use App\Repositories\Stock\Repository;
 use App\Stock\Barang;
 use App\Stock\StokGudang;
@@ -98,10 +100,19 @@ class ItemService
     }
     public function updateStocks($itemId, $whsId, $qty)
     {
-        Barang::find($itemId)->warehouseStocks()->syncWithoutDetaching([$itemId => [
-            'gudang_id' => $whsId,
-            'kuantitas' => $qty,
-        ]]);
+        $stocks = Barang::find($itemId)->warehouseStocks() ?? null;
+        if ($stocks) {
+            StokGudang::with([
+                'barang',
+                'gudang'
+            ])->where('gudang_id', $whsId)->where('barang_id', $itemId)->delete();
+        }
+        Barang::find($itemId)->warehouseStocks()->attach([$itemId => [
+                'gudang_id' => $whsId,
+                'kuantitas' => $qty,
+            ]]);
+        
+        
         return 201;
     }
     public function except($columns)
@@ -111,5 +122,21 @@ class ItemService
     }
     public function delete($id)
     {
+        $item = Barang::with([
+            'warehouseStocks',
+            'hargaRetailHistory',
+            'hargaGrosirHistory'
+        ])->findOrFail($id);
+
+        DB::beginTransaction();
+        try {
+            $item->warehouseStocks()->detach();
+            $item->hargaRetailHistory() ?? $item->hargaRetailHistory()->delete();
+            $item->hargaGrosirHistory() ?? $item->hargaGrosirHistory()->delete();
+            $item->delete();
+        } catch (\Throwable $th) {
+            DB::rollback();
+        }
+        DB::commit();
     }
 }

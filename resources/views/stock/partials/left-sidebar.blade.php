@@ -42,7 +42,7 @@
                                     <a class="nav-link" id="link-barang" href="{{ route('barang.index')}}">Barang</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Pajak</a>
+                                    <a class="nav-link" href="{{route('pajak.index')}}">Pajak</a>
                                 </li>
 
                             </ul>

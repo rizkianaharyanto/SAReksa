@@ -15,6 +15,7 @@
     <th>Deskripsi</th>
     <th>Departemen</th>
     <th>Tanggal</th>
+    <th>Status</th>
     <th>Opsi</th>
 </tr>
 @endsection
@@ -29,6 +30,7 @@
     <td> {{ $op->deskripsi }} </td>
     <td> {{ $op->departemen }} </td>
     <td>{{$op->created_at->toDateString()}}</td>
+    <td>{{$op->status}}</td>
     <td>
         <center>
             <div class="dropright">
@@ -63,7 +65,7 @@
 @section('modal-form-method','POST')
 
 <label for="field1">Kode Referensi </label>
-<input class="form-control" type="text" name="kode_ref" id="field1">
+<input class="form-control" value="STK-{{count($stokOp)+1}}" type="text" name="kode_ref" id="field1" readonly>
 <label for="field2">Gudang </label>
 <select class="form-control selectpicker" name="gudang_id" id="gudang_id">
     <option value="">--- Pilih Gudang ---</option>
@@ -81,7 +83,7 @@
     <div id="isibarangs" class="d-flex">
         <div class="m-3">
             <label for="field4">Barang</label>
-            <select class="form-control" name="item_id[]" id="item_id">
+            <select class="form-control  isibarangs" onchange="dropdownSelect()" name="item_id[]">
                 <option value="">--- Pilih Barang ---</option>
             </select>
         </div>
@@ -89,6 +91,7 @@
             <label for="field4">Hasil Stok Opname</label>
             <input type="number" class="form-control" name="on_hand[]">
         </div>
+
     </div>
 
 </div>
@@ -103,22 +106,30 @@
 @parent
 
 <script>
+    function dropdownSelect(){
+        console.log($("option:selected", this).val());
+    }
+    
+    let i = 0 
     function tambah(){
-    $("#formbarang").append($("#isibarangs").clone());
-}
+         let barangInput = $("#isibarangs").clone()
+         $("#formbarang").append(barangInput);
+         barangInput.append(' <a type="button" class="m-3 pt-4" onclick="hapus(this)"><i class="fas fa-window-close" style="color: red; cursor: pointer"></i></a>')
+    }
 
+    function hapus(x){
+        $(x).parent().remove()
+    }
 $("#gudang_id").change(function(){
     $.ajax({
         url: '/stok/getstocksbywarehouse/' + $(this).val(),
         type: 'get',
         retur: {},
         success: function(data) {
-                console.log(data)
-                console.log(data.length)
-            $('#item_id').empty()
-            $("#item_id").append('<option value="">--- Pilih Barang ---</option>')
+            $(".isibarangs").empty();
+            $(".isibarangs").append('<option value="">--- Pilih Barang ---</option>')
             for (i = 0; i < data.length; i++) {
-                $("#item_id").append('<option value="' + data[i].barang.id + '">' + data[i].barang.nama_barang + '</option>')
+                $(".isibarangs").append('<option value="' + data[i].barang.id + '">' + data[i].barang.nama_barang + '</option>')
             }
         }
     })

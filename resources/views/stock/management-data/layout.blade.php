@@ -31,7 +31,7 @@
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0">Data Pemasok</h5>
+                <h5 class="mb-0">@yield('title')</h5>
                 @section('button-tambah-data')
 
                 <button class="btn btn-primary" data-toggle="modal" data-target="#modal">Tambah data</button>
@@ -70,7 +70,7 @@
     <!-- ============================================================== -->
 
 
-    
+
     @section('modal-form')
 
     <x-stock.modal>

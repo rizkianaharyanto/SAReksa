@@ -120,6 +120,12 @@ Route::prefix('stok')->group(function () {
     ], ['middleware' => 'web']);
     Route::get('/stokbarang/{barangId}', 'Stock\ItemStockController@getStocksTotalById');
     Route::get('/stokbarangpergudang/{barangId}', 'Stock\ItemStockController@getStocksByGudang');
+    
+    Route::prefix('/reports')->group(function () {
+        Route::get('/kartu-stock', 'Stock\ReportsController@index');
+    });
+
+    //DELETE AFTER
     Route::get('/token', function () {
         return csrf_token();
     });

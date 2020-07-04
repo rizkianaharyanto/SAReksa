@@ -31,18 +31,37 @@
     <td>{{\Carbon\Carbon::parse($k->created_at)->format('d-m-Y-H-i-s')}}</td>
     <td id="options">
         <span id="edit-opt">
-            <a href="" data-form="Edit Data" data-toggle="modal" data-ctgid="{{$k->id}}" data-target=#modal> Edit</a>
+            <a href="" data-form="Edit Data" data-toggle="modal" data-ctgid="{{$k->id}}"
+                data-target="#modalEdit{{$k->id}}">
+                Edit</a>
         </span>
         |
         <span id="delete-opt">
-            <a class="delete-jquery" data-toggle="modal" data-target="#modalDelete{{$k->id}}">Delete</a>
+            <a class="" data-toggle="modal" data-target="#modalDelete{{$k->id}}">Delete</a>
         </span>
     </td>
-</tr>
-@php
-$action = '/stok/Management-Data/kategori-barang/'.$k->id;
 
-@endphp
+    @php
+    $action = '/stok/Management-Data/kategori-barang/'.$k->id;
+
+    @endphp
+    <td>
+
+        <x-stock.master-data.modal-edit :action="$action" :id="$k->id">
+
+            <x-slot name="content">
+                @method('PUT')
+                <label for="kodeKategori">Kode Kategori </label>
+                <input class="form-control" value="{{$k->kode_kategori}}" type="text" id="field1" name="kode_kategori"
+                    required>
+                <label for="namaKategori">Nama Kategori </label>
+                <input class="form-control" type="text" value="{{$k->nama_kategori}}" name="nama_kategori" id="field2"
+                    required>
+
+            </x-slot>
+        </x-stock.master-data.modal-edit>
+    </td>
+</tr>
 <x-stock.modal-stock-delete :deleteAction="$action" :id="$k->id">
     <x-slot name="header">
         {{$k->nama_kategori}}

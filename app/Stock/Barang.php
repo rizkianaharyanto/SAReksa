@@ -3,9 +3,12 @@
 namespace App\Stock;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Barang extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'stk_master_barang';
     protected $guarded = ['id', 'created_at', 'updated_at'];
     protected $appends = ['harga_retail','harga_grosir'];
@@ -34,12 +37,12 @@ class Barang extends Model
 
     public function unit()
     {
-        return $this->belongsTo('App\Stock\SatuanUnit', 'satuan_unit');
+        return $this->belongsTo('App\Stock\SatuanUnit', 'satuan_unit')->withTrashed();
     }
 
     public function kategori()
     {
-        return $this->belongsTo('App\Stock\KategoriBarang', 'kategori_barang');
+        return $this->belongsTo('App\Stock\KategoriBarang', 'kategori_barang')->withTrashed();
     }
 
     public function stockOpname()

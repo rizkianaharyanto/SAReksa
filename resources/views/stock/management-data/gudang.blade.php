@@ -40,58 +40,94 @@
 
     <td id="options">
         <span id="edit-opt">
-            <a href="" data-form="Edit Data" data-toggle="modal" data-ctgid="{{$w->id}}" data-target=#modal> Edit</a>
+            <a href="" data-form="Edit Data" data-toggle="modal" data-target="#modalEdit{{$w->id}}">
+                Edit</a>
         </span> |
         <span id="delete-opt">
             <a class="delete-jquery" data-toggle="modal" data-target="#modalDelete{{$w->id}}">Delete</a>
         </span>
     </td>
-</tr>@php
-$action = '/stok/Management-Data/gudang/'.$w->id;
 
-@endphp
-<x-stock.modal-stock-delete :deleteAction="$action" :id="$w->id">
-    <x-slot name="header">
-        {{$w->kode_gudang}}
-    </x-slot>
+    <td>
+        @php
+        $action = '/stok/Management-Data/gudang/'.$w->id;
 
-</x-stock.modal-stock-delete>
-@endforeach
-@endsection
+        @endphp
+        <x-stock.master-data.modal-edit :action="$action" :id="$w->id">
 
-@section('modalId')
-modalGudang
-@endsection
+            <x-slot name="content">
+                @method('PUT')
+                <label for="field1">Kode Gudang </label>
+                <input class="form-control" required="" value="{{$w->kode_gudang}}" type="text" name="kode_gudang"
+                    id="field1" required>
+                <label for="field2">Alamat </label>
+                <textarea class="form-control" required="" type="textarea" name="alamat" id="field2" rows="5"
+                    required>{{$w->alamat}}</textarea>
+                <label for="field3">No Telpon: </label>
+                <input class="form-control" type="text" value="{{$w->no_telp}}" required="" name="no_telp" required
+                    id="field3">
+                <label for="field4">Status</label>
+                <select class="form-control" name="status" id="field4" required>
+                    <option value="aktif">Aktif</option>
+                    <option value="tidak aktif">Tidak Aktif</option>
+                </select>
+            </x-slot>
+        </x-stock.master-data.modal-edit>
+    </td>
 
-@section('modal-form')
-@parent
-@section('modal-content')
+    <x-stock.modal-stock-delete :deleteAction="$action" :id="$w->id">
+        <x-slot name="header">
+            {{$w->kode_gudang}}
+        </x-slot>
 
-@section('modal-form-action','/stok/Management-Data/gudang')
-@section('modal-form-method','POST')
-<label for="field1">Kode Gudang </label>
-<input class="form-control" type="text" name="kode_gudang" id="field1" required>
-<label for="field2">Alamat </label>
-<textarea class="form-control" type="textarea" name="alamat" id="field2" rows="5" required></textarea>
-<label for="field3">No Telpon: </label>
-<input class="form-control" type="text" name="no_telp" required id="field3">
-<label for="field4">Status</label>
-<select class="form-control" name="status" id="field4" required>
-    <option value="aktif">Aktif</option>
-    <option value="tidak aktif">Tidak Aktif</option>
-</select>
-@endsection
+    </x-stock.modal-stock-delete>
 
-@endsection
+<tr>
 
-@section('scripts')
-@parent
-<script>
-    const title = "@yield('title')".toLowerCase().replace('data','').trim();
+
+
+
+    @endforeach
+    @endsection
+
+    @section('modalId')
+    modalGudang
+    @endsection
+
+
+
+
+
+    @section('modal-form')
+    @parent
+    @section('modal-content')
+
+    @section('modal-form-action','/stok/Management-Data/gudang')
+    @section('modal-form-method','POST')
+    <label for="field1">Kode Gudang </label>
+
+    <input class="form-control" required="" type="text" name="kode_gudang" id="field1" required>
+    <label for="field2">Alamat </label>
+    <textarea class="form-control" required="" type="textarea" name="alamat" id="field2" rows="5" required></textarea>
+    <label for="field3">No Telpon: </label>
+    <input class="form-control" type="text" required="" name="no_telp" required id="field3">
+    <label for="field4">Status</label>
+    <select class="form-control" name="status" id="field4" required>
+        <option value="aktif">Aktif</option>
+        <option value="tidak aktif">Tidak Aktif</option>
+    </select>
+    @endsection
+
+    @endsection
+
+    @section('scripts')
+    @parent
+    <script>
+        const title = "@yield('title')".toLowerCase().replace('data','').trim();
     const idSidebarLink = `link-${title}`.trim();
     console.log(idSidebarLink);
     $('#link-dashboard').removeClass('active');
     $(`#link-manajemen-data`).addClass('active');
     $(`#${idSidebarLink}`).addClass('active')
-</script>
-@endsection
+    </script>
+    @endsection

@@ -134,8 +134,14 @@ class StockOpnameController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(StockOpnameRequest $req, StokOpname $stockOpname)
+    public function update(StockOpnameRequest $req, $id)
     {
+        $stockOpname = $this->service->get($id);
+        if (!$stockOpname) {
+            return redirect('/stok/stock-opname')->with('status', 'Data Transaksi tersebut tidak ditemukan');
+        }
+        $stockOpname = $this->service->update($req->validated(), $id);
+        return redirect()->route('stock-opname.index');
     }
 
     /**
@@ -149,8 +155,8 @@ class StockOpnameController extends Controller
     {
         $stockOp = StokOpname::findOrFail($id);
 
-        if ($stockOp['status'] == 'posted') {
-            // return redirect()->back()->withErrors($validator)->withInput();
+        if ($stockOp['status'] == 'sudah diposting') {
+            return redirect()->back()->with('status', 'Transaksi sudah di posting ke jurnal dan tidak bisa dihapus');
         } else {
             DB::beginTransaction();
             try {
