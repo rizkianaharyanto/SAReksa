@@ -16,7 +16,6 @@
                                 class="fa fa-fw fa-user-circle"></i>Dashboard</a>
 
                     </li>
-                    @if(auth()->user()->role->role_name == 'Admin Gudang')
 
                     <li class="nav-item">
                         <a class="nav-link" id="link-manajemen-data" href="#" data-toggle="collapse"
@@ -51,8 +50,6 @@
                             </ul>
                         </div>
                     </li>
-                    @endif
-                    @if(auth()->user()->role->role_name == 'Operator Gudang')
                     <li class="nav-divider">
                         Transaksi
                     </li>
@@ -85,14 +82,17 @@
                         </a>
 
                     </li>
-                    @endif
-                    @if(auth()->user()->role->role_name == 'Admin Gudang' && auth()->user()->role->role_name == 'Direksi
-                    Perusahaan')
 
                     <li class="nav-divider">
                         Laporan
                     </li>
-                    @endif
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('reports.kartu-stock')}}"><i class="fas fa-fw fa-file"></i>
+                            Laporan Kartu Stock
+                        </a>
+
+                    </li>
+
 
                 </ul>
             </div>
