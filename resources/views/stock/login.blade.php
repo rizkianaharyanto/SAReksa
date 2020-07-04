@@ -65,8 +65,7 @@
                                 class="custom-control-label">Remember Me</span>
                         </label>
                     </div>
-                    <button type="submit" style="background-color:#349eac" class="btn btn-primary btn-lg btn-block"
-                        style="">Sign in</button>
+                    <button type="submit" style="background-color:#349eac" class="btn btn-primary btn-lg btn-block">Sign in</button>
                 </form>
             </div>
             <div class="card-footer bg-white p-0  ">

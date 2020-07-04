@@ -20,6 +20,13 @@ Route::get('/', function () {
 Route::prefix('pembelian')->group(function () {
     Route::get('/', function () {
         return view('pembelian.template.templatebaru');
+    })->middleware('auth.pembelian');
+
+    Route::get('/login', 'Pembelian\LoginController@index');
+
+    Route::prefix('auth')->group(function () {
+        Route::post('/login', 'Pembelian\LoginController@login');
+        Route::get('/logout', 'Pembelian\LoginController@logout');
     });
 
     Route::get('/ambilgudang', 'Pembelian\GudangsController@ambil');
@@ -129,7 +136,7 @@ Route::prefix('stok')->group(function () {
         Route::get('/pemasok', 'Pembelian\PemasoksController@indexbarang');
     });
     Route::post('/stock-opname/posting/{id}', 'Stock\StockOpnameController@posting');
-    
+
     Route::resources([
             'transfer-stock' => 'Stock\StockTransferController',
             'stock-opname' => 'Stock\StockOpnameController',
@@ -138,7 +145,7 @@ Route::prefix('stok')->group(function () {
     ], ['middleware' => 'web']);
     Route::get('/stokbarang/{barangId}', 'Stock\ItemStockController@getStocksTotalById');
     Route::get('/stokbarangpergudang/{barangId}', 'Stock\ItemStockController@getStocksByGudang');
-    
+  
     Route::group(['prefix' => '/reports', 'as' => 'reports.'], function () {
         Route::get('/kartu-stock', ['as' => 'kartu-stock','uses' => 'Stock\KartuStockController@index']);
     });
@@ -210,16 +217,16 @@ Route::prefix('kepegawaian')->group(function () {
 Route::prefix('penjualan')->group(function () {
     Route::get('/', 'Penjualan\LoginController@dashboard')->middleware('auth')->name('home');
 
-    Route::get('/fakturs/{id}/edit', 'Penjualan\RetursController@edit')->middleware(['auth','checkRole:retur']);
-    Route::get('/fakturs/{id}/edit', 'Penjualan\FaktursController@edit')->middleware(['auth','checkRole:penjualan']);
+    Route::get('/fakturs/{id}/edit', 'Penjualan\RetursController@edit')->middleware(['auth', 'checkRole:retur']);
+    Route::get('/fakturs/{id}/edit', 'Penjualan\FaktursController@edit')->middleware(['auth', 'checkRole:penjualan']);
 
     Route::get('/register', 'Penjualan\LoginController@daftar')->middleware('guest');
     Route::get('/login', 'Penjualan\LoginController@login')->middleware('guest')->name('login');
     Route::get('/logout', 'Penjualan\LoginController@logout')->middleware('auth');
     Route::post('/register', 'Penjualan\LoginController@postdaftar')->middleware('guest');
-    ;
+
     Route::post('/login', 'Penjualan\LoginController@postlogin')->middleware('guest');
-    ;
+
     Route::get('/barangs', 'Stock\ItemResourceController@indexpenjualan')->middleware('auth');
     Route::get('/gudangs', 'Stock\WarehouseController@indexpenjualan')->middleware('auth');
     Route::resource('/pelanggans', 'Penjualan\PelanggansController')->middleware('auth');
@@ -230,13 +237,13 @@ Route::prefix('penjualan')->group(function () {
     Route::any('/fakturs/cetak_pdf', 'Penjualan\FaktursController@cetak_pdf')->middleware('auth');
     Route::get('/returdetails/{id}', 'Penjualan\RetursController@detail')->middleware('auth');
     Route::any('/returs/cetak_pdf', 'Penjualan\RetursController@cetak_pdf')->middleware('auth');
-    
+
     //Admin Faktur
-    Route::group(['middleware' => ['auth','checkRole:penjualan']], function () {
+    Route::group(['middleware' => ['auth', 'checkRole:penjualan']], function () {
         Route::resource('/pemesanans', 'Penjualan\PemesanansController');
         Route::resource('/pengirimans', 'Penjualan\PengirimansController');
         Route::resource('/penawarans', 'Penjualan\PenawaransController');
-       
+
         Route::any('/penawarans/cetak_pdf', 'Penjualan\PenawaransController@cetak_pdf');
         Route::any('/pemesanans/cetak_pdf', 'Penjualan\PemesanansController@cetak_pdf');
         Route::any('/pengirimans/cetak_pdf', 'Penjualan\PengirimansController@cetak_pdf');
@@ -248,12 +255,12 @@ Route::prefix('penjualan')->group(function () {
     });
 
     //Admin Retur
-    Route::group(['middleware' => ['auth','checkRole:retur']], function () {
+    Route::group(['middleware' => ['auth', 'checkRole:retur']], function () {
         Route::get('/returs/{idnya}/posting', 'Penjualan\RetursController@posting');
     });
 
     //Admin Piutang
-    Route::group(['middleware' => ['auth','checkRole:piutang']], function () {
+    Route::group(['middleware' => ['auth', 'checkRole:piutang']], function () {
         Route::resource('/piutangs', 'Penjualan\PiutangsController');
         Route::get('/showpiutang/{id}', 'Penjualan\PiutangsController@showpembayaran');
         Route::resource('/pembayarans', 'Penjualan\PembayaransController');
@@ -263,7 +270,7 @@ Route::prefix('penjualan')->group(function () {
     });
 
     //Dikersi Perusahaan
-    Route::group(['middleware' => ['auth','checkRole:direksi']], function () {
+    Route::group(['middleware' => ['auth', 'checkRole:direksi']], function () {
         //show laporan
         Route::any('/laporans/penawaran', 'Penjualan\LaporansController@penawaran');
         Route::any('/laporans/pemesanan', 'Penjualan\LaporansController@pemesanan');
@@ -272,7 +279,7 @@ Route::prefix('penjualan')->group(function () {
         Route::any('/laporans/retur', 'Penjualan\LaporansController@retur');
         Route::any('/laporans/piutang', 'Penjualan\LaporansController@piutang');
         Route::any('/laporans/pembayaran', 'Penjualan\LaporansController@pembayaran');
-        
+
         //Data master
         //cetak laporan
         Route::any('/laporans/penawaranpdf', 'Penjualan\LaporansController@cetakpenawaran');

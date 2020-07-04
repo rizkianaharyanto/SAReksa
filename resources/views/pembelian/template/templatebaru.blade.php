@@ -159,18 +159,26 @@
                         </ul>
                     </li>
                     
-
+                    @if(auth()->user()->role->role_name == 'Admin Pembelian')
                     <h3 class="menu-title">Transaksi</h3><!-- /.menu-title -->
                     <li><a href="/pembelian/permintaans"> <i class="menu-icon fa fa-envelope-open-text"></i>Permintaan Penawaran Harga</a></li>
                     <li><a href="/pembelian/pemesanans"> <i class="menu-icon fa fa-boxes"></i>Pemesanan</a></li>
                     <li><a href="/pembelian/penerimaans"> <i class="menu-icon fa fa-shipping-fast"></i>Penerimaan Barang</a></li>
                     <li><a href="/pembelian/fakturs"> <i class="menu-icon fa fa-clipboard-check"></i>Faktur</a></li>
+                    @endif
+                    @if(auth()->user()->role->role_name == 'Admin Retur Pembelian')
+                    <h3 class="menu-title">Transaksi</h3><!-- /.menu-title -->
+                    <li><a href="/pembelian/fakturs"> <i class="menu-icon fa fa-clipboard-check"></i>Faktur</a></li>
                     <li><a href="/pembelian/returs"> <i class="menu-icon fa fa-exchange-alt"></i>Retur Pembelian</a></li>
-
+                    @endif
+                    @if(auth()->user()->role->role_name == 'Admin Utang')
+                    <h3 class="menu-title">Transaksi</h3><!-- /.menu-title -->
+                    <li><a href="/pembelian/fakturs"> <i class="menu-icon fa fa-clipboard-check"></i>Faktur</a></li>
                     <h3 class="menu-title">Hutang</h3><!-- /.menu-title -->
                     <li><a href="/pembelian/hutangs"> <i class="menu-icon fa fa-file-invoice-dollar"></i>Hutang</a></li>
                     <li><a href="/pembelian/pembayarans"> <i class="menu-icon fa fa-hand-holding-usd"></i>Pembayaran Hutang</a></li>
-
+                    @endif
+                    @if(auth()->user()->role->role_name == 'Direksi Perusahaan')
                     <h3 class="menu-title">Laporan & Jurnal</h3><!-- /.menu-title -->
                     <li class="menu-item-has-children dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-file"></i>Laporan</a>
@@ -185,6 +193,7 @@
                         </ul>
                     </li>
                     <li><a href="/pembelian/jurnals"> <i class="menu-icon fa fa-file-alt"></i>Jurnal</a></li>
+                    @endif
                 </ul>
             </div><!-- /.navbar-collapse -->
         </nav>
@@ -218,15 +227,11 @@
 
                 <div class="col-sm-5">
                     <div class="user-area dropdown float-right">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img class="user-avatar rounded-circle" src="{{url('css/pembelian/images/admin.jpg')}}" alt="User Avatar">
-                        </a>
-
-                        <div class="user-menu dropdown-menu">
-                            <a class="nav-link" href="#"><i class="fa fa-user"></i> My Profile</a>
-                            <a class="nav-link" href="#"><i class="fa fa-power-off"></i> Logout</a>
-                        </div>
+                        <div class="d-flex">
+                            <p class="mt-2">{{auth()->user()->role->role_name}} |</p>
+                            <a class="nav-link" href="/pembelian/auth/logout"><i class="fa fa-power-off"></i> Logout</a>
                     </div>
+                </div>
 
                 </div>
             </div>
