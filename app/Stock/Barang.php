@@ -80,7 +80,7 @@ class Barang extends Model
     //Pembelian
     public function pemasok()
     {
-        return $this->belongsTo('App\Pembelian\Pemasok', 'pemasok_id');
+        return $this->belongsTo('App\Pembelian\Pemasok', 'supplier_id');
     }
 
     public function permintaans()

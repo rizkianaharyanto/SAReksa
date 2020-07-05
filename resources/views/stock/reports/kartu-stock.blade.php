@@ -50,10 +50,10 @@
                         <div class="row mb-4">
                             <div class="col-sm-6">
                                 <h5 class="mb-3">Pemasok:</h5>
-                                <h3 class="text-dark mb-1">{$barang->pemasok->nama_pemasok}</h3>
-                                <div>{$barang->pemasok->alamat_pemasok}</div>
-                                <div>Email: {$barang->pemasok->email_pemasok}</div>
-                                <div>Phone: {$barang->pemasok->telp_pemasok}</div>
+                                <h3 class="text-dark mb-1">{{$barang->pemasok->nama_pemasok}}</h3>
+                                <div>{{$barang->pemasok->alamat_pemasok}}</div>
+                                <div>Email: {{$barang->pemasok->email_pemasok}}</div>
+                                <div>Phone: {{$barang->pemasok->telp_pemasok}}</div>
                             </div>
                             <div class="col-sm-6">
                                 <h5 class="mb-3">Barang:</h5>

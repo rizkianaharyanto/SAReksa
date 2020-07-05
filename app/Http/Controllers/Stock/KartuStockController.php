@@ -35,26 +35,21 @@ class KartuStockController extends Controller
 
     public function filter(Request $request)
     {
-        // $barangs = Barang::find($request->barang)->with([
-        //     'unit',
-        //     'kategori',
-        //     'stockOpname',
-        //     'stockTransfer',
-        //     'penyesuaianStok',
-        //     'warehouseStocks',
-        //     'tax',
-        //     ]);
         $barangs= Barang::all();
-        $barang = Barang::find($request->barang);
+        $barang = Barang::with([
+            'pemasok'
+        ])->find($request->barang);
+        
+
         $stockOpname = $barang->stockOpname;
         $stockTransfer = $barang->stockTransfer;
         $stockPenyesuaian = $barang->penyesuaianStok;
         $details = new Collection([$stockOpname, $stockTransfer, $stockPenyesuaian]);
         // dd($barang);
-            // dd($barang->nama_barang, $stockOpname, $stockTransfer, $stockPenyesuaian, $details);
-            return view('stock.reports.kartu-stock', [
-                'barangs' => $barangs, 
-                'barang' => $barang, 
+        // dd($barang->nama_barang, $stockOpname, $stockTransfer, $stockPenyesuaian, $details);
+        return view('stock.reports.kartu-stock', [
+                'barangs' => $barangs,
+                'barang' => $barang,
                 'details'=> $details
             ]);
     }
@@ -75,15 +70,15 @@ class KartuStockController extends Controller
         $stockPenyesuaian = $barang->penyesuaianStok;
         $details = new Collection([$stockOpname, $stockTransfer, $stockPenyesuaian]);
         // dd($request);
-            // dd($barang->nama_barang, $stockOpname, $stockTransfer, $stockPenyesuaian, $details); 
-            $pdf = PDF::loadview('stock.reports.export-kartu-stock', [
-                'barang' => $barang, 
+        // dd($barang->nama_barang, $stockOpname, $stockTransfer, $stockPenyesuaian, $details);
+        $pdf = PDF::loadview('stock.reports.export-kartu-stock', [
+                'barang' => $barang,
                 'details'=> $details
             ]);
-            // return view('stock.reports.export-kartu-stock', [
-            //     'barang' => $barang, 
-            //     'details'=> $details
-            // ]);
-            return $pdf->download('kartu-stock.pdf');
+        // return view('stock.reports.export-kartu-stock', [
+        //     'barang' => $barang,
+        //     'details'=> $details
+        // ]);
+        return $pdf->download('kartu-stock.pdf');
     }
 }

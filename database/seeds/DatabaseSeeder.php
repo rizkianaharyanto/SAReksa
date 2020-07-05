@@ -23,8 +23,8 @@ class DatabaseSeeder extends Seeder
             PphSeeder::class,
 
             //generall
-            UserTableSeeder::class
-
+            UserTableSeeder::class,
+            SupplierSeeder::class
         ]);
     }
 }
