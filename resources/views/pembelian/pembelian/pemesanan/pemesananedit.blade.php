@@ -75,7 +75,7 @@
                                 <input type="date" class="form-control" id="tanggal" name="tanggal" value="{{$pemesanan->tanggal}}">
                             </div>
                         </div>
-                        <div class="form-group row mx-5 mb-5">
+                        <!-- <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="mata-uang">Mata Uang</label>
                             <div class="col-sm-9">
                                 <select class="form-control" id="mata-uang" name="mata_uang">
@@ -83,7 +83,7 @@
                                     <option value="">IDR</option>
                                 </select>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="modal-footer">
                         <a href="/pembelian/pemesanans">
@@ -133,6 +133,7 @@
                                     <input type="number" min="0" class="form-control" id="total" name="total[]" disabled>
                                 </div>
                             </div>
+                            <input type="hidden" id="status_barang" name="status_barang[]" value="{{$pemesananbarang->pivot->status_barang}}">
                             <div class="form-group col-md-1">
                                 <p style="color: transparent">#</p>
                                 <a onclick="hapus(this)">
@@ -196,7 +197,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group row mx-5 mb-5">
+                        <!-- <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="termin_pembayaran">Termin Pembayaran</label>
                             <div class="col-sm-9">
                                 <select class="form-control" id="termin_pembayaran" name="termin_pembayaran">
@@ -204,7 +205,7 @@
                                     <option value="">0 % 0 Net 0</option>
                                 </select>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="form-group row m-5 d-flex justify-content-end">
                             <label class="col-sm-3 col-form-label" for="total_harga_keseluruhan">Total</label>
                             <div class="col-sm-9">

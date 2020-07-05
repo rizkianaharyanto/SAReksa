@@ -72,7 +72,7 @@
 @section('modal-form-method','POST')
 
 <label for="field1">Kode Referensi </label>
-<input class="form-control" type="text" name="kode_ref" value="TRF-{{count($stockAdjustments)+1}}" id="field1">
+<input class="form-control" type="text" name="kode_ref" value="PNY-{{count($stockAdjustments)+1}}" id="field1">
 <label for="gudang">Gudang </label>
 
 <select class="form-control selectpicker" name="warehouse_id" id="gudang_id">
@@ -120,8 +120,15 @@
     }
 
     function tambah(){
-        $("#formbarang").append($("#isibarangs").clone().);
+        let barangInput = $("#isibarangs").clone()
+         $("#formbarang").append(barangInput);
+         barangInput.append(' <a type="button" class="m-3 pt-4" onclick="hapus(this)"><i class="fas fa-window-close" style="color: red; cursor: pointer"></i></a>')
+    
     }
+
+    function hapus(x){
+        $(x).parent().remove()
+    } 
     $("#gudang_id").change(function(){
         $.ajax({
             url: '/stok/getstocksbywarehouse/' + $(this).val(),

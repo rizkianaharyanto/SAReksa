@@ -304,10 +304,8 @@ class PenerimaansController extends Controller
      */
     public function update(Request $request, Penerimaan $penerimaan)
     {
-        $pnm = Penerimaan::max('id') + 1;
-        $penerimaan = Penerimaan::create([
-            'kode_penerimaan' => 'PNM-' . $pnm,
-            'pemesanan_id' => $request->pemesanan_id,
+        Penerimaan::find($penerimaan->id)
+        ->update([
             // 'status' => $request->status,
             'pemasok_id' => $request->pemasok_id,
             'gudang' => $request->gudang,
@@ -319,7 +317,8 @@ class PenerimaansController extends Controller
             'total_harga' => $request->total_harga_keseluruhan,
             'akun_barang' => $request->akun_barang,
         ]);
-
+        // dd($penerimaan);
+        $penerimaan->barangs()->detach();
         $pemesanan = $penerimaan->pemesanan;
         foreach ($request->barang_id as $index => $id) {
             $penerimaan->barangs()->attach($id, [
