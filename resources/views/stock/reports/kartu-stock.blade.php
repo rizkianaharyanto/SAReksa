@@ -3,19 +3,11 @@
 @section('title','Kartu Stock')
 
 @section('isi')
-
 <form action="/stok/reports/kartu-stock/export" class="d-flex justify-content-end">
-    @if($barang ?? '')
-    <input type="hidden" name="id" value="{{$barang->id}}">
-    <input type="hidden" id="req_qty_masuk" name="req_qty_masuk">
-    <input type="hidden" id="req_nilai_masuk" name="req_nilai_masuk">
-    <input type="hidden" id="req_qty_keluar" name="req_qty_keluar">
-    <input type="hidden" id="req_nilai_keluar" name="req_nilai_keluar">
-    <input type="hidden" id="req_sisa" name="req_sisa">
-    <input type="hidden" name="tanggal" value="">
+    <input type="hidden" name="id" value="{{$barang->id ?? ''}}">
+    <input type="hidden" name="start" value="{{$start}}">
+    <input type="hidden" name="end" value="{{$end}}">
     <button type="submit" class="btn btn-primary my-2">Export PDF</button>
-    @else
-    @endif
 </form>
 <div class="row">
     <!-- ============================================================== -->
@@ -26,13 +18,15 @@
                 <form action="/stok/reports/kartu-stock/filter" class="form-group">
                     <label for="barang">Barang</label>
                     <select class="form-control" name="barang" id="barang">
-                        <option value="">--- Pilih Barang ---</option>
+                        <option value="">--- All Barang ---</option>
                         @foreach ($barangs as $barangfilter)
                         <option value="{{$barangfilter->id}}">{{$barangfilter->nama_barang}}</option>
                         @endforeach
                     </select>
-                    <!-- <label for="barang">Tanggal</label>
-                    <input class="form-control" type="date" name="tanggal"> -->
+                    <label for="barang">Tanggal</label>
+                    <input class="form-control" type="date" name="start">
+                    <label for="barang">Tanggal</label>
+                    <input class="form-control" type="date" name="end">
                     <button type="submit" class="btn btn-block btn-primary my-3">Filter</button>
                 </form>
             </div>
@@ -54,7 +48,7 @@
             <div class="card-body">
                 <div class="row mb-4">
                     <div class="col-sm-6">
-                        @if($barang ?? '')
+                        @if($barang != null)
                         <h5 class="mb-3">Pemasok:</h5>
                         <h3 class="text-dark mb-1">{{$barang->pemasok->nama_pemasok}}</h3>
                         <div>{{$barang->pemasok->alamat_pemasok}}</div>
@@ -71,7 +65,12 @@
                         @endif
                     </div>
                 </div>
-                <div class="table-responsive-sm">
+                @foreach($alldetails as $puter => $details)
+                <div class="table-responsive-sm mb-5">
+                    @if($barang == null)
+                    <h3>Barang : {{$barangs[$puter]->nama_barang ?? ''}}</h3>
+                    @else
+                    @endif
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -90,8 +89,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if($details)
-                            @foreach ($details as $detail)
+                            @foreach ($details['kartu'] as $detail)
                                 @if ($loop->index == 0)
                                     @foreach ($detail as $index)
                                     <tr>
@@ -106,7 +104,7 @@
                                         @else
                                             <td></td>
                                             <td></td>
-                                            <td class="qty_keluar">{{$index->pivot->jumlah_fisik ?? ''}}</td>
+                                            <td class="qty_keluar">{{$index->pivot->jumlah_fisik*-1 ?? ''}}</td>
                                             <td class="nilai_keluar">{{$index->details[0]->nilai_barang ?? ''}}</td>
                                         @endif
                                         <td class="sisa">{{$index->pivot->jumlah_fisik - $index->pivot->jumlah_tercatat}}</td>
@@ -139,27 +137,26 @@
                                         @else
                                             <td></td>
                                             <td></td>
-                                            <td class="qty_keluar">{{$index->pivot->quantity_diff ?? ''}}</td>
+                                            <td class="qty_keluar">{{$index->pivot->quantity_diff*-1 ?? ''}}</td>
                                             <td class="nilai_keluar">{{$index->details[0]->nilai_barang ?? ''}}</td>
                                         @endif
-                                        <td class="sisa">{{$index->pivot->quantity_diff}}</td>
+                                        <td class="sisa">{{$index->pivot->quantity_diff*-1}}</td>
                                     </tr>
                                     @endforeach
                                 @endif
                             @endforeach
                             <tr>
                                 <td colspan="2">Total</td>
-                                <td id="qty_masuk" name="qty_masuk"></td>
-                                <td id="nilai_masuk" name="nilai_masuk"></td>
-                                <td id="qty_keluar" name="qty_keluar"></td>
-                                <td id="nilai_keluar" name="nilai_keluar"></td>
-                                <td id="sisa" name="sisa"></td>
+                                <td id="qty_masuk" name="qty_masuk">{{$details['qty_masuk']}}</td>
+                                <td id="nilai_masuk" name="nilai_masuk">{{$details['nilai_masuk']}}</td>
+                                <td id="qty_keluar" name="qty_keluar">{{$details['qty_keluar']}}</td>
+                                <td id="nilai_keluar" name="nilai_keluar">{{$details['nilai_keluar']}}</td>
+                                <td id="sisa" name="sisa">{{$details['sisa']}}</td>
                             </tr>
-                            @else
-                            @endif
                         </tbody>
                     </table>
                 </div>
+                @endforeach
                 <div class="row">
                     <div class="col-lg-4 col-sm-5">
                     </div>
@@ -207,7 +204,7 @@
 @endsection
 @section('scripts')
 @parent
-<script>
+<!-- <script>
     console.log('mulai')
     //qty masuk
         var arr = document.querySelectorAll('.qty_masuk');
@@ -254,5 +251,5 @@
         }
         $('#sisa').html(sisa)
         $('#req_sisa').val(sisa)
-</script>
+</script> -->
 @endsection
