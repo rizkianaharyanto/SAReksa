@@ -94,6 +94,13 @@ class ItemService
         ])->where('gudang_id', $whsId)->get();
     }
 
+    public function getAllStocksByWhouseNotNull($whsId)
+    {
+        return StokGudang::with([
+            'barang',
+            'gudang'
+        ])->where('gudang_id', $whsId)->where('kuantitas', '>', 0)->get();
+    }
     public function getStocksQtyByWhouse($whsId, $itemId)
     {
         return $stocks =  $this->getStocksByWhouse($itemId, $whsId) ? $this->getStocksByWhouse($itemId, $whsId)->kuantitas : 0 ;

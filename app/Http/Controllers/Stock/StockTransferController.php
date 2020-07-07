@@ -56,7 +56,6 @@ class StockTransferController extends Controller
      */
     public function store(StockTransferService $stockTf, CreateStockTransferRequest $req)
     {
-        //
         $input = $req->validated();
         $stockTf->make($input);
         return redirect()->back();
@@ -77,6 +76,15 @@ class StockTransferController extends Controller
         return view('stock.transactions.transfer-stock.details', compact('transferStock'));
     }
 
+    public function edit($id)
+    {
+        $transferStock = $this->service->get($id);
+        $gudangs = Gudang::all();
+        if (!$transferStock) {
+            return redirect('/stok/transfer-stock')->with('status', 'Data Transaksi tersebut tidak ditemukan');
+        }
+        return view('stock.transactions.transfer-stock.edit', compact('transferStock'), compact('gudangs'));
+    }
   
     /**
      * Update the specified resource in storage.
@@ -87,8 +95,8 @@ class StockTransferController extends Controller
      */
     public function update(CreateStockTransferRequest $request, $id)
     {
-        return $this->service->update($request->validated(), $id);
-        
+        $this->service->update($request->validated(), $id);
+        return redirect()->back();
     }
 
     /**

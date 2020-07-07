@@ -151,7 +151,7 @@ class KartuStockController extends Controller
     public function export(Request $request)
     {
         if ($request->id == null) {
-            return $this->index();
+            return view('stock.reports.export-kartu-stock', ['barangs' => $barangs, 'barang' => $barang, 'alldetails' => $alldetails]);
         } else {
             $barangs = Barang::all();
             $barang = Barang::with([

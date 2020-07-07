@@ -94,6 +94,12 @@ class ItemResourceController extends Controller
         $stocks = $this->service->getAllStocksByWhouse($warehouseId);
         return $stocks;
     }
+
+    public function getStocksByWarehouseNotNull($warehouseId)
+    {
+        $stocks = $this->service->getAllStocksByWhouse($warehouseId);
+        return $stocks;
+    }
     /**
      * Show the form for editing the specified resource.
      *
