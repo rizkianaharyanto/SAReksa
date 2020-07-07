@@ -6,14 +6,17 @@ use Illuminate\View\Component;
 
 class modalEdit extends Component
 {
+    public $id;
+    public $action;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($id, $action)
     {
-        //
+        $this->id = $id;
+        $this->action = $action;
     }
 
     /**

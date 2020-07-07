@@ -39,7 +39,7 @@
             <a href="" data-form="Edit Data" data-toggle="modal" data-target="#modalEdit{{$pajak->id}}"> Edit</a>
         </span> |
         <span id="delete-opt">
-            <a class="delete-jquery" data-toggle="modal" data-target="#modalDelete{{$pajak->id}}">Delete</a>
+            <a class="delete-jquery" data-toggle="modal" style="cursor: pointer" data-target="#modalDelete{{$pajak->id}}">Delete</a>
         </span>
     </td>
 

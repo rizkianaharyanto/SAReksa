@@ -12,10 +12,14 @@ class StepperBarang extends Component
      * @return void
      */
     public $kategoriBarang;
+    public $satuanUnit;
+    public $gudangs;
 
-    public function __construct($kategoriBarang)
+    public function __construct($kategoriBarang, $satuanUnit, $gudangs)
     {
         $this->kategoriBarang = $kategoriBarang;
+        $this->satuanUnit = $satuanUnit;
+        $this->gudangs = $gudangs;
     }
 
     /**

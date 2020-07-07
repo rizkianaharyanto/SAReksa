@@ -81,7 +81,7 @@
                                             <select required class="selectpicker" data-parsley-trigger="focusout"
                                                 data-width="100%" name="kategori_barang" id="namaKategori">
                                                 @foreach ($kategoriBarang as $itemCat)
-                                                <option value={{$itemCat->id}}>{{$itemCat->nama_kategori}}</option>
+                                                <option value="{{$itemCat->id}}">{{$itemCat->nama_kategori}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -91,18 +91,19 @@
                                                 data-parsley-trigger="focusout" type="text" id="kodeKategori"
                                                 name="nama_barang">
                                         </div>
-                                        <div class="form-group">
+                                        <!-- <div class="form-group">
                                             <label for="jenisBarang">Jenis Barang</label>
                                             <input required class="form-control form-control-lg"
                                                 data-parsley-trigger="focusout" id="jenisBarang" type="text"
                                                 name="jenis_barang">
-                                        </div>
+                                        </div> -->
+                                        <input type="hidden" name="jenis_barang" value="0">
                                         <div class="form-group">
                                             <label for="satuanUnit">Satuan Unit </label>
                                             <select required data-parsley-trigger="focusout" class="form-control"
                                                 name="satuan_unit" id="satuanUnit">
                                                 @foreach ($satuanUnit as $unit)
-                                                <option value={{$unit->id}}>{{$unit->nama_satuan}}</option>
+                                                <option value="{{$unit->id}}">{{$unit->nama_satuan}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -111,7 +112,7 @@
                                             <select data-parsley-trigger="focusout" required class="form-control"
                                                 name="supplier_id" id="supplier">
                                                 @foreach ($gudangs as $gudang)
-                                                <option value={{$gudang->id}}>{{$gudang->kode_gudang}}</option>
+                                                <option value="{{$gudang->id}}">{{$gudang->kode_gudang}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -199,7 +200,7 @@
                                             <button type="button" class="mr-2 btn btn-primary"
                                                 onclick="stepper1.previous()">Previous</button>
 
-                                            <button type="submit" style="" class="btn btn-dark">Submit</button>
+                                            <button type="submit"  class="btn btn-dark">Submit</button>
                                         </div>
                                     </div>
                                 </form>

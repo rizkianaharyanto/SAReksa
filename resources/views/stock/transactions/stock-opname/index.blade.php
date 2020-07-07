@@ -35,15 +35,13 @@
         <center>
             <div class="dropright">
 
-                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
+                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="menu-icon fas fa-ellipsis-h"></i>
                 </button>
                 <div class="dropdown-menu">
                     <!-- Dropdown menu links -->
                     <a class="dropdown-item" href="/stok/stock-opname/{{$op->id}}/edit" data-form="Edit Data"> Edit</a>
-                    <a class="delete-jquery dropdown-item" data-method="delete"
-                        href="{{ route('barang.destroy', $op->id ) }}">Delete</a>
+                    <a class="delete-jquery dropdown-item" data-method="delete" href="{{ route('barang.destroy', $op->id ) }}">Delete</a>
                     <a class="dropdown-item " href="/stok/stock-opname/{{$op->id}}">Details</a>
                     <a class="dropdown-item " href="/stok/stock-opname/{{$op->id}}">Posting</a>
 
@@ -106,38 +104,38 @@
 @parent
 
 <script>
-    function dropdownSelect(){
+    function dropdownSelect() {
         console.log($("option:selected", this).val());
     }
-    
-    let i = 0 
-    function tambah(){
-         let barangInput = $("#isibarangs").clone()
-         $("#formbarang").append(barangInput);
-         barangInput.append(' <a type="button" class="m-3 pt-4" onclick="hapus(this)"><i class="fas fa-window-close" style="color: red; cursor: pointer"></i></a>')
+
+    let i = 0
+
+    function tambah() {
+        let barangInput = $("#isibarangs").clone()
+        $("#formbarang").append(barangInput);
+        barangInput.append(' <a type="button" class="m-3 pt-4" onclick="hapus(this)"><i class="fas fa-window-close" style="color: red; cursor: pointer"></i></a>')
     }
 
-    function hapus(x){
+    function hapus(x) {
         $(x).parent().remove()
     }
-$("#gudang_id").change(function(){
-    $.ajax({
-        url: '/stok/getstocksbywarehouse/' + $(this).val(),
-        type: 'get',
-        retur: {},
-        success: function(data) {
-            $(".isibarangs").empty();
-            $(".isibarangs").append('<option value="">--- Pilih Barang ---</option>')
-            for (i = 0; i < data.length; i++) {
-                $(".isibarangs").append('<option value="' + data[i].barang.id + '">' + data[i].barang.nama_barang + '</option>')
+    $("#gudang_id").change(function() {
+        $.ajax({
+            url: '/stok/getstocksbywarehouse/' + $(this).val(),
+            type: 'get',
+            retur: {},
+            success: function(data) {
+                $(".isibarangs").empty();
+                $(".isibarangs").append('<option value="">--- Pilih Barang ---</option>')
+                for (i = 0; i < data.length; i++) {
+                    $(".isibarangs").append('<option value="' + data[i].barang.id + '">' + data[i].barang.nama_barang + '</option>')
+                }
             }
-        }
+        })
     })
-})
-
 </script>
 <script>
-    const title = "@yield('title')".toLowerCase().replace('data','').trim().replace(' ','-');
+    const title = "@yield('title')".toLowerCase().replace('data', '').trim().replace(' ', '-');
     const idSidebarLink = `link-${title}`.trim();
     console.log(idSidebarLink);
     $('#link-dashboard').removeClass('active');

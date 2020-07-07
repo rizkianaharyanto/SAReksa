@@ -37,7 +37,7 @@
         </span>
         |
         <span id="delete-opt">
-            <a class="" data-toggle="modal" data-target="#modalDelete{{$k->id}}">Delete</a>
+            <a class="" data-toggle="modal" style="cursor: pointer" data-target="#modalDelete{{$k->id}}">Delete</a>
         </span>
     </td>
 

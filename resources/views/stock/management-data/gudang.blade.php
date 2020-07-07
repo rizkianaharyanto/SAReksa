@@ -44,7 +44,7 @@
                 Edit</a>
         </span> |
         <span id="delete-opt">
-            <a class="delete-jquery" data-toggle="modal" data-target="#modalDelete{{$w->id}}">Delete</a>
+            <a class="delete-jquery" data-toggle="modal" style="cursor: pointer" data-target="#modalDelete{{$w->id}}">Delete</a>
         </span>
     </td>
 
@@ -58,13 +58,13 @@
             <x-slot name="content">
                 @method('PUT')
                 <label for="field1">Kode Gudang </label>
-                <input class="form-control" required="" value="{{$w->kode_gudang}}" type="text" name="kode_gudang"
+                <input class="form-control"  value="{{$w->kode_gudang}}" type="text" name="kode_gudang"
                     id="field1" required>
                 <label for="field2">Alamat </label>
-                <textarea class="form-control" required="" type="textarea" name="alamat" id="field2" rows="5"
+                <textarea class="form-control"  type="textarea" name="alamat" id="field2" rows="5"
                     required>{{$w->alamat}}</textarea>
                 <label for="field3">No Telpon: </label>
-                <input class="form-control" type="text" value="{{$w->no_telp}}" required="" name="no_telp" required
+                <input class="form-control" type="text" value="{{$w->no_telp}}"  name="no_telp" required
                     id="field3">
                 <label for="field4">Status</label>
                 <select class="form-control" name="status" id="field4" required>
@@ -106,11 +106,11 @@
     @section('modal-form-method','POST')
     <label for="field1">Kode Gudang </label>
 
-    <input class="form-control" required="" type="text" name="kode_gudang" id="field1" required>
+    <input class="form-control" type="text" name="kode_gudang" id="field1" required>
     <label for="field2">Alamat </label>
-    <textarea class="form-control" required="" type="textarea" name="alamat" id="field2" rows="5" required></textarea>
+    <textarea class="form-control" type="textarea" name="alamat" id="field2" rows="5" required></textarea>
     <label for="field3">No Telpon: </label>
-    <input class="form-control" type="text" required="" name="no_telp" required id="field3">
+    <input class="form-control" type="text" name="no_telp" required id="field3">
     <label for="field4">Status</label>
     <select class="form-control" name="status" id="field4" required>
         <option value="aktif">Aktif</option>
