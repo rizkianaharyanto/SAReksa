@@ -18,9 +18,7 @@ Route::get('/', function () {
 })->name('base');
 
 Route::prefix('pembelian')->group(function () {
-    Route::get('/', function () {
-        return view('pembelian.template.templatebaru');
-    })->middleware('auth.pembelian');
+    Route::get('/', 'Pembelian\LoginController@dashboard')->middleware('auth.pembelian');
 
     Route::get('/login', 'Pembelian\LoginController@index');
 
