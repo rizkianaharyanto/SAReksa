@@ -41,7 +41,8 @@
                 </button>
                 <div class="dropdown-menu">
                     <!-- Dropdown menu links -->
-                    <a class="dropdown-item" href="" data-form="Edit Data"> Edit</a>
+                    <a class="dropdown-item" href="/stok/transfer-stock/{{$transfer->id}}/edit" data-form="Edit Data">
+                        Edit</a>
                     <a class="delete-jquery dropdown-item" data-method="delete"
                         href="{{ route('barang.destroy', $transfer->id ) }}">Delete</a>
                     <a class="dropdown-item " href="/stok/transfer-stock/{{$transfer->id}}">Details</a>
