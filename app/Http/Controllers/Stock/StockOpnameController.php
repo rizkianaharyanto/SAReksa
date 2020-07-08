@@ -120,14 +120,14 @@ class StockOpnameController extends Controller
                 'qty_keluar' => 0,
                 'nilai_keluar' => 0,
             ]);
-            if ($barang->pivot->jumlah_fisik >= 0) {
+            if ($barang->pivot->selisih >= 0) {
                 $jurnal->update([
-                    'qty_masuk' => $barang->pivot->jumlah_fisik ,
+                    'qty_masuk' => $barang->pivot->selisih ,
                     'nilai_masuk' => $barang->nilai_barang
                 ]);
             } else {
                 $jurnal->update([
-                    'qty_keluar' => $barang->pivot->jumlah_fisik * -1,
+                    'qty_keluar' => $barang->pivot->selisih * -1,
                     'nilai_keluar' => $barang->nilai_barang
                 ]);
             }
@@ -146,12 +146,16 @@ class StockOpnameController extends Controller
     {
         $stockOpname = StokOpname::with([
             'details'
-        ])
-            ->find($stockOpname);
+        ])->find($stockOpname)->first();
         $gudangs = Gudang::all();
 
-        // dd($stockOpname);
+        if (!$stockOpname) {
+            return redirect('/stok/stock-opname')->with('status', 'Data Transaksi tersebut tidak ditemukan');
+        }
 
+        if ($stockOpname->status == 'sudah posting') {
+            return redirect()->back()->with('status', 'Transaksi sudah di posting ke jurnal dan tidak bisa dihapus');
+        }
         return view('stock.transactions.stock-opname.edit', ['stockOpname' => $stockOpname, 'gudangs' => $gudangs]);
     }
 
@@ -168,6 +172,10 @@ class StockOpnameController extends Controller
         $stockOpname = $this->service->get($id);
         if (!$stockOpname) {
             return redirect('/stok/stock-opname')->with('status', 'Data Transaksi tersebut tidak ditemukan');
+        }
+
+        if ($stockOpname->status == 'sudah posting') {
+            return redirect()->back()->with('status', 'Transaksi sudah di posting ke jurnal dan tidak bisa dihapus');
         }
         $stockOpname = $this->service->update($req->validated(), $id);
         return redirect()->route('stock-opname.index');

@@ -42,17 +42,11 @@
                                     </button>
                                 </div>
                                 <div class="line"></div>
-                                <div class="step" data-target="#test-l-3">
-                                    <button type="button" class="btn step-trigger">
-                                        <span class="bs-stepper-circle">3</span>
-                                        <span class="bs-stepper-label">Akun</span>
-                                    </button>
-                                </div>
                                 <div class="line"></div>
 
                                 <div class="step" data-target="#test-l-4">
                                     <button type="button" class="btn step-trigger">
-                                        <span class="bs-stepper-circle">4</span>
+                                        <span class="bs-stepper-circle">3</span>
                                         <span class="bs-stepper-label">Lainnya</span>
                                     </button>
                                 </div>
@@ -118,34 +112,6 @@
                                             <button type="button" class="btn btn-primary"
                                                 onclick="stepper1.next()">Next</button>
 
-                                        </div>
-                                    </div>
-                                    <div id="test-l-3" class="content">
-                                        <div class="form-group">
-                                            <label for="akunHpp">Akun Hpp</label>
-                                            <p>{{$barang->akun_hpp}}</p>
-                                        </div>
-                                        <div class="form-group" for="akunPersediaan">
-                                            <label for="akunPersediaan">Akun Persediaan</label>
-                                            <p>{{$barang->akun_persediaan}}</p>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="akunPenjualan">Akun Penjualan</label>
-                                            <p>{{$barang->akun_persediaan}}</p>
-
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="akunPembelian">Akun Pembelian</label>
-                                            <p>{{$barang->akun_persediaan}}</p>
-
-                                        </div>
-                                        <div class="form-group"></div>
-                                        <div class="d-flex justify-content-end">
-
-                                            <button type="button" class="btn mr-2 btn-primary"
-                                                onclick="stepper1.previous()">Previous</button>
-                                            <button type="button" class="btn btn-primary"
-                                                onclick="stepper1.next()">Next</button>
                                         </div>
                                     </div>
                                     <div id="test-l-4" class="content">

@@ -30,10 +30,8 @@ class CreateItemsRequest extends FormRequest
             'satuan_unit' => 'required|numeric|',
             'harga_retail' => 'required|numeric',
             'harga_grosir' => 'required|numeric',
-            'akun_hpp' => 'required|numeric',
-            'akun_persediaan' => 'required|numeric',
-            'akun_penjualan' => 'required|numeric',
-            'akun_pembelian' => 'required|numeric',
+            'harga_jual'   => 'required|numeric',
+       
             'item_image' => 'nullable|file',
             'pajak_id' => 'required|numeric',
             'supplier_id' => 'required|numeric',

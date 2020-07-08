@@ -11,7 +11,7 @@
             <div class="modal-body">
                 <div class="row m-2" style="margin-bottom: 2em">
                     <div class="col">
-                        <img id="item-image" width="150px" src="#" alt="placeholder image">
+                        <img id="item-image" width="200px" src="#" alt="placeholder image">
                     </div>
                     <div id="namaBarang" class="col">
                         <h3 class="mr-3"></h3>
@@ -38,12 +38,13 @@
                         <label for="" style="font-weight: bold">Harga Grosir</label>
                         <p></p>
                     </div>
-                    <div class="col">
-
-                    </div>
                     <div class="col" id="hargaRetail">
                         <label for="" style="font-weight: bold">Harga Retail</label>
                         <p></p>
+                    </div>
+                    <div class="col" id="hargaJual">
+                        <label for="hargaJual" style="font-weight: bold">Harga Jual</label>
+                        <p id=""></p>
                     </div>
                 </div>
             </div>

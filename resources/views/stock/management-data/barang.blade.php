@@ -39,15 +39,15 @@
     <td>{{ $i['kategori_barang'] }}</td>
     <td>{{ $i['nama_barang'] }}</td>
     <td>{{ $i['satuan'] }}</td>
-    <td class="harga">{{$i['harga_retail']}}</td>
-    <td class="harga">{{$i['harga_jual']}}</td>
+    <td>IDR {{number_format($i['harga_retail'],2)}}</td>
+    <td>IDR {{number_format($i['harga_jual'],2)}}</td>
 
-    <td class="harga">{{$i['nilai_barang']}}</td>
+    <td>IDR {{number_format($i['nilai_barang'])}}</td>
     <td>@if($i['kuantitas_total']){{$i['kuantitas_total']}} @else 0 @endif</td>
     <td class=>{{date('d-m-Y',strtotime($i['created_at']))}}</td>
     <td class=>{{date('d-m-Y',strtotime($i['updated_at']))}}</td>
 
-
+    <input type="hidden" id="qtyTotal{{$i['id']}}" value="{{$i['kuantitas_total']}}">
     <td>
 
         <div class="dropright">
@@ -56,7 +56,7 @@
                 aria-expanded="false">
                 <i class="menu-icon fas fa-ellipsis-h"></i>
             </button>
-            <div class="dropdown-menu">
+            <div class="dropdown-menu" style="font-size: 16px">
                 <!-- Dropdown menu links -->
                 <a class="dropdown-item" data-toggle="modal" data-target="#modalDetailBarang"
                     data-barang="{{$barangDetails[$index]}}" data-form="Edit Data">
@@ -65,6 +65,7 @@
                     data-target="#modalDelete{{$i['id']}}">Delete</a>
                 <a class="dropdown-item " data-toggle="modal" data-target="#modalDetailBarang"
                     data-barang="{{$barangDetails[$index]}}" href="#">Details</a>
+
 
                 <!-- <a class="delete-jquery">Delete</a> -->
             </div>
@@ -108,11 +109,6 @@ $action = '/stok/Management-Data/barang/'.$i['id'];
 
 
 <script>
-    var table = $('#example');
- 
-    $('.dt-buttons').remove();
-</script>
-<script>
     $('#modalDetailBarang').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget) // Button that triggered the modal
         var barang = button.data('barang')
@@ -126,11 +122,16 @@ $action = '/stok/Management-Data/barang/'.$i['id'];
         modal.find('.modal-body #namaBarang h3').html(barang.nama_barang)
         modal.find('.modal-body #satuanUnit p').html(barang.unit.nama_satuan)
         modal.find('.modal-body #kodeBarang p').html(barang.kode_barang)
-        let hargaGrosir = new Intl.NumberFormat('en-ID', { style: 'currency', currency: 'IDR' }).format(barang.harga_grosir)
-        let hargaRetail = new Intl.NumberFormat('en-ID', { style: 'currency', currency: 'IDR' }).format(barang.harga_retail)
+        let hargaGrosir = new Intl.NumberFormat('en-ID', { style: 'currency', currency: 'IDR' }).format(barang.harga_grosir);
+        let hargaRetail = new Intl.NumberFormat('en-ID', { style: 'currency', currency: 'IDR' }).format(barang.harga_retail);
+        let hargaJual = new Intl.NumberFormat('en-ID', { style: 'currency', currency: 'IDR' }).format(barang.harga_jual);
         
+        let qtyTotal = $(`#qtyTotal${barang.id}`).val();
+        modal.find('#jumlahBarang').html(qtyTotal);
         modal.find('.modal-body #hargaGrosir p').html(`${hargaGrosir}`)
         modal.find('.modal-body #hargaRetail p').html(hargaRetail)
+        modal.find('.modal-body #hargaJual p').html(hargaJual)
+
 
         
         

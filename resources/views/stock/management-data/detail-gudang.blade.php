@@ -42,8 +42,8 @@
                                 <td>{{$item->nama_barang}}</td>
                                 <td>{{$item->pivot->kuantitas}}</td>
                                 <td>{{$item->unit->nama_satuan}}</td>
-                                <td>{{$item->harga_retail}}</td>
-                                <td>{{$item->harga_grosir}}</td>
+                                <td>Rp. {{number_format($item->harga_jual,2)}}</td>
+                                <td>Rp. {{number_format($item->harga_retail,2)}}</td>
 
                             </tr>
                             @endforeach </tbody>

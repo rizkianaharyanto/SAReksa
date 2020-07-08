@@ -93,7 +93,7 @@
 
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('reports.kartu-stock')}}"><i class="fas fa-fw fa-file"></i>
+                        <a class="nav-link" href="{{route('reports.produk')}}"><i class="fas fa-fw fa-file"></i>
                             Daftar Produk
                         </a>
 

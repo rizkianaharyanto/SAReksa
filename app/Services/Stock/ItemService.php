@@ -10,6 +10,7 @@ use App\Stock\Barang;
 use App\Stock\StokGudang;
 use App\Stock\HargaRetailHistory;
 use App\Stock\HargaGrosirHistory;
+use App\Stock\HargaJualHistory;
 
 class ItemService
 {
@@ -25,12 +26,12 @@ class ItemService
         $imageItemUrl = $this->saveItemImage($payload->get('item_image'));
         $payload['item_image'] = $imageItemUrl;
         
-        $barang = Barang::create($payload->except(['harga_retail', 'harga_grosir'])->toArray());
+        $barang = Barang::create($payload->except(['harga_retail', 'harga_grosir','harga_jual'])->toArray());
         
         $payload['item_id'] = $barang->id;
         HargaGrosirHistory::create($payload->only(['item_id','harga_grosir'])->toArray());
         HargaRetailHistory::create($payload->only(['item_id','harga_retail'])->toArray());
-        
+        HargaJualHistory::create($payload->only(['item_id','harga_jual'])->toArray());
         return $barang;
     }
 

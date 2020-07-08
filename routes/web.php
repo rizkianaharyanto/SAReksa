@@ -156,7 +156,7 @@ Route::prefix('stok')->group(function () {
         Route::get('/kartu-stock/export', 'Stock\KartuStockController@export');
         
         //Daftar Produk
-        Route::get('/produk', ['as' => 'kartu-stock','uses' => 'Stock\KartuStockController@index']);
+        Route::get('/produk', ['as' => 'produk','uses' => 'Stock\KartuStockController@index']);
         Route::get('/produk/filter', 'Stock\KartuStockController@filter');
         Route::get('/produk/export', 'Stock\KartuStockController@export');
     });
