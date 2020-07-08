@@ -307,9 +307,26 @@ class FaktursController extends Controller
      */
     public function edit(Faktur $faktur)
     {
+        $pemasok = Pemasok::find($faktur->pemasok_id);
+        $pemesanans = $pemasok->pemesanans()->where('status', 'diterima')->get();
+        foreach ($pemesanans as $index => $fakpemesanans) {
+            $status = $fakpemesanans->penerimaans()->where('status', 'selesai')->first();
+            if ($status == null) {
+                $pemesanans[$index] = $fakpemesanans;
+            } else {
+                $pemesanans[$index] = null;
+            }
+        }
+        $fpemesanans = Pemesanan::find($faktur->pemesanan_id);
+        $penerimaans = $pemasok->penerimaans()->where('status', 'sudah posting')->get();
+        $fpenerimaans = Penerimaan::where('faktur_id', $faktur->id)->get();
+        // dd($pemesanans);
         return view('pembelian.pembelian.faktur.fakturedit', [
             'faktur' => $faktur,
-            'penerimaans' => Penerimaan::all(),
+            'penerimaans' => $penerimaans,
+            'fpenerimaans' => $fpenerimaans,
+            'fpemesanans' => $fpemesanans,
+            'pemesanans' => $pemesanans,
             'pemasoks' => Pemasok::all(),
             'barangs' => Barang::all(),
             'gudangs' => Gudang::all(),
@@ -327,6 +344,56 @@ class FaktursController extends Controller
      */
     public function update(Request $request, Faktur $faktur)
     {
+        // dd($request);
+            Pemesanan::find($faktur->pemesanan_id)->update(['status' => 'diterima']);
+            $pemesanan = Pemesanan::find($faktur->pemesanan_id)->id;
+            Penerimaan::where('pemesanan_id', $pemesanan)->update(['status' => 'sudah posting']);
+            // dd($pemesanan, $coba);
+
+        Faktur::where('id', $faktur->id)->update([
+            'pemesanan_id' => $request->pemesanan_id,
+            'pemasok_id' => $request->pemasok_id,
+            'status' => $request->status,
+            'tanggal' => $request->tanggal,
+            'diskon' => $request->diskon,
+            'diskon_rp' => $request->disk,
+            'biaya_lain' => $request->biaya_lain,
+            'uang_muka' => $request->uang_muka,
+            'akun_barang' => $request->akun_barang,
+            'total_harga' => $request->total_harga_keseluruhan,
+            'hutangnya' => $request->hutang,
+        ]);
+
+
+        if ($request->status == 'hutang') {
+            Hutang::where('faktur_id', $faktur->id)->update([
+                'pemasok_id' => $faktur->pemasok_id,
+                'total_hutang' => $request->hutang,
+                'sisa' => $request->hutang,
+                'faktur_id' => $faktur->id,
+                'status' => 'hutang',
+            ]);
+        }
+
+        if ($request->pemesanan_id) {
+            Pemesanan::find($request->pemesanan_id)->update(['status' => 'selesai']);
+            $pemesanan = Pemesanan::find($request->pemesanan_id)->id;
+            $coba = Penerimaan::where('pemesanan_id', $pemesanan)->update(['status' => 'selesai']);
+            // dd($pemesanan, $coba);
+        }
+
+        $faktur->barangs()->detach();
+        foreach ($request->barang_id as $index => $id) {
+            $faktur->barangs()->attach($id, [
+                'jumlah_barang' => $request->jumlah_barang[$index],
+                'harga' => $request->harga[$index],
+                'unit' => $request->unit_barang[$index],
+                // 'pajak' => $request->pajak[$index],
+                // 'status_barang' => $request->status_barang[$index],
+            ]);
+        }
+
+        return redirect('/pembelian/fakturs');
     }
 
     /**
@@ -338,6 +405,17 @@ class FaktursController extends Controller
      */
     public function destroy(Faktur $faktur)
     {
+        if($faktur->pemesanan_id){
+            Pemesanan::find($faktur->pemesanan_id)->update(['status' => 'diterima']);
+            $pemesanan = Pemesanan::find($faktur->pemesanan_id)->id;
+            Penerimaan::where('pemesanan_id', $pemesanan)->update(['status' => 'sudah posting']);
+        }else{
+            $penerimaans= Penerimaan::where('faktur_id',  $faktur->id)->get();
+            foreach($penerimaans as $penerimaan){
+                Penerimaan::find($penerimaan->id)->update(['status' => 'sudah posting']);
+            }
+        }
+        $faktur->barangs()->detach();
         Faktur::destroy($faktur->id);
 
         return redirect('/pembelian/fakturs');

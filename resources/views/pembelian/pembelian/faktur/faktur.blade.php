@@ -47,7 +47,7 @@
         </a>
         @if(auth()->user()->role->role_name == 'Admin Pembelian')
         @if($faktur->status_posting == null)
-        <!-- <a id="edit" href="/pembelian/fakturs/{{$faktur->id}}/edit">
+        <a id="edit" href="/pembelian/fakturs/{{$faktur->id}}/edit">
             <button class="btn-warning">        
                 <i style="cursor: pointer;" class="fas fa-edit">
                     <span></span>
@@ -57,9 +57,11 @@
         <form method="POST" action="/pembelian/fakturs/{{$faktur->id}}">
             @method('delete')
             @csrf
-            <button type="submit" class="btn btn-danger">Hapus</button>
+            <button type="submit" class="btn-danger"><i style="cursor: pointer;" class="fas fa-trash">
+                <span></span>
+            </i></button>
         </form>
-        <a id="delete" data-toggle="modal" data-target="#delete-{{$faktur->id}}">
+        <!-- <a id="delete" data-toggle="modal" data-target="#delete-{{$faktur->id}}">
             <i style="cursor: pointer;" class="fas fa-trash">
                 <span></span>
             </i>

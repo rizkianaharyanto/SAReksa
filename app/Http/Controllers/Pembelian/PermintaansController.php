@@ -251,6 +251,7 @@ class PermintaansController extends Controller
      */
     public function destroy(Permintaan $permintaan)
     {
+        $permintaan->barangs()->detach();
         Permintaan::destroy($permintaan->id);
 
         return redirect('/pembelian/permintaans');

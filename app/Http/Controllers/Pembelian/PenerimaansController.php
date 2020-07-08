@@ -331,8 +331,11 @@ class PenerimaansController extends Controller
      */
     public function edit(Penerimaan $penerimaan)
     {
+        $pemasok= Pemasok::find($penerimaan->pemasok_id);
+        $pnmpemesanans = $pemasok->pemesanans()->whereNotIn('status', ['diterima', 'selesai'])->get();
         return view('pembelian.pembelian.penerimaan.penerimaanedit', [
             'penerimaan' => $penerimaan,
+            'pemesanans' => $pnmpemesanans,
             'pemasoks' => Pemasok::all(),
             'barangs' => Barang::all(),
             'gudangs' => Gudang::all(),
@@ -351,7 +354,7 @@ class PenerimaansController extends Controller
     {
         Penerimaan::find($penerimaan->id)
             ->update([
-                // 'status' => $request->status,
+                'pemesanan_id' => $request->pemesanan_id,
                 'pemasok_id' => $request->pemasok_id,
                 'gudang' => $request->gudang,
                 'tanggal' => $request->tanggal,
@@ -386,6 +389,7 @@ class PenerimaansController extends Controller
      */
     public function destroy(Penerimaan $penerimaan)
     {
+        $penerimaan->barangs()->detach();
         Penerimaan::destroy($penerimaan->id);
 
         return redirect('/pembelian/penerimaans');

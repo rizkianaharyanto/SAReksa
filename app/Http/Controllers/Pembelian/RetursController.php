@@ -79,6 +79,7 @@ class RetursController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
         $ret = Retur::max('id') + 1;
         $retur = Retur::create([
             'kode_retur' => 'RET-' . $ret,
@@ -99,8 +100,8 @@ class RetursController extends Controller
             $retur->barangs()->attach($id, [
                 'jumlah_barang' => $request->jumlah_barang[$index],
                 'harga' => $request->harga[$index],
-                'unit' => $request->unit[$index],
-                'pajak' => $request->pajak[$index],
+                'unit' => $request->unit_barang[$index],
+                // 'pajak' => $request->pajak[$index],
                 'status_barang' => $request->status_barang[$index],
             ]);
         }
@@ -174,38 +175,6 @@ class RetursController extends Controller
                 ]);
             }
         }
-        // } elseif ($retur->status == 'lunas') {
-        //     $no = Jurnal::max('id') + 1;
-        //     for ($i = 1; $i < 5; ++$i) {
-        //         $jurnal = Jurnal::create([
-        //             'kode_jurnal' => 'jur'.$no,
-        //             'retur_id' => $retur->id,
-        //             'debit' => 0,
-        //             'kredit' => 0,
-        //         ]);
-        //         if ($i == 1) {
-        //             $jurnal->update([
-        //                 'kredit' => $retur->total_jenis_barang - $retur->uang_muka,
-        //                 'akun_id' => 1, //barang
-        //             ]);
-        //         } elseif ($i == 2) {
-        //             $jurnal->update([
-        //                 'kredit' => $retur->biaya_lain,
-        //                 'akun_id' => 3, //biayalain
-        //             ]);
-        //         } elseif ($i == 3) {
-        //             $jurnal->update([
-        //                 'debit' => $retur->hutang->total_hutang,
-        //                 'akun_id' => 6, //kas
-        //             ]);
-        //         } elseif ($i == 4) {
-        //             $jurnal->update([
-        //                 'debit' => $retur->diskon_rp,
-        //                 'akun_id' => 5, //diskon
-        //             ]);
-        //         }
-        //     }
-        // }
 
         return redirect('/pembelian/returs');
     }
@@ -294,10 +263,13 @@ class RetursController extends Controller
      */
     public function edit(Retur $retur)
     {
+        $pemasok = Pemasok::find($retur->pemasok_id);
+        $fakturs = $pemasok->fakturs()->where('status', 'hutang')->get();
+        // dd($retur->faktur_id);
         return view('pembelian.pembelian.retur.returedit', [
             'retur' => $retur,
             'pemasoks' => Pemasok::all(),
-            'fakturs' => Faktur::all(),
+            'fakturs' => $fakturs,
             'barangs' => Barang::all(),
             'gudangs' => Gudang::all(),
             // 'akuns'=> Akun::all()
@@ -314,9 +286,7 @@ class RetursController extends Controller
      */
     public function update(Request $request, Retur $retur)
     {
-        $ret = Retur::max('id') + 1;
-        $retur = Retur::create([
-            'kode_retur' => 'RET-' . $ret,
+        Retur::where('id', $retur->id)->update([
             'faktur_id' => $request->faktur_id,
             'status' => $request->status,
             'pemasok_id' => $request->pemasok_id,
@@ -329,13 +299,13 @@ class RetursController extends Controller
             'total_jenis_barang' => $request->akun_barang,
             'total_harga' => $request->hutang,
         ]);
-
+        $retur->barangs()->detach();
         foreach ($request->barang_id as $index => $id) {
             $retur->barangs()->attach($id, [
                 'jumlah_barang' => $request->jumlah_barang[$index],
                 'harga' => $request->harga[$index],
-                'unit' => $request->unit[$index],
-                'pajak' => $request->pajak[$index],
+                'unit' => $request->unit_barang[$index],
+                // 'pajak' => $request->pajak[$index],
                 'status_barang' => $request->status_barang[$index],
             ]);
         }
@@ -352,6 +322,7 @@ class RetursController extends Controller
      */
     public function destroy(Retur $retur)
     {
+        $retur->barangs()->detach();
         Retur::destroy($retur->id);
 
         return redirect('/pembelian/returs');

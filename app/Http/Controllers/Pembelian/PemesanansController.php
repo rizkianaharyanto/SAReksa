@@ -263,6 +263,7 @@ class PemesanansController extends Controller
      */
     public function destroy(Pemesanan $pemesanan)
     {
+        $pemesanan->barangs()->detach();
         Pemesanan::destroy($pemesanan->id);
 
         return redirect('/pembelian/pemesanans');

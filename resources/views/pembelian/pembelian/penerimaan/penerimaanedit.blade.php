@@ -57,6 +57,17 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="form-group row mx-5 mb-5" id="pemesanan_form">
+                            <label class="col-sm-3 col-form-label" for="pemesanan_id">Pemesanan</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" id="pemesanan_id" name="pemesanan_id">
+                                    <option value="">--- Pilih pemesanan ---</option>
+                                    @foreach ($pemesanans as $pemesanan)
+                                    <option value="{{$pemesanan->id}}" {{$pemesanan->id == "$penerimaan->pemesanan_id" ? "selected" : "" }}>{{ $pemesanan->kode_pemesanan }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                         <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="gudang">Gudang</label>
                             <div class="col-sm-9">

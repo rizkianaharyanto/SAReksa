@@ -44,20 +44,22 @@
                 </i>
             </button>
         </a>
-        <!-- <a id="edit" href="/pembelian/returs/{{$retur->id}}/edit">
+        @if($retur->status_posting == null)
+        <a id="edit" href="/pembelian/returs/{{$retur->id}}/edit">
             <button class="btn-warning">
                 <i style="cursor: pointer;" class="fas fa-edit">
                     <span></span>
                 </i>
             </button>
-        </a> -->
-        <!-- <form method="POST" action="/pembelian/returs/{{$retur->id}}">
+        </a>
+        <form method="POST" action="/pembelian/returs/{{$retur->id}}">
             @method('delete')
             @csrf
             <button type="submit" class="btn-danger"><i style="cursor: pointer;" class="fas fa-trash">
                 <span></span>
             </i></button>
-        </form> -->
+        </form>
+        @endif
         <!-- <a id="delete" data-toggle="modal" data-target="#delete-{{$retur->id }}">
             <i style="cursor: pointer;" class="fas fa-trash">
                 <span></span>

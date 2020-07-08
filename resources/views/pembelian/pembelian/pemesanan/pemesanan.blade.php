@@ -36,7 +36,7 @@
                 </i>
             </button>
         </a>
-        @if ($pemesanan->status != 'selesai' && $pemesanan->status != 'diterima')
+        @if ($pemesanan->status == 'baru')
         <a id="edit" href="/pembelian/pemesanans/{{$pemesanan->id}}/edit">
             <button class="btn-warning">
                 <i style="cursor: pointer;" class="fas fa-edit">
