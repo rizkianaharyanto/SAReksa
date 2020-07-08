@@ -35,6 +35,51 @@ class PenerimaansController extends Controller
         return view('pembelian.pembelian.penerimaan.penerimaan', compact('penerimaans'));
     }
 
+
+    public function stokmasuk()
+    {
+        $penerimaans = Penerimaan::all();
+        $barangs = collect([]);
+        foreach ($penerimaans as $penerimaan) {
+            $barangs->push($penerimaan->barangs);
+        }
+        $count=$barangs->count();
+
+        return view('stock.transactions.stock-masuk.index', [
+            'penerimaans' => $penerimaans,
+            'barangs' => $count,
+        ]);
+    }
+    public function stokmasukdetail($id)
+    {
+        $penerimaan = penerimaan::find($id);
+        $gudang = Gudang::find($penerimaan->gudang);
+        $barangs = $penerimaan->barangs;
+        $diskon = $penerimaan->diskon_rp;
+        $biaya_lain = $penerimaan->biaya_lain;
+        $total_seluruh = $penerimaan->total_harga;
+        $total_harga = [];
+        $subtotal = 0;
+        foreach ($barangs as $index => $barang) {
+            $total_harga[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
+            $subtotal += $total_harga[$index];
+        }
+        // dd($total_harga, $total_seluruh);
+        return view('stock.transactions.stock-masuk.details', [
+            'penerimaan' => $penerimaan,
+            'gudang' => $gudang,
+            'barangs' => $barangs,
+            'diskon' => $diskon,
+            'biaya_lain' => $biaya_lain,
+            'total_harga' => $total_harga,
+            'subtotal' => $subtotal,
+            'total_seluruh' => $total_seluruh,
+        ]);
+    }
+
+
+
+
     public function laporan()
     {
         $penerimaans = Penerimaan::all();
@@ -305,18 +350,18 @@ class PenerimaansController extends Controller
     public function update(Request $request, Penerimaan $penerimaan)
     {
         Penerimaan::find($penerimaan->id)
-        ->update([
-            // 'status' => $request->status,
-            'pemasok_id' => $request->pemasok_id,
-            'gudang' => $request->gudang,
-            'tanggal' => $request->tanggal,
-            'diskon' => $request->diskon,
-            'diskon_rp' => $request->disk,
-            'biaya_lain' => $request->biaya_lain,
-            'total_jenis_barang' => $request->akun_barang,
-            'total_harga' => $request->total_harga_keseluruhan,
-            'akun_barang' => $request->akun_barang,
-        ]);
+            ->update([
+                // 'status' => $request->status,
+                'pemasok_id' => $request->pemasok_id,
+                'gudang' => $request->gudang,
+                'tanggal' => $request->tanggal,
+                'diskon' => $request->diskon,
+                'diskon_rp' => $request->disk,
+                'biaya_lain' => $request->biaya_lain,
+                'total_jenis_barang' => $request->akun_barang,
+                'total_harga' => $request->total_harga_keseluruhan,
+                'akun_barang' => $request->akun_barang,
+            ]);
         // dd($penerimaan);
         $penerimaan->barangs()->detach();
         $pemesanan = $penerimaan->pemesanan;

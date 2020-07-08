@@ -43,7 +43,7 @@
                     <a class="dropdown-item" href="/stok/stock-opname/{{$op->id}}/edit" data-form="Edit Data"> Edit</a>
                     <a class="delete-jquery dropdown-item" data-method="delete" href="{{ route('barang.destroy', $op->id ) }}">Delete</a>
                     <a class="dropdown-item " href="/stok/stock-opname/{{$op->id}}">Details</a>
-                    <a class="dropdown-item " href="/stok/stock-opname/{{$op->id}}">Posting</a>
+                    <a class="dropdown-item " href="/stok/stock-opname/posting/{{$op->id}}">Posting</a>
 
                 </div>
             </div>

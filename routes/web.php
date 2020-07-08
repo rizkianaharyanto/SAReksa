@@ -82,6 +82,11 @@ Route::prefix('pembelian')->group(function () {
     Route::get('/returs/cetak_pdf', 'Pembelian\RetursController@cetak_pdf');
     Route::get('/pembayarans/cetak_pdf', 'Pembelian\PembayaransController@cetak_pdf');
     Route::get('/hutangs/cetak_pdf', 'Pembelian\HutangsController@cetak_pdf');
+    
+    //stok masuk
+    Route::get('/stokmasuk', 'Pembelian\PenerimaansController@stokmasuk');
+    Route::get('/stokmasuk/{id}', 'Pembelian\PenerimaansController@stokmasukdetail');
+
 
     // Route::get('/barangs', )
     Route::resources([
@@ -133,7 +138,10 @@ Route::prefix('stok')->group(function () {
         ]);
         Route::get('/pemasok', 'Pembelian\PemasoksController@indexbarang');
     });
-    Route::post('/stock-opname/posting/{id}', 'Stock\StockOpnameController@posting');
+    Route::get('/stock-opname/posting/{id}', 'Stock\StockOpnameController@posting');
+    Route::get('/transfer-stock/posting/{id}', 'Stock\StockTransferController@posting');
+    Route::get('/penyesuaian-stock/posting/{id}', 'Stock\StockAdjustmentController@posting');
+    
 
     Route::resources([
             'transfer-stock' => 'Stock\StockTransferController',
@@ -293,4 +301,8 @@ Route::prefix('penjualan')->group(function () {
         Route::any('/jurnals', 'Penjualan\JurnalsController@index');
         Route::get('/jurnals/cetak_pdf', 'Penjualan\JurnalsController@cetak_pdf');
     });
+
+    //stok keluar
+    Route::get('/stokkeluar', 'Penjualan\PengirimansController@stokkeluar');
+    Route::get('/stokkeluar/{id}', 'Penjualan\PengirimansController@stokkeluardetail');
 });

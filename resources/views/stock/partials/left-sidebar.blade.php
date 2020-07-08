@@ -73,12 +73,12 @@
 
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-fw fa-file"></i> Stok Masuk
+                        <a class="nav-link" href="/pembelian/stokmasuk"><i class="fas fa-fw fa-file"></i> Stok Masuk
                         </a>
 
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-fw fa-file"></i> Stok Keluar
+                        <a class="nav-link" href="/penjualan/stokkeluar"><i class="fas fa-fw fa-file"></i> Stok Keluar
                         </a>
 
                     </li>

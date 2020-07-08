@@ -22,7 +22,7 @@
     <th>Gudang</th>
     <th>Deskripsi</th>
     <th>Jumlah Barang</th>
-    <th>Departemen</th>
+    <!-- <th>Departemen</th> -->
 
     <th>Tanggal</th>
     <th>Opsi</th>
@@ -38,7 +38,7 @@
     <td> {{ $stockAdjustment->gudang->kode_gudang}}</td>
     <td> {{ $stockAdjustment->deskripsi }} </td>
     <td> {{ count($stockAdjustment->details) }} </td>
-    <td> {{ $stockAdjustment->departemen }} </td>
+    <!-- <td> {{ $stockAdjustment->departemen }} </td> -->
     <td> {{  $stockAdjustment->created_at->toDateString()}}</td>
     <td>
         <center>
@@ -50,11 +50,11 @@
                 </button>
                 <div class="dropdown-menu">
                     <!-- Dropdown menu links -->
-                    <a class="dropdown-item" href="" data-form="Edit Data"> Edit</a>
+                    <a class="dropdown-item" href="/stok/penyesuaian-stock/{{$stockAdjustment->id}}/edit" data-form="Edit Data"> Edit</a>
                     <a class="delete-jquery dropdown-item" data-method="delete"
                         href="{{ route('barang.destroy', $stockAdjustment->id) }}">Delete </a>
                     <a class="dropdown-item " href="/stok/penyesuaian-stock/{{$stockAdjustment->id}}">Details</a>
-                    <a class="dropdown-item " href="/stok/penyesuaian-stock/{{$stockAdjustment->id}}">Posting</a>
+                    <a class="dropdown-item " href="/stok/penyesuaian-stock/posting/{{$stockAdjustment->id}}">Posting</a>
 
                 </div>
             </div>

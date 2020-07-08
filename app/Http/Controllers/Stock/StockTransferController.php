@@ -9,6 +9,7 @@ use App\Http\Requests\Stock\CreateStockTransferRequest;
 use App\Stock\TransferStok;
 use App\Stock\Gudang;
 use App\Stock\Barang;
+use App\Stock\Ledger;
 
 class StockTransferController extends Controller
 {
@@ -44,8 +45,26 @@ class StockTransferController extends Controller
      */
     
 
-    public function posting()
+    public function posting($id)
     {
+        $transfer = TransferStok::find($id);
+        TransferStok::where('id', $transfer->id)
+            ->update(['status' => 'sudah posting']);
+        // dd($transfer->details[0]->id);
+
+        foreach ($transfer->items as $index => $barang) {
+            // dd($barang);
+            $jurnal = Ledger::create([
+                'kode_transaksi' => $transfer->kode_ref,
+                'barang_id' => $barang->id,
+                'sisa' => 0,
+                'qty_masuk' => $barang->pivot->kuantitas,
+                'nilai_masuk' => $barang->pivot->kuantitas,
+                'qty_keluar' => $barang->pivot->kuantitas,
+                'nilai_keluar' => $barang->pivot->kuantitas,
+            ]);
+        }
+        return redirect()->back();
     }
 
     /**

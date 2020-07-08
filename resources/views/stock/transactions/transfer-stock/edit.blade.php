@@ -5,10 +5,10 @@
 @endsection
 
 
-@section('title','Stok Opname')
+@section('title','Transfer Stock')
 
 @section('main-content')
-<form style="p-3" action="/stok/transfer-stock/{{$transferStock->id}}" method="POST">
+<form class="p-3" action="/stok/transfer-stock/{{$transferStock->id}}" method="POST">
 
     @csrf
     @method('PUT')
@@ -34,7 +34,7 @@
         </div>
         <div class="col">
             <label for="gudangTujuan">Gudang Tujuan</label>
-            <select required class="form-control selectpicker" style="background-color: rgb(77, 134, 167)"
+            <select required class="form-control selectpicker" style="background-color: rgb(77, 134, 167)">
                 name="gudang_tujuan" id="gudangTujuan">
                 @foreach($gudangs as $gudang)
                 <option value="{{$gudang->id}}" {{$gudang->id == "$transferStock->gudang_tujuan" ? "selected" : "" }}>

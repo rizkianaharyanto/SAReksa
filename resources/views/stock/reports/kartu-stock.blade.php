@@ -65,12 +65,13 @@
                         @endif
                     </div>
                 </div>
-                @foreach($alldetails as $puter => $details)
+                @php
+                $i = 0;
+                @endphp
+                @if($barang == null)
+                @foreach ($ledgers as $ledger)
                 <div class="table-responsive-sm mb-5">
-                    @if($barang == null)
-                    <h3>Barang : {{$barangs[$puter]->nama_barang ?? ''}}</h3>
-                    @else
-                    @endif
+                    <h3>Barang : {{$ledger[0]->barangfk->nama_barang ?? ''}}</h3>
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -89,74 +90,81 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($details['kartu'] as $detail)
-                                @if ($loop->index == 0)
-                                    @foreach ($detail as $index)
-                                    <tr>
-                                        <td>{{$index->created_at ?? ''}}</td>
-                                        <td>{{$index->kode_ref ?? ''}}</td>
-                                        <!-- <td>{{$index->gudang_id ?? ''}}</td> -->
-                                        @if ($index->pivot->jumlah_fisik >= 0)
-                                            <td class="qty_masuk">{{$index->pivot->jumlah_fisik ?? ''}}</td>
-                                            <td class="nilai_masuk">{{$index->details[0]->nilai_barang ?? ''}}</td>
-                                            <td></td>
-                                            <td></td>
-                                        @else
-                                            <td></td>
-                                            <td></td>
-                                            <td class="qty_keluar">{{$index->pivot->jumlah_fisik*-1 ?? ''}}</td>
-                                            <td class="nilai_keluar">{{$index->details[0]->nilai_barang ?? ''}}</td>
-                                        @endif
-                                        <td class="sisa">{{$index->pivot->jumlah_fisik - $index->pivot->jumlah_tercatat}}</td>
-                                    </tr>
-                                    @endforeach
-                                @elseif ($loop->index == 1)
-                                    @foreach ($detail as $index)
-                                    <tr>
-                                        <td>{{$index->created_at ?? ''}}</td>
-                                        <td>{{$index->kode_ref ?? ''}}</td>
-                                        <!-- <td>{{$index->gudang_id ?? ''}}</td> -->
-                                        <td class="qty_masuk">{{$index->pivot->kuantitas ?? ''}}</td>
-                                        <td class="nilai_masuk">{{$index->items[0]->nilai_barang ?? ''}}</td>
-                                        <td class="qty_keluar">{{$index->pivot->kuantitas ?? ''}}</td>
-                                        <td class="nilai_keluar">{{$index->items[0]->nilai_barang ?? ''}}</td>
-                                        <td class="sisa">0</td>
-                                    </tr>
-                                    @endforeach
-                                @else
-                                    @foreach ($detail as $index)
-                                    <tr>
-                                        <td>{{$index->created_at ?? ''}}</td>
-                                        <td>{{$index->kode_ref ?? ''}}</td>
-                                        <!-- <td>{{$index->gudang_id ?? ''}}</td> -->
-                                        @if ($index->pivot->quantity_diff >= 0)
-                                            <td class="qty_masuk">{{$index->pivot->quantity_diff ?? ''}}</td>
-                                            <td class="nilai_masuk">{{$index->details[0]->nilai_barang ?? ''}}</td>
-                                            <td></td>
-                                            <td></td>
-                                        @else
-                                            <td></td>
-                                            <td></td>
-                                            <td class="qty_keluar">{{$index->pivot->quantity_diff*-1 ?? ''}}</td>
-                                            <td class="nilai_keluar">{{$index->details[0]->nilai_barang ?? ''}}</td>
-                                        @endif
-                                        <td class="sisa">{{$index->pivot->quantity_diff*-1}}</td>
-                                    </tr>
-                                    @endforeach
-                                @endif
+                            @foreach ($ledger as $index)
+                            <tr>
+                                <td>{{\Carbon\Carbon::parse($index->created_at)->format('d-m-Y')}}</td>
+                                <td>{{$index->kode_transaksi}}</td>
+                                <td>{{$index->qty_masuk}}</td>
+                                <td>{{$index->nilai_masuk}}</td>
+                                <td>{{$index->qty_keluar}}</td>
+                                <td>{{$index->nilai_keluar}}</td>
+                                <td>{{$index->sisa}}</td>
+                            </tr>
                             @endforeach
                             <tr>
                                 <td colspan="2">Total</td>
-                                <td id="qty_masuk" name="qty_masuk">{{$details['qty_masuk']}}</td>
-                                <td id="nilai_masuk" name="nilai_masuk">{{$details['nilai_masuk']}}</td>
-                                <td id="qty_keluar" name="qty_keluar">{{$details['qty_keluar']}}</td>
-                                <td id="nilai_keluar" name="nilai_keluar">{{$details['nilai_keluar']}}</td>
-                                <td id="sisa" name="sisa">{{$details['sisa']}}</td>
+                                <td>{{$total[$i]['qty_masuk_total']}}</td>
+                                <td>{{$total[$i]['nilai_masuk_total']}}</td>
+                                <td>{{$total[$i]['qty_keluar_total']}}</td>
+                                <td>{{$total[$i]['nilai_keluar_total']}}</td>
+                                <td>{{$total[$i]['sisa_total']}}</td>
                             </tr>
+                            @php
+                            $i++;
+                            @endphp
                         </tbody>
                     </table>
                 </div>
                 @endforeach
+                @else
+                @php
+                $i = 0;
+                @endphp
+                <div class="table-responsive-sm mb-5">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th class="center" rowspan="2">Tanggal</th>
+                                <th rowspan="2">Transaksi</th>
+                                <!-- <th rowspan="2">Gudang</th> -->
+                                <th class="center" colspan="2">Stok Masuk</th>
+                                <th class="center" colspan="2">Stok Keluar</th>
+                                <th class="center" rowspan="2">Sisa</th>
+                            </tr>
+                            <tr>
+                                <th>Qty</th>
+                                <th>Nilai</th>
+                                <th>Qty</th>
+                                <th>Nilai</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($ledgers as $ledger)
+                            <tr>
+                                <td>{{\Carbon\Carbon::parse($ledger->created_at)->format('d-m-Y')}}</td>
+                                <td>{{$ledger->kode_transaksi}}</td>
+                                <td>{{$ledger->qty_masuk}}</td>
+                                <td>{{$ledger->nilai_masuk}}</td>
+                                <td>{{$ledger->qty_keluar}}</td>
+                                <td>{{$ledger->nilai_keluar}}</td>
+                                <td>{{$ledger->sisa}}</td>
+                            </tr>
+                            @endforeach
+                            <tr>
+                                <td colspan="2">Total</td>
+                                <td>{{$total[$i]['qty_masuk_total']}}</td>
+                                <td>{{$total[$i]['nilai_masuk_total']}}</td>
+                                <td>{{$total[$i]['qty_keluar_total']}}</td>
+                                <td>{{$total[$i]['nilai_keluar_total']}}</td>
+                                <td>{{$total[$i]['sisa_total']}}</td>
+                            </tr>
+                            @php
+                            $i++;
+                            @endphp
+                        </tbody>
+                    </table>
+                </div>
+                @endif
                 <div class="row">
                     <div class="col-lg-4 col-sm-5">
                     </div>

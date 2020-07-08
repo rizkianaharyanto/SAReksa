@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Stock;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Stock\Barang;
+use App\Stock\Ledger;
 use App\Stock\StokOpname;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -20,64 +21,48 @@ class KartuStockController extends Controller
     public function index()
     {
         $barangs = Barang::all();
-        $all = new Collection([]);
-        foreach ($barangs as $barang) {
+        $ledgers = Ledger::all()->groupBy('barang_id');
+        $barang = null;
+        $start = null;
+        $end = null;
+        $qty_masuk = 0;
+        $nilai_masuk = 0;
+        $qty_keluar = 0;
+        $nilai_keluar = 0;
+        $sisa = 0;
+        $total = collect([]);
+        $totalsemua = collect([]);
+
+        foreach ($ledgers as $ledger) {
             $qty_masuk = 0;
             $nilai_masuk = 0;
             $qty_keluar = 0;
             $nilai_keluar = 0;
             $sisa = 0;
-            $stockOpname = $barang->stockOpname;
-            $stockTransfer = $barang->stockTransfer;
-            $stockPenyesuaian = $barang->penyesuaianStok;
-            $details = new Collection([$stockOpname, $stockTransfer, $stockPenyesuaian]);
-
-            foreach ($stockOpname as $index => $op) {
-                $selisih = $op->pivot->jumlah_fisik - $op->pivot->jumlah_tercatat;
-                if ($selisih >= 0) {
-                    $qty_masuk += $selisih;
-                    $nilai_masuk += $op->details[0]->nilai_barang;
-                } else {
-                    $selisih = $selisih * -1;
-                    $qty_keluar += $selisih;
-                    $nilai_keluar += $op->details[0]->nilai_barang;
-                }
-                $sisa += $selisih;
+            foreach ($ledger as $index) {
+                $qty_masuk += $index->qty_masuk;
+                $nilai_masuk += $index->nilai_masuk;
+                $qty_keluar += $index->qty_keluar;
+                $nilai_keluar += $index->nilai_keluar;
+                $sisa += $index->sisa;
             }
-            foreach ($stockPenyesuaian as $index => $pny) {
-                $selisih = $pny->pivot->quantity_diff;
-                if ($selisih >= 0) {
-                    $qty_masuk += $selisih;
-                    $nilai_masuk += $pny->details[0]->nilai_barang;
-                } else {
-                    $selisih = $selisih * -1;
-                    $qty_keluar += $selisih;
-                    $nilai_keluar += $pny->details[0]->nilai_barang;
-                }
-                $sisa += $selisih;
-            }
-            foreach ($stockTransfer as $index => $trf) {
-                $selisih = $trf->pivot->kuantitas;
-                $qty_masuk += $selisih;
-                $qty_keluar += $selisih;
-                $sisaan = 0;
-                $nilai_masuk += $trf->items[0]->nilai_barang;
-                $nilai_keluar += $trf->items[0]->nilai_barang;
-            }
-            $alldetails = $all->push([
-                'kartu' => $details,
-                'qty_masuk' => $qty_masuk,
-                'nilai_masuk' => $nilai_masuk,
-                'qty_keluar' => $qty_keluar,
-                'nilai_keluar' => $nilai_keluar,
-                'sisa' => $sisa,
+            $totalsemua = $total->push([
+                'qty_masuk_total' => $qty_masuk,
+                'nilai_masuk_total' => $nilai_masuk,
+                'qty_keluar_total' => $qty_keluar,
+                'nilai_keluar_total' => $nilai_keluar,
+                'sisa_total' => $sisa,
             ]);
         }
-        $barang = null;
-        $start = null;
-        $end = null;
-        // dd($alldetails);
-        return view('stock.reports.kartu-stock', ['barangs' => $barangs, 'barang' => $barang, 'start' => $start, 'end' => $end, 'alldetails' => $alldetails]);
+        // dd($totalsemua);
+        return view('stock.reports.kartu-stock', [
+            'barangs' => $barangs,
+            'ledgers' => $ledgers,
+            'barang' => $barang,
+            'start' => $start,
+            'end' => $end,
+            'total' => $totalsemua,
+        ]);
     }
 
     public function filter(Request $request)
@@ -85,135 +70,141 @@ class KartuStockController extends Controller
         if ($request->barang == null) {
             return $this->index();
         } else {
+            $barangs = Barang::all();
+            $ledgers = Ledger::where('barang_id', $request->barang)
+                ->whereBetween('created_at', [$request->start, $request->end])
+                ->get();
+            $barang = Barang::find($request->barang);
+            // dd($ledgers);
             $start = $request->start;
             $end = $request->end;
-            $barangs = Barang::all();
-            $barang = Barang::with([
-                'pemasok'
-            ])->find($request->barang);
-            $all = new Collection([]);
             $qty_masuk = 0;
             $nilai_masuk = 0;
             $qty_keluar = 0;
             $nilai_keluar = 0;
             $sisa = 0;
-            $stockOpname = $barang->stockOpname->whereBetween('created_at', [$request->start, $request->end]);
-            $stockTransfer = $barang->stockTransfer->whereBetween('created_at', [$request->start, $request->end]);
-            $stockPenyesuaian = $barang->penyesuaianStok->whereBetween('created_at', [$request->start, $request->end]);
-            $details = new Collection([$stockOpname, $stockTransfer, $stockPenyesuaian]);
+            $total = collect([]);
+            $totalsemua = collect([]);
 
-            foreach ($stockOpname as $index => $op) {
-                $selisih = $op->pivot->jumlah_fisik - $op->pivot->jumlah_tercatat;
-                if ($selisih >= 0) {
-                    $qty_masuk += $selisih;
-                    $nilai_masuk += $op->details[0]->nilai_barang;
-                } else {
-                    $selisih = $selisih * -1;
-                    $qty_keluar += $selisih;
-                    $nilai_keluar += $op->details[0]->nilai_barang;
-                }
-                $sisa += $selisih;
+            foreach ($ledgers as $ledger) {
+                $qty_masuk += $ledger->qty_masuk;
+                $nilai_masuk += $ledger->nilai_masuk;
+                $qty_keluar += $ledger->qty_keluar;
+                $nilai_keluar += $ledger->nilai_keluar;
+                $sisa += $ledger->sisa;
             }
-            foreach ($stockPenyesuaian as $index => $pny) {
-                $selisih = $pny->pivot->quantity_diff;
-                if ($selisih >= 0) {
-                    $qty_masuk += $selisih;
-                    $nilai_masuk += $pny->details[0]->nilai_barang;
-                } else {
-                    $selisih = $selisih * -1;
-                    $qty_keluar += $selisih;
-                    $nilai_keluar += $pny->details[0]->nilai_barang;
-                }
-                $sisa += $selisih;
-            }
-            foreach ($stockTransfer as $index => $trf) {
-                $selisih = $trf->pivot->kuantitas;
-                $qty_masuk += $selisih;
-                $qty_keluar += $selisih;
-                $sisaan = 0;
-                $nilai_masuk += $trf->items[0]->nilai_barang;
-                $nilai_keluar += $trf->items[0]->nilai_barang;
-            }
-            $alldetails = $all->push([
-                'kartu' => $details,
-                'qty_masuk' => $qty_masuk,
-                'nilai_masuk' => $nilai_masuk,
-                'qty_keluar' => $qty_keluar,
-                'nilai_keluar' => $nilai_keluar,
-                'sisa' => $sisa,
+            $totalsemua = $total->push([
+                'qty_masuk_total' => $qty_masuk,
+                'nilai_masuk_total' => $nilai_masuk,
+                'qty_keluar_total' => $qty_keluar,
+                'nilai_keluar_total' => $nilai_keluar,
+                'sisa_total' => $sisa,
+            ]);
+            // dd($totalsemua);
+            return view('stock.reports.kartu-stock', [
+                'barangs' => $barangs,
+                'ledgers' => $ledgers,
+                'barang' => $barang,
+                'start' => $start,
+                'end' => $end,
+                'total' => $totalsemua,
             ]);
         }
-        // dd($alldetails);
-
-        return view('stock.reports.kartu-stock', ['barangs' => $barangs, 'barang' => $barang, 'start' => $start, 'end' => $end, 'alldetails' => $alldetails]);
     }
 
     public function export(Request $request)
     {
+        // dd($request);
         if ($request->id == null) {
-            return view('stock.reports.export-kartu-stock', ['barangs' => $barangs, 'barang' => $barang, 'alldetails' => $alldetails]);
-        } else {
             $barangs = Barang::all();
-            $barang = Barang::with([
-                'pemasok'
-            ])->find($request->id);
-            $all = new Collection([]);
+            $ledgers = Ledger::all()->groupBy('barang_id');
+            $barang = null;
+            $start = null;
+            $end = null;
             $qty_masuk = 0;
             $nilai_masuk = 0;
             $qty_keluar = 0;
             $nilai_keluar = 0;
             $sisa = 0;
-            $stockOpname = $barang->stockOpname->whereBetween('created_at', [$request->start, $request->end]);
-            $stockTransfer = $barang->stockTransfer->whereBetween('created_at', [$request->start, $request->end]);
-            $stockPenyesuaian = $barang->penyesuaianStok->whereBetween('created_at', [$request->start, $request->end]);
-            $details = new Collection([$stockOpname, $stockTransfer, $stockPenyesuaian]);
+            $total = collect([]);
+            $totalsemua = collect([]);
 
-            foreach ($stockOpname as $index => $op) {
-                $selisih = $op->pivot->jumlah_fisik - $op->pivot->jumlah_tercatat;
-                if ($selisih >= 0) {
-                    $qty_masuk += $selisih;
-                    $nilai_masuk += $op->details[0]->nilai_barang;
-                } else {
-                    $selisih = $selisih * -1;
-                    $qty_keluar += $selisih;
-                    $nilai_keluar += $op->details[0]->nilai_barang;
+            foreach ($ledgers as $ledger) {
+                $qty_masuk = 0;
+                $nilai_masuk = 0;
+                $qty_keluar = 0;
+                $nilai_keluar = 0;
+                $sisa = 0;
+                foreach ($ledger as $index) {
+                    $qty_masuk += $index->qty_masuk;
+                    $nilai_masuk += $index->nilai_masuk;
+                    $qty_keluar += $index->qty_keluar;
+                    $nilai_keluar += $index->nilai_keluar;
+                    $sisa += $index->sisa;
                 }
-                $sisa += $selisih;
+                $totalsemua = $total->push([
+                    'qty_masuk_total' => $qty_masuk,
+                    'nilai_masuk_total' => $nilai_masuk,
+                    'qty_keluar_total' => $qty_keluar,
+                    'nilai_keluar_total' => $nilai_keluar,
+                    'sisa_total' => $sisa,
+                ]);
             }
-            foreach ($stockPenyesuaian as $index => $pny) {
-                $selisih = $pny->pivot->quantity_diff;
-                if ($selisih >= 0) {
-                    $qty_masuk += $selisih;
-                    $nilai_masuk += $pny->details[0]->nilai_barang;
-                } else {
-                    $selisih = $selisih * -1;
-                    $qty_keluar += $selisih;
-                    $nilai_keluar += $pny->details[0]->nilai_barang;
-                }
-                $sisa += $selisih;
-            }
-            foreach ($stockTransfer as $index => $trf) {
-                $selisih = $trf->pivot->kuantitas;
-                $qty_masuk += $selisih;
-                $qty_keluar += $selisih;
-                $sisaan = 0;
-                $nilai_masuk += $trf->items[0]->nilai_barang;
-                $nilai_keluar += $trf->items[0]->nilai_barang;
-            }
-            $alldetails = $all->push([
-                'kartu' => $details,
-                'qty_masuk' => $qty_masuk,
-                'nilai_masuk' => $nilai_masuk,
-                'qty_keluar' => $qty_keluar,
-                'nilai_keluar' => $nilai_keluar,
-                'sisa' => $sisa,
+            $pdf = PDF::loadview('stock.reports.export-kartu-stock', [
+                'barangs' => $barangs,
+                'ledgers' => $ledgers,
+                'barang' => $barang,
+                'start' => $start,
+                'end' => $end,
+                'total' => $totalsemua,
             ]);
+
+            return $pdf->download('kartu-stock.pdf');
+        } else {
+            $barangs = Barang::all();
+            $ledgers = Ledger::where('barang_id', $request->id)
+                ->whereBetween('created_at', [$request->start, $request->end])
+                ->get();
+            $barang = Barang::find($request->id);
+            // dd($ledgers);
+            $start = $request->start;
+            $end = $request->end;
+            $qty_masuk = 0;
+            $nilai_masuk = 0;
+            $qty_keluar = 0;
+            $nilai_keluar = 0;
+            $sisa = 0;
+            $total = collect([]);
+            $totalsemua = collect([]);
+
+            foreach ($ledgers as $ledger) {
+                $qty_masuk += $ledger->qty_masuk;
+                $nilai_masuk += $ledger->nilai_masuk;
+                $qty_keluar += $ledger->qty_keluar;
+                $nilai_keluar += $ledger->nilai_keluar;
+                $sisa += $ledger->sisa;
+            }
+            $totalsemua = $total->push([
+                'qty_masuk_total' => $qty_masuk,
+                'nilai_masuk_total' => $nilai_masuk,
+                'qty_keluar_total' => $qty_keluar,
+                'nilai_keluar_total' => $nilai_keluar,
+                'sisa_total' => $sisa,
+            ]);
+            $pdf = PDF::loadview('stock.reports.export-kartu-stock', [
+                'barangs' => $barangs,
+                'ledgers' => $ledgers,
+                'barang' => $barang,
+                'start' => $start,
+                'end' => $end,
+                'total' => $totalsemua,
+            ]);
+
+            return $pdf->download('kartu-stock.pdf');
         }
 
         // return view('stock.reports.export-kartu-stock', ['barangs' => $barangs, 'barang' => $barang, 'alldetails' => $alldetails]);
-        
-        $pdf = PDF::loadview('stock.reports.export-kartu-stock', ['barangs' => $barangs, 'barang' => $barang, 'alldetails' => $alldetails]);
-        
-        return $pdf->download('kartu-stock.pdf');
+
+
     }
 }

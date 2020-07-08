@@ -24,4 +24,6 @@ class StockAdjustmentService
 
         return $stockAdjustment;
     }
+
+    
 }

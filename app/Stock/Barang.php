@@ -12,6 +12,10 @@ class Barang extends Model
     protected $table = 'stk_master_barang';
     protected $guarded = ['id', 'created_at', 'updated_at'];
     protected $appends = ['harga_retail','harga_grosir'];
+    public function ledgers()
+    {
+        return $this->hasMany('App\Stock\Ledger', 'ledger_id');
+    }
     public function getHargaRetailAttribute()
     {
         $hargaRetailHistory = $this->hargaRetailHistory()->latest()->first();
