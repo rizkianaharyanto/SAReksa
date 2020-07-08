@@ -27,15 +27,16 @@
 <tr>
     <td>{{$index+1}}</td>
     <td>{{$u->nama_satuan}}</td>
-    <td>{{\Carbon\Carbon::parse($u->created_at)->format('d-m-Y')}}</td>
-    <td>{{\Carbon\Carbon::parse($u->updated_at)->format('d-m-Y')}}</td>
+    <td class=>{{date('d-m-Y',strtotime($u->created_at))}}</td>
+    <td class=>{{date('d-m-Y',strtotime($u->updated_at))}}</td>
 
     <td id="options">
         <span id="edit-opt">
             <a href="" data-form="Edit Data" data-toggle="modal" data-target="#modalEdit{{$u->id}}"> Edit</a>
         </span> |
         <span id="delete-opt">
-            <a class="delete-jquery" data-toggle="modal" style="cursor: pointer" data-target="#modalDelete{{$u->id}}">Delete</a>
+            <a class="delete-jquery" data-toggle="modal" style="cursor: pointer"
+                data-target="#modalDelete{{$u->id}}">Delete</a>
         </span>
     </td>
 

@@ -34,20 +34,29 @@
     <td>{{$w->alamat}}</td>
     <td>{{$w->no_telp}}</td>
     <td>{{$w->status}}</td>
+    <td class=>{{date('d-m-Y',strtotime($w->created_at))}}</td>
+    <td class=>{{date('d-m-Y',strtotime($w->updated_at))}}</td>
 
-    <td>{{\Carbon\Carbon::parse($w->created_at)->format('d-m-Y')}}</td>
-    <td>{{\Carbon\Carbon::parse($w->created_at)->format('d-m-Y')}}</td>
 
-    <td id="options">
-        <span id="edit-opt">
-            <a href="" data-form="Edit Data" data-toggle="modal" data-target="#modalEdit{{$w->id}}">
-                Edit</a>
-        </span> |
-        <span id="delete-opt">
-            <a class="delete-jquery" data-toggle="modal" style="cursor: pointer" data-target="#modalDelete{{$w->id}}">Delete</a>
-        </span>
-    </td>
+    <td>
+        <div class="dropright">
 
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+                <i class="menu-icon fas fa-ellipsis-h"></i>
+            </button>
+            <div class="dropdown-menu">
+                <!-- Dropdown menu links -->
+                <a href="" class="dropdown-item" data-form="Edit Data" data-toggle="modal"
+                    data-target="#modalEdit{{$w->id}}">
+                    Edit</a>
+                <a class="delete-jquery dropdown-item" data-toggle="modal" style="cursor: pointer"
+                    data-target="#modalDelete{{$w->id}}">Delete</a>
+                <a class="dropdown-item " href="/stok/Management-Data/gudang/{{$w->id}}">Details</a>
+
+                <!-- <a class="delete-jquery">Delete</a> -->
+            </div>
+        </div>
     <td>
         @php
         $action = '/stok/Management-Data/gudang/'.$w->id;
@@ -58,14 +67,13 @@
             <x-slot name="content">
                 @method('PUT')
                 <label for="field1">Kode Gudang </label>
-                <input class="form-control"  value="{{$w->kode_gudang}}" type="text" name="kode_gudang"
-                    id="field1" required>
+                <input class="form-control" value="{{$w->kode_gudang}}" type="text" name="kode_gudang" id="field1"
+                    required>
                 <label for="field2">Alamat </label>
-                <textarea class="form-control"  type="textarea" name="alamat" id="field2" rows="5"
+                <textarea class="form-control" type="textarea" name="alamat" id="field2" rows="5"
                     required>{{$w->alamat}}</textarea>
                 <label for="field3">No Telpon: </label>
-                <input class="form-control" type="text" value="{{$w->no_telp}}"  name="no_telp" required
-                    id="field3">
+                <input class="form-control" type="text" value="{{$w->no_telp}}" name="no_telp" required id="field3">
                 <label for="field4">Status</label>
                 <select class="form-control" name="status" id="field4" required>
                     <option value="aktif">Aktif</option>
@@ -73,6 +81,8 @@
                 </select>
             </x-slot>
         </x-stock.master-data.modal-edit>
+
+
     </td>
 
     <x-stock.modal-stock-delete :deleteAction="$action" :id="$w->id">
@@ -81,6 +91,7 @@
         </x-slot>
 
     </x-stock.modal-stock-delete>
+
 
 <tr>
 
@@ -130,4 +141,5 @@
     $(`#link-manajemen-data`).addClass('active');
     $(`#${idSidebarLink}`).addClass('active')
     </script>
+
     @endsection

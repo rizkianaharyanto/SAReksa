@@ -1690,7 +1690,7 @@ Left Navigation Sidebar
 .nav-left-sidebar .navbar-nav .nav-item {}
 
 .nav-left-sidebar .navbar-nav .nav-link {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     padding: 12px;
     /* margin-bottom: 2px; */
     color: #71789e;
@@ -1698,7 +1698,7 @@ Left Navigation Sidebar
 }
 
 .nav-left-sidebar .nav-link i {
-    font-size: 14px;
+    font-size: 15px;
     margin-right: 9px;
     text-align: center;
     vertical-align: middle;
@@ -1895,7 +1895,7 @@ Sidebar Page Navigations
 
 .dropdown-menu {
     background: #fff;
-    font-size: 14px;
+    font-size: 11px;
     color: #3d405c;
     border: 1px solid #e6e6f2;
 }
@@ -3249,7 +3249,7 @@ btn-link
 .card-toolbar-tabs .nav.nav-pills .nav-item {}
 
 .card-toolbar-tabs .nav.nav-pills .nav-item .nav-link {
-    font-size: 14px;
+    font-size: 12px;
     padding: 6px 10px;
 }
 

@@ -14,6 +14,7 @@
     <th>Kode</th>
     <th>Kategori</th>
     <th>Dibuat Pada</th>
+    <th>Diubah Pada</th>
     <th>Opsi</th>
 </tr>
 @endsection
@@ -28,7 +29,8 @@
     <td>{{$index+1}}</td>
     <td>{{$k->kode_kategori}}</td>
     <td>{{$k->nama_kategori}}</td>
-    <td>{{\Carbon\Carbon::parse($k->created_at)->format('d-m-Y-H-i-s')}}</td>
+    <td class=>{{date('d-m-Y',strtotime($k->created_at))}}</td>
+    <td class=>{{date('d-m-Y',strtotime($k->updated_at))}}</td>
     <td id="options">
         <span id="edit-opt">
             <a href="" data-form="Edit Data" data-toggle="modal" data-ctgid="{{$k->id}}"

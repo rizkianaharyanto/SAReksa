@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStkHargaGrosirHistoryTable extends Migration
+class CreateStkHargaJualHistoryTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateStkHargaGrosirHistoryTable extends Migration
      */
     public function up()
     {
-        Schema::create('stk_harga_grosir_history', function (Blueprint $table) {
+        Schema::create('stk_harga_jual_history', function (Blueprint $table) {
             $table->id();
-            $table->float('harga_grosir', 11, 2);
+            $table->float('harga_jual');
             $table->unsignedBigInteger('item_id');
             $table->timestamps();
         });
@@ -28,6 +28,6 @@ class CreateStkHargaGrosirHistoryTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('stk_harga_grosir_history');
+        Schema::dropIfExists('stk_harga_jual_history');
     }
 }

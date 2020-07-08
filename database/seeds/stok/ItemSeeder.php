@@ -62,6 +62,12 @@ class ItemSeeder extends Seeder
             'created_at'     => now(),
             'updated_at'     => now()
         ]);
+        DB::table('stk_harga_jual_history')->insert([
+            'harga_jual'   => '10000',
+            'item_id'        => '3',
+            'created_at'     => now(),
+            'updated_at'     => now()
+        ]);
 
         factory(App\Stock\Barang::class, 20)->create();
     }

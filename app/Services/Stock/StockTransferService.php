@@ -165,4 +165,20 @@ class StockTransferService
             $this->itemServ->updateStocks($item, $transferStock->gudang_tujuan, $qtyDestination);
         }
     }
+
+    public function delete($id)
+    {
+        DB::beginTransaction();
+        try {
+            //code...
+            $transferStok = TransferStok::with('items')->find($id);
+            $transferStok->delete();
+            $transferStok->items()->detach();
+        } catch (\Throwable $th) {
+            return 0;
+        }
+        DB::commit();
+
+        return 1;
+    }
 }

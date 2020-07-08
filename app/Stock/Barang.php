@@ -11,7 +11,12 @@ class Barang extends Model
 
     protected $table = 'stk_master_barang';
     protected $guarded = ['id', 'created_at', 'updated_at'];
-    protected $appends = ['harga_retail','harga_grosir'];
+    protected $appends = ['harga_retail','harga_grosir','harga_jual'];
+
+    public function scopeIsActive($query)
+    {
+        return $query->where('status', 'aktif');
+    }
     public function ledgers()
     {
         return $this->hasMany('App\Stock\Ledger', 'ledger_id');
@@ -25,6 +30,16 @@ class Barang extends Model
     {
         $hargaGrosirHistory = $this->hargaGrosirHistory()->latest()->first();
         return $hargaGrosirHistory ? $hargaGrosirHistory->harga_grosir : 0.0;
+    }
+    public function getHargaJualAttribute()
+    {
+        $hargaJualHistory = $this->hargaJualHistory()->latest()->first();
+        return $hargaJualHistory ? $hargaJualHistory->harga_jual : 0.0;
+    }
+   
+    public function hargaJualHistory()
+    {
+        return $this->hasMany('App\Stock\HargaJualHistory', 'item_id');
     }
     public function hargaGrosirHistory()
     {

@@ -31,15 +31,16 @@
     <td>{{$pajak->deskripsi}}</td>
 
     <td>{{$pajak->tarif *100}} %</td>
-    <td>{{\Carbon\Carbon::parse($pajak->created_at)->format('d-m-Y')}}</td>
-    <td>{{\Carbon\Carbon::parse($pajak->updated_at)->format('d-m-Y')}}</td>
+    <td class=>{{date('d-m-Y',strtotime($pajak->created_at))}}</td>
+    <td class=>{{date('d-m-Y',strtotime($pajak->updated_at))}}</td>
 
     <td id="options">
         <span id="edit-opt">
             <a href="" data-form="Edit Data" data-toggle="modal" data-target="#modalEdit{{$pajak->id}}"> Edit</a>
         </span> |
         <span id="delete-opt">
-            <a class="delete-jquery" data-toggle="modal" style="cursor: pointer" data-target="#modalDelete{{$pajak->id}}">Delete</a>
+            <a class="delete-jquery" data-toggle="modal" style="cursor: pointer"
+                data-target="#modalDelete{{$pajak->id}}">Delete</a>
         </span>
     </td>
 

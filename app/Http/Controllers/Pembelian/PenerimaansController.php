@@ -195,6 +195,7 @@ class PenerimaansController extends Controller
 
             //update stock
             try {
+                
                 $this->itemService->updateStocks($barang->id, $penerimaan->gudang, $b);
                 // dd("berhasil");
             } catch (\Throwable $th) {

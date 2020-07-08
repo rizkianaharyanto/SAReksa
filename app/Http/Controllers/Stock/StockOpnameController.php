@@ -122,7 +122,7 @@ class StockOpnameController extends Controller
             ]);
             if ($barang->pivot->jumlah_fisik >= 0) {
                 $jurnal->update([
-                    'qty_masuk' => $barang->pivot->jumlah_fisik,
+                    'qty_masuk' => $barang->pivot->jumlah_fisik ,
                     'nilai_masuk' => $barang->nilai_barang
                 ]);
             } else {

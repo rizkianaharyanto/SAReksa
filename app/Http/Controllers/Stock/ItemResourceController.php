@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Stock;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+
 use App\Services\Stock\ItemService;
 use App\Http\Requests\Stock\CreateItemsRequest;
 use App\Stock\Barang;
@@ -21,7 +23,7 @@ class ItemResourceController extends Controller
     public function index(ItemService $item)
     {
         // $allItem = $item->all();
-        $allItem = Barang::with([
+        $allItems = Barang::with([
             'unit:id,nama_satuan',
             'kategori'
             ])->get();
@@ -29,7 +31,11 @@ class ItemResourceController extends Controller
         $categories = KategoriBarang::all();
         $units = SatuanUnit::all();
         $gudangs = Gudang::all();
+
+        $allItem = $this->service->getAllStocksQty();
+
         return view('stock.management-data/barang', [
+            'barangDetails' => $allItems,
             'barang'=>$allItem,
             'kategoriBarang' => $categories,
             'satuanUnit' => $units,
@@ -65,7 +71,7 @@ class ItemResourceController extends Controller
     {
         //
         $input = $request->validated();
-
+        // dd($input);
         $item = $itemService->create($input);
          
         return redirect()->back();

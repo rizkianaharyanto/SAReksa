@@ -44,7 +44,8 @@ class WarehouseController extends Controller
 
     public function show($id)
     {
-        //
+        $gudangs = Gudang::with(['items'])->findOrFail($id);
+        return view('stock.management-data.detail-gudang', compact('gudangs'));
     }
     public function update(Request $request, $id)
     {
