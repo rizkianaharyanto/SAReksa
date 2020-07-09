@@ -31,25 +31,75 @@ class FaktursController extends Controller
 
     public function laporan()
     {
-        $fakturs = Faktur::all();
+        $pemasoks = Pemasok::all();
+        $fakturs = faktur::all();
+        $supplier = null;
+        $start = null;
+        $end = null;
 
-        return view('pembelian.pembelian.faktur.laporan-faktur', compact('fakturs'));
+        return view('pembelian.pembelian.faktur.laporan-faktur', [
+            'fakturs' => $fakturs,
+            'pemasoks' => $pemasoks,
+            'supplier' => $supplier,
+            'start' => $start,
+            'end' => $end
+        ]);
     }
 
     public function laporanfilter(Request $date)
     {
-        $fakturs = Faktur::select('pbl_fakturs.*')
-            ->whereBetween('tanggal', [$date->start, $date->end])
-            ->get();
+        if ($date->pemasok_id == null) {
+            $pemasoks = Pemasok::all();
+            $fakturs = faktur::all();
+            $supplier = null;
+            $start = null;
+            $end = null;
+        } else {
+            $pemasoks = Pemasok::all();
+            $supplier = Pemasok::find($date->pemasok_id);
+            $start = $date->start;
+            $end = $date->end;
+            $fakturs = faktur::select("pbl_fakturs.*")
+                ->where('pemasok_id', $date->pemasok_id)
+                ->whereBetween('tanggal', [$date->start, $date->end])
+                ->get();
+        }
 
-        return view('pembelian.pembelian.faktur.laporan-faktur', compact('fakturs'));
+        return view('pembelian.pembelian.faktur.laporan-faktur', [
+            'fakturs' => $fakturs,
+            'pemasoks' => $pemasoks,
+            'supplier' => $supplier,
+            'start' => $start,
+            'end' => $end
+        ]);
     }
 
-    public function cetaklaporan()
+    public function cetaklaporan(Request $date)
     {
-        $fakturs = Faktur::all();
+        if ($date->pemasok_id == null) {
+            $pemasoks = Pemasok::all();
+            $fakturs = faktur::all();
+            $supplier = null;
+            $start = null;
+            $end = null;
+        } else {
+            $pemasoks = Pemasok::all();
+            $supplier = Pemasok::find($date->pemasok_id);
+            $start = $date->start;
+            $end = $date->end;
+            $fakturs = faktur::select("pbl_fakturs.*")
+                ->where('pemasok_id', $date->pemasok_id)
+                ->whereBetween('tanggal', [$date->start, $date->end])
+                ->get();
+        }
 
-        $pdf = PDF::loadview('pembelian.pembelian.faktur.cetak-laporan-faktur', compact('fakturs'));
+        $pdf = PDF::loadview('pembelian.pembelian.faktur.cetak-laporan-faktur', [
+            'fakturs' => $fakturs,
+            'pemasoks' => $pemasoks,
+            'supplier' => $supplier,
+            'start' => $start,
+            'end' => $end
+        ]);
 
         return $pdf->download('laporan-faktur.pdf');
     }

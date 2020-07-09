@@ -16,7 +16,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-    <title>Laporan Faktur PDF</title>
+    <title>Laporan Pemesanan PDF</title>
     <style type="text/css">
         .page {
             font: 12pt "Tahoma";
@@ -24,42 +24,147 @@
     </style>
 </head>
 
-<body class="m-5">
+<body>
     <div class="page">
-        <center class="mb-4">
-            <h5>Laporan Faktur</h5>
-        </center>
+        <div class="row">
+            <div class="offset-xl-2 col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="card row">
+                    <div class="col">
+                        <div class="card-header p-4">
+                            @if($supplier == null)
+                            <a class="pt-2 d-inline-block">Semua Periode</a>
+                            @else
+                            <a class="pt-2 d-inline-block">Periode : {{$start ?? ''}} s.d. {{$end ?? ''}}</a>
+                            @endif
+                            <div class="float-right">
+                                <h3 class="mb-0">Laporan Faktur</h3>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            @if($supplier == null)
+                            @foreach ($fakturs as $faktur)
+                            <div style="margin-bottom :10vh;">
+                                <h5 class="mb-3">{{ $faktur->kode_faktur }} - {{ $faktur->pemasok->nama_pemasok }}</h5>
+                                <div class="table-responsive-sm">
+                                    <table class="table table-sm table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Tanggal</th>
+                                                <th>Diskon</th>
+                                                <th>Biaya Lain</th>
+                                                <th>Uang Muka</th>
+                                                <th>Total</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>{{ $faktur->tanggal }}</td>
+                                                <td>{{ $faktur->diskon_rp }}</td>
+                                                <td>{{ $faktur->biaya_lain }}</td>
+                                                <td>{{ $faktur->uang_muka }}</td>
+                                                <td>{{ $faktur->total_harga }}</td>
+                                                <td>{{ $faktur->status !=null ? $faktur->status  : '-' }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="table-responsive-sm mb-5">
+                                    <table class="table table-sm table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Nama Barang</th>
+                                                <th>QTY</th>
+                                                <th>Unit</th>
+                                                <th>Harga</th>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($faktur->barangs as $index => $barang)
+                                            <tr>
+                                                <td>{{$barang->nama_barang ? $barang->nama_barang : '-' }}</td>
+                                                <td>{{$barang->pivot->jumlah_barang ? $barang->pivot->jumlah_barang : '-' }}</td>
+                                                <td>{{ $barang->pivot->unit ? $barang->pivot->unit : '-' }}</td>
+                                                <td>{{ $barang->pivot->harga ? $barang->pivot->harga : '-' }}</td>
+                                                <td>{{$barang->pivot->jumlah_barang * $barang->pivot->harga }}</td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            @endforeach
+                            @else
+                            <div class="row mb-4">
+                                <div class="col-sm-6 ">
+                                    <h5 class="mb-3">Pemasok:</h5>
+                                    <h3 class="text-dark mb-1">{{ $supplier->nama_pemasok }}</h3>
+                                    <div>Email : {{ $supplier->email_pemasok }}</div>
+                                    <div>Phone : {{ $supplier->telp_pemasok }}</div>
+                                </div>
+                            </div>
 
-        <table class="table table-sm table-striped table-bordered">
-            <thead style="background-color: #00BFA6; color:whitesmoke">
-                <tr>
-                    <th>Kode Faktur</th>
-                    <th>pemasok</th>
-                    <th>Tanggal</th>
-                    <th>Total</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($fakturs as $faktur)
-                <tr>
-                    <td>{{ $faktur->kode_faktur }}</td>
-                    <td>{{ $faktur->pemasok->nama_pemasok }}</td>
-                    <td>{{ $faktur->tanggal }}</td>
-                    <td>{{ $faktur->total_harga }}</td>
-                    <td>{{ $faktur->status !=null ? $faktur->status  : '-' }} |
-                        @if ($faktur->status_posting == 'sudah posting')
-                        sudah posting
-                        @elseif ($faktur->status_posting == 'konfirmasi')
-                        belum posting
-                        @else
-                        konfirmasi
-                        @endif
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+                            <input type="hidden" name="pemasok_id" value="{{$supplier->id}}">
+                            @foreach ($fakturs as $faktur)
+                            <div class="d-flex justify-content-between">
+                                <h5 class="mb-3">Kode faktur : {{ $faktur->kode_faktur }}</h5>
+                            </div>
+                            <div class="table-responsive-sm">
+                                <table class="table table-sm table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Tanggal</th>
+                                            <th>Diskon</th>
+                                            <th>Biaya Lain</th>
+                                            <th>Uang Muka</th>
+                                            <th>Total</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{{ $faktur->tanggal }}</td>
+                                            <td>{{ $faktur->diskon_rp }}</td>
+                                            <td>{{ $faktur->biaya_lain }}</td>
+                                            <td>{{ $faktur->uang_muka }}</td>
+                                            <td>{{ $faktur->total_harga }}</td>
+                                            <td>{{ $faktur->status !=null ? $faktur->status  : '-' }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="table-responsive-sm mb-5">
+                                <table class="table table-sm table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Nama Barang</th>
+                                            <th>QTY</th>
+                                            <th>Unit</th>
+                                            <th>Harga</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($faktur->barangs as $index => $barang)
+                                        <tr>
+                                            <td>{{$barang->nama_barang ? $barang->nama_barang : '-' }}</td>
+                                            <td>{{$barang->pivot->jumlah_barang ? $barang->pivot->jumlah_barang : '-' }}</td>
+                                            <td>{{ $barang->pivot->unit ? $barang->pivot->unit : '-' }}</td>
+                                            <td>{{ $barang->pivot->harga ? $barang->pivot->harga : '-' }}</td>
+                                            <td>{{$barang->pivot->jumlah_barang * $barang->pivot->harga }}</td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            @endforeach
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 

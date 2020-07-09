@@ -31,25 +31,75 @@ class RetursController extends Controller
 
     public function laporan()
     {
-        $returs = Retur::all();
+        $pemasoks = Pemasok::all();
+        $returs = retur::all();
+        $supplier = null;
+        $start = null;
+        $end = null;
 
-        return view('pembelian.pembelian.retur.laporan-retur', compact('returs'));
+        return view('pembelian.pembelian.retur.laporan-retur', [
+            'returs' => $returs,
+            'pemasoks' => $pemasoks,
+            'supplier' => $supplier,
+            'start' => $start,
+            'end' => $end
+        ]);
     }
 
     public function laporanfilter(Request $date)
     {
-        $returs = Retur::select("pbl_returs.*")
-            ->whereBetween('tanggal', [$date->start, $date->end])
-            ->get();
+        if ($date->pemasok_id == null) {
+            $pemasoks = Pemasok::all();
+            $returs = retur::all();
+            $supplier = null;
+            $start = null;
+            $end = null;
+        } else {
+            $pemasoks = Pemasok::all();
+            $supplier = Pemasok::find($date->pemasok_id);
+            $start = $date->start;
+            $end = $date->end;
+            $returs = retur::select("pbl_returs.*")
+                ->where('pemasok_id', $date->pemasok_id)
+                ->whereBetween('tanggal', [$date->start, $date->end])
+                ->get();
+        }
 
-        return view('pembelian.pembelian.retur.laporan-retur', compact('returs'));
+        return view('pembelian.pembelian.retur.laporan-retur', [
+            'returs' => $returs,
+            'pemasoks' => $pemasoks,
+            'supplier' => $supplier,
+            'start' => $start,
+            'end' => $end
+        ]);
     }
 
-    public function cetaklaporan()
+    public function cetaklaporan(Request $date)
     {
-        $returs = Retur::all();
+        if ($date->pemasok_id == null) {
+            $pemasoks = Pemasok::all();
+            $returs = retur::all();
+            $supplier = null;
+            $start = null;
+            $end = null;
+        } else {
+            $pemasoks = Pemasok::all();
+            $supplier = Pemasok::find($date->pemasok_id);
+            $start = $date->start;
+            $end = $date->end;
+            $returs = retur::select("pbl_returs.*")
+                ->where('pemasok_id', $date->pemasok_id)
+                ->whereBetween('tanggal', [$date->start, $date->end])
+                ->get();
+        }
 
-        $pdf = PDF::loadview('pembelian.pembelian.retur.cetak-laporan-retur', compact('returs'));
+        $pdf = PDF::loadview('pembelian.pembelian.retur.cetak-laporan-retur', [
+            'returs' => $returs,
+            'pemasoks' => $pemasoks,
+            'supplier' => $supplier,
+            'start' => $start,
+            'end' => $end
+        ]);
 
         return $pdf->download('laporan-retur.pdf');
     }

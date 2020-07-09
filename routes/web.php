@@ -55,7 +55,7 @@ Route::prefix('pembelian')->group(function () {
     Route::get('/pembayarans/laporanfilter', 'Pembelian\PembayaransController@laporanfilter');
     Route::get('/hutangs/laporan', 'Pembelian\HutangsController@laporan');
     Route::get('/hutangs/laporanfilter', 'Pembelian\HutangsController@laporanfilter');
-
+    
     //cetak laporan
     Route::get('/permintaans/laporanpdf', 'Pembelian\PermintaansController@cetaklaporan');
     Route::get('/pemesanans/laporanpdf', 'Pembelian\PemesanansController@cetaklaporan');
@@ -64,7 +64,7 @@ Route::prefix('pembelian')->group(function () {
     Route::get('/returs/laporanpdf', 'Pembelian\RetursController@cetaklaporan');
     Route::get('/pembayarans/laporanpdf', 'Pembelian\PembayaransController@cetaklaporan');
     Route::get('/hutangs/laporanpdf', 'Pembelian\HutangsController@cetaklaporan');
-
+    
     //show details
     Route::get('/permintaanshow/{id}', 'Pembelian\PermintaansController@show2');
     Route::get('/pemesananshow/{id}', 'Pembelian\PemesanansController@show2');
@@ -73,8 +73,9 @@ Route::prefix('pembelian')->group(function () {
     Route::get('/returshow/{id}', 'Pembelian\RetursController@show2');
     Route::get('/pembayaranshow/{id}', 'Pembelian\PembayaransController@show2');
     Route::get('/hutangshow/{id}', 'Pembelian\HutangsController@show2');
-
+    
     //cetak pdf
+    Route::get('/jurnals/filter', 'Pembelian\JurnalsController@filter');
     Route::get('/jurnals/cetak_pdf', 'Pembelian\JurnalsController@cetak_pdf');
     Route::get('/permintaans/cetak_pdf', 'Pembelian\PermintaansController@cetak_pdf');
     Route::get('/pemesanans/cetak_pdf', 'Pembelian\PemesanansController@cetak_pdf');

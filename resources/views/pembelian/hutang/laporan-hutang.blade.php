@@ -12,50 +12,125 @@
 
 @section('isi')
 <div class="mx-5 dt-buttons">
-    <!-- <form class="d-flex" action="/pembelian/hutangs/laporanfilter" method="get">
+    <form class="d-flex" action="/pembelian/hutangs/laporanfilter" method="get">
         @csrf
-        <input class="form-control m-2" type="date" name="start">
-        <input class="form-control m-2" type="date" name="end">
+        <select class="form-control m-2" name="pemasok_id" id="">
+            <option value="">--- Pilih Pemasok ---</option>
+            @foreach ($allpemasok as $pemasok)
+            <option value="{{$pemasok->id}}">{{$pemasok->nama_pemasok}}</option>
+            @endforeach
+        </select>
         <button class="btn btn-outline-info m-2" type="submit">Filter</button>
-    </form> -->
-    <!-- <a class="px-2" href="">Export Excel | </a> -->
-    <!-- <a class="px-2" href="">Print | </a> -->
-    <!-- <button class="dt-button button-html5 button-excel" aria-controls="example" tabindex="0"><span>Excel</span></button>
-    <button class="dt-button button-html5 button-pdf" aria-controls="example" tabindex="0"><span>PDF</span></button>
-    <button class="dt-button button-html5 button-print" aria-controls="example" tabindex="0"><span>Print</span></button> -->
+    </form>
 </div>
-
 <form action="/pembelian/hutangs/laporanpdf">
     @csrf
     <div class="d-flex justify-content-end mx-5">
         <button class="btn btn-outline-info m-2 "><a class="px-2" id="pdf" target="_blank">Export PDF </a></button>
     </div>
-    <div class="m-2">
-        <div style="background-color: white; color: black;" class="mx-5 p-3">
-            <center class="mb-4">
-                <h5>Laporan Hutang </h5>
-            </center>
 
-            <table class="table table-striped ">
-                <thead>
-                    <tr>
-                        <th>Pemasok</th>
-                        <th>Total Hutang</th>
-                        <th>Lunas</th>
-                        <th>Sisa Hutang</th>
-                    </tr>
-                </thead>
-                <tbody>
+    <div class="row">
+        <div class="offset-xl-2 col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="card">
+                <div class="card-header p-4">
+                    @if($supplier == null)
+                    <a class="pt-2 d-inline-block">Semua Pemasok</a>
+                    @else
+                    @endif
+                    <div class="float-right">
+                        <h3 class="mb-0">Laporan Hutang</h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    @if($supplier == null)
                     @foreach ($pemasoks as $index => $pemasok)
-                    <tr>
-                        <td>{{ $pemasok->nama_pemasok }}</td>
-                        <td>{{ $totals[$index]['total_hutang']}}</td>
-                        <td>{{ $lunass[$index]['lunas']}}</td>
-                        <td>{{ $sisas[$index]['sisa']}}</td>
-                    </tr>
+                    <div style="margin-bottom :10vh;">
+                        <h5 class="mb-3" style="opacity: 80%">{{ $pemasok->nama_pemasok }}</h5>
+                        <div class="table-responsive-sm">
+                            <table class="table table-sm table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Kode Hutang</th>
+                                        <th>Transaksi</th>
+                                        <th>Status</th>
+                                        <th>Lunas</th>
+                                        <th>Sisa</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        @foreach($pemasok->hutangs as $hutang)
+                                        <td>{{ $hutang->kode_hutang }}</td>
+                                        <td>
+                                            @if ($hutang->retur_id !=null){{$hutang->retur->kode_retur}}
+                                            @elseif ($hutang->faktur_id !=null){{$hutang->faktur->kode_faktur}}
+                                            @else -
+                                            @endif
+                                        </td>
+                                        <td>{{ $hutang->status ? $hutang->status : '-' }}</td>
+                                        <td>{{ $hutang->lunas ? $hutang->lunas : '-' }}</td>
+                                        <td>{{ $hutang->sisa ? $hutang->sisa : '-' }}</td>
+                                        @endforeach
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">Total</td>
+                                        <td>{{ $lunass[$index]['lunas']}}</td>
+                                        <td>{{ $sisas[$index]['sisa']}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                     @endforeach
-                </tbody>
-            </table>
+                    @else
+                    <div class="row mb-4">
+                        <div class="col-sm-6 ">
+                            <h5 class="mb-3">Pemasok:</h5>
+                            <h3 class="text-dark mb-1">{{$supplier->nama_pemasok }}</h3>
+                            <div>Email : {{$supplier->email_pemasok }}</div>
+                            <div>Phone : {{$supplier->telp_pemasok }}</div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive-sm">
+                        <table class="table table-sm table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Kode Hutang</th>
+                                    <th>Transaksi</th>
+                                    <th>Status</th>
+                                    <th>Lunas</th>
+                                    <th>Sisa</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    @foreach($supp->hutangs as $hutang)
+                                    <td>{{ $hutang->kode_hutang }}</td>
+                                    <td>
+                                        @if ($hutang->retur_id !=null){{$hutang->retur->kode_retur}}
+                                        @elseif ($hutang->faktur_id !=null){{$hutang->faktur->kode_faktur}}
+                                        @else -
+                                        @endif
+                                    </td>
+                                    <td>{{ $hutang->status ? $hutang->status : '-' }}</td>
+                                    <td>{{ $hutang->lunas ? $hutang->lunas : '-' }}</td>
+                                    <td>{{ $hutang->sisa ? $hutang->sisa : '-' }}</td>
+                                    @endforeach
+                                </tr>
+                                <tr>
+                                    <td colspan="3">Total</td>
+                                    <td>{{ $lunass}}</td>
+                                    <td>{{ $sisas}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <input type="hidden" name="pemasok_id" value="{{$supplier->id}}">
+
+                    @endif
+                </div>
+            </div>
         </div>
     </div>
 </form>

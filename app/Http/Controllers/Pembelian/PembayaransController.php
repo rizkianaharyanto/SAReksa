@@ -27,25 +27,73 @@ class PembayaransController extends Controller
 
     public function laporan()
     {
+        $pemasoks = Pemasok::all();
         $pembayarans = Pembayaran::all();
+        $supplier = null;
+        $start = null;
+        $end = null;
 
-        return view('pembelian.hutang.laporan-pembayaran', compact('pembayarans'));
+        return view('pembelian.hutang.laporan-pembayaran', [
+            'pembayarans' => $pembayarans,
+            'pemasoks' => $pemasoks,
+            'supplier' => $supplier,
+            'start' => $start,
+            'end' => $end
+        ]);
     }
 
     public function laporanfilter(Request $date)
     {
-        $pembayarans = Pembayaran::select("pbl_pembayarans.*")
-            ->whereBetween('tanggal', [$date->start, $date->end])
-            ->get();
-
-        return view('pembelian.hutang.laporan-pembayaran', compact('pembayarans'));
+        if ($date->pemasok_id == null) {
+            $pemasoks = Pemasok::all();
+            $pembayarans = Pembayaran::all();
+            $supplier = null;
+            $start = null;
+            $end = null;
+        } else {
+            $pemasoks = Pemasok::all();
+            $supplier = Pemasok::find($date->pemasok_id);
+            $start = $date->start;
+            $end = $date->end;
+            $pembayarans = Pembayaran::select("pbl_pembayarans.*")
+                ->where('pemasok_id', $date->pemasok_id)
+                ->whereBetween('tanggal', [$date->start, $date->end])
+                ->get();
+        }
+        return view('pembelian.hutang.laporan-pembayaran', [
+            'pembayarans' => $pembayarans,
+            'pemasoks' => $pemasoks,
+            'supplier' => $supplier,
+            'start' => $start,
+            'end' => $end
+        ]);
     }
 
-    public function cetaklaporan()
+    public function cetaklaporan(Request $date)
     {
-        $pembayarans = Pembayaran::all();
-
-        $pdf = PDF::loadview('pembelian.hutang.cetak-laporan-pembayaran', compact('pembayarans'));
+        if ($date->pemasok_id == null) {
+            $pemasoks = Pemasok::all();
+            $pembayarans = Pembayaran::all();
+            $supplier = null;
+            $start = null;
+            $end = null;
+        } else {
+            $pemasoks = Pemasok::all();
+            $supplier = Pemasok::find($date->pemasok_id);
+            $start = $date->start;
+            $end = $date->end;
+            $pembayarans = Pembayaran::select("pbl_pembayarans.*")
+                ->where('pemasok_id', $date->pemasok_id)
+                ->whereBetween('tanggal', [$date->start, $date->end])
+                ->get();
+        }
+        $pdf = PDF::loadview('pembelian.hutang.cetak-laporan-pembayaran', [
+            'pembayarans' => $pembayarans,
+            'pemasoks' => $pemasoks,
+            'supplier' => $supplier,
+            'start' => $start,
+            'end' => $end
+        ]);
 
         return $pdf->download('laporan-pembayaran.pdf');
     }

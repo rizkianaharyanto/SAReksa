@@ -16,7 +16,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-    <title>Laporan permintaan PDF</title>
+    <title>Laporan Pemesanan PDF</title>
     <style type="text/css">
         .page {
             font: 12pt "Tahoma";
@@ -24,32 +24,139 @@
     </style>
 </head>
 
-<body class="m-5">
+<body>
     <div class="page">
-        <center class="mb-4">
-            <h5>Laporan permintaan</h5>
-        </center>
+        <div class="row">
+            <div class="offset-xl-2 col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="card row">
+                    <div class="col">
+                        <div class="card-header p-4">
+                            @if($supplier == null)
+                            <a class="pt-2 d-inline-block">Semua Periode</a>
+                            @else
+                            <a class="pt-2 d-inline-block">Periode : {{$start ?? ''}} s.d. {{$end ?? ''}}</a>
+                            @endif
+                            <div class="float-right">
+                                <h3 class="mb-0">Laporan Permintaan</h3>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            @if($supplier == null)
+                            @foreach ($permintaans as $permintaan)
+                            <div style="margin-bottom :10vh;">
+                                <h5 class="mb-3">{{ $permintaan->kode_permintaan }} - {{ $permintaan->pemasok->nama_pemasok }}</h5>
+                                <div class="table-responsive-sm">
+                                    <table class="table table-sm table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Tanggal</th>
+                                                <th>Diskon</th>
+                                                <th>Biaya Lain</th>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>{{ $permintaan->tanggal }}</td>
+                                                <td>{{ $permintaan->diskon_rp }}</td>
+                                                <td>{{ $permintaan->biaya_lain }}</td>
+                                                <td>{{ $permintaan->total_harga }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="table-responsive-sm mb-5">
+                                    <table class="table table-sm table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Nama Barang</th>
+                                                <th>QTY</th>
+                                                <th>Unit</th>
+                                                <th>Harga</th>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($permintaan->barangs as $index => $barang)
+                                            <tr>
+                                                <td>{{$barang->nama_barang ? $barang->nama_barang : '-' }}</td>
+                                                <td>{{$barang->pivot->jumlah_barang ? $barang->pivot->jumlah_barang : '-' }}</td>
+                                                <td>{{ $barang->pivot->unit ? $barang->pivot->unit : '-' }}</td>
+                                                <td>{{ $barang->pivot->harga ? $barang->pivot->harga : '-' }}</td>
+                                                <td>{{$barang->pivot->jumlah_barang * $barang->pivot->harga }}</td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            @endforeach
+                            @else
+                            <div class="row mb-4">
+                                <div class="col-sm-6 ">
+                                    <h5 class="mb-3">Pemasok:</h5>
+                                    <h3 class="text-dark mb-1">{{ $supplier->nama_pemasok }}</h3>
+                                    <div>Email : {{ $supplier->email_pemasok }}</div>
+                                    <div>Phone : {{ $supplier->telp_pemasok }}</div>
+                                </div>
+                            </div>
 
-        <table class="table table-striped table-bordered">
-            <thead style="background-color: #00BFA6; color:whitesmoke">
-                <tr>
-                    <th>Kode Permintaan</th>
-                    <th>pemasok</th>
-                    <th>Tanggal</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($permintaans as $permintaan)
-                <tr>
-                    <td>{{ $permintaan->kode_permintaan }}</td>
-                    <td>{{ $permintaan->pemasok->nama_pemasok }}</td>
-                    <td>{{ $permintaan->tanggal }}</td>
-                    <td>{{ $permintaan->total_harga }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+                            <input type="hidden" name="pemasok_id" value="{{$supplier->id}}">
+                            @foreach ($permintaans as $permintaan)
+                            <div class="d-flex justify-content-between">
+                                <h5 class="mb-3">Kode permintaan : {{ $permintaan->kode_permintaan }}</h5>
+                            </div>
+                            <div class="table-responsive-sm">
+                                <table class="table table-sm table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Tanggal</th>
+                                            <th>Diskon</th>
+                                            <th>Biaya Lain</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{{ $permintaan->tanggal }}</td>
+                                            <td>{{ $permintaan->diskon_rp }}</td>
+                                            <td>{{ $permintaan->biaya_lain }}</td>
+                                            <td>{{ $permintaan->total_harga }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="table-responsive-sm mb-5">
+                                <table class="table table-sm table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Nama Barang</th>
+                                            <th>QTY</th>
+                                            <th>Unit</th>
+                                            <th>Harga</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($permintaan->barangs as $index => $barang)
+                                        <tr>
+                                            <td>{{$barang->nama_barang ? $barang->nama_barang : '-' }}</td>
+                                            <td>{{$barang->pivot->jumlah_barang ? $barang->pivot->jumlah_barang : '-' }}</td>
+                                            <td>{{ $barang->pivot->unit ? $barang->pivot->unit : '-' }}</td>
+                                            <td>{{ $barang->pivot->harga ? $barang->pivot->harga : '-' }}</td>
+                                            <td>{{$barang->pivot->jumlah_barang * $barang->pivot->harga }}</td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            @endforeach
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 
