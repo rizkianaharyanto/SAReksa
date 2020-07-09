@@ -373,6 +373,15 @@ class FaktursController extends Controller
                 'faktur_id' => $faktur->id,
                 'status' => 'hutang',
             ]);
+        }else if ($request->status == 'lunas') {
+            Hutang::where('faktur_id', $faktur->id)->update([
+                'pemasok_id' => $faktur->pemasok_id,
+                'total_hutang' => $request->hutang,
+                'lunas' => $request->hutang,
+                'sisa' => 0,
+                'faktur_id' => $faktur->id,
+                'status' => 'lunas',
+            ]);
         }
 
         if ($request->pemesanan_id) {
@@ -415,6 +424,7 @@ class FaktursController extends Controller
                 Penerimaan::find($penerimaan->id)->update(['status' => 'sudah posting']);
             }
         }
+        Hutang::destroy($faktur->hutang->id);
         $faktur->barangs()->detach();
         Faktur::destroy($faktur->id);
 

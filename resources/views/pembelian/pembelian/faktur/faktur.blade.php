@@ -39,7 +39,6 @@
     <td class="d-flex justify-content-between">
         <a id="details" href="/pembelian/fakturshow/{{$faktur->id}}">
             <button class="btn-info">
-
                 <i style="cursor: pointer; " class="fas fa-info-circle">
                     <span></span>
                 </i>
@@ -48,18 +47,18 @@
         @if(auth()->user()->role->role_name == 'Admin Pembelian')
         @if($faktur->status_posting == null)
         <a id="edit" href="/pembelian/fakturs/{{$faktur->id}}/edit">
-            <button class="btn-warning">        
+            <button class="btn-warning">
                 <i style="cursor: pointer;" class="fas fa-edit">
                     <span></span>
                 </i>
-        </button>
+            </button>
         </a>
         <form method="POST" action="/pembelian/fakturs/{{$faktur->id}}">
             @method('delete')
             @csrf
             <button type="submit" class="btn-danger"><i style="cursor: pointer;" class="fas fa-trash">
-                <span></span>
-            </i></button>
+                    <span></span>
+                </i></button>
         </form>
         <!-- <a id="delete" data-toggle="modal" data-target="#delete-{{$faktur->id}}">
             <i style="cursor: pointer;" class="fas fa-trash">

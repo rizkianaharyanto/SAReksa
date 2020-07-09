@@ -15,6 +15,7 @@
     <th>Supplier</th>
     <th>Tanggal</th>
     <th>Total</th>
+    <th>Status</th>
     <th style="column-width: 80px">Aksi</th>
 </tr>
 @endsection
@@ -26,25 +27,36 @@
     <td>{{ $pembayaran->pemasok->nama_pemasok }}</td>
     <td>{{ $pembayaran->tanggal }}</td>
     <td>{{ $pembayaran->total }}</td>
+    <td>@if ($pembayaran->status)
+        {{ $pembayaran->status }}
+        @else
+        <a href="/pembelian/postingpem/{{$pembayaran->id}}">posting</a>
+        @endif
+    </td>
     <td class="d-flex justify-content-between">
         <a id="details" href="/pembelian/pembayaranshow/{{$pembayaran->id}}">
             <button class="btn-info">
-
                 <i style="cursor: pointer; " class="fas fa-info-circle">
                     <span></span>
                 </i>
             </button>
         </a>
-        <!-- <a id="edit" href="/pembelian/pembayarans/{{$pembayaran->id}}/edit">
-            <i style="cursor: pointer;" class="fas fa-edit">
-                <span></span>
-            </i>
+        @if($pembayaran->status == null)
+        <a id="edit" href="/pembelian/pembayarans/{{$pembayaran->id}}/edit">
+            <button class="btn-warning">
+                <i style="cursor: pointer;" class="fas fa-edit">
+                    <span></span>
+                </i>
+            </button>
         </a>
-        <a id="delete" data-toggle="modal" data-target="#delete-{{$pembayaran->id }}">
-            <i style="cursor: pointer;" class="fas fa-trash">
-                <span></span>
-            </i>
-        </a> -->
+        <form method="POST" action="/pembelian/pembayarans/{{$pembayaran->id}}">
+            @method('delete')
+            @csrf
+            <button type="submit" class="btn-danger"><i style="cursor: pointer;" class="fas fa-trash">
+                    <span></span>
+                </i></button>
+        </form>
+        @endif
     </td>
 </tr>
 

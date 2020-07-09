@@ -219,7 +219,7 @@ class PenerimaansController extends Controller
             }
         }
 
-        return redirect('/pembelian/penerimaans');
+        return view('pembelian.pembelian.penerimaan.konfirmasi', ['id'=>$idnya]);
     }
 
     public function ubahpsn($idnya)

@@ -38,6 +38,7 @@ Route::prefix('pembelian')->group(function () {
     Route::get('/postingfak/{idnya}', 'Pembelian\FaktursController@posting');
     Route::get('/ubahpsnfak/{idnya}', 'Pembelian\FaktursController@ubahpsn');
     Route::get('/postingret/{idnya}', 'Pembelian\RetursController@posting');
+    Route::get('/postingpem/{idnya}', 'Pembelian\PembayaransController@posting');
 
     //show laporan
     Route::get('/permintaans/laporan', 'Pembelian\PermintaansController@laporan');
