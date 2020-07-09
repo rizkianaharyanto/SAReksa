@@ -35,16 +35,19 @@
         <center>
             <div class="dropright">
 
-                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
                     <i class="menu-icon fas fa-ellipsis-h"></i>
                 </button>
                 <div class="dropdown-menu">
                     <!-- Dropdown menu links -->
-                    <a class="dropdown-item" href="/stok/stock-opname/{{$op->id}}/edit" data-form="Edit Data"> Edit</a>
-                    <a class="delete-jquery dropdown-item" data-method="delete" href="{{ route('barang.destroy', $op->id ) }}">Delete</a>
                     <a class="dropdown-item " href="/stok/stock-opname/{{$op->id}}">Details</a>
+                    @if($op->status == 'belum diposting')
+                    <a class="dropdown-item" href="/stok/stock-opname/{{$op->id}}/edit" data-form="Edit Data"> Edit</a>
+                    <a class="delete-jquery dropdown-item" data-method="delete"
+                        href="{{ route('barang.destroy', $op->id ) }}">Delete</a>
                     <a class="dropdown-item " href="/stok/stock-opname/posting/{{$op->id}}">Posting</a>
-
+                    @endif
                 </div>
             </div>
         </center>

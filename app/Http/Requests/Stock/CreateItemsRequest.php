@@ -23,20 +23,16 @@ class CreateItemsRequest extends FormRequest
      */
     public function rules()
     {
-
         return [
             'kode_barang' => 'required|alpha_dash|',
             'kategori_barang' => 'required|numeric',
             'nama_barang' => 'required|',
-            'jenis_barang' => 'required|numeric',
             'satuan_unit' => 'required|numeric|',
             'harga_retail' => 'required|numeric',
             'harga_grosir' => 'required|numeric',
-            'akun_hpp' => 'required|numeric',
-            'akun_persediaan' => 'required|numeric',
-            'akun_penjualan' => 'required|numeric',
-            'akun_pembelian' => 'required|numeric',
-            'item_image' => 'required|string',
+            'harga_jual'   => 'required|numeric',
+       
+            'item_image' => 'nullable|file',
             'pajak_id' => 'required|numeric',
             'supplier_id' => 'required|numeric',
             

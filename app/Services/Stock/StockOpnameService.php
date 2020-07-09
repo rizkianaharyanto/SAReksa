@@ -24,7 +24,7 @@ class StockOpnameService
     public function get($id)
     {
         return StokOpname::with([
-            'details',
+            'details',  
             'gudang'
         ])->find($id);
     }

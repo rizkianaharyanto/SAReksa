@@ -126,8 +126,15 @@ class StockTransferController extends Controller
      */
     public function destroy($id)
     {
-        //
-        $this->model->delete($id);
-        return "Success";
+        $transferStock = $this->service->get($id);
+        if (!$transferStock) {
+            return redirect('/stok/transfer-stock')->with('status', 'Data Transaksi tersebut tidak ditemukan');
+        }
+
+        if ($transferStock->status == "sudah posting") {
+            return redirect('/stok/transfer-stock')->with('status', 'Tidak Dapat Menghapus Data Transaksi yang sudah diposting');
+        }
+        $this->service->delete($id);
+        return redirect()->back();
     }
 }

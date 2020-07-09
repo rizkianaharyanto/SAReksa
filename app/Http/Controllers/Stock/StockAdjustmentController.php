@@ -43,6 +43,9 @@ class StockAdjustmentController extends Controller
         if (!$stockAdjustment) {
             return redirect('/stok/penyesuaian-stock')->with('status', 'Data Transaksi tersebut tidak ditemukan');
         }
+        if ($stockAdjustment->status == 'sudah posting') {
+            return redirect()->back()->with('status', 'Transaksi sudah di posting ke jurnal dan tidak bisa dihapus');
+        }
         return view('stock.transactions.penyesuaian-stok.details', compact('stockAdjustment'));
     }
     public function store(CreateStockAdjustmentRequest $req, ItemService $itemServ)
@@ -92,6 +95,7 @@ class StockAdjustmentController extends Controller
         // $input = $req->validated();x
         // $transData = $req->except(['item_id','quantity_diff', '_token', '_method']);
         // dd($req);
+
         PenyesuaianStok::where('id', $id)->update([
             "kode_ref" => $req->kode_ref,
             "warehouse_id" => $req->warehouse_id,

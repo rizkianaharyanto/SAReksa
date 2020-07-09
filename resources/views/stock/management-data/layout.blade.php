@@ -5,7 +5,7 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('vendor/stock/datatables/css/buttons.bootstrap4.css')}}">
 <link rel="stylesheet" type="text/css" href="{{ asset('vendor/stock/datatables/css/select.bootstrap4.css')}}">
 <link rel="stylesheet" type="text/css" href="{{ asset('vendor/stock/datatables/css/fixedHeader.bootstrap4.css')}}">
-@endsection
+@endsectionP
 @section('main-content')
 <div class="row">
     <div class="row">
@@ -103,5 +103,7 @@
 <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.colVis.min.js"></script>
 <script src="https://cdn.datatables.net/rowgroup/1.0.4/js/dataTables.rowGroup.min.js"></script>
 <script src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js"></script>
+<script src="{{asset('vendor/stock/bootstrap-select/js/bootstrap-select.js')}}"></script>
+
 <script src="https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"></script>
 @endsection

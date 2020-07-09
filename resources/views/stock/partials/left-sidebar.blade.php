@@ -92,6 +92,24 @@
                         </a>
 
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('reports.produk')}}"><i class="fas fa-fw fa-file"></i>
+                            Daftar Produk
+                        </a>
+
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('reports.kartu-stock')}}"><i class="fas fa-fw fa-file"></i>
+                            Produk Terjual
+                        </a>
+
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('reports.kartu-stock')}}"><i class="fas fa-fw fa-file"></i>
+                            Produk Dibeli
+                        </a>
+
+                    </li>
 
 
                 </ul>

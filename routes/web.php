@@ -105,9 +105,7 @@ Route::prefix('pembelian')->group(function () {
 });
 
 Route::prefix('stok')->group(function () {
-    Route::get('/', function () {
-        return view('stock.dashboard');
-    })->middleware('auth.stock');
+    Route::get('/', 'Stock\DashboardController@index')->middleware('auth.stock');
     Route::get('/login', 'Stock\LoginController@index');
 
     Route::prefix('auth')->group(function () {
@@ -157,6 +155,11 @@ Route::prefix('stok')->group(function () {
         Route::get('/kartu-stock', ['as' => 'kartu-stock','uses' => 'Stock\KartuStockController@index']);
         Route::get('/kartu-stock/filter', 'Stock\KartuStockController@filter');
         Route::get('/kartu-stock/export', 'Stock\KartuStockController@export');
+        
+        //Daftar Produk
+        Route::get('/produk', ['as' => 'produk','uses' => 'Stock\KartuStockController@index']);
+        Route::get('/produk/filter', 'Stock\KartuStockController@filter');
+        Route::get('/produk/export', 'Stock\KartuStockController@export');
     });
 
     //DELETE AFTER

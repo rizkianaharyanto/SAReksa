@@ -54,12 +54,12 @@
                                 <td>{{$item->pivot->jumlah_fisik}}</td>
                                 <td>{{$item->pivot->selisih}}</td>
                                 <td>@if($item->pivot->selisih * $item->nilai_barang >= 0)
-                                    {{$item->pivot->selisih * $item->nilai_barang}}
+                                    Rp. {{number_format($item->pivot->selisih * $item->nilai_barang,2)}}
                                     @endif
                                 </td>
                                 <td>@if($item->pivot->selisih * $item->nilai_barang < 0)
-                                        {{$item->pivot->selisih * $item->nilai_barang}} @else - @endif </td> </tr>
-                                        @endforeach </tbody> </table> </div> <div class="row">
+                                        {{number_format($item->pivot->selisih * $item->nilai_barang,2)}} @else - @endif
+                                        </td> </tr> @endforeach </tbody> </table> </div> <div class="row">
                                         <div class="col-lg-4 col-sm-5">
                                         </div>
                                         <div class="col-lg-4 col-sm-5 ml-auto">
