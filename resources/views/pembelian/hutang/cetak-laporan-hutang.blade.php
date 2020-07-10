@@ -56,8 +56,8 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            @foreach($pemasok->hutangs as $hutang)
                                             <tr>
-                                                @foreach($pemasok->hutangs as $hutang)
                                                 <td>{{ $hutang->kode_hutang }}</td>
                                                 <td>
                                                     @if ($hutang->retur_id !=null){{$hutang->retur->kode_retur}}
@@ -68,8 +68,8 @@
                                                 <td>{{ $hutang->status ? $hutang->status : '-' }}</td>
                                                 <td>{{ $hutang->lunas ? $hutang->lunas : '-' }}</td>
                                                 <td>{{ $hutang->sisa ? $hutang->sisa : '-' }}</td>
-                                                @endforeach
                                             </tr>
+                                            @endforeach
                                             <tr>
                                                 <td colspan="3">Total</td>
                                                 <td>{{ $lunass[$index]['lunas']}}</td>
@@ -102,8 +102,8 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @foreach($supp->hutangs as $hutang)
                                         <tr>
-                                            @foreach($supp->hutangs as $hutang)
                                             <td>{{ $hutang->kode_hutang }}</td>
                                             <td>
                                                 @if ($hutang->retur_id !=null){{$hutang->retur->kode_retur}}
@@ -114,8 +114,8 @@
                                             <td>{{ $hutang->status ? $hutang->status : '-' }}</td>
                                             <td>{{ $hutang->lunas ? $hutang->lunas : '-' }}</td>
                                             <td>{{ $hutang->sisa ? $hutang->sisa : '-' }}</td>
-                                            @endforeach
                                         </tr>
+                                        @endforeach
                                         <tr>
                                             <td colspan="3">Total</td>
                                             <td>{{ $lunass}}</td>
