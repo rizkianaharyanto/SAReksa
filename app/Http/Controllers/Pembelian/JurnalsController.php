@@ -125,6 +125,7 @@ class JurnalsController extends Controller
      */
     public function create()
     {
+        //
     }
 
     /**
@@ -136,6 +137,7 @@ class JurnalsController extends Controller
      */
     public function store(Request $request)
     {
+        //
     }
 
     /**
@@ -147,6 +149,7 @@ class JurnalsController extends Controller
      */
     public function show($id)
     {
+        //
     }
 
     /**
@@ -158,6 +161,7 @@ class JurnalsController extends Controller
      */
     public function edit($id)
     {
+        //
     }
 
     /**
@@ -170,6 +174,7 @@ class JurnalsController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //
     }
 
     /**
@@ -181,5 +186,6 @@ class JurnalsController extends Controller
      */
     public function destroy($id)
     {
+        //
     }
 }

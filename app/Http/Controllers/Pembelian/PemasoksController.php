@@ -39,6 +39,7 @@ class PemasoksController extends Controller
      */
     public function create()
     {
+        //
     }
 
     /**
@@ -113,6 +114,7 @@ class PemasoksController extends Controller
      */
     public function edit(Pemasok $pemasok)
     {
+        //
     }
 
     /**

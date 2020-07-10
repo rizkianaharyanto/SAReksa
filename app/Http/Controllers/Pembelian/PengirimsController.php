@@ -31,6 +31,7 @@ class PengirimsController extends Controller
      */
     public function create()
     {
+        //
     }
 
     /**
@@ -77,6 +78,7 @@ class PengirimsController extends Controller
      */
     public function edit(Pengirim $pengirim)
     {
+        //
     }
 
     /**
