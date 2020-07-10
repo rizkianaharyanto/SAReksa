@@ -10,6 +10,10 @@
 <li class="active">Ubah Retur</li>
 @endsection
 
+@section('alert')
+@include('pembelian.alert')
+@endsection
+
 @section('isi')
 
 

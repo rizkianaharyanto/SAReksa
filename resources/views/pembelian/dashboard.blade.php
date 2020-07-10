@@ -62,8 +62,8 @@
 <!-- pembelian -->
 @if(auth()->user()->role->role_name == 'Admin Pembelian')
 <div class="col-sm-6 col-lg-3">
-    <div class="card text-white bg-flat-color-3">
-        <div class="card-body pb-0">
+    <div class="card text-white bg-flat-color-1">
+        <div class="card-body ">
             <p class="text-light">Permintaan Penawaran</p>
             <div class="stat-widget-one mb-2 d-flex justify-content-center">
                 <div class="stat-icon dib"><a href="/pembelian/permintaans"><i class="fa fa-envelope-open-text text-light border-light"></i></a></div>
@@ -73,8 +73,8 @@
 </div>
 <!--/.col-->
 <div class="col-sm-6 col-lg-3">
-    <div class="card text-white bg-flat-color-3">
-        <div class="card-body pb-0">
+    <div class="card text-white bg-flat-color-5">
+        <div class="card-body">
             <p class="text-light">Pemesanan Pembelian</p>
             <div class="stat-widget-one mb-2 d-flex justify-content-center">
                 <div class="stat-icon dib"><a href="/pembelian/pemesanans"><i class="fa fa-boxes text-light border-light"></i></a></div>
@@ -85,7 +85,7 @@
 <!--/.col-->
 <div class="col-sm-6 col-lg-3">
     <div class="card text-white bg-flat-color-3">
-        <div class="card-body pb-0">
+        <div class="card-body">
             <p class="text-light">Penerimaan Barang</p>
             <div class="stat-widget-one mb-2 d-flex justify-content-center">
                 <div class="stat-icon dib"><a href="/pembelian/penerimaans"><i class="fa fa-shipping-fast text-light border-light"></i></a></div>
@@ -95,8 +95,8 @@
 </div>
 <!--/.col-->
 <div class="col-sm-6 col-lg-3">
-    <div class="card text-white bg-flat-color-3">
-        <div class="card-body pb-0">
+    <div class="card text-white bg-flat-color-4">
+        <div class="card-body">
             <p class="text-light">Faktur Pembelian</p>
             <div class="stat-widget-one mb-2 d-flex justify-content-center">
                 <div class="stat-icon dib"><a href="/pembelian/fakturs"><i class="fa fa-clipboard-check text-light border-light"></i></a></div>
@@ -111,7 +111,7 @@
 @if(auth()->user()->role->role_name == 'Admin Retur Pembelian')
 <div class="col-sm-6 col-lg-3">
     <div class="card text-white bg-flat-color-1">
-        <div class="card-body pb-0">
+        <div class="card-body">
             <p class="text-light">Faktur Pembelian</p>
             <div class="stat-widget-one mb-2 d-flex justify-content-center">
                 <div class="stat-icon dib"><a href="/pembelian/fakturs"><i class="fa fa-clipboard-check text-light border-light"></i></a></div>
@@ -121,8 +121,8 @@
 </div>
 <!--/.col-->
 <div class="col-sm-6 col-lg-3">
-    <div class="card text-white bg-flat-color-1">
-        <div class="card-body pb-0">
+    <div class="card text-white bg-flat-color-5">
+        <div class="card-body">
             <p class="text-light">Retur Pembelian</p>
             <div class="stat-widget-one mb-2 d-flex justify-content-center">
                 <div class="stat-icon dib"><a href="/pembelian/returs"><i class="fa fa-exchange-alt text-light border-light"></i></a></div>
@@ -136,8 +136,8 @@
 <!-- hutang -->
 @if(auth()->user()->role->role_name == 'Admin Utang')
 <div class="col-sm-6 col-lg-3">
-    <div class="card text-white bg-flat-color-4">
-        <div class="card-body pb-0">
+    <div class="card text-white bg-flat-color-1">
+        <div class="card-body">
             <p class="text-light">Faktur Pembelian</p>
             <div class="stat-widget-one mb-2 d-flex justify-content-center">
                 <div class="stat-icon dib"><a href="/pembelian/fakturs"><i class="fa fa-clipboard-check text-light border-light"></i></a></div>
@@ -147,8 +147,8 @@
 </div>
 <!--/.col-->
 <div class="col-sm-6 col-lg-3">
-    <div class="card text-white bg-flat-color-4">
-        <div class="card-body pb-0">
+    <div class="card text-white bg-flat-color-5">
+        <div class="card-body">
             <p class="text-light">Hutang</p>
             <div class="stat-widget-one mb-2 d-flex justify-content-center">
                 <div class="stat-icon dib"><a href="/pembelian/hutangs"><i class="fa fa-file-invoice-dollar text-light border-light"></i></a></div>
@@ -158,8 +158,8 @@
 </div>
 <!--/.col-->
 <div class="col-sm-6 col-lg-3">
-    <div class="card text-white bg-flat-color-4">
-        <div class="card-body pb-0">
+    <div class="card text-white bg-flat-color-3">
+        <div class="card-body">
             <p class="text-light">Pembayaran Hutang</p>
             <div class="stat-widget-one mb-2 d-flex justify-content-center">
                 <div class="stat-icon dib"><a href="/pembelian/pembayarans"><i class="fa fa-hand-holding-usd text-light border-light"></i></a></div>
@@ -172,8 +172,8 @@
 
 @if(auth()->user()->role->role_name == 'Direksi Perusahaan')
 <div class="col-sm-6 col-lg-3">
-    <div class="card text-white bg-flat-color-2">
-        <div class="card-body pb-0">
+    <div class="card text-white bg-flat-color-1">
+        <div class="card-body">
             <p class="text-light">Jurnal Khusus Pembelian</p>
             <div class="stat-widget-one mb-2 d-flex justify-content-center">
                 <div class="stat-icon dib"><a href="/pembelian/jurnals"><i class="fa fa-file-alt text-light border-light"></i></a></div>

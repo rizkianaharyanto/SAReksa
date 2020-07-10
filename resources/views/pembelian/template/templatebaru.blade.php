@@ -250,7 +250,7 @@
                 </div>
             </div>
         </div>
-
+        @yield('alert')
         <div class="content mt-3">
 
             @yield('isi')

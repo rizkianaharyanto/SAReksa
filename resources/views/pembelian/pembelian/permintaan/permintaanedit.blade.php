@@ -10,6 +10,10 @@
 <li class="active">Ubah Permintaan</li>
 @endsection
 
+@section('alert')
+@include('pembelian.alert')
+@endsection
+
 @section('isi')
 
 <div class="d-flex justify-content-center">

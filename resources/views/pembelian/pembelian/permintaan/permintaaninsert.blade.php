@@ -10,8 +10,11 @@
 <li class="active">Tambah Permintaan</li>
 @endsection
 
-@section('isi')
+@section('alert')
+@include('pembelian.alert')
+@endsection
 
+@section('isi')
 <div class="d-flex justify-content-center">
     <div id="stepper" class="bs-stepper align-self-end" style=" width:70vw;color:black;">
         <div class="bs-stepper-header">
