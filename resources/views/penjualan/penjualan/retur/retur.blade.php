@@ -41,7 +41,7 @@
                 <span></span>
             </i>
         </a>
-        <a title="Posting" id="edit"  href="/penjualan/returs/{{$retur->id}}/posting" title='Posting'>
+        <a title="Posting" id="posting"   title='Posting' data-toggle="modal" data-target="#posting-{{$retur->id }}">
         <i onmouseover="" style="cursor: pointer;color: #212120" class="fas fa-file-upload" title='Posting'>
                 <span></span>
             </i>
@@ -61,6 +61,9 @@
 @php
 $delete = "delete-".$retur->id
 @endphp
+@php
+$posting = "posting-".$retur->id
+@endphp
 
 <x-modal :id="$delete">
     <x-slot name="title">
@@ -71,6 +74,14 @@ $delete = "delete-".$retur->id
     </x-slot>
 </x-modal>
 
+<x-modal :id="$posting">
+    <x-slot name="title">
+        <h5 class="align-self-center">Posting retur {{$retur->kode_retur}}</h5>
+    </x-slot>
+    <x-slot name="body">
+        <x-penjualan.retur-posting :id="$retur->id" />
+    </x-slot>
+</x-modal>
 @endforeach
 @endsection
 

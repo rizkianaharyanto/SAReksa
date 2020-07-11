@@ -50,8 +50,8 @@
                                                                 <div class="form-group row mx-5 mb-5">
                                                                     <label class="col-sm-3 col-form-label" for="pelanggan_id">Pelanggan</label>
                                                                     <div class="col-sm-9">
-                                                                        <select class="form-control" id="pelanggan_id" name="pelanggan_id">
-                                                                            <option value="">--- Pilih Pelanggan ---</option>
+                                                                        <select required class="form-control" id="pelanggan_id" name="pelanggan_id">
+                                                                            <option value="" disabled selected hidden>--- Pilih Pelanggan ---</option>
                                                                             @foreach ($pelanggans as $pelanggan)
                                                                             <option value="{{$pelanggan->id}}">{{ $pelanggan->nama_pelanggan }}</option>
                                                                             @endforeach
@@ -61,8 +61,8 @@
                                                                 <div class="form-group row mx-5 mb-5">
                                                                     <label class="col-sm-3 col-form-label" for="penjual_id">Sales</label>
                                                                     <div class="col-sm-9">
-                                                                        <select class="form-control" id="penjual_id" name="penjual_id">
-                                                                            <option value="">--- Pilih Sales ---</option>
+                                                                        <select required class="form-control" id="penjual_id" name="penjual_id">
+                                                                            <option value="" disabled selected hidden>--- Pilih Sales ---</option>
                                                                             @foreach ($penjuals as $penjual)
                                                                             <option value="{{$penjual->id}}">{{ $penjual->nama_penjual }}</option>
                                                                             @endforeach
@@ -72,8 +72,8 @@
                                                                 <div class="form-group row mx-5 mb-5">
                                                                     <label class="col-sm-3 col-form-label" for="gudang">Gudang</label>
                                                                     <div class="col-sm-9">
-                                                                        <select class="form-control" id="gudang" name="gudang">
-                                                                            <option value="">--- Pilih Gudang ---</option>
+                                                                        <select required class="form-control" id="gudang" name="gudang">
+                                                                            <option value="" disabled selected hidden>--- Pilih Gudang ---</option>
                                                                             @foreach ($gudangs as $gudang)
                                                                             <option value="{{$gudang->id}}">{{ $gudang->kode_gudang }}</option>
                                                                             @endforeach
@@ -83,7 +83,7 @@
                                                                 <div class="form-group row mx-5 mb-5">
                                                                     <label class="col-sm-3 col-form-label" for="tanggal">Tanggal</label>
                                                                     <div class="col-sm-9">
-                                                                        <input type="date" class="form-control" id="tanggal" name="tanggal">
+                                                                        <input type="date" required class="form-control" id="tanggal" name="tanggal">
                                                                     </div>
                                                                 </div>
                                                                 
@@ -101,8 +101,8 @@
                                                                 <div class="form-row mx-5" id="isiformbarang">
                                                                     <div class="col-md-3">
                                                                         <label for="barang_id" id="lbl">Barang</label>
-                                                                        <select class="form-control" onchange="isi(this)" id="barang_id" name="barang_id[]">
-                                                                            <option value="">--- Pilih Barang ---</option>
+                                                                        <select class="form-control" onchange="isi(this)"  id="barang_id" name="barang_id[]">
+                                                                            <option value="" disabled selected hidden>--- Pilih Barang ---</option>
                                                                             @foreach ($barangs as $barang)
                                                                             <option value="{{$barang->id}}">{{ $barang->nama_barang }}</option>
                                                                             @endforeach
@@ -174,7 +174,7 @@
                                                                             <div class="input-group-prepend">
                                                                                 <div class="input-group-text">%</div>
                                                                             </div>
-                                                                            <input type="number" min="0" max="100" class="form-control" id="diskon" onchange="disc();" name="diskon" placeholder="-">
+                                                                            <input type="number" required min="0" max="100" class="form-control" id="diskon" onchange="disc();" name="diskon" placeholder="-">
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-sm-6">
@@ -182,7 +182,7 @@
                                                                             <div class="input-group-prepend">
                                                                                 <div class="input-group-text">Rp</div>
                                                                             </div>
-                                                                            <input type="number" min="0" class="form-control" id="disk" onchange="disc();" name="disk" placeholder="-">
+                                                                            <input type="number" required min="0" class="form-control" id="disk" onchange="disc();" name="disk" placeholder="-">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -193,7 +193,7 @@
                                                                             <div class="input-group-prepend">
                                                                                 <div class="input-group-text">Rp</div>
                                                                             </div>
-                                                                            <input type="number" min="0" class="form-control" name="biaya_lain" onchange="disc();" id="biaya_lain" placeholder="-">
+                                                                            <input type="number" required min="0" class="form-control" name="biaya_lain" onchange="disc();" id="biaya_lain" placeholder="-">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -260,10 +260,15 @@
     $('#tambahbarang').click(function() {
         // console.log(i)
         $("#formbarang").append($("#isiformbarang").clone().attr('id', 'isiformbarang' + (i + 1)));
-        $(document.querySelectorAll("#isiformbarang1")).children().children().children().css({
+        $("#isiformbarang" + (i+1)).children().children('#jumlah_barang').val("-");
+        $("#isiformbarang" + (i+1)).children().children('#uni').attr('placeholder','-');
+        $("#isiformbarang" + (i+1)).children().children().children('#total').val('-');
+        $("#isiformbarang" + (i+1)).children().children().children('#harga').val('-');
+        $(document.querySelectorAll("#isiformbarang"+ (i + 1))).children().children().children().css({
             'color': 'black',
             'cursor': 'pointer'
         })
+        i++;
     });
 
     function hapus(x) {

@@ -52,7 +52,7 @@
                                                                     <label class="col-sm-3 col-form-label" for="pelanggan_id">Pelanggan </label>
                                                                     <div class="col-sm-9">
                                                                         <select class="form-control" id="pelanggan_id" name="pelanggan_id">
-                                                                            <option value="">--- Pilih Pelanggan ---</option>
+                                                                            <option value="" disabled selected hidden>--- Pilih Pelanggan ---</option>
                                                                             @foreach ($pelanggans as $pelanggan)
                                                                             <option value="{{$pelanggan->id}}">{{ $pelanggan->nama_pelanggan }}</option>
                                                                             @endforeach
@@ -71,7 +71,7 @@
                                                                     <label class="col-sm-3 col-form-label" for="penjual_id">Sales</label>
                                                                     <div class="col-sm-9">
                                                                         <select class="form-control" id="penjual_id" name="penjual_id">
-                                                                            <option value="">--- Pilih Sales ---</option>
+                                                                            <option value="" disabled selected hidden>--- Pilih Sales ---</option>
                                                                             @foreach ($penjuals as $penjual)
                                                                             <option value="{{$penjual->id}}">{{ $penjual->nama_penjual }}</option>
                                                                             @endforeach
@@ -82,7 +82,7 @@
                                                                     <label class="col-sm-3 col-form-label" for="gudang">Gudang</label>
                                                                     <div class="col-sm-9">
                                                                         <select class="form-control" id="gudang" name="gudang">
-                                                                            <option value="">--- Pilih Gudang ---</option>
+                                                                            <option value="" disabled selected hidden>--- Pilih Gudang ---</option>
                                                                             @foreach ($gudangs as $gudang)
                                                                             <option value="{{$gudang->id}}">{{ $gudang->kode_gudang }}</option>
                                                                             @endforeach
@@ -108,8 +108,14 @@
                                                                 <div class="form-row mx-5" id="isiformbarang0">
                                                                     <div class="col-md-3">
                                                                         <label for="barang_id" id="lbl">Barang</label>
-                                                                        <select class="form-control" onchange="isi(this)" id="barang_id" name="barang_id[]">
-                                                                            <option value="">--- Pilih Barang ---</option>
+                                                                        <select class="form-control" disabled onchange="isi(this)" id="barang_id_ui" name="barang_id_ui[]">
+                                                                            <option value="" disabled selected hidden>--- Pilih Barang ---</option>
+                                                                            @foreach ($barangs as $barang)
+                                                                            <option value="{{$barang->id}}">{{ $barang->nama_barang }}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                        <select hidden class="form-control" onchange="isi(this)" id="barang_id" name="barang_id[]">
+                                                                            <option value="" disabled selected hidden>--- Pilih Barang ---</option>
                                                                             @foreach ($barangs as $barang)
                                                                             <option value="{{$barang->id}}">{{ $barang->nama_barang }}</option>
                                                                             @endforeach
@@ -117,7 +123,7 @@
                                                                     </div>
                                                                     <div class="col-md-1">
                                                                         <label for="jumlah_barang">QTY</label>
-                                                                        <input type="number" style="height: 38px" min='0' class="form-control" id="jumlah_barang" name="jumlah_barang[]" onfocus="startCalc(this);" onblur="stopCalc();" placeholder="-">
+                                                                        <input type="number" style="height: 38px" min='0' class="form-control" id="jumlah_barang" name="jumlah_barang[]" onfocus="startCalc(this);" onblur="stopCalc();disc();" placeholder="-">
                                                                     </div>
                                                                     <div class="col-md-2">
                                                                         <label for="satuan_unit">Unit</label>
@@ -130,7 +136,7 @@
                                                                             <div style="height: 38px" class="input-group-prepend">
                                                                                 <div class="input-group-text">Rp</div>
                                                                             </div>
-                                                                            <input style="height: 38px" type="number" min="0" class="form-control" id="harga" name="harga[]" onfocus="startCalc(this);" onblur="stopCalc();" placeholder="-">
+                                                                            <input style="height: 38px" type="number" min="0" class="form-control" id="harga" name="harga[]" onfocus="startCalc(this);" onblur="stopCalc();disc();" placeholder="-">
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-3">
@@ -146,7 +152,7 @@
                                                                     <div class="form-group col-md-1">
                                                                         <p style="color: transparent">#</p>
                                                                         <a onclick="hapus(this)">
-                                                                            <i style="color:grey;" class="fas fa-trash"></i>
+                                                                            <i style="color:black;cursor:pointer" class="fas fa-trash"></i>
                                                                         </a>
                                                                     </div>
                                                                 </div>
@@ -293,9 +299,8 @@ var message = '{{ Session::get('message')}}';
     });
 
     function hapus(x) {
-        if ($(x).parent().parent().attr('id') != 'isiformbarang0') {
             $(x).parent().parent().remove();
-        }
+        
     }
 
     $('#pelanggan_id').change(function() {
@@ -309,7 +314,7 @@ var message = '{{ Session::get('message')}}';
                 for (i = 0; i < 10; i++) {
                     $('#pemesananoption').remove();
                 }
-                $('#pemesanan_id').append('<option value="" id="pemesananoption">  --- Pilih Pemesanan ---  </option>') 
+                $('#pemesanan_id').append('<option value="" id="pemesananoption" disabled selected hidden>  --- Pilih Pemesanan ---  </option>') 
                 for (i = 0; i < data.pemesanans.length; i++) {
                     $('#pemesanan_id').append('<option id="pemesananoption" value="' + data.pemesanans[i].id + '">' + data.pemesanans[i].kode_pemesanan + '</option>')
                 }
@@ -335,8 +340,13 @@ var message = '{{ Session::get('message')}}';
                     // $('#mata_uang').val(data.pemesanan.mata_uang)
                     $('#diskon').val(data.pemesanan.diskon)
                     $('#status').val('sudah posting')
+                    $('#total_harga_barang').val(data.subtotal_psn)
+                    $('#akun_barang').val(data.subtotal_psn)
+                    $('#total_harga_kes').val(data.total_seluruh_psn)
+                    $('#total_harga_keseluruhan').val(data.total_seluruh_psn)
                     $('#disk').val(data.pemesanan.diskon_rp)
                     $('#biaya_lain').val(data.pemesanan.biaya_lain)
+                    $('#barang_id_ui').val(data.barangs[0].id)
                     $('#barang_id').val(data.barangs[0].id)
                     $('#unit').val(data.barangs[0].pivot.unit)
                     $('#uni').attr('placeholder',data.barangs[0].pivot.unit)
@@ -345,6 +355,7 @@ var message = '{{ Session::get('message')}}';
                         "max" : data.barangs[0].pivot.barang_belum_diterima
                     });
                     $('#harga').val(data.barangs[0].pivot.harga)
+                    $('#total').val(data.total_harga_psn[0])
                     // $('#pemesanan_id').val(data.barangs.pemesanan_id)
                     for (var i = 1; i <= data.barangs.length - 1; i++) {
                         if(data.barangs[i].pivot.barang_belum_diterima !=0){
@@ -354,6 +365,7 @@ var message = '{{ Session::get('message')}}';
                             $("#isiformbarang" + i).children().children('#jumlah_barang').attr({
                                                                                                     "max" : data.barangs[i].pivot.barang_belum_diterima
                                                                                                 });
+                                                                                                $("#isiformbarang" + i).children().children().children('#total').val(data.total_harga_psn[i])
                             $("#isiformbarang" + i).children().children('#unit').val(data.barangs[i].pivot.unit)
                             $("#isiformbarang" + i).children().children('#uni').attr('placeholder', data.barangs[i].pivot.unit)
                             $("#isiformbarang" + i).children().children().children('#harga').val(data.barangs[i].pivot.harga)

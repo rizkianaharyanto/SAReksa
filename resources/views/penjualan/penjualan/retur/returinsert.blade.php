@@ -1,9 +1,9 @@
 @extends('penjualan.template.table', [
     'elementActive' => 'retur'
 ])
-@section('judul', 'Tambah Retur Pembelian')
+@section('judul', 'Tambah Retur Penjualan')
 
-@section('menu', 'Tambah Retur Pembelian')
+@section('menu', 'Tambah Retur Penjualan')
 
 @section('content')
 <div class="content">
@@ -50,12 +50,13 @@
                                                             <input type="hidden" id="status" name="status" value="piutang">
                                                             <input type="hidden" id="akun_barang" name="akun_barang" required>
                                                             <input type="hidden" id="piutang" name="piutang">
+                                                            <input type="hidden" id="diskon_rp" name="diskon_rp">
                                                             <div style="height: ;overflow: auto; color:black" class="mt-2">
                                                                 <div class="form-group row mx-5 mb-5">
                                                                     <label class="col-sm-3 col-form-label" for="pelanggan_id">Pelanggan</label>
                                                                     <div class="col-sm-9">
                                                                         <select required class="form-control" id="pelanggan_id" name="pelanggan_id">
-                                                                            <option value="">--- Pilih Pelanggan ---</option>
+                                                                            <option value="" disabled selected hidden>--- Pilih Pelanggan ---</option>
                                                                             @foreach ($pelanggans as $pelanggan)
                                                                             <option value="{{$pelanggan->id}}">{{ $pelanggan->nama_pelanggan }}</option>
                                                                             @endforeach
@@ -66,7 +67,7 @@
                                                                     <label class="col-sm-3 col-form-label" for="faktur_id">Faktur</label>
                                                                     <div class="col-sm-9">
                                                                         <select required class="form-control" id="faktur_id" name="faktur_id"  disabled>
-                                                                        <option value="" id="fakturoption">  --- Pilih Faktur ---  </option>
+                                                                        <option value="" id="fakturoption" disabled selected hidden>  --- Pilih Faktur ---  </option>
                                                                         </select>
                                                                     </div>
                                                                 </div>
@@ -89,8 +90,14 @@
                                                                 <div class="form-row mx-5" id="isiformbarang0">
                                                                     <div class="form-group col-md-3">
                                                                         <label for="barang_id" id="lbl">Barang</label>
-                                                                        <select required class="form-control" id="barang_id" onchange="isi(this)" name="barang_id[]">
-                                                                            <option value="">--- Pilih Barang ---</option>
+                                                                        <select required disabled class="form-control" id="barang_id_ui" onchange="isi(this)" name="barang_id_ui[]">
+                                                                            <option value="" disabled selected hidden>--- Pilih Barang ---</option>
+                                                                            @foreach ($barangs as $barang)
+                                                                            <option value="{{$barang->id}}">{{ $barang->nama_barang }}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                        <select required hidden class="form-control" id="barang_id" onchange="isi(this)" name="barang_id[]">
+                                                                            <option value="" disabled selected hidden>--- Pilih Barang ---</option>
                                                                             @foreach ($barangs as $barang)
                                                                             <option value="{{$barang->id}}">{{ $barang->nama_barang }}</option>
                                                                             @endforeach
@@ -111,7 +118,8 @@
                                                                             <div style="height: 38px" class="input-group-prepend">
                                                                                 <div class="input-group-text">Rp</div>
                                                                             </div>
-                                                                            <input style="height: 38px" type="number" min="0" class="form-control" id="harga" name="harga[]" onfocus="startCalc(this);" onblur="stopCalc();" placeholder="-">
+                                                                            <input style="height: 38px" type="hidden" min="0" class="form-control" id="harga" name="harga[]" onfocus="startCalc(this);" onblur="stopCalc();" placeholder="-">
+                                                                            <input style="height: 38px" disabled type="number" min="0" class="form-control" id="harga_ui" name="harga_ui[]" onfocus="startCalc(this);" onblur="stopCalc();" placeholder="-">
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-group col-md-3">
@@ -138,15 +146,23 @@
                                                             </div> -->
                                                             <div class="modal-footer">
                                                                 <div class="d-flex mr-auto">
-                                                                    <p class="m-2" id="">Total </p>
-                                                                    <div class="input-group mb-2">
-                                                                        <div class="input-group-prepend">
-                                                                            <div class="input-group-text">Rp</div>
+                                                                    <div class="d-flex flex-column">
+                                                                        <div class="d-flex">
+                                                                            <p class="m-2" id="">Total </p>
+                                                                            <div class="input-group mb-2">
+                                                                                <div class="input-group-prepend">
+                                                                                    <div class="input-group-text">Rp</div>
+                                                                                </div>
+                                                                                <input required style="width:26vw" type="number" min="0" name="total_harga_barang" id="total_harga_barang" disabled>
+                                                                                <input required type="hidden" name="total_harga" id="total_harga">
+                                                                            </div>
                                                                         </div>
-                                                                        <input required style="width:26vw" type="number" min="0" name="total_harga_barang" id="total_harga_barang" disabled>
-                                                                        <input required type="hidden" name="total_harga_barang" id="total_harga_barang">
+                                                                        <div class="d-flex justify-content-between ml-5">
+                                                                            <div id="diskon_ui"></div>
+                                                                            <input type="hidden" id="diskon" name="diskon">
+                                                                        </div> 
                                                                     </div>
-                                                                </div>
+                                                                </div> 
                                                                 <a href="/penjualan/returs">
                                                                     <button type="button" class="btn btn-secondary">Batal</button>
                                                                 </a>
@@ -246,24 +262,48 @@
             data: {},
             success: function(data) {
                 if (data.success == true) {
+                    $('#diskon').val(data.faktur.diskon_rp)
+                    $('#diskon_rp').val(data.faktur.diskon_rp)
+                    if(data.faktur.diskon_rp != 0){
+                        $('#diskon_ui').html('Diskon : ' + data.faktur.diskon_rp)
+                    }
                     console.log(data.faktur)
+                    $('#barang_id_ui').val(data.barangs[0].id)
                     // $('#diskon').val(data.faktur.diskon)
                     // $('#biaya_lain').val(data.faktur.biaya_lain)
                     $('#penjual_id').val(data.faktur.penjual_id)
                     $('#gudang').val(data.faktur.gudang)
                     $('#barang_id').val(data.barangs[0].id)
                     $('#tambahbarang').detach()
+                    $('#akun_barang').val(data.subtotal_fk)
+                    $('#total_harga').val(data.subtotal_fk - data.faktur.diskon_rp)
+                    $('#total_harga_barang').val(data.subtotal_fk - data.faktur.diskon_rp)
                     $('#uni').attr('placeholder',data.barangs[0].pivot.unit)
                     $('#unit').val(data.barangs[0].pivot.unit)
                     $('#jumlah_barang').val(data.barangs[0].pivot.jumlah_barang)
+                    $('#jumlah_barang').attr({
+                        "max" : data.barangs[0].pivot.jumlah_barang
+                    });
+                    $('#harga_ui').val(data.barangs[0].pivot.harga)
                     $('#harga').val(data.barangs[0].pivot.harga)
+                    $('#total').val(data.total_harga_fk[0])
                     for (var i = 1; i <= data.barangs.length - 1; i++) {
                         $("#formbarang").append($("#isiformbarang0").clone().attr('id', 'isiformbarang' + i));
                         $("#isiformbarang" + i).children().children('select').val(data.barangs[i].id)
                         $("#isiformbarang" + i).children().children('#jumlah_barang').val(data.barangs[i].pivot.jumlah_barang)
+                        $("#isiformbarang" + i).children().children('#jumlah_barang').attr({
+                                                                                                    "max" : data.barangs[i].pivot.jumlah_barang
+                                                                                                });
+                        $(document.querySelectorAll("#isiformbarang" + i)).children().children().children().css({
+                            'color': 'black',
+                            'cursor': 'pointer'
+                        })
                         $("#isiformbarang" + i).children().children('#uni').attr('placeholder',data.barangs[i].pivot.unit)
                         $("#isiformbarang" + i).children().children('#unit').val(data.barangs[i].pivot.unit)
                         $("#isiformbarang" + i).children().children().children('#harga').val(data.barangs[i].pivot.harga)
+                        $("#isiformbarang" + i).children().children().children('#harga_ui').val(data.barangs[i].pivot.harga)
+                        $("#isiformbarang" + i).children().children().children('#total').val(data.total_harga_fk[i])
+
                     }
                     var c = data.barangs.length
                     console.log(c)
@@ -333,8 +373,10 @@
             if (parseInt(arr[i].value))
                 tot += parseInt(arr[i].value);
         }
-        document.getElementById('total_harga_barang').value = tot;
-        // document.getElementById('total_harga_keseluruhan').value = tot;
+        var diskon = $("#diskon").val();
+        console.log('diskon', diskon);
+        document.getElementById('total_harga_barang').value = tot - diskon;
+        document.getElementById('total_harga').value = tot - diskon;
         document.getElementById('akun_barang').value = tot;
         console.log(arr)
     }

@@ -307,8 +307,8 @@
         <div class="form-group row">
             <label class="col-sm-3 col-form-label" for="pelanggan_id">Pelanggan </label>
                 <div class="col-sm-9">
-                  <select class="form-control" id="pelanggan_id" name="pelanggan_id">
-                                                                            <option value="">--- Pilih Pelanggan ---</option>
+                  <select class="form-control" id="pelanggan_id" required name="pelanggan_id">
+                                                                            <option disabled selected hidden value="">--- Pilih Pelanggan ---</option>
                                                                             @foreach ($pelanggans as $pelanggan)
                                                                             <option value="{{$pelanggan->id}}">{{ $pelanggan->nama_pelanggan }}</option>                                                                            @endforeach
                                                                         </select>

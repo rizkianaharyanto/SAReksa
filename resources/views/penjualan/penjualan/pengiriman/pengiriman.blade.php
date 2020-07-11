@@ -38,7 +38,7 @@
         </a>
         @endif
         @if($pengiriman->status == 'terkirim')
-        <a id="edit" title="Posting" class="mr-5"  href="/penjualan/pengirimans/{{$pengiriman->id}}/posting">
+        <a id="posting" title="Posting" class="mr-5"  data-toggle="modal" data-target="#posting-{{$pengiriman->id }}">
             <i onmouseover="" style="cursor: pointer;color: #212120" class="fas fa-file-upload" title='Posting'>
                 <span></span>
             </i>
@@ -57,6 +57,9 @@
 @php
 $delete = "delete-".$pengiriman->id
 @endphp
+@php
+$posting = "posting-".$pengiriman->id
+@endphp
 
 <x-modal :id="$delete">
     <x-slot name="title">
@@ -67,6 +70,14 @@ $delete = "delete-".$pengiriman->id
     </x-slot>
 </x-modal>
 
+<x-modal :id="$posting">
+    <x-slot name="title">
+        <h5 class="align-self-center">Posting pengiriman {{$pengiriman->kode_pengiriman}}</h5>
+    </x-slot>
+    <x-slot name="body">
+        <x-penjualan.pengiriman-posting :id="$pengiriman->id" />
+    </x-slot>
+</x-modal>
 @endforeach
 @endsection
 

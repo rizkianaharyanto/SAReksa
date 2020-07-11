@@ -36,7 +36,6 @@ class PiutangsController extends Controller
                 'sisa' => $sisa
             ]);
         }
-        // dd($totals);
         return view('penjualan.piutang.piutang', [
            'pelanggans' => $pelanggans,
            'totals' => $totals,

@@ -70,7 +70,7 @@
                                                                 <div class="form-row mx-5" id="isiformpiutang0">
                                                                     <div class="form-group col-md-3">
                                                                         <label for="piutang_id" id="lbl">Piutang</label>
-                                                                        <select required style="height: 43px" class="form-control" onchange="isi(this)" onclick="hitung()" id="piutang_id" name="piutang_id[]">
+                                                                        <select required style="height: 43px" class="form-control" onchange="isi(this)" onclick="hitung()" onblur="hitung()" id="piutang_id" name="piutang_id[]">
                                                                             <option value="">--- Pilih Piutang ---</option>
                                                                         </select>
                                                                     </div>
@@ -84,7 +84,7 @@
                                                                             <div style="height: 43px" class="input-group-prepend">
                                                                                 <div class="input-group-text">Rp</div>
                                                                             </div>
-                                                                            <input style="height: 43px" type="number" min='0' class="form-control" id="total" name="total[]" onchange="hitung()"  >
+                                                                            <input style="height: 43px" type="number" min='0' class="form-control" id="total" name="total[]" onclick="hitung()" onchange="hitung()"  >
                                                                             <input type="hidden" id="total_piutang" name="total_piutang[]">
                                                                         </div>
                                                                     </div>
@@ -234,6 +234,9 @@
                     $(x).parent().parent().children().children('#tanggal_piutang').val(data.retur.tanggal)
                 }
                 $(x).parent().parent().children().children().children('#total').val(data.piutang.sisa)
+                $(x).parent().parent().children().children().children('#total').attr({
+                                                                                                    "max" : data.piutang.sisa
+                                                                                                });
                 $(x).parent().parent().children().children().children('#total_piutang').val(data.piutang.sisa)
             }
         })

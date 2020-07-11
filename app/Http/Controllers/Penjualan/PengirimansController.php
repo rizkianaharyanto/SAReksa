@@ -61,6 +61,12 @@ class PengirimansController extends Controller
      */
     public function store(ItemService $itmSrv, Request $request)
     {
+        // dd($request);
+        if($request->jumlah_barang == NULL){
+            session()->flash('message', 'Pengiriman gagal. Tidak ada data barang');
+            session()->flash('status', 'gagal');
+            return redirect()->back()->with('message', 'Pengiriman gagal. Tidak ada data barang'); 
+        }
         //Cek Stok
         $stok = 0;
         $allDataBarang = $itmSrv->getAllStocksQty();
@@ -78,6 +84,8 @@ class PengirimansController extends Controller
             }
         }
         // dd($request);
+        Pemesanan::where('id',$request->pemesanan_id)
+        ->update(['status' => 'terkirim sebagian']);
         session()->flash('message', 'Pengiriman berhasil ditambahkan');
         session()->flash('status', 'tambah');
         $pgr = Pengiriman::max('id') + 1;
@@ -132,6 +140,7 @@ class PengirimansController extends Controller
         for ($i = 1; $i < 3; ++$i) {
             $jurnal = Jurnal::create([
             'kode_jurnal' => 'jur'.$no,
+            'tanggal' => $pengiriman->tanggal,
             'pengiriman_id' => $pengiriman->id,
             'debit' => 0,
             'kredit' => 0,
@@ -161,9 +170,20 @@ class PengirimansController extends Controller
     {
         $pengiriman = Pengiriman::find($id);
         $barangs = $pengiriman->barangs;
+        $total_seluruh_png = $pengiriman->total_harga;
+        $total_harga_png = [];
+        $subtotal_png = 0;
+        foreach ($barangs as $index => $barang) {
+            $total_harga_png[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
+            $subtotal_png += $total_harga_png[$index];
+        }
         // dd($barangs);
         return response()
-            ->json(['success' => true, 'pengiriman' => $pengiriman, 'barangs' => $barangs]);
+            ->json(['success' => true, 'pengiriman' => $pengiriman, 'barangs' => $barangs,
+            'total_seluruh_png' => $total_seluruh_png,
+            'total_harga_png' => $total_harga_png,
+            'subtotal_png' => $subtotal_png,
+            ]);
     }
 
     public function detail($id)
@@ -180,7 +200,6 @@ class PengirimansController extends Controller
             $total_harga[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
             $subtotal += $total_harga[$index];
         }
-        // dd($total_harga, $total_seluruh);
         return view('penjualan.penjualan.pengiriman.pengirimandetails', [
             'pengiriman' => $pengiriman, 
             'gudang' => $gudang,
@@ -250,6 +269,7 @@ class PengirimansController extends Controller
      */
     public function update(ItemService $itmSrv, Request $request, Pengiriman $pengiriman)
     {
+    // dd($request);
         $stok = 0;
         $pemesanan = $pengiriman->pemesanan;
         //Cek stock
@@ -275,7 +295,6 @@ class PengirimansController extends Controller
         Pengiriman::where('id', $pengiriman->id)
             ->update([
                 'kode_pengiriman' => $request->kode_pengiriman,
-                'pelanggan_id' => $request->pelanggan_id,
                 'gudang' => $request->gudang,
                 'status' => 'terkirim',
                 'tanggal' => $request->tanggal,
@@ -334,7 +353,10 @@ class PengirimansController extends Controller
     {
         session()->flash('message', 'Pengiriman berhasil dihapus');
         session()->flash('status', 'hapus');
+        Pemesanan::where('id',$pengiriman->pemesanan_id)
+        ->update(['status' => 'baru']);
         Pengiriman::destroy($pengiriman->id);
+
         return redirect('/penjualan/pengirimans');
     }
 }

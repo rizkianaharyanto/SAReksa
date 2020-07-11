@@ -176,8 +176,8 @@
                     </div>
                     <div class="card-footer ">
                         <div class="legend">
-                            <i class="fa fa-circle text-gray"></i> Piutang
-                            <i class="fa fa-circle text-primary"></i> Lunas
+                            <i class="fa fa-circle text-gray"></i> Lunas
+                            <i class="fa fa-circle text-primary"></i> Piutang
                         </div>
                         <hr>
                         <div class="stats">

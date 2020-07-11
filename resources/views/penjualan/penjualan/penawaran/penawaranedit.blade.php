@@ -53,7 +53,7 @@
                                                                     <label class="col-sm-3 col-form-label" for="pelanggan_id">Pelanggan</label>
                                                                     <div class="col-sm-9">
                                                                         <select class="form-control" id="pelanggan_id" name="pelanggan_id">
-                                                                            <option value="">--- Pilih Pelanggan ---</option>
+                                                                            <option value="" disabled selected hidden>--- Pilih Pelanggan ---</option>
                                                                             @foreach ($pelanggans as $pelanggan)
                                                                             <option value="{{$pelanggan->id}}" {{ $pelanggan->id ==  "$penawaran->pelanggan_id" ? "selected" : "" }}>{{ $pelanggan->nama_pelanggan }} </option>
                                                                             @endforeach
@@ -64,7 +64,7 @@
                                                                     <label class="col-sm-3 col-form-label" for="penjual_id">Sales</label>
                                                                     <div class="col-sm-9">
                                                                         <select class="form-control" id="penjual_id" name="penjual_id">
-                                                                            <option value="">--- Pilih Sales ---</option>
+                                                                            <option value="" disabled selected hidden>--- Pilih Sales ---</option>
                                                                             @foreach ($penjuals as $penjual)
                                                                             <option value="{{$penjual->id}}" {{ $penjual->id ==  "$penawaran->penjual_id" ? "selected" : "" }}>{{ $penjual->nama_penjual }} </option>
                                                                             @endforeach
@@ -75,7 +75,7 @@
                                                                     <label class="col-sm-3 col-form-label" for="gudang">Gudang</label>
                                                                     <div class="col-sm-9">
                                                                         <select class="form-control" id="gudang" name="gudang">
-                                                                            <option value="">--- Pilih Gudang ---</option>
+                                                                            <option value="" disabled selected hidden>--- Pilih Gudang ---</option>
                                                                             @foreach ($gudangs as $gudang)
                                                                             <option value="{{$gudang->id}}" {{$gudang->id == "$penawaran->gudang" ? "selected" : "" }}>{{ $gudang->kode_gudang }}</option>
                                                                             @endforeach
@@ -105,7 +105,7 @@
                                                                     <div class="col-md-3">
                                                                         <label for="barang_id" id="lbl">Barang</label>
                                                                         <select class="form-control" onchange="isi(this)" id="barang_id" name="barang_id[]">
-                                                                            <option value="">--- Pilih Barang ---</option>
+                                                                            <option value="" disabled selected hidden>--- Pilih Barang ---</option>
                                                                             @foreach ($barangs as $barang)
                                                                             <option value="{{$barang->id}}" {{$barang->id == $penawaranbarang->pivot->barang_id ? "selected" : "" }}>{{ $barang->nama_barang }}</option>
                                                                             @endforeach
@@ -113,7 +113,7 @@
                                                                     </div>
                                                                     <div class="col-md-1">
                                                                         <label for="jumlah_barang">QTY</label>
-                                                                        <input type="number" style="height: 38px" num="0" class="form-control" id="jumlah_barang" name="jumlah_barang[]" onfocus="startCalc(this);" onblur="stopCalc();" value="{{$penawaranbarang->pivot->jumlah_barang}}" placeholder="-">
+                                                                        <input type="number" style="height: 38px" num="0" class="form-control" id="jumlah_barang" name="jumlah_barang[]" onfocus="startCalc(this);" onblur="stopCalc();disc();" value="{{$penawaranbarang->pivot->jumlah_barang}}" placeholder="-">
                                                                     </div>
                                                                     <div class="col-md-2">
                                                                         <label for="satuan_unit">Unit</label>
@@ -126,7 +126,7 @@
                                                                             <div style="height: 38px" class="input-group-prepend">
                                                                                 <div class="input-group-text">Rp</div>
                                                                             </div>
-                                                                            <input style="height: 38px" type="number" num="0" class="form-control" id="harga" name="harga[]" onfocus="startCalc(this);" onblur="stopCalc();" value="{{$penawaranbarang->pivot->harga}}"  placeholder="-">
+                                                                            <input style="height: 38px" type="number" num="0" class="form-control" id="harga" name="harga[]" onfocus="startCalc(this);" onblur="stopCalc();disc();" value="{{$penawaranbarang->pivot->harga}}"  placeholder="-">
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-3">
@@ -186,7 +186,7 @@
                                                                         <div class="input-group-prepend">
                                                                             <div class="input-group-text">Rp</div>
                                                                         </div>
-                                                                        <input type="number" num="0" class="form-control" id="disk" onchange="disc();" name="disk" placeholder="-">
+                                                                        <input type="number" num="0" class="form-control" id="disk" onchange="disc();" name="disk" value="{{$penawaran->diskon_rp}}"  placeholder="-">
                                                                     </div>
                                                                 </div>
                                                                 </div>
@@ -197,7 +197,7 @@
                                                                             <div class="input-group-prepend">
                                                                                 <div class="input-group-text">Rp</div>
                                                                             </div>
-                                                                            <input type="number" num="0" class="form-control" name="biaya_lain"  id="biaya_lain"  value="{{$penawaran->biaya_lain}}"  placeholder="-">
+                                                                            <input type="number" num="0" class="form-control" name="biaya_lain"  id="biaya_lain" onchange="disc();"  value="{{$penawaran->biaya_lain}}"  placeholder="-">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -208,8 +208,8 @@
                                                                             <div class="input-group-prepend">
                                                                                 <div class="input-group-text">Rp</div>
                                                                             </div>
-                                                                            <input style="width:26vw" type="number" num="0" id="total_harga_kes" disabled>
-                                                                            <input type="hidden" name="total_harga_keseluruhan" id="total_harga_keseluruhan">
+                                                                            <input style="width:26vw" type="number" num="0" value="{{$penawaran->total_harga}}" id="total_harga_kes" disabled>
+                                                                            <input type="hidden" name="total_harga_keseluruhan" value="{{$penawaran->total_harga}}"  id="total_harga_keseluruhan">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -238,6 +238,28 @@
 </div>
 
 <script>
+
+$(document).ready(function(){
+    $.ajax({
+            url: '/penjualan/penawarans/' + {{$penawaran->id}},
+            type: 'get',
+            data: {},
+            success: function(data) {
+            console.log(data)
+            $('#total_harga_barang').val(data.subtotal_pr)
+            $('#total').val(data.total_harga_pr[0])
+            var harga=document.getElementsByName("total[]");
+            console.log(harga);
+            for (var i = 1; i <= data.barangs.length - 1; i++) {
+                console.log(data.total_harga_pr[i])
+                harga[i].value = data.total_harga_pr[i];
+                }
+            },
+        error: function(jqXHR, textStatus, errorThrown) {}
+    });
+});
+
+
     var stepperNode = document.querySelector('#stepper')
     var stepper = new Stepper(document.querySelector('#stepper'))
 
@@ -263,10 +285,13 @@
     $('#tambahbarang').click(function() {
         // console.log(i)
         $("#formbarang").append($("#isiformbarang").clone().attr('id', 'isiformbarang' + (i + 1)));
-        $(document.querySelectorAll("#isiformbarang1")).children().children().children().css({
+        $("#isiformbarang" + (i+1)).children().children('#jumlah_barang').val("-");
+        $("#isiformbarang" + (i+1)).children().children().children('#total').val('-');
+        $(document.querySelectorAll("#isiformbarang"+ (i + 1))).children().children().children().css({
             'color': 'black',
             'cursor': 'pointer'
         })
+        i++;
         // $("#isiformbarang" + i).attr('id', 'isiformbarang' + (i + 1))
         // $("#delete" + i).attr({
         //     'id': 'delete' + (i + 1),

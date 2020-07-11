@@ -81,7 +81,7 @@
                                                                             <div class="input-group-prepend">
                                                                                 <div class="input-group-text">Rp</div>
                                                                             </div>
-                                                                            <input type="number" min='0' class="form-control" id="total" value="{{$pembayaranpiutang->pivot->total}}" name="total[]" onchange="hitung()">
+                                                                            <input type="number" min='0' class="form-control" id="total" max='{{$pembayaranpiutang->pivot->total}}' value="{{$pembayaranpiutang->pivot->total}}" name="total[]" onchange="hitung()">
                                                                             <input type="hidden" id="total_piutang" value="{{$pembayaranpiutang->sisa}}" name="total_piutang[]">
                                                                         </div>
                                                                     </div>
@@ -99,7 +99,7 @@
                                                                         <input type="hidden" name="total_harga" id="total_harga">
                                                                     </div>
                                                                 </div>
-                                                                <a href="/penjualan/piutangs">
+                                                                <a href="/penjualan/pembayarans">
                                                                     <button type="button" class="btn btn-secondary">Batal</button>
                                                                 </a>
                                                                 <a class="btn" style="background-color:#212120; color:white" onclick="stepper.previous()">Sebelumnya</a>

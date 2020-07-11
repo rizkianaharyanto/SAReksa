@@ -112,7 +112,7 @@
                                                                     </div>
                                                                     <div class="col-md-1">
                                                                         <label for="jumlah_barang">QTY</label>
-                                                                        <input type="number"style="height: 38px"  min="0" class="form-control" id="jumlah_barang" name="jumlah_barang[]" onfocus="startCalc(this);" onblur="stopCalc();" value="{{$pemesananbarang->pivot->jumlah_barang}}" placeholder="-">
+                                                                        <input type="number"style="height: 38px"  min="0" class="form-control" id="jumlah_barang" name="jumlah_barang[]" onfocus="startCalc(this);" onblur="stopCalc();disc();" value="{{$pemesananbarang->pivot->jumlah_barang}}" placeholder="-">
                                                                     </div>
                                                                     <div class="col-md-2">
                                                                         <label for="satuan_unit">Unit</label>
@@ -125,7 +125,7 @@
                                                                             <div style="height: 38px" class="input-group-prepend">
                                                                                 <div class="input-group-text">Rp</div>
                                                                             </div>
-                                                                            <input style="height: 38px" type="number" min="0" class="form-control" onfocus="startCalc(this);" onblur="stopCalc();" id="harga" name="harga[]" value="{{$pemesananbarang->pivot->harga}}"  placeholder="-">
+                                                                            <input style="height: 38px" type="number" min="0" class="form-control" onfocus="startCalc(this);" onblur="stopCalc();disc();" id="harga" name="harga[]" value="{{$pemesananbarang->pivot->harga}}"  placeholder="-">
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-3">
@@ -201,15 +201,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="form-group row mx-5 mb-5">
-                                                                    <label class="col-sm-3 col-form-label" for="termin_pembayaran">Termin Pembayaran</label>
-                                                                    <div class="col-sm-9">
-                                                                        <select class="form-control" id="termin_pembayaran" name="termin_pembayaran">
-                                                                            <option value="">--- Pilih Termin ---</option>
-                                                                            <option value="" selected>0 % 0 Net 0</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
+                                                         
                                                                 <div class="form-group row m-5 d-flex justify-content-end">
                                                                     <label class="col-sm-3 col-form-label" for="total_harga_keseluruhan">Total</label>
                                                                     <div class="col-sm-9">
@@ -217,8 +209,8 @@
                                                                             <div class="input-group-prepend">
                                                                                 <div class="input-group-text">Rp</div>
                                                                             </div>
-                                                                            <input style="width:26vw" type="number" min="0" id="total_harga_kes" disabled>
-                                                                            <input type="hidden" name="total_harga_keseluruhan" id="total_harga_keseluruhan">
+                                                                            <input style="width:26vw" type="number" value="{{$pemesanan->total_harga}}" min="0" id="total_harga_kes" disabled>
+                                                                            <input type="hidden" name="total_harga_keseluruhan" value="{{$pemesanan->total_harga}}"  id="total_harga_keseluruhan">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -247,6 +239,27 @@
 </div>
 
 <script>
+
+$(document).ready(function(){
+    $.ajax({
+            url: '/penjualan/pemesanans/' + {{$pemesanan->id}},
+            type: 'get',
+            data: {},
+            success: function(data) {
+            console.log(data)
+            $('#total_harga_barang').val(data.subtotal_psn)
+            $('#total').val(data.total_harga_psn[0])
+            var harga=document.getElementsByName("total[]");
+            console.log(harga)
+            for (var i = 1; i <= data.barangs.length - 1; i++) {
+                console.log(data.total_harga_psn[i])
+                harga[i].value = data.total_harga_psn[i];
+                }
+            },
+        error: function(jqXHR, textStatus, errorThrown) {}
+    });
+});
+
     var stepperNode = document.querySelector('#stepper')
     var stepper = new Stepper(document.querySelector('#stepper'))
 
@@ -272,10 +285,14 @@
     $('#tambahbarang').click(function() {
         // console.log(i)
         $("#formbarang").append($("#isiformbarang" + i).clone().attr('id', 'isiformbarang' + (i + 1)));
+        $("#isiformbarang" + (i+1)).children().children().children('#total').val('-');
+        $("#isiformbarang" + (i+1)).children().children('#jumlah_barang').val("-");
         $(document.querySelectorAll("#isiformbarang1")).children().children().children().css({
             'color': 'black',
             'cursor': 'pointer'
         })
+        i++;
+
         // $("#isiformbarang" + i).attr('id', 'isiformbarang' + (i + 1))
         // $("#delete" + i).attr({
         //     'id': 'delete' + (i + 1),

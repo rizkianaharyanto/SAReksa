@@ -11,6 +11,7 @@
     <th>Pelanggan</th>
     <th>Tanggal</th>
     <th>Total</th>
+    <th>Status</th>
     <th style="column-width: 80px">Aksi</th>
 </tr>
 @endsection
@@ -22,12 +23,14 @@
     <td>{{ $penawaran->pelanggan->nama_pelanggan }}</td>
     <td>{{ $penawaran->tanggal }}</td>
     <td>{{ $penawaran->total_harga }}</td>
+    <td>{{ $penawaran->status }}</td>
     <td class="d-flex justify-content-between">
         <a title="Details" id="details" href="/penjualan/penawarandetails/{{$penawaran->id}}">
             <i style="cursor: pointer;color:#212120 " class="fas fa-info-circle">
                 <span></span>
             </i>
         </a>
+        @if($penawaran->status == 'Belum dibuat pemesanan')
         <a title="Edit" id="edit" href="/penjualan/penawarans/{{$penawaran->id}}/edit">
             <i style="cursor: pointer;color:#212120" class="fas fa-edit">
                 <span></span>
@@ -38,6 +41,7 @@
                 <span></span>
             </i>
         </a>
+        @endif
     </td>
 </tr>
 

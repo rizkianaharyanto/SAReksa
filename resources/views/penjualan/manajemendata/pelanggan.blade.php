@@ -105,20 +105,20 @@
                     '@method("patch")' +
                     '@csrf' +
                     '<div class="form-group">' +
-                    '<label for="nama_pelanggan">Nama</label>' +
-                    '<input type="text" class="form-control" id="nama_pelanggan" value="' + datanya.pelanggan.nama_pelanggan + '" name="nama_pelanggan">' +
+                    '<label  for="nama_pelanggan">Nama</label>' +
+                    '<input required type="text" class="form-control" id="nama_pelanggan" value="' + datanya.pelanggan.nama_pelanggan + '" name="nama_pelanggan">' +
                     '</div>' +
                     '<div class="form-group">' +
-                    '<label for="telp_pelanggan">Telp</label>' +
-                    '<input type="number" min="0"  class="form-control" id="telp_pelanggan" value="' + datanya.pelanggan.telp_pelanggan + '" name="telp_pelanggan">' +
+                    '<label  for="telp_pelanggan">Telp</label>' +
+                    '<input required type="number" min="0"  class="form-control" id="telp_pelanggan" value="' + datanya.pelanggan.telp_pelanggan + '" name="telp_pelanggan" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="13">' +
                     '</div>' +
                     '<div class="form-group">' +
-                    '<label for="email_pelanggan">Email</label>' +
-                    '<input type="email" class="form-control" id="email_pelanggan" value="' + datanya.pelanggan.email_pelanggan + '" name="email_pelanggan">' +
+                    '<label  for="email_pelanggan">Email</label>' +
+                    '<input required type="email" class="form-control" id="email_pelanggan" value="' + datanya.pelanggan.email_pelanggan + '" name="email_pelanggan">' +
                     '</div>' +
                     '<div class="form-group">' +
                     '<label for="alamat_pelanggan">Alamat</label>' +
-                    '<input type="text" class="form-control" id="alamat_pelanggan" value="' + datanya.pelanggan.alamat_pelanggan + '" name="alamat_pelanggan">' +
+                    '<input required type="text" class="form-control" id="alamat_pelanggan" value="' + datanya.pelanggan.alamat_pelanggan + '" name="alamat_pelanggan">' +
                     '</div>' +
                     '<div class="form-group modal-footer">' +
                     '<button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>' +
@@ -171,20 +171,22 @@
         <i class="fas fa-user-circle mr-4" style="font-size:50px;color:#212120;"></i>
     </div>
     <div class="form-group">
-        <label for="nama_pelanggan">Nama Pelanggan</label>
-        <input type="text" class="form-control" id="nama_pelanggan" name="nama_pelanggan" placeholder="">
+        <label  for="nama_pelanggan">Nama Pelanggan</label>
+        <input required type="text" class="form-control" id="nama_pelanggan" name="nama_pelanggan" placeholder="">
     </div>
     <div class="form-group">
-        <label for="telp_pelanggan">Telp</label>
-        <input type="number" min='0' class="form-control" id="telp_pelanggan" name="telp_pelanggan" placeholder="">
+        <label  for="telp_pelanggan">Telp</label>
+        <input required minlength='10' type="number" min='0' class="form-control" id="telp_pelanggan" name="telp_pelanggan" placeholder="" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+    type = "number"
+    maxlength = "13">
     </div>
     <div class="form-group">
-        <label for="email_pelanggan">Email</label>
-        <input type="email" class="form-control" id="email_pelanggan" name="email_pelanggan" placeholder="">
+        <label  for="email_pelanggan">Email</label>
+        <input required type="email" class="form-control" id="email_pelanggan" name="email_pelanggan" placeholder="">
     </div>
     <div class="form-group">
-        <label for="alamat_pelanggan">Alamat</label>
-        <input type="text" class="form-control" id="alamat_pelanggan" name="alamat_pelanggan" placeholder="">
+        <label  for="alamat_pelanggan">Alamat</label>
+        <input required type="text" class="form-control" id="alamat_pelanggan" name="alamat_pelanggan" placeholder="">
     </div>
 
     @endsection

@@ -208,12 +208,12 @@ Route::prefix('penjualan')->group(function () {
     Route::get('/gudangs', 'Stock\WarehouseController@indexpenjualan')->middleware('auth');
     Route::resource('/pelanggans', 'Penjualan\PelanggansController')->middleware('auth');
     Route::resource('/penjuals', 'Penjualan\PenjualsController')->middleware('auth');
-    Route::resource('/fakturs', 'Penjualan\FaktursController');
-    Route::resource('/returs', 'Penjualan\RetursController');
-    Route::get('/fakturdetails/{id}', 'Penjualan\FaktursController@detail')->middleware('auth');
-    Route::any('/fakturs/cetak_pdf', 'Penjualan\FaktursController@cetak_pdf')->middleware('auth');
-    Route::get('/returdetails/{id}', 'Penjualan\RetursController@detail')->middleware('auth');
-    Route::any('/returs/cetak_pdf', 'Penjualan\RetursController@cetak_pdf')->middleware('auth');
+    Route::resource('/fakturs', 'Penjualan\FaktursController')->middleware('auth');
+    Route::resource('/returs', 'Penjualan\RetursController')->middleware('auth');
+    Route::get('/fakturdetails/{id}', 'Penjualan\FaktursController@detail')->middleware(['auth','checkRole:penjualan,retur,piutang']);
+    Route::any('/fakturs/cetak_pdf', 'Penjualan\FaktursController@cetak_pdf')->middleware(['auth','checkRole:penjualan,retur,piutang']);
+    Route::get('/returdetails/{id}', 'Penjualan\RetursController@detail')->middleware(['auth','checkRole:retur,piutang']);
+    Route::any('/returs/cetak_pdf', 'Penjualan\RetursController@cetak_pdf')->middleware(['auth','checkRole:retur,piutang']);
     
     //Admin Faktur
     Route::group(['middleware' => ['auth','checkRole:penjualan']], function () {
@@ -256,7 +256,8 @@ Route::prefix('penjualan')->group(function () {
         Route::any('/laporans/retur', 'Penjualan\LaporansController@retur');
         Route::any('/laporans/piutang', 'Penjualan\LaporansController@piutang');
         Route::any('/laporans/pembayaran', 'Penjualan\LaporansController@pembayaran');
-        
+        Route::any('/jurnals/filter', 'Penjualan\JurnalsController@filter');
+
         //Data master
         //cetak laporan
         Route::any('/laporans/penawaranpdf', 'Penjualan\LaporansController@cetakpenawaran');
@@ -268,6 +269,7 @@ Route::prefix('penjualan')->group(function () {
         Route::any('/laporans/pembayaranpdf', 'Penjualan\LaporansController@cetakpembayaran');
         Route::any('/laporans', 'Penjualan\LaporansController@index');
         Route::any('/jurnals', 'Penjualan\JurnalsController@index');
+        Route::get('/jurnals/filterpdf', 'Penjualan\JurnalsController@cetak_filter');
         Route::get('/jurnals/cetak_pdf', 'Penjualan\JurnalsController@cetak_pdf');
     });
 });

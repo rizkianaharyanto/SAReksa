@@ -17,6 +17,7 @@
 
 @section('tbody')
 @foreach ($pelanggans as $index => $pelanggan)
+@if($totals[$index]['total_piutang'] != 0)
 <tr>
     <td>{{ $pelanggan->nama_pelanggan }}</td>
     <td>{{ $totals[$index]['total_piutang']}}</td>
@@ -28,5 +29,6 @@
         </a>
     </td>
 </tr>
+@endif
 @endforeach
 @endsection

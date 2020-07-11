@@ -43,7 +43,7 @@
                 <span></span>
             </i>
         </a>
-        <a title="Posting" id="edit"  href="/penjualan/fakturs/{{$faktur->id}}/posting" title='Posting'>
+        <a title="Posting" id="posting"   data-toggle="modal" data-target="#posting-{{$faktur->id }}" title='Posting'>
         <i onmouseover="" style="cursor: pointer;color: #212120" class="fas fa-file-upload" title='Posting'>
                 <span></span>
             </i>
@@ -63,13 +63,23 @@
 @php
 $delete = "delete-".$faktur->id
 @endphp
-
+@php
+$posting = "posting-".$faktur->id
+@endphp
 <x-modal :id="$delete">
     <x-slot name="title">
         <h5 class="align-self-center">Hapus Faktur {{$faktur->kode_faktur}}</h5>
     </x-slot>
     <x-slot name="body">
         <x-penjualan.faktur-delete :id="$faktur->id" />
+    </x-slot>
+</x-modal>
+<x-modal :id="$posting">
+    <x-slot name="title">
+        <h5 class="align-self-center">Posting Faktur {{$faktur->kode_faktur}}</h5>
+    </x-slot>
+    <x-slot name="body">
+        <x-penjualan.faktur-posting :id="$faktur->id" />
     </x-slot>
 </x-modal>
 @endforeach
