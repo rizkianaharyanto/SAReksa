@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddStatusToStkStokOpnameTable extends Migration
+class RemoveAkunPenyesuaianOnStkStokOpnameTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddStatusToStkStokOpnameTable extends Migration
     public function up()
     {
         Schema::table('stk_stok_opname', function (Blueprint $table) {
-            $table->enum('status', ['belum posting', 'sudah posting']);
+            $table->dropColumn('akun_penyesuaian');
         });
     }
 
@@ -25,8 +25,6 @@ class AddStatusToStkStokOpnameTable extends Migration
      */
     public function down()
     {
-        Schema::table('stk_stok_opname', function (Blueprint $table) {
-            $table->dropColumn('status');
-        });
+        $table->bigInteger('akun_penyesuaian');
     }
 }

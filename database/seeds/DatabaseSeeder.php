@@ -24,7 +24,9 @@ class DatabaseSeeder extends Seeder
 
             //generall
             UserTableSeeder::class,
-            SupplierSeeder::class
+            SupplierSeeder::class,
+
+            // PenerimaanSeeder::class,
         ]);
     }
 }

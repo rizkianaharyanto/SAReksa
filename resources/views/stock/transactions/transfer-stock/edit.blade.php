@@ -34,8 +34,7 @@
         </div>
         <div class="col">
             <label for="gudangTujuan">Gudang Tujuan</label>
-            <select required class="form-control selectpicker" style="background-color: rgb(77, 134, 167)">
-                name="gudang_tujuan" id="gudangTujuan">
+            <select name="gudang_tujuan" required class="form-control" id="gudangTujuan">
                 @foreach($gudangs as $gudang)
                 <option value="{{$gudang->id}}" {{$gudang->id == "$transferStock->gudang_tujuan" ? "selected" : "" }}>
                     {{$gudang->kode_gudang}}</option>
@@ -68,7 +67,7 @@
     @enderror
     @foreach($transferStock->items as $index => $barang)
     <div id="formbarang" class="d-flex flex-column">
-        <div id="isibarangs" class="d-flex">
+        <div class="d-flex inputbarangs">
             <div class="m-3">
                 <label for="field4">Barang</label>
                 <select class="form-control" name="barang_id[]" id="item_id">
@@ -101,9 +100,42 @@
 @parent
 
 <script>
-    function tambah(){
-    $("#formbarang").append($("#isibarangs").clone());
-}
+    $('#gudangAsal').change(function() {
+
+    let selectedGudang = $(this).find('option:selected').val()
+    let allGudangOptions = $(this).find('option');
+
+
+    $('#gudangTujuan').empty();
+    allGudangOptions.clone().appendTo('#gudangTujuan');        
+
+
+    $('#gudangTujuan option').each(function(index, data) {
+        
+        if($(this).val() == selectedGudang){
+                $(this).remove();
+            }
+    })
+})
+function tambah() {
+        let selected = $('.inputbarangs').last().find('option:selected').val();
+        let barangInput = $(".inputbarangs").last().clone()
+        barangInput.find('option').each(function (index,data){
+            if($(this).val() == selected)
+            {
+                $(this).remove();
+            }
+        })
+        if ($(".inputbarangs").last().is(':first-child')) {
+            $("#formbarang").append(barangInput);
+            
+            $("#formbarang").find('.inputbarangs').last().append(' <a type="button" class="m-3 pt-4" onclick="hapus(this)"><i class="fas fa-window-close" style="color: red; cursor: pointer"></i></a>');
+        }
+        else{
+            $("#formbarang").append(barangInput);
+            
+        }
+    }
 
 $("#gudangAsal").change(function(){
     $.ajax({
@@ -115,7 +147,9 @@ $("#gudangAsal").change(function(){
                 console.log(data.length)
             $('#item_id').empty()
             for (i = 0; i < data.length; i++) {
-                $("#item_id").append('<option value="' + data[i].barang.id + '">' + data[i].barang.nama_barang + '</option>')
+                if(data[i].kuantitas != 0){
+                    $(".isibarangs").append('<option value="' + data[i].barang.id + '">' + data[i].barang.nama_barang + `       \t(${data[i].kuantitas})`+'</option>')
+                }
             }
         }
     })

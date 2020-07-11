@@ -17,14 +17,12 @@
     </ul>
 </div>
 @endif<tr>
-    <th>#</th>
+    <th>Tanggal</th>
     <th>Kode Referensi</th>
     <th>Gudang</th>
     <th>Deskripsi</th>
     <th>Jumlah Barang</th>
-    <!-- <th>Departemen</th> -->
-
-    <th>Tanggal</th>
+    <th>Status</th>
     <th>Opsi</th>
 </tr>
 @endsection
@@ -33,13 +31,13 @@
 @section('table-body')
 @foreach ($stockAdjustments as $i => $stockAdjustment)
 <tr>
-    <td> {{$i+1}}</td>
+    <td> {{  $stockAdjustment->created_at->toDateString()}}</td>
     <td> {{ $stockAdjustment->kode_ref }}</td>
     <td> {{ $stockAdjustment->gudang->kode_gudang}}</td>
     <td> {{ $stockAdjustment->deskripsi }} </td>
     <td> {{ count($stockAdjustment->details) }} </td>
+    <td> {{$stockAdjustment->status}}</td>
     <!-- <td> {{ $stockAdjustment->departemen }} </td> -->
-    <td> {{  $stockAdjustment->created_at->toDateString()}}</td>
     <td>
         <center>
             <div class="dropright">
@@ -50,11 +48,13 @@
                 </button>
                 <div class="dropdown-menu">
                     <!-- Dropdown menu links -->
-                    <a class="dropdown-item" href="/stok/penyesuaian-stock/{{$stockAdjustment->id}}/edit" data-form="Edit Data"> Edit</a>
+                    <a class="dropdown-item" href="/stok/penyesuaian-stock/{{$stockAdjustment->id}}/edit"
+                        data-form="Edit Data"> Edit</a>
                     <a class="delete-jquery dropdown-item" data-method="delete"
                         href="{{ route('barang.destroy', $stockAdjustment->id) }}">Delete </a>
                     <a class="dropdown-item " href="/stok/penyesuaian-stock/{{$stockAdjustment->id}}">Details</a>
-                    <a class="dropdown-item " href="/stok/penyesuaian-stock/posting/{{$stockAdjustment->id}}">Posting</a>
+                    <a class="dropdown-item "
+                        href="/stok/penyesuaian-stock/posting/{{$stockAdjustment->id}}">Posting</a>
 
                 </div>
             </div>
@@ -72,7 +72,7 @@
 @section('modal-form-method','POST')
 
 <label for="field1">Kode Referensi </label>
-<input class="form-control" type="text" name="kode_ref" value="PNY-{{count($stockAdjustments)+1}}" id="field1">
+<input class="form-control" readonly type="text" name="kode_ref" value="PNY-{{count($stockAdjustments)+1}}" id="field1">
 <label for="gudang">Gudang </label>
 
 <select class="form-control selectpicker" name="warehouse_id" id="gudang_id">
@@ -88,10 +88,10 @@
 <label for="gudang_id">Gudang</label>
 
 <div id="formbarang" class="d-flex flex-column">
-    <div id="isibarangs" class="d-flex">
+    <div class="d-flex inputbarangs">
         <div class="m-3">
             <label for="field4">Barang</label>
-            <select class="form-control" name="item_id[]" id="item_id">
+            <select class="form-control isibarangs" name="item_id[]" id="item_id">
                 <option value="">--- Pilih Barang ---</option>
 
             </select>
@@ -115,15 +115,24 @@
 @parent
 
 <script>
-    function populateBarangs() {
-        
-    }
-
     function tambah(){
-        let barangInput = $("#isibarangs").clone()
-         $("#formbarang").append(barangInput);
-         barangInput.append(' <a type="button" class="m-3 pt-4" onclick="hapus(this)"><i class="fas fa-window-close" style="color: red; cursor: pointer"></i></a>')
-    
+        let selected = $('.inputbarangs').last().find('option:selected').val();
+        let barangInput = $(".inputbarangs").last().clone()
+        barangInput.find('option').each(function (index,data){
+            if($(this).val() == selected)
+            {
+                $(this).remove();
+            }
+        })
+        if ($(".inputbarangs").last().is(':first-child')) {
+            $("#formbarang").append(barangInput);
+            
+            $("#formbarang").find('.inputbarangs').last().append(' <a type="button" class="m-3 pt-4" onclick="hapus(this)"><i class="fas fa-window-close" style="color: red; cursor: pointer"></i></a>');
+        }
+        else{
+            $("#formbarang").append(barangInput);
+            
+        }
     }
 
     function hapus(x){
@@ -135,15 +144,20 @@
             type: 'get',
             retur: {},
             success: function(data) {
-                    console.log(data)
-                    console.log(data.length)
+                 
                 $('#item_id').empty()
                 $("#item_id").append('<option value="">--- Pilih Barang ---</option>')
                 for (i = 0; i < data.length; i++) {
-                    $("#item_id").append('<option value="' + data[i].barang.id + '">' + data[i].barang.nama_barang + '</option>')
+                    $(".isibarangs").append(`<option value="${data[i].barang.id}" data-kuantitas=${data[i].kuantitas} >` + data[i].barang.nama_barang + `       \t(${data[i].kuantitas})`+'</option>')
                 }
             }
         })
+    })
+    $(".isibarangs").change(function (){
+        let selectedBarang = $(this).find('option:selected');
+        let kuantitasBarang = selectedBarang.data('kuantitas');
+        $(this).parent().next().find('input').attr('min',-1 *kuantitasBarang);
+        
     })
 </script>
 <script>

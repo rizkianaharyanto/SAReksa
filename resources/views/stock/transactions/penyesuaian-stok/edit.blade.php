@@ -27,7 +27,7 @@
     </select>
     @error('kode_ref')
     <div class="alert alert-danger">{{ $message }}</div>
-    
+
 
     @enderror
     <label for="field3">Deskripsi: </label>
@@ -36,7 +36,7 @@
     <div class="alert alert-danger">{{ $message }}</div>
 
     @enderror
-    
+
     <label for="field4">akun_penyesuaian</label>
     <input class="form-control" type="text" name="akun_penyesuaian" id="field3"
         value="{{$penyesuaian->akun_penyesuaian}}">
@@ -46,7 +46,7 @@
     @enderror
     @foreach($penyesuaian->details as $index => $barang)
     <div id="formbarang" class="d-flex flex-column">
-        <div id="isibarangs" class="d-flex">
+        <div class="d-flex inputbarangs">
             <div class="m-3 select">
                 <label for="field4">Barang</label>
                 <select class="form-control isibarangs" name="item_id[]">
@@ -60,7 +60,8 @@
 
             <div class="m-3 qty">
                 <label for="field4">Selisih Stok</label>
-                <input type="number" class="form-control" name="quantity_diff[]" value="{{$barang->pivot->quantity_diff}}">
+                <input type="number" class="form-control" name="quantity_diff[]"
+                    value="{{$barang->pivot->quantity_diff}}">
 
                 @error('quantity_diff[]')
                 <div class="alert alert-danger">{{ $message }}</div>
@@ -80,17 +81,33 @@
 
 <script>
     let i = 0 
-    function tambah(){
-         let barangInput = $("#isibarangs").clone()
-
-          console.log(barangInput.children('select').html());
-         $("#formbarang").append(barangInput);
-         barangInput.append(' <a type="button" class="m-3 pt-4" onclick="hapus(this)"><i class="fas fa-window-close" style="color: red; cursor: pointer"></i></a>')
+    function tambah() {
+        let selected = $('.inputbarangs').last().find('option:selected').val();
+        let barangInput = $(".inputbarangs").last().clone()
+        barangInput.find('option').each(function (index,data){
+            if($(this).val() == selected)
+            {
+                $(this).remove();
+            }
+        })
+        if ($(".inputbarangs").last().is(':first-child')) {
+            $("#formbarang").append(barangInput);
+            
+            $("#formbarang").find('.inputbarangs').last().append(' <a type="button" class="m-3 pt-4" onclick="hapus(this)"><i class="fas fa-window-close" style="color: red; cursor: pointer"></i></a>');
+        }
+        else{
+            $("#formbarang").append(barangInput);
+            
+        }
     }
-
     function hapus(x){
         $(x).parent().remove()
     }
+
+
+    $('#modal').on('hide.bs.modal', function (e) {
+      document.getElementById("transactionForm").reset();
+    })    
 
 $("#gudang_id").change(function(){
     $.ajax({
@@ -102,12 +119,18 @@ $("#gudang_id").change(function(){
                 console.log(data.length)
             $('.isibarangs').empty()
             for (i = 0; i < data.length; i++) {
-                $(".isibarangs").append('<option value="' + data[i].barang.id + '">' + data[i].barang.nama_barang + '</option>')
+                $(".isibarangs").append(`<option value="${data[i].barang.id}" data-kuantitas=${data[i].kuantitas} >` + data[i].barang.nama_barang + `       \t(${data[i].kuantitas})`+'</option>')
+                
             }
         }
     })
 })
-
+$(".isibarangs").change(function()  {
+        let selectedBarang = $(this).find('option:selected');
+        let kuantitasBarang = selectedBarang.data('kuantitas');
+        $(this).parent().next().find('input').attr('min',-1 *kuantitasBarang);
+        
+    })
 </script>
 <script>
     const title = "@yield('title')".toLowerCase().replace('data','').trim().replace(' ','-');
