@@ -41,10 +41,12 @@
                      <label>Password</label>
                      <input required name="password" type="password" class="form-control" placeholder="Password">
                   </div>
+                  <center>
                   <button type="submit" class="btn btn-black">Login</button>
-                  <a href="/penjualan/register">
+                  <!-- <a href="/penjualan/register">
                   <button type="button" class="btn btn-secondary">Register</button>
-                  </a>
+                  </a> -->
+                  </center>
                </form>
             </div>
          </div>

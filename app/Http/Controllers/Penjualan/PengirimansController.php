@@ -106,6 +106,12 @@ class PengirimansController extends Controller
      */
     public function store(ItemService $itmSrv, Request $request)
     {
+        // dd($request);
+        if($request->jumlah_barang == NULL){
+            session()->flash('message', 'Pengiriman gagal. Tidak ada data barang');
+            session()->flash('status', 'gagal');
+            return redirect()->back()->with('message', 'Pengiriman gagal. Tidak ada data barang'); 
+        }
         //Cek Stok
         $stok = 0;
         $allDataBarang = $itmSrv->getAllStocksQty();
@@ -123,6 +129,8 @@ class PengirimansController extends Controller
             }
         }
         // dd($request);
+        Pemesanan::where('id',$request->pemesanan_id)
+        ->update(['status' => 'terkirim sebagian']);
         session()->flash('message', 'Pengiriman berhasil ditambahkan');
         session()->flash('status', 'tambah');
         $pgr = Pengiriman::max('id') + 1;
@@ -141,7 +149,7 @@ class PengirimansController extends Controller
             'penjual_id' => $request->penjual_id,
             'total_harga' => $request->total_harga_keseluruhan,
         ]);
-
+            
         // dd($jurnal);
         $pemesanan = $pengiriman->pemesanan;
         foreach ($request->barang_id as $index => $id) {
@@ -158,47 +166,16 @@ class PengirimansController extends Controller
 
     public function posting(ItemService $itmSrv, $idnya)
     {
+        $pengiriman = Pengiriman::find($idnya);
+
+        if($pengiriman->status == 'sudah posting' || $pengiriman->status == 'selesai' || $pengiriman->status == 'dalam pengiriman'){
+            return redirect()->back();
+        }
         $stok = 0;
         session()->flash('message', 'Pengiriman berhasil diposting');
         session()->flash('status', 'tambah');
-        $pengiriman = Pengiriman::find($idnya);
         $pemesanan = $pengiriman->pemesanan;
         $allDataBarang = $itmSrv->getAllStocksQty();
-
-        foreach ($pengiriman->barangs as $index => $barang) {
-            $a = $pemesanan->barangs()->where('barang_id', $barang->id)->first()->pivot->barang_belum_diterima;
-            $b = $barang->pivot->jumlah_barang;
-            $belum_diterima = $a - $b;
-
-            // dd($allDataBarang);
-            foreach($allDataBarang as $databarang){
-                // dd($databarang['id']);
-                if($databarang['id'] == $barang->id){
-                    $stok = $databarang['kuantitas_total'];
-                }
-            }
-
-            if($stok >= $b){
-                //update stock
-                try {
-                    $this->itemService->updateStocks($barang->id, $pengiriman->gudang, ($b*-1));
-                    // dd("berhasil");
-                } catch (\Throwable $th) {
-                    dd('Gagal');
-                }
-            }else {
-                session()->flash('message', 'Stok kurang');
-                session()->flash('status', '');
-                return redirect('/penjualan/pengirimans');
-            }
-
-            $pemesanan->barangs()->where('barang_id', $barang->id)->update(array('barang_belum_diterima' => $belum_diterima));
-            if ($belum_diterima == 0) {
-                $pemesanan->barangs()->where('barang_id', $barang->id)->update(array('status_barang' => 'terkirim'));
-            } else {
-                $pemesanan->barangs()->where('barang_id', $barang->id)->update(array('status_barang' => 'belum terkirim'));
-            }
-        }
 
         Pengiriman::where('id', $pengiriman->id)
                     ->update(['status' => 'sudah posting']);
@@ -208,6 +185,7 @@ class PengirimansController extends Controller
         for ($i = 1; $i < 3; ++$i) {
             $jurnal = Jurnal::create([
             'kode_jurnal' => 'jur'.$no,
+            'tanggal' => $pengiriman->tanggal,
             'pengiriman_id' => $pengiriman->id,
             'debit' => 0,
             'kredit' => 0,
@@ -224,15 +202,6 @@ class PengirimansController extends Controller
                 ]);
             }
         }
-
-        
-        $status = $pemesanan->barangs()->where('status_barang', 'belum terkirim')->first();
-        // dd($status);
-            if ($status) {
-                $pemesanan->update(array('status' => 'terkirim sebagian'));
-            }else{
-                $pemesanan->update(array('status' => 'terkirim'));
-            }
         
         return redirect('/penjualan/pengirimans');
     }
@@ -246,9 +215,20 @@ class PengirimansController extends Controller
     {
         $pengiriman = Pengiriman::find($id);
         $barangs = $pengiriman->barangs;
+        $total_seluruh_png = $pengiriman->total_harga;
+        $total_harga_png = [];
+        $subtotal_png = 0;
+        foreach ($barangs as $index => $barang) {
+            $total_harga_png[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
+            $subtotal_png += $total_harga_png[$index];
+        }
         // dd($barangs);
         return response()
-            ->json(['success' => true, 'pengiriman' => $pengiriman, 'barangs' => $barangs]);
+            ->json(['success' => true, 'pengiriman' => $pengiriman, 'barangs' => $barangs,
+            'total_seluruh_png' => $total_seluruh_png,
+            'total_harga_png' => $total_harga_png,
+            'subtotal_png' => $subtotal_png,
+            ]);
     }
 
     public function detail($id)
@@ -265,7 +245,6 @@ class PengirimansController extends Controller
             $total_harga[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
             $subtotal += $total_harga[$index];
         }
-        // dd($total_harga, $total_seluruh);
         return view('penjualan.penjualan.pengiriman.pengirimandetails', [
             'pengiriman' => $pengiriman, 
             'gudang' => $gudang,
@@ -314,6 +293,9 @@ class PengirimansController extends Controller
      */
     public function edit(Pengiriman $pengiriman)
     {
+        if($pengiriman->status != 'dalam pengiriman' ){
+            return redirect()->back();
+        }
         return view('penjualan.penjualan.pengiriman.pengirimanedit', [
             'pengiriman' => $pengiriman,
             'pelanggans' => Pelanggan::all(),
@@ -332,6 +314,7 @@ class PengirimansController extends Controller
      */
     public function update(ItemService $itmSrv, Request $request, Pengiriman $pengiriman)
     {
+    // dd($request);
         $stok = 0;
         $pemesanan = $pengiriman->pemesanan;
         //Cek stock
@@ -351,13 +334,12 @@ class PengirimansController extends Controller
         }
         // dd($request->akun_barang);
         
-        // dd($request);
+        // dd($pemesanan->barangs);
         session()->flash('message', 'Pengiriman berhasil dikonfirmasi');
         session()->flash('status', 'tambah');
         Pengiriman::where('id', $pengiriman->id)
             ->update([
                 'kode_pengiriman' => $request->kode_pengiriman,
-                'pelanggan_id' => $request->pelanggan_id,
                 'gudang' => $request->gudang,
                 'status' => 'terkirim',
                 'tanggal' => $request->tanggal,
@@ -378,7 +360,31 @@ class PengirimansController extends Controller
                     ]);
         }
 
-        $pemesanan->update(array('status' => 'terkirim sebagian'));
+        foreach ($pengiriman->barangs as $index => $barang) {
+            $a = $pemesanan->barangs()->where('barang_id', $barang->id)->first()->pivot->barang_belum_diterima;
+            $b = $barang->pivot->jumlah_barang;
+            $belum_diterima = $a - $b;
+            try {
+                $this->itemService->updateStocks($barang->id, $pengiriman->gudang, ($b*-1));
+                // dd("berhasil");
+            } catch (\Throwable $th) {
+                dd('Gagal');
+            }
+
+            $pemesanan->barangs()->where('barang_id', $barang->id)->update(array('barang_belum_diterima' => $belum_diterima));
+            if ($belum_diterima == 0) {
+                $pemesanan->barangs()->where('barang_id', $barang->id)->update(array('status_barang' => 'terkirim'));
+            } else {
+                $pemesanan->barangs()->where('barang_id', $barang->id)->update(array('status_barang' => 'belum terkirim'));
+            }
+        }
+        $status = $pemesanan->barangs()->where('status_barang', 'belum terkirim')->first();
+        // dd($status);
+            if ($status) {
+                $pemesanan->update(array('status' => 'terkirim sebagian'));
+            }else{
+                $pemesanan->update(array('status' => 'terkirim'));
+            }
         return redirect('/penjualan/pengirimans');
     }
 
@@ -392,7 +398,10 @@ class PengirimansController extends Controller
     {
         session()->flash('message', 'Pengiriman berhasil dihapus');
         session()->flash('status', 'hapus');
+        Pemesanan::where('id',$pengiriman->pemesanan_id)
+        ->update(['status' => 'baru']);
         Pengiriman::destroy($pengiriman->id);
+
         return redirect('/penjualan/pengirimans');
     }
 }

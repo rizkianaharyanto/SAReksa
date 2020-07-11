@@ -9,14 +9,14 @@
 <div class="content">
         <div class="row">
             <div class="col-md-12">
-                <div class="">
+                <div class="card">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="card card-plain">
+                                <div class="card card-plain" style='margin-bottom:-40px'>
                                     <div class="card-body">
                                         <div class="d-flex justify-content-center">
-                                            <div id="stepper" class="bs-stepper align-self-end" style=" width:80vw; max-height:60vh; color:black;">
+                                            <div id="stepper" class="bs-stepper align-self-end" style=" width:80vw; max-height:; color:black;">
                                                 <div class="bs-stepper-header">
                                                     <div class="step" data-target="#test-l-1">
                                                         <button type="button" class="btn step-trigger">
@@ -50,11 +50,12 @@
                                                         <input type="hidden" id="penjual_id" name="penjual_id" value="{{ $faktur->penjual_id }}">
                                                         <input type="hidden" id="status" name="status" value="{{ $faktur->status }}">
                                                         <input type="hidden" id="piutang" name="piutang">
-                                                            <div style="height: 58vh;overflow: auto; color:black" class="mt-2">
+                                                        <input type="hidden" id="akun_barang" name="akun_barang" value="{{ $faktur->akun_barang }}">
+                                                            <div style="height: ;overflow: auto; color:black" class="mt-2">
                                                                 <div class="form-group row mx-5 mb-5">
                                                                     <label class="col-sm-3 col-form-label" for="pelanggan_id">Pelanggan</label>
                                                                     <div class="col-sm-9">
-                                                                        <select class="form-control" id="pelanggan_id">
+                                                                        <select disabled class="form-control" id="pelanggan_id">
                                                                             @foreach ($pelanggans as $pelanggan)
                                                                             <option value="{{$pelanggan->id}}"{{ $pelanggan->id ==  "$faktur->pelanggan_id" ? "selected" : "" }}>{{ $pelanggan->nama_pelanggan }}</option>
                                                                             @endforeach
@@ -77,12 +78,17 @@
                                                         </div>
                                                         <div id="test-l-2" class="content">
                                                             <div style="" id="checkBarang">
-                                                                <div style="overflow: auto; height: 41vh;" id="formbarang">
+                                                                <div style="overflow: auto; height: ;" id="formbarang">
                                                                 @foreach ($faktur->barangs as $fakturbarang)
                                                                     <div class="form-row mx-5" id="isiformbarang0">
                                                                         <div class="form-group col-md-3">
                                                                             <label for="nama_barang" id="lbl">Barang</label>
-                                                                            <select class="form-control" onchange="isi(this)" id="barang_id" name="barang_id[]">
+                                                                            <select disabled class="form-control" onchange="isi(this)" id="barang_id_ui" name="barang_id_ui[]">
+                                                                                @foreach ($barangs as $barang)
+                                                                                <option value="{{$barang->id}}" {{$barang->id == $fakturbarang->pivot->barang_id ? "selected" : "" }}>{{ $barang->nama_barang }}</option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                            <select hidden class="form-control" onchange="isi(this)" id="barang_id" name="barang_id[]">
                                                                                 @foreach ($barangs as $barang)
                                                                                 <option value="{{$barang->id}}" {{$barang->id == $fakturbarang->pivot->barang_id ? "selected" : "" }}>{{ $barang->nama_barang }}</option>
                                                                                 @endforeach
@@ -90,9 +96,10 @@
                                                                         </div>
                                                                         <div class="form-group col-md-1">
                                                                             <label for="jumlah_barang">QTY</label>
-                                                                            <input type="number"style="height: 38px"  min="0" class="form-control"  onfocus="startCalc(this);" onblur="stopCalc();"  id="jumlah_barang" name="jumlah_barang[]" value="{{$fakturbarang->pivot->jumlah_barang}}" placeholder="-">
+                                                                            <input type="number" disabled style="height: 38px"  min="0" class="form-control"  onfocus="startCalc(this);" onblur="stopCalc();disc();"  id="jumlah_barang_ui" name="jumlah_barang_ui[]" value="{{$fakturbarang->pivot->jumlah_barang}}" placeholder="-">
+                                                                            <input type="hidden"style="height: 38px"  min="0" class="form-control"  onfocus="startCalc(this);" onblur="stopCalc();disc();"  id="jumlah_barang" name="jumlah_barang[]" value="{{$fakturbarang->pivot->jumlah_barang}}" placeholder="-">
                                                                         </div>
-                                                                        <div class="form-group col-md-1">
+                                                                        <div class="form-group col-md-2">
                                                                             <label for="satuan_unit">Unit</label>
                                                                             <input type="text" style="height: 38px" class="form-control" id="uni" value='' placeholder="{{$fakturbarang->pivot->unit}}" disabled>
                                                                             <input type="hidden" value="{{$fakturbarang->pivot->unit}}" id="unit" name="unit_barang[]">
@@ -103,7 +110,8 @@
                                                                                 <div style="height: 38px" class="input-group-prepend">
                                                                                     <div class="input-group-text">Rp</div>
                                                                                 </div>
-                                                                                <input style="height: 38px" type="number"min="0" class="form-control" onfocus="startCalc(this);" onblur="stopCalc();" id="harga" name="harga[]" value="{{$fakturbarang->pivot->harga}}"  placeholder="-">
+                                                                                <input style="height: 38px" disabled type="number"min="0" class="form-control" onfocus="startCalc(this);" onblur="stopCalc()disc();" id="harga_ui" name="harga_ui[]" value="{{$fakturbarang->pivot->harga}}"  placeholder="-">
+                                                                                <input style="height: 38px" type="hidden" min="0" class="form-control" onfocus="startCalc(this);" onblur="stopCalc()disc();" id="harga" name="harga[]" value="{{$fakturbarang->pivot->harga}}"  placeholder="-">
                                                                             </div>
                                                                         </div>
                                                                         <div class="form-group col-md-3">
@@ -115,16 +123,15 @@
                                                                                 <input style="height: 38px" type="number" min="0"class="form-control" id="total" name="total[]" disabled>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="form-group col-md-1">
+                                                                        <!-- <div class="form-group col-md-1">
                                                                             <p style="color: transparent">#</p>
                                                                             <a onclick="hapus(this)">
                                                                                 <i style="color:grey;" class="fas fa-trash"></i>
                                                                             </a>
-                                                                        </div>
+                                                                        </div> -->
                                                                     </div>
                                                                     @endforeach
                                                                 </div>
-                                                                
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <div class="d-flex mr-auto">
@@ -144,7 +151,7 @@
                                                             </div>
                                                         </div>
                                                         <div id="test-l-3" class="content">
-                                                        <div style="height: 58vh;overflow:auto" class="mt-2">
+                                                        <div style="height: ;overflow:auto" class="mt-2">
                         <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="diskon">Diskon</label>
                             <div class="col-sm-3">
@@ -161,8 +168,8 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" min="0" class="form-control" id="diskoo" onchange="disc();" placeholder="-" disabled>
-                                    <input type="hidden" class="form-control" id="disk"  name="disk" placeholder="-">
+                                    <input type="number" min="0" class="form-control" id="diskoo" value="{{$faktur->diskon_rp}}" onchange="disc();" placeholder="-" disabled>
+                                    <input type="hidden" class="form-control" id="disk"  name="disk" value="{{$faktur->diskon_rp}}" placeholder="-">
                                 </div>
                             </div>
                         </div>
@@ -173,7 +180,8 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" min="0" class="form-control" name="biaya_lain" onchange="disc();" value="{{$faktur->biaya_lain}}" id="biaya_lain" placeholder="-">
+                                    <input type="number" disabled min="0" class="form-control" name="biaya_lain_ui" onchange="disc();" value="{{$faktur->biaya_lain}}" id="biaya_lain_ui" placeholder="-">
+                                    <input type="hidden" min="0" class="form-control" name="biaya_lain" onchange="disc();" value="{{$faktur->biaya_lain}}" id="biaya_lain" placeholder="-">
                                 </div>
                             </div>
                         </div>
@@ -205,10 +213,10 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Rp</div>
                                 </div>
-                                <input style="width:26vw" type="number" min="0" id="total_harga_kes" disabled>
-                                <input type="hidden" name="total_harga_keseluruhan" id="total_harga_keseluruhan">
+                                <input style="width:26vw" type="number" min="0" value='{{$faktur->total_harga}}' id="total_harga_kes" disabled>
+                                <input type="hidden" name="total_harga_keseluruhan" value='{{$faktur->total_harga}}' id="total_harga_keseluruhan">
                             </div>
-                            <input class="ml-4 mt-2" type="checkbox" onclick="checkLunas(this)" />
+                            <input class="ml-4 mt-2" id="lunas" type="checkbox" onclick="checkLunas(this)" />
                             <h5 class="ml-2">Lunas</h5>
                         </div>        
                                                                 <a href="/penjualan/fakturs">
@@ -234,6 +242,39 @@
 </div>
 
 <script>
+$(document).ready(function(){
+    var status = '{{$faktur->status}}'
+    console.log(status)
+    if(status == "lunas"){
+        // $("#lunas").attr('value', '1')
+        $("#status").val('lunas')
+            $("#akun-form").removeAttr('style')
+            $("#sisa").html('Total')
+            $("#uang-muka-form").css('display', 'none')
+    }
+});
+
+$(document).ready(function(){
+    $.ajax({
+            url: '/penjualan/fakturs/' + {{$faktur->id}},
+            type: 'get',
+            data: {},
+            success: function(data) {
+            console.log(data)
+            $('#total_harga_barang').val(data.subtotal_fk)
+            $('#total').val(data.total_harga_fk[0])
+            var harga=document.getElementsByName("total[]");
+            console.log(harga)
+            for (var i = 1; i <= data.barangs.length - 1; i++) {
+                console.log(data.total_harga_fk[i])
+                harga[i].value = data.total_harga_fk[i];
+                }
+            },
+        error: function(jqXHR, textStatus, errorThrown) {}
+    });
+});
+
+
 var message = '{{ Session::get('message')}}';
     var status = '{{ Session::get('status')}}';
     if(message){
@@ -354,6 +395,9 @@ var message = '{{ Session::get('message')}}';
             $('#total_harga_kes').val(hutang)
             $('#total_harga_keseluruhan').val(hutang)
         }
+        $("#uang_muka").attr({
+                                "max" : hutang 
+                            });
         console.log(
             'barang:', barang,
             'dis:', dis,

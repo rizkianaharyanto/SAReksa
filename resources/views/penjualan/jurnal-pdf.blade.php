@@ -20,6 +20,7 @@
     <div class="page">
 	<center class="mb-4">
 		<h5>Jurnal Transaksi Penjualan Reksa Karya</h4>
+        <h5>{{$periode ?? ''}} {{$bulan ?? ''}} {{$tahun ?? ''}}</h5>
 	</center>
 
 	<table class="table table-sm table-striped table-bordered">
@@ -62,7 +63,7 @@
                                 @if ($index->akun_id == 1) barang
                                 @elseif ($index->akun_id == 2) barang belum ditagih
                                 @elseif ($index->akun_id == 3) biaya lain
-                                @elseif ($index->akun_id == 4) hutang
+                                @elseif ($index->akun_id == 4) piutang
                                 @elseif ($index->akun_id == 5) potongan penjualan
                                 @elseif ($index->akun_id == 6) kas
                                 @else -

@@ -46,7 +46,6 @@ class PembayaransController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
         session()->flash('message', 'Pembayaran berhasil ditambahkan');
         session()->flash('status', 'tambah');
         $byr = Pembayaran::max('id') + 1;
@@ -57,14 +56,11 @@ class PembayaransController extends Controller
             'total' => $request->total_harga,
             'status_posting' => 'belum posting',
         ]);
-
-
         foreach ($request->piutang_id as $index => $id) {
             $pembayaran->piutangs()->attach($id, [
                 'total' => $request->total[$index],
             ]);
         }
-
         return redirect('/penjualan/pembayarans');
     }
     
@@ -88,7 +84,6 @@ class PembayaransController extends Controller
         
         $pembayaran = Pembayaran::find($id);
         $piutangs = $pembayaran->piutangs;
-        // dd($total_harga, $total_seluruh);
         return view('penjualan.piutang.pembayarandetails', [
             'pembayaran' => $pembayaran, 
             'piutangs' => $piutangs,
@@ -110,10 +105,12 @@ class PembayaransController extends Controller
 
     public function posting($idnya)
     {
-        
+        $pembayaran = Pembayaran::find($idnya);
+        if($pembayaran->status_posting=='sudah posting'){
+            return redirect()->back();
+        }
         session()->flash('message', 'Pembayaran berhasil diposting');
         session()->flash('status', 'tambah');
-        $pembayaran = Pembayaran::find($idnya);
         Pembayaran::where('id', $pembayaran->id)
                     ->update(['status_posting' => 'sudah posting']);
         // dd($pembayaran->total);
@@ -144,6 +141,7 @@ class PembayaransController extends Controller
         $no = Jurnal::max('id') + 1;
         for ($i = 1; $i < 3; ++$i) {
             $jurnal = Jurnal::create([
+                'tanggal' => $pembayaran->tanggal,
                 'kode_jurnal' => 'jur'.$no,
                 'pembayaran_id' => $pembayaran->id,
                 'debit' => 0,
@@ -172,6 +170,10 @@ class PembayaransController extends Controller
      */
     public function edit(Pembayaran $pembayaran)
     {
+        if ( $pembayaran->status_posting =='sudah posting'){
+            return redirect()->back();
+        }
+
         // dd($pembayaran->piutangs);
         return view('penjualan.piutang.pembayaranedit', [
             'pembayaran' => $pembayaran,
@@ -190,7 +192,6 @@ class PembayaransController extends Controller
     public function update(Request $request, Pembayaran $pembayaran)
     {
         
-        // dd($request);
         session()->flash('message', 'Pembayaran berhasil diubah');
         session()->flash('status', 'tambah');
         Pembayaran::where('id', $pembayaran->id)

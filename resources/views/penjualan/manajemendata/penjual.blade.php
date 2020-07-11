@@ -22,18 +22,18 @@
     <td>{{ $penjual->nama_penjual }}</td>
     <td>{{ $penjual->telp_penjual }}</td>
     <td class="d-flex justify-content-between">
-        <a id="details" data-toggle="modal" data-target="#modal" data-id="{{ $penjual->id }}" >
+        <a title="Details" id="details" data-toggle="modal" data-target="#modal" data-id="{{ $penjual->id }}" >
             <i style="cursor: pointer;" class="fas fa-info-circle">
                 <span></span>
             </i>
         </a>
         @if (auth()->user()->role == 'penjualan')
-        <a id="edit" data-toggle="modal" data-target="#modal" data-id="{{ $penjual->id }}" >
+        <a title="Edit" id="edit" data-toggle="modal" data-target="#modal" data-id="{{ $penjual->id }}" >
             <i style="cursor: pointer;" class="fas fa-edit">
                 <span></span>
             </i>
         </a>
-        <a id="delete" data-toggle="modal" data-target="#modal" data-id="{{ $penjual->id }}">
+        <a title="Delete" id="delete" data-toggle="modal" data-target="#modal" data-id="{{ $penjual->id }}">
             <i style="cursor: pointer;" class="fas fa-trash">
                 <span></span>
             </i>
@@ -104,19 +104,19 @@
                     '@csrf' +
                     '<div class="form-group">' +
                     '<label for="nama_penjual">Nama</label>' +
-                    '<input type="text" class="form-control" id="nama_penjual" name="nama_penjual" value="' + datanya[index].nama_penjual + '">' +
+                    '<input required type="text" class="form-control" id="nama_penjual" name="nama_penjual" value="' + datanya[index].nama_penjual + '">' +
                     '</div>' +
                     '<div class="form-group">' +
                     '<label for="telp_penjual">Telp</label>' +
-                    '<input type="number" min="0" class="form-control" id="telp_penjual" name="telp_penjual" value="' + datanya[index].telp_penjual + '">' +
+                    '<input  required type="number" min="0" class="form-control" id="telp_penjual" name="telp_penjual" value="' + datanya[index].telp_penjual + '"oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="13">' +
                     '</div>' +
                     '<div class="form-group">' +
                     '<label for="email_penjual">Email</label>' +
-                    '<input type="email" class="form-control" id="email_penjual" name="email_penjual" value="' + datanya[index].email_penjual + '">' +
+                    '<input required type="email" class="form-control" id="email_penjual" name="email_penjual" value="' + datanya[index].email_penjual + '">' +
                     '</div>' +
                     '<div class="form-group">' +
                     '<label for="alamat_penjual">Alamat</label>' +
-                    '<input type="text" class="form-control" id="alamat_penjual" value="' + datanya[index].alamat_penjual + '" name="alamat_penjual">' +
+                    '<input required type="text" class="form-control" id="alamat_penjual" value="' + datanya[index].alamat_penjual + '" name="alamat_penjual">' +
                     '</div>' +
                     '<div class="form-group modal-footer">' +
                     '<button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>' +
@@ -174,19 +174,21 @@
     </div>
     <div class="form-group">
         <label for="nama_penjual">Nama penjual</label>
-        <input type="text" class="form-control" id="nama_penjual" name="nama_penjual" placeholder="">
+        <input required type="text" class="form-control" id="nama_penjual" name="nama_penjual" placeholder="">
     </div>
     <div class="form-group">
         <label for="telp_penjual">Telp</label>
-        <input type="number" min="0" class="form-control" id="telp_penjual" name="telp_penjual" placeholder="">
+        <input required type="number" min="0" class="form-control" id="telp_penjual" name="telp_penjual" placeholder="" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+    type = "number"
+    maxlength = "13">
     </div>
     <div class="form-group">
         <label for="email_penjual">Email</label>
-        <input type="email" class="form-control" id="email_penjual" name="email_penjual" placeholder="">
+        <input required type="email" class="form-control" id="email_penjual" name="email_penjual" placeholder="">
     </div>
     <div class="form-group">
         <label for="alamat_penjual">Alamat</label>
-        <input type="text" class="form-control" id="alamat_penjual" name="alamat_penjual" placeholder="">
+        <input required type="text" class="form-control" id="alamat_penjual" name="alamat_penjual" placeholder="">
     </div>
 
     @endsection

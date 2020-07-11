@@ -14,7 +14,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="card card-plain">
+                                <div class="card card-plain" style="height:30vh">
                                     <div class="card-body">
                                         <div class='container form-group row mx-5 mb-5'>
                                             <div class='col-sm-4'>
@@ -307,8 +307,8 @@
         <div class="form-group row">
             <label class="col-sm-3 col-form-label" for="pelanggan_id">Pelanggan </label>
                 <div class="col-sm-9">
-                  <select class="form-control" id="pelanggan_id" name="pelanggan_id">
-                                                                            <option value="">--- Pilih Pelanggan ---</option>
+                  <select class="form-control" id="pelanggan_id" required name="pelanggan_id">
+                                                                            <option disabled selected hidden value="">--- Pilih Pelanggan ---</option>
                                                                             @foreach ($pelanggans as $pelanggan)
                                                                             <option value="{{$pelanggan->id}}">{{ $pelanggan->nama_pelanggan }}</option>                                                                            @endforeach
                                                                         </select>

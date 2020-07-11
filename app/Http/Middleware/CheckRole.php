@@ -16,9 +16,9 @@ class CheckRole
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next, $role)
+    public function handle($request, Closure $next,...$roles)
     {
-        if (Auth::user()->role->role_name == $role) {
+        if(in_array($request->user()->role,$roles)){
             return $next($request);
         }
         return redirect('/penjualan');

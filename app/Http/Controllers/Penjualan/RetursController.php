@@ -47,6 +47,9 @@ class RetursController extends Controller
     public function create()
     {
         
+        if(auth()->user()->role != 'retur'){
+            return redirect()->back();
+        }
         return view('penjualan.penjualan.retur.returinsert', [
             'pelanggans' => Pelanggan::all(),
             'fakturs' => Faktur::all(),
@@ -65,6 +68,7 @@ class RetursController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
         session()->flash('message', 'Retur berhasil ditambahkan');
         session()->flash('status', 'tambah');
         $rtp = Retur::max('id') + 1;
@@ -78,11 +82,11 @@ class RetursController extends Controller
             'gudang' => $request->gudang,
             'tanggal' => $request->tanggal,
             'diskon' => 0,
-            // 'diskon_rp' => $request->disk,
+            'diskon_rp' => $request->diskon_rp,
             'biaya_lain' => 0,
             // 'uang_muka' => $request->uang_muka,
             'total_jenis_barang' => $request->akun_barang,
-            'total_harga' => $request->akun_barang,
+            'total_harga' => $request->total_harga,
         ]);
 
         foreach ($request->barang_id as $index => $id) {
@@ -100,10 +104,12 @@ class RetursController extends Controller
 
     public function posting($idnya)
     {
-        
+        $retur = Retur::find($idnya);
+        if($retur->status_posting=='sudah posting'){
+            return redirect()->back();
+        }
         session()->flash('message', 'Retur berhasil diposting');
         session()->flash('status', 'tambah');
-        $retur = Retur::find($idnya);
         // dd($retur);
         foreach ($retur->barangs as $index => $barang) {
             $b = $barang->pivot->jumlah_barang;
@@ -145,12 +151,13 @@ class RetursController extends Controller
                 $jurnal = Jurnal::create([
                 'kode_jurnal' => 'jur'.$no,
                 'retur_id' => $retur->id,
+                'tanggal' => $retur->tanggal,
                 'debit' => 0,
                 'kredit' => 0,
             ]);
                 if ($i == 1) {
                     $jurnal->update([
-                    'debit' => $retur->total_jenis_barang,
+                    'debit' => $retur->total_harga,
                     'akun_id' => 1, //barang
                 ]);
                 } 
@@ -174,14 +181,25 @@ class RetursController extends Controller
     {
         $retur = Retur::find($id);
         $barangs = $retur->barangs;
-
+        $total_seluruh_rt = $retur->total_harga;
+        $total_harga_rt = [];
+        $subtotal_rt = 0;
+        foreach ($barangs as $index => $barang) {
+            $total_harga_rt[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
+            $subtotal_rt += $total_harga_rt[$index];
+        }
         return response()
-            ->json(['success' => true, 'retur' => $retur, 'barangs' => $barangs]);
+            ->json(['success' => true, 'retur' => $retur, 'barangs' => $barangs,
+            'total_seluruh_rt' => $total_seluruh_rt,
+            'total_harga_rt' => $total_harga_rt,
+            'subtotal_rt' => $subtotal_rt,
+            ]);
     }
 
     public function detail($id)
     {
         $retur = retur::find($id);
+        $gudang = Gudang::find($retur->gudang);
         $barangs = $retur->barangs;
         $diskon = $retur->diskon_rp;
         $biaya_lain = $retur->biaya_lain;
@@ -193,10 +211,10 @@ class RetursController extends Controller
             $total_harga[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
             $subtotal += $total_harga[$index];
         }
-        // dd($total_harga, $total_seluruh);
         return view('penjualan.penjualan.retur.returdetails', [
             'retur' => $retur, 
             'barangs' => $barangs,
+            'gudang' => $gudang,
             'diskon' => $diskon,
             'biaya_lain' => $biaya_lain,
             'uang_muka' => $uang_muka,
@@ -211,6 +229,7 @@ class RetursController extends Controller
         $retur = retur::find($request->id);
         $barangs = $retur->barangs;
         $diskon = $retur->diskon_rp;
+        $gudang = Gudang::find($retur->gudang);
         $biaya_lain = $retur->biaya_lain;
         $uang_muka = $retur->uang_muka;
         $total_seluruh = $retur->total_harga;
@@ -221,7 +240,8 @@ class RetursController extends Controller
             $subtotal += $total_harga[$index];
         }
         $pdf = PDF::loadview('penjualan.penjualan.retur.retur-pdf', [
-            'retur' => $retur, 
+            'retur' => $retur,
+            'gudang' => $gudang, 
             'barangs' => $barangs,
             'diskon' => $diskon,
             'biaya_lain' => $biaya_lain,
@@ -242,6 +262,14 @@ class RetursController extends Controller
      */
     public function edit(Retur $retur)
     {
+        
+        if(auth()->user()->role != 'retur'){
+            return redirect()->back();
+        }
+        if (auth()->user()->role == 'piutang' || $retur->status_posting =='sudah posting'){
+            return redirect()->back();
+        }
+
         return view('penjualan.penjualan.retur.returedit', [
             'retur' => $retur,
             'pelanggans' => Pelanggan::all(),
@@ -267,11 +295,11 @@ class RetursController extends Controller
         session()->flash('status', 'tambah');
         Retur::where('id', $retur->id)
         ->update([
-            'pelanggan_id' => $request->pelanggan_id,
+            // 'pelanggan_id' => $request->pelanggan_id,
             'tanggal' => $request->tanggal,
             'status' => $request->status,
             'total_jenis_barang' => $request->akun_barang,
-            'total_harga' => $request->akun_barang,
+            'total_harga' => $request->total_harga,
         ]);
         $retur->barangs()->detach();
             foreach ($request->barang_id as $index => $id) {
@@ -279,7 +307,6 @@ class RetursController extends Controller
                     'jumlah_barang' => $request->jumlah_barang[$index],
                     'harga' => $request->harga[$index],
                     'unit' => $request->unit_barang[$index],
-                    // 'pajak' => $request->pajak[$index],
                     ]);
         }
         return redirect('/penjualan/returs');
