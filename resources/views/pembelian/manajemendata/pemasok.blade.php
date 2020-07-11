@@ -113,19 +113,19 @@ endsection -->
                     '@csrf' +
                     '<div class="form-group">' +
                     '<label for="nama_pemasok">Nama</label>' +
-                    '<input type="text" class="form-control" id="nama_pemasok" value="' + datanya.pemasok.nama_pemasok + '" name="nama_pemasok">' +
+                    '<input type="text" required class="form-control" id="nama_pemasok" value="' + datanya.pemasok.nama_pemasok + '" name="nama_pemasok">' +
                     '</div>' +
                     '<div class="form-group">' +
                     '<label for="telp_pemasok">Telp</label>' +
-                    '<input type="number" min="0" class="form-control" id="telp_pemasok" value="' + datanya.pemasok.telp_pemasok + '" name="telp_pemasok">' +
+                    '<input type="number" required min="0" class="form-control" id="telp_pemasok" value="' + datanya.pemasok.telp_pemasok + '" name="telp_pemasok">' +
                     '</div>' +
                     '<div class="form-group">' +
                     '<label for="email_pemasok">Email</label>' +
-                    '<input type="email" class="form-control" id="email_pemasok" value="' + datanya.pemasok.email_pemasok + '" name="email_pemasok">' +
+                    '<input type="email" required class="form-control" id="email_pemasok" value="' + datanya.pemasok.email_pemasok + '" name="email_pemasok">' +
                     '</div>' +
                     '<div class="form-group">' +
                     '<label for="alamat_pemasok">Alamat</label>' +
-                    '<input type="text" class="form-control" id="alamat_pemasok" value="' + datanya.pemasok.alamat_pemasok + '" name="alamat_pemasok">' +
+                    '<input type="text" required class="form-control" id="alamat_pemasok" value="' + datanya.pemasok.alamat_pemasok + '" name="alamat_pemasok">' +
                     '</div>' +
                     '<div class="form-group modal-footer">' +
                     '<button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>' +
@@ -180,19 +180,19 @@ endsection -->
     </div> -->
     <div class="form-group">
         <label for="nama_pemasok">Nama Pemasok</label>
-        <input type="text" class="form-control" id="nama_pemasok" name="nama_pemasok" placeholder="">
+        <input type="text" required class="form-control" id="nama_pemasok" name="nama_pemasok" placeholder="">
     </div>
     <div class="form-group">
         <label for="telp_pemasok">Telp</label>
-        <input type="number" class="form-control" id="telp_pemasok" min="0" name="telp_pemasok" placeholder="">
+        <input type="number" required class="form-control" id="telp_pemasok" min="0" name="telp_pemasok" placeholder="">
     </div>
     <div class="form-group">
         <label for="email_pemasok">Email</label>
-        <input type="email" class="form-control" id="email_pemasok" name="email_pemasok" placeholder="">
+        <input type="email" required class="form-control" id="email_pemasok" name="email_pemasok" placeholder="">
     </div>
     <div class="form-group">
         <label for="alamat_pemasok">Alamat</label>
-        <input type="text" class="form-control" id="alamat_pemasok" name="alamat_pemasok" placeholder="">
+        <input type="text" required class="form-control" id="alamat_pemasok" name="alamat_pemasok" placeholder="">
     </div>
 
     @endsection

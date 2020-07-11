@@ -51,7 +51,7 @@
                         <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="pemasok_id">pemasok</label>
                             <div class="col-sm-9">
-                                <select class="form-control" id="pemasok_id" name="pemasok_id">
+                                <select required class="form-control" id="pemasok_id" name="pemasok_id">
                                     <option value="">--- Pilih pemasok ---</option>
                                     @foreach ($pemasoks as $pemasok)
                                     <option value="{{$pemasok->id}}" {{$pemasok->id == "$permintaan->pemasok_id" ? "selected" : "" }}>{{ $pemasok->nama_pemasok }}</option>
@@ -62,7 +62,7 @@
                         <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="gudang">Gudang</label>
                             <div class="col-sm-9">
-                                <select class="form-control" id="gudang" name="gudang">
+                                <select required class="form-control" id="gudang" name="gudang">
                                     <option value="">--- Pilih Gudang ---</option>
                                     @foreach ($gudangs as $gudang)
                                     <option value="{{$gudang->id}}" {{$gudang->id == "$permintaan->gudang" ? "selected" : "" }}>{{ $gudang->kode_gudang }}</option>
@@ -73,7 +73,7 @@
                         <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="tanggal">Tanggal</label>
                             <div class="col-sm-9">
-                                <input type="date" class="form-control" id="tanggal" name="tanggal" value="{{$permintaan->tanggal}}">
+                                <input type="date" required class="form-control" id="tanggal" name="tanggal" value="{{$permintaan->tanggal}}">
                             </div>
                         </div>
                         <!-- <div class="form-group row mx-5 mb-5">
@@ -100,7 +100,7 @@
                         <div class="form-row mx-5" id="isiformbarang">
                             <div class="col-md-3">
                                 <label for="barang_id" id="lbl">Barang</label>
-                                <select class="form-control" onchange="isi(this)" id="barang_id" name="barang_id[]">
+                                <select required class="form-control" onchange="isi(this)" id="barang_id" name="barang_id[]">
                                     <option value="">--- Pilih Barang ---</option>
                                     @foreach ($barangs as $barang)
                                     <option value="{{$barang->id}}" {{$barang->id == "$permintaanbarang->id" ? "selected" : "" }}>{{ $barang->nama_barang }}</option>
@@ -109,7 +109,7 @@
                             </div>
                             <div class="col-md-1">
                                 <label for="jumlah_barang">QTY</label>
-                                <input type="number" min="0" class="form-control" id="jumlah_barang" name="jumlah_barang[]" onfocus="startCalc(this);" onblur="stopCalc();" placeholder="-" value="{{$permintaanbarang->pivot->jumlah_barang}}">
+                                <input required type="number" min="0" class="form-control" id="jumlah_barang" name="jumlah_barang[]" onfocus="startCalc(this);" onblur="stopCalc();" placeholder="-" value="{{$permintaanbarang->pivot->jumlah_barang}}">
                             </div>
                             <div class="col-md-2">
                                 <label for="satuan_unit">Unit</label>
@@ -122,7 +122,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" min="0" class="form-control" id="harga" name="harga[]" value="{{$permintaanbarang->pivot->harga}}" onfocus="startCalc(this);" onblur="stopCalc();" placeholder="-">
+                                    <input type="number" min="0" required class="form-control" id="harga" name="harga[]" value="{{$permintaanbarang->pivot->harga}}" onfocus="startCalc(this);" onblur="stopCalc();" placeholder="-">
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -131,7 +131,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" min="0" class="form-control" id="total" name="total[]" disabled>
+                                    <input type="number" required min="0" class="form-control" id="total" name="total[]" disabled>
                                 </div>
                             </div>
                             <div class="col-md-1">
@@ -155,7 +155,7 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Rp</div>
                                 </div>
-                                <input style="width:26vw" type="number" min="0" name="total_harga_barang" id="total_harga_barang" disabled>
+                                <input style="width:26vw"  type="number" min="0" name="total_harga_barang" id="total_harga_barang" disabled>
                             </div>
                         </div>
                         <a href="/pembelian/permintaans">
@@ -174,7 +174,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">%</div>
                                     </div>
-                                    <input type="number" min="0" class="form-control" id="diskon" value="{{$permintaan->diskon}}" onchange="disc();" name="diskon" placeholder="-">
+                                    <input type="number" required min="0" class="form-control" id="diskon" value="{{$permintaan->diskon}}" onchange="disc();" name="diskon" placeholder="-">
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -182,7 +182,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" min="0" class="form-control" id="disk" onchange="disc();" name="disk" placeholder="-">
+                                    <input type="number" required min="0" class="form-control" id="disk" onchange="disc();" name="disk" placeholder="-">
                                 </div>
                             </div>
                         </div>
@@ -193,7 +193,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" min="0" class="form-control" name="biaya_lain" value="{{$permintaan->biaya_lain}}" onchange="disc();" id="biaya_lain" placeholder="-">
+                                    <input type="number" required min="0" class="form-control" name="biaya_lain" value="{{$permintaan->biaya_lain}}" onchange="disc();" id="biaya_lain" placeholder="-">
                                 </div>
                             </div>
                         </div>

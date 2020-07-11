@@ -45,7 +45,7 @@
                         <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="pemasok_id">pemasok</label>
                             <div class="col-sm-9">
-                                <select class="form-control" id="pemasok_id" name="pemasok_id">
+                                <select required class="form-control" id="pemasok_id" name="pemasok_id">
                                     <option value="{{$pembayaran->pemasok_id}}">{{ $pembayaran->pemasok->nama_pemasok }}</option>
                                 </select>
                             </div>
@@ -53,7 +53,7 @@
                         <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="tanggal">Tanggal</label>
                             <div class="col-sm-9">
-                                <input type="date" class="form-control" id="tanggal" name="tanggal" value="{{$pembayaran->tanggal}}">
+                                <input required type="date" class="form-control" id="tanggal" name="tanggal" value="{{$pembayaran->tanggal}}">
                             </div>
                         </div>
                         <!-- <div class="form-group row mx-5 mb-5">
@@ -79,7 +79,7 @@
                         <div class="form-row mx-5" id="isiformhutang0">
                             <div class="form-group col-md-3">
                                 <label for="hutang_id" id="lbl">Hutang</label>
-                                <select class="form-control" onchange="isi(this)" onclick="hitung()" id="hutang_id" name="hutang_id[]">
+                                <select required class="form-control" onchange="isi(this)" onclick="hitung()" id="hutang_id" name="hutang_id[]">
                                     <option value="{{$hutang->id}}" selected>{{$hutang->faktur->kode_faktur}}</option>
                                 </select>
                             </div>
@@ -97,7 +97,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" class="form-control" id="total" min="0" name="total[]" value="{{$hutang->pivot->total}}" onchange="hitung()">
+                                    <input type="number" required class="form-control" id="total" min="0" name="total[]" value="{{$hutang->pivot->total}}" onchange="hitung()">
                                     <input type="hidden" id="total_hutang" value="{{$hutang->pivot->total}}"  name="total_hutang[]">
                                 </div>
                             </div>

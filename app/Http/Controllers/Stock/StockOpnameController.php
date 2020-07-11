@@ -114,7 +114,7 @@ class StockOpnameController extends Controller
             $jurnal = Ledger::create([
                 'kode_transaksi' => $stockOpname->kode_ref,
                 'barang_id' => $barang->id,
-                'sisa' => $barang->pivot->selisih,
+                'sisa' => $barang->pivot->jumlah_fisik,
                 'qty_masuk' => 0,
                 'nilai_masuk' => 0,
                 'qty_keluar' => 0,

@@ -53,7 +53,7 @@
                         <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="pemasok_id">pemasok</label>
                             <div class="col-sm-9">
-                                <select class="form-control" id="pemasok_id" name="pemasok_id">
+                                <select required class="form-control" id="pemasok_id" name="pemasok_id">
                                     <option value="">--- Pilih pemasok ---</option>
                                     @foreach ($pemasoks as $pemasok)
                                     <option value="{{$pemasok->id}}">{{ $pemasok->nama_pemasok }}</option>
@@ -64,7 +64,7 @@
                         <div class="form-group row mx-5 mb-5" id="faktur_form" style="display: none;">
                             <label class="col-sm-3 col-form-label" for="faktur_id">Faktur</label>
                             <div class="col-sm-9">
-                                <select class="form-control" id="faktur_id" name="faktur_id">
+                                <select required class="form-control" id="faktur_id" name="faktur_id">
                                     <option value="">--- Pilih Faktur ---</option>'
                                 </select>
                             </div>
@@ -97,7 +97,7 @@
                         <div class="form-row mx-5" id="isiformbarang0">
                             <div class="form-group col-md-3">
                                 <label for="barang_id" id="lbl">Barang</label>
-                                <select class="form-control" id="barang_id" onchange="isi(this)" name="barang_id[]">
+                                <select required class="form-control" id="barang_id" onchange="isi(this)" name="barang_id[]">
                                     <option value="">--- Pilih Barang ---</option>
                                     @foreach ($barangs as $barang)
                                     <option value="{{$barang->id}}">{{ $barang->nama_barang }}</option>
@@ -106,7 +106,7 @@
                             </div>
                             <div class="form-group col-md-1">
                                 <label for="jumlah_barang">QTY</label>
-                                <input type="number" min="0" class="form-control" id="jumlah_barang" name="jumlah_barang[]" onfocus="startCalc(this);" onblur="stopCalc();" placeholder="-">
+                                <input required type="number" min="0" class="form-control" id="jumlah_barang" name="jumlah_barang[]" onfocus="startCalc(this);" onblur="stopCalc();" placeholder="-">
                             </div>
                             <div class="form-group col-md-2">
                                 <label for="satuan_unit">Unit</label>
@@ -119,7 +119,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" min="0" class="form-control" id="harga" name="harga[]" onfocus="startCalc(this);" onblur="stopCalc();" placeholder="-">
+                                    <input required type="number" min="0" class="form-control" id="harga" name="harga[]" onfocus="startCalc(this);" onblur="stopCalc();" placeholder="-">
                                 </div>
                             </div>
                             <div class="form-group col-md-3">
@@ -128,7 +128,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" min="0" class="form-control" id="total" name="total[]" disabled>
+                                    <input type="number" required min="0" class="form-control" id="total" name="total[]" disabled>
                                 </div>
                             </div>
                             <div class="form-group col-md-1">
@@ -153,12 +153,14 @@
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">Rp</div>
                                         </div>
-                                        <input style="width:26vw" type="number" min="0" name="total_harga_barang" id="total_harga_barang" disabled>
+                                        <input  style="width:26vw" type="number" min="0" name="total_harga_barang" id="total_harga_barang" disabled>
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-between ml-5">
                                     <div id="diskon_ui">Diskon : Rp 0</div>
+                                    <div id="u_m_ui">Uang Muka : Rp 0</div>
                                     <input type="hidden" id="diskon" name="diskon">
+                                    <input type="hidden" id="u_m" name="uang_muka">
                                 </div>
                             </div>
                         </div>
@@ -250,7 +252,9 @@
                 if (data.success == true) {
                     console.log(data)
                     $('#diskon').val(data.faktur.diskon_rp)
+                    $('#u_m').val(data.faktur.uang_muka)
                     $('#diskon_ui').html('Diskon : ' + data.faktur.diskon_rp)
+                    $('#u_m_ui').html('Uang Muka : ' + data.faktur.uang_muka)
                     // $('#biaya_lain').val(data.faktur.biaya_lain)
                     $('#barang_id').val(data.barangs[0].id)
                     $('#tambahbarang').detach()
@@ -336,9 +340,10 @@
                 tot += parseInt(arr[i].value);
         }
         var diskon = $("#diskon").val();
+        var u_m = $("#u_m").val();
         console.log('diskon', diskon);
-        document.getElementById('total_harga_barang').value = tot - diskon;
-        document.getElementById('hutang').value = tot - diskon;
+        document.getElementById('total_harga_barang').value = tot - diskon - u_m;
+        document.getElementById('hutang').value = tot - diskon - u_m;
         document.getElementById('akun_barang').value = tot;
         console.log(arr)
     }

@@ -89,6 +89,7 @@
                                         @elseif ($index->akun_id == 4) hutang
                                         @elseif ($index->akun_id == 5) potongan pembelian
                                         @elseif ($index->akun_id == 6) kas
+                                        @elseif ($index->akun_id == 7) uang muka
                                         @else -
                                         @endif
                                     </td>

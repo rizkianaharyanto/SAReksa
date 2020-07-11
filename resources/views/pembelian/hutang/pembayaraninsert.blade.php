@@ -44,7 +44,7 @@
                         <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="pemasok_id">pemasok</label>
                             <div class="col-sm-9">
-                                <select class="form-control" id="pemasok_id" name="pemasok_id">
+                                <select required class="form-control" id="pemasok_id" name="pemasok_id">
                                     <option value="">--- Pilih pemasok ---</option>
                                     @foreach ($pemasoks as $pemasok)
                                     <option value="{{$pemasok->id}}">{{ $pemasok->nama_pemasok }}</option>
@@ -55,13 +55,13 @@
                         <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="tanggal">Tanggal</label>
                             <div class="col-sm-9">
-                                <input type="date" class="form-control" id="tanggal" name="tanggal">
+                                <input type="date" required class="form-control" id="tanggal" name="tanggal">
                             </div>
                         </div>
                         <!-- <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="mata-uang">Mata Uang</label>
                             <div class="col-sm-9">
-                                <select class="form-control" id="mata_uang" name="mata_uang">
+                                <select  class="form-control" id="mata_uang" name="mata_uang">
                                     <option value="">--- Pilih Mata Uang ---</option>
                                     <option value="">IDR</option>
                                 </select>
@@ -80,7 +80,7 @@
                         <div class="form-row mx-5" id="isiformhutang0">
                             <div class="form-group col-md-3">
                                 <label for="hutang_id" id="lbl">Hutang</label>
-                                <select class="form-control" onchange="isi(this)" onclick="hitung()" id="hutang_id" name="hutang_id[]">
+                                <select required class="form-control" onchange="isi(this)" onclick="hitung()" id="hutang_id" name="hutang_id[]">
                                     <option value="">--- Pilih Hutang ---</option>
                                 </select>
                             </div>
@@ -98,7 +98,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" class="form-control" id="total" min="0" name="total[]" onchange="hitung()">
+                                    <input type="number" required class="form-control" id="total" min="0" name="total[]" onchange="hitung()">
                                     <input type="hidden" id="total_hutang" name="total_hutang[]">
                                 </div>
                             </div>

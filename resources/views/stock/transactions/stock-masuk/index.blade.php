@@ -29,13 +29,13 @@
 
 
 @section('table-body')
-@foreach ($penerimaans as $penerimaan)
+@foreach ($penerimaans as $index => $penerimaan)
 <tr>
     <td>{{ $penerimaan->kode_penerimaan }}</td>
     <td>{{ $penerimaan->pemasok->nama_pemasok }}</td>
     <td>{{ $penerimaan->tanggal }}</td>
     <td>{{ $penerimaan->total_harga }}</td>
-    <td>{{ $barangs }}</td>
+    <td>{{ $barangs[$index] }}</td>
     <td class="d-flex justify-content-between">
         <a id="details" href="/pembelian/stokmasuk/{{$penerimaan->id}}">
             <button class="btn-info">

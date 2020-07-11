@@ -11,12 +11,27 @@ use App\Pembelian\Jurnal;
 use App\Stock\Barang;
 use App\Stock\Gudang;
 use App\Pembelian\Pemasok;
+use App\Services\Stock\ItemService;
+use App\Pembelian\Pemesanan;
+use App\Pembelian\Penerimaan;
+use Illuminate\Database\Eloquent\Collection;
 use PDF;
 
 // use App\Pembelian\Akun;
 
 class RetursController extends Controller
 {
+    private $itemService;
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function __construct(ItemService $itemService)
+    {
+        $this->itemService = $itemService;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -141,7 +156,7 @@ class RetursController extends Controller
             'diskon' => 0,
             'diskon_rp' => $request->diskon,
             'biaya_lain' => 0,
-            // 'uang_muka' => $request->uang_muka,
+            'uang_muka' => $request->uang_muka,
             'total_jenis_barang' => $request->akun_barang,
             'total_harga' => $request->hutang,
         ]);
@@ -162,6 +177,37 @@ class RetursController extends Controller
     public function posting($idnya)
     {
         $retur = Retur::find($idnya);
+        // foreach ($retur->barangs as $index => $barang) {
+        //     $b = $barang->pivot->jumlah_barang;
+        //     //update stock
+        //     $this->itemService->getAllStocksQty($barang->id);
+        //     $gudangnya=$barang->warehouseStocks;
+        //     while ($b > 0) {
+        //         foreach ($gudangnya as $gud) {
+        //             try {
+        //                 // dd($gud);
+        //                 $qty = $this->itemService->getStocksByWhouse($barang->id, $gud->id)->kuantitas;
+        //                 if ($qty > 0) {
+        //                     if ($qty >= $b) {
+        //                         $this->itemService->updateStocks($barang->id, $gud->id, $b * -1);
+        //                         $b = 0;
+        //                     } else {
+        //                         $b = $b - $qty;
+        //                         $this->itemService->updateStocks($barang->id, $gud->id, $b * -1);
+        //                     }
+        //                     // dd("berhasil");
+        //                 } else {
+        //                     $b = $b;
+        //                     $this->itemService->updateStocks($barang->id, $gud->id, 0);
+        //                 }
+        //                 // dd("berhasil");
+        //             } catch (\Throwable $th) {
+        //                 dd('Gagal');
+        //             }
+        //         }
+        //     }
+        // }
+
         $hutang = Hutang::where('faktur_id', $retur->faktur_id)->first();
         // dd($hutang);
         $idhut = $hutang->id;
@@ -207,12 +253,12 @@ class RetursController extends Controller
                     'akun_id' => 1, //barang
                 ]);
             }
-            // elseif ($i == 2) {
-            //     $jurnal->update([
-            //     'kredit' => $retur->biaya_lain,
-            //     'akun_id' => 3, //biayalain
-            // ]);
-            // } 
+            elseif ($i == 2) {
+                $jurnal->update([
+                'debit' => $retur->uang_muka,
+                'akun_id' => 7, //biayalain
+            ]);
+            } 
             elseif ($i == 3) {
                 $jurnal->update([
                     'debit' => $retur->total_harga,
@@ -345,7 +391,7 @@ class RetursController extends Controller
             'diskon' => 0,
             'diskon_rp' => $request->diskon,
             'biaya_lain' => 0,
-            // 'uang_muka' => $request->uang_muka,
+            'uang_muka' => $request->uang_muka,
             'total_jenis_barang' => $request->akun_barang,
             'total_harga' => $request->hutang,
         ]);

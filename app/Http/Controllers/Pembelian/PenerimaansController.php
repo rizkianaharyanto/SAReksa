@@ -39,11 +39,12 @@ class PenerimaansController extends Controller
     public function stokmasuk()
     {
         $penerimaans = Penerimaan::all();
-        $barangs = collect([]);
+        $count = collect([]);
         foreach ($penerimaans as $penerimaan) {
-            $barangs->push($penerimaan->barangs);
+            $satu = $penerimaan->barangs->count();
+            $count->push($satu);
         }
-        $count=$barangs->count();
+        // dd($count);
 
         return view('stock.transactions.stock-masuk.index', [
             'penerimaans' => $penerimaans,
