@@ -99,7 +99,7 @@
                             </div>
                             <div class="col-7 col-md-8">
                                 <div class="numbers">
-                                    <p class="card-category">Pemasukan</p>
+                                    <p class="card-category">Pemasukan Kas</p>
                                     <p class="card-title">{{$pendapatan}}
                                         <p>
                                 </div>
@@ -176,8 +176,8 @@
                     </div>
                     <div class="card-footer ">
                         <div class="legend">
-                            <i class="fa fa-circle text-gray"></i> Piutang
-                            <i class="fa fa-circle text-primary"></i> Lunas
+                            <i class="fa fa-circle text-gray"></i> Lunas
+                            <i class="fa fa-circle text-primary"></i> Piutang
                         </div>
                         <hr>
                         <div class="stats">

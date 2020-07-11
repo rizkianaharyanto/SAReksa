@@ -54,8 +54,7 @@ class LaporansController extends Controller
             $total = 0;
 
             foreach ($penawarans as $penawaran) {
-                $total = $penawaran->sum('total_harga');
-               
+                $total = $total + $penawaran->total_harga;               
             }
         // dd($penawarans);
         return view('penjualan.laporan.laporan-penawaran',  [
@@ -91,7 +90,7 @@ class LaporansController extends Controller
         
             $total = 0;
             foreach ($penawarans as $penawaran) {
-                $total = $penawaran->sum('total_harga');
+                $total = $total + $penawaran->total_harga;               
                
             }
 
@@ -129,7 +128,7 @@ class LaporansController extends Controller
             $total = 0;
 
             foreach ($pemesanans as $pemesanan) {
-                $total = $pemesanan->sum('total_harga');
+                $total = $total + $pemesanan->total_harga;               
                
             }
         // dd($penawarans);
@@ -166,7 +165,7 @@ class LaporansController extends Controller
         
             $total = 0;
             foreach ($pemesanans as $pemesanan) {
-                $total = $pemesanan->sum('total_harga');
+                $total = $total + $pemesanan->total_harga;               
                
             }
 
@@ -204,7 +203,7 @@ class LaporansController extends Controller
             $total = 0;
 
             foreach ($pengirimans as $pengiriman) {
-                $total = $pengiriman->sum('total_harga');
+                $total = $total + $pengiriman->total_harga;               
                
             }
         // dd($penawarans);
@@ -241,7 +240,7 @@ class LaporansController extends Controller
         
             $total = 0;
             foreach ($pengirimans as $pengiriman) {
-                $total = $pengiriman->sum('total_harga');
+                $total = $total + $pengiriman->total_harga;               
                
             }
 
@@ -277,12 +276,12 @@ class LaporansController extends Controller
             ->whereYear('tanggal',$tahun)
             ->get();
             $total = 0;
-
+        // dd($fakturs);
             foreach ($fakturs as $faktur) {
-                $total = $faktur->sum('total_harga');
+                $total = $total + $faktur->total_harga;               
                
             }
-        // dd($penawarans);
+        // dd($total);
         return view('penjualan.laporan.laporan-faktur',  [
             'faktur' => $fakturs,
             'bulan' => $bulan,
@@ -316,7 +315,7 @@ class LaporansController extends Controller
         
             $total = 0;
             foreach ($fakturs as $faktur) {
-                $total = $faktur->sum('total_harga');
+                $total = $total + $faktur->total_harga;               
                
             }
 
@@ -353,7 +352,7 @@ class LaporansController extends Controller
             $total = 0;
 
             foreach ($returs as $retur) {
-                $total = $retur->sum('total_harga');
+                $total = $total + $retur->total_harga;
                
             }
         // dd($penawarans);
@@ -390,7 +389,7 @@ class LaporansController extends Controller
         
             $total = 0;
             foreach ($returs as $retur) {
-                $total = $retur->sum('total_harga');
+                $total = $total + $retur->total_harga;
                
             }
 
@@ -428,7 +427,7 @@ class LaporansController extends Controller
             $total = 0;
 
             foreach ($pembayarans as $pembayaran) {
-                $total = $pembayaran->sum('total');
+                $total = $total + $pembayaran->total_harga;
                
             }
         // dd($penawarans);
@@ -465,8 +464,7 @@ class LaporansController extends Controller
         
             $total = 0;
             foreach ($pembayarans as $pembayaran) {
-                $total = $pembayaran->sum('total');
-               
+                $total = $total + $pembayaran->total_harga;               
             }
 
         $pdf = PDF::loadview('penjualan.laporan.cetak-laporan-pembayaran' ,  [
@@ -482,10 +480,11 @@ class LaporansController extends Controller
     public function piutang(Request $request)
     {
         $id = $request->pelanggan_id;
-        $pelanggan = Pelanggan::get()->where('id', $request->pelanggan_id);
+        $pelanggan = Pelanggan::find( $request->pelanggan_id);
         $piutangs = Piutang::get()->where('pelanggan_id', $request->pelanggan_id);
-        $nama = $pelanggan[0]->nama_pelanggan;
-        // dd($piutangs);
+        $nama = $pelanggan->nama_pelanggan;
+        // dd($nama);
+        // dd($piutangs[7]);
         $total = $piutangs->sum('total_piutang');
         $sisa = $piutangs->sum('sisa');
         $lunas = $piutangs->sum('lunas');

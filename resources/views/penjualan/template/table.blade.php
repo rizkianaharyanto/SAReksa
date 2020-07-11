@@ -122,7 +122,6 @@
 <script>
   $(document).ready(function() {
     $('#table_id').DataTable({
-      "scrollY": "60vh",
       "scrollCollapse": true,
     });
     $('.dataTables_length').addClass('bs-select');

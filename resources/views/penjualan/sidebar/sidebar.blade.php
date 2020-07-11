@@ -10,7 +10,7 @@
             auth()->user()->role->role_name == 'retur')
             ADMIN {{auth()->user()->role->role_name}}
             @else
-            Direksi Perusahaan
+                Manajer Penjualan
             @endif
         </a>
     </div>
@@ -26,13 +26,12 @@
                 </a>
             </li>
             <li class="{{ $elementActive == 'user' || $elementActive == 'profile' ? 'active' : '' }}">
-                <a data-toggle="collapse" aria-expanded="true" href="#laravelExamples">
-                    <i class=""> <img alt='icon' width='25px' class='icon' src="/img/penjualan/storage (2).png"
-                            style="filter:invert(100%)">
+                <a data-toggle="collapse" aria-expanded="" href="#laravelExamples">
+                    <i class="">                        <img alt='icon' width='25px' class='icon' src="/img/penjualan/storage (2).png" style="filter:invert(100%)">
                     </i>
                     <p>
                         {{ __('Data Master') }}
-                        <b class="caret"></b>
+                        <b class="caret " ></b>
                     </p>
                 </a>
                 <div class="collapse" id="laravelExamples">

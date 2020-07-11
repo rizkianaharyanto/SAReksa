@@ -73,12 +73,14 @@
 
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/pembelian/stokmasuk"><i class="fas fa-fw fa-file"></i> Stok Masuk
+                        <a class="nav-link" id="link-stok-masuk" href="/pembelian/stokmasuk"><i
+                                class="fas fa-fw fa-file"></i> Stok Masuk
                         </a>
 
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/penjualan/stokkeluar"><i class="fas fa-fw fa-file"></i> Stok Keluar
+                        <a class="nav-link" id="link-stok-keluar" href="/penjualan/stokkeluar"><i
+                                class="fas fa-fw fa-file"></i> Stok Keluar
                         </a>
 
                     </li>
@@ -89,24 +91,6 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('reports.kartu-stock')}}"><i class="fas fa-fw fa-file"></i>
                             Laporan Kartu Stock
-                        </a>
-
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('reports.produk')}}"><i class="fas fa-fw fa-file"></i>
-                            Daftar Produk
-                        </a>
-
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('reports.kartu-stock')}}"><i class="fas fa-fw fa-file"></i>
-                            Produk Terjual
-                        </a>
-
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('reports.kartu-stock')}}"><i class="fas fa-fw fa-file"></i>
-                            Produk Dibeli
                         </a>
 
                     </li>

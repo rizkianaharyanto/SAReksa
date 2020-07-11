@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 class AddStatusToStkTransferStokTable extends Migration
 {
     /**
-     * Run the migrations.
+     * Run tphe migrations.
      *
      * @return void
      */

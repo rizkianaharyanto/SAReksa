@@ -3,6 +3,7 @@
 ])
 @section('judul', 'Barang')
 
+@section('menu','Barang') 
 @section('halaman', 'Barang')
 
 @section('thead')
@@ -23,7 +24,7 @@
     <td>{{ $barang['harga_retail'] }}</td>
     <td>{{ $barang['kuantitas_total'] !=null ? $barang['kuantitas_total'] : '-' }}</td>
     <td class="d-flex justify-content-between">
-        <a id="details" data-toggle="modal" data-target="#modal" data-id="{{ $barang['id'] }}">
+        <a title="Details" id="details" data-toggle="modal" data-target="#modal" data-id="{{ $barang['id'] }}">
             <i onmouseover="tulisan()" style="cursor: pointer;" class="fas fa-info-circle">
                 <span></span>
             </i>
@@ -54,14 +55,7 @@
                     '<label for="kode_barang">Kode Barang</label>' +
                     '<input type="text" id="kode_barang" name="kode_barang" class="form-control" placeholder="' + datanya.kode_barang + '">' +
                     '</div>' +
-                    '<div class="form-group">' +
-                    '<label for="kategori_barang">Kategori Barang</label>' +
-                    '<input type="text" id="kategori_barang" name="kategori_barang" class="form-control" placeholder="' + datanya.kategori_barang + '">' +
-                    '</div>' +
-                    '<div class="form-group">' +
-                    '<label for="jenis_barang">Jenis Barang</label>' +
-                    '<input type="text" id="jenis_barang" jenis="jenis_barang" class="form-control" placeholder="' + datanya.jenis_barang + '">' +
-                    '</div>' +
+                    
                     '<div class="form-group">' +
                     '<label for="harga_retail">Harga retail</label>' +
                     '<input type="text" id="harga_retail" harga="harga_retail" class="form-control" placeholder="' + datanya.harga_retail + '">' +

@@ -216,7 +216,6 @@ class PenerimaansController extends Controller
             ->update(['status' => 'konfirmasi']);
 
         //posting
-
         $no = Jurnal::max('id') + 1;
         for ($i = 1; $i < 3; ++$i) {
             $jurnal = Jurnal::create([

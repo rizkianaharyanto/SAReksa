@@ -55,5 +55,10 @@
 
 <script>
     $('#tambahbutton').hide()
+    const title = "@yield('title')".toLowerCase().replace('data','').trim().replace(' ','-');
+    const idSidebarLink = `link-${title}`.trim();
+    console.log(idSidebarLink);
+    $('#link-dashboard').removeClass('active');
+    $(`#${idSidebarLink}`).addClass('active')
 </script>
 @endsection

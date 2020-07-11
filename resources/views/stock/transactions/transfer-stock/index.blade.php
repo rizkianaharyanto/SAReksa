@@ -42,7 +42,7 @@
                     <i class="menu-icon fas fa-ellipsis-h"></i>
                 </button>
                 <div class="dropdown-menu">
-                    @if($transfer->status == 'belum diposting')
+                    @if($transfer->status != 'sudah posting')
                     <a class="dropdown-item" href="/stok/transfer-stock/{{$transfer->id}}/edit" data-form="Edit Data">
                         Edit</a>
                     <a class="delete-jquery dropdown-item" data-method="delete"
@@ -84,7 +84,7 @@
     @endforeach
 </select>
 <label for="field3">Gudang Tujuan</label>
-<select class="form-control" name="gudang_tujuan" id="field3">
+<select class="form-control" name="gudang_tujuan" id="gudangTujuan">
     <option value="">--- Pilih Gudang ---</option>
     @foreach($gudangs as $gudang)
     <option value="{{$gudang->id}}">{{$gudang->kode_gudang}}</option>
@@ -97,7 +97,7 @@
 <label for="field5">Akun Penyesuaian</label>
 <input class="form-control" type="text" name="akun_penyesuaian" id="field5">
 <div id="formbarang" class="d-flex flex-column">
-    <div id="isibarangs" class="d-flex m-2">
+    <div class="d-flex m-2 inputbarangs">
         <div class="m-3">
             <label for="field6">Barang</label>
             <select class="form-control isibarangs" name="barang_id[]" id="item_id">
@@ -122,12 +122,43 @@
 @parent
 
 <script>
-    let i = 0 
+    $('#gudang_id').change(function() {
+
+        let selectedGudang = $(this).find('option:selected').val()
+        let allGudangOptions = $(this).find('option');
+
+
+        $('#gudangTujuan').empty();
+        allGudangOptions.clone().appendTo('#gudangTujuan');        
+        
+        
+        $('#gudangTujuan option').each(function(index, data) {
+            
+            if($(this).val() == selectedGudang){
+                    $(this).remove();
+                }
+        })
+    })
     function tambah(){
-         let barangInput = $("#isibarangs").clone()
-         $("#formbarang").append(barangInput);
-         barangInput.append(' <a type="button" class="m-3 pt-4" onclick="hapus(this)"><i class="fas fa-window-close" style="color: red; cursor: pointer"></i></a>')
-    }
+       let selected = $('.inputbarangs').last().find('option:selected').val();
+        let barangInput = $(".inputbarangs").last().clone()
+        barangInput.find('option').each(function (index,data){
+            if($(this).val() == selected)
+            {
+                $(this).remove();
+            }
+        })
+
+        if ($(".inputbarangs").last().is(':first-child')) {
+            $("#formbarang").append(barangInput);
+            
+            $("#formbarang").find('.inputbarangs').last().append(' <a type="button" class="m-3 pt-4" onclick="hapus(this)"><i class="fas fa-window-close" style="color: red; cursor: pointer"></i></a>');
+        }
+        else{
+            $("#formbarang").append(barangInput);
+            
+        }
+       }
 
     function hapus(x){
         $(x).parent().remove()
@@ -139,16 +170,22 @@ $("#gudang_id").change(function(){
         type: 'get',
         retur: {},
         success: function(data) {
-                console.log(data)
-                console.log(data.length)
             $('.isibarangs').empty()
             $(".isibarangs").append('<option value="">--- Pilih Barang ---</option>')
             for (i = 0; i < data.length; i++) {
-                $(".isibarangs").append('<option value="' + data[i].barang.id + '">' + data[i].barang.nama_barang + '</option>')
-            }
+                if(data[i].kuantitas != 0){
+                    $(".isibarangs").append(`<option value="${data[i].barang.id}" data-kuantitas=${data[i].kuantitas} >` + data[i].barang.nama_barang + `       \t(${data[i].kuantitas})`+'</option>')
+                }            
+                }
         }
     })
 })
+$(".isibarangs").change(function()  {
+        let selectedBarang = $(this).find('option:selected');
+        let kuantitasBarang = selectedBarang.data('kuantitas');
+        $(this).parent().next().find('input').attr('max',kuantitasBarang);
+        
+    })
 </script>
 <script>
     (function() {

@@ -50,7 +50,7 @@
                                 <td>{{$item->unit->nama_satuan}}</td>
                                 <td>@if($item->pivot->quantity_diff > 0)
                                     + {{$item->pivot->quantity_diff}}
-                                    @elseif($item->pivot->quantity_diff < 0) + {{$item->pivot->quantity_diff}} @else 0
+                                    @elseif($item->pivot->quantity_diff < 0) {{$item->pivot->quantity_diff}} @else 0
                                         @endif </td> <td>@if($item->pivot->selisih * $item->nilai_barang >= 0)
                                         {{$item->pivot->selisih * $item->nilai_barang}}
                                         @endif

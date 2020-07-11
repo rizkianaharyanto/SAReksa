@@ -9,14 +9,14 @@
 <div class="content">
         <div class="row">
             <div class="col-md-12">
-                <div class="">
+                <div class="card">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="card card-plain">
+                                <div class="card card-plain" style='margin-bottom:-40px'>
                                     <div class="card-body">
                                         <div class="d-flex justify-content-center">
-                                            <div id="stepper" class="bs-stepper align-self-end" style=" width:80vw; max-height:60vh; color:black;">
+                                            <div id="stepper" class="bs-stepper align-self-end" style=" width:80vw; max-height:; color:black;">
                                                 <div class="bs-stepper-header">
                                                     <div class="step" data-target="#test-l-1">
                                                         <button type="button" class="btn step-trigger">
@@ -47,14 +47,15 @@
                                                         @csrf
                                                         <div id="test-l-1" class="content">
                                                             <input type="hidden" id="penjual_id" name="penjual_id">
+                                                            <input type="hidden" id="status" name="diskon_rp" value="piutang">
                                                             <input type="hidden" id="status" name="status" value="piutang">
-                                                            <input type="hidden" id="akun_barang" name="akun_barang">
+                                                            <input type="hidden" id="akun_barang" name="akun_barang" value='{{$retur->total_jenis_barang}}'>
                                                             <input type="hidden" id="piutang" name="piutang">
-                                                            <div style="height: 58vh;overflow: auto; color:black" class="mt-2">
+                                                            <div style="height: ;overflow: auto; color:black" class="mt-2">
                                                                 <div class="form-group row mx-5 mb-5">
                                                                     <label class="col-sm-3 col-form-label" for="pelanggan_id">Pelanggan</label>
                                                                     <div class="col-sm-9">
-                                                                        <select required class="form-control" id="pelanggan_id" name="pelanggan_id">
+                                                                        <select disabled required class="form-control" id="pelanggan_id" name="pelanggan_id">
                                                                             <option value="">--- Pilih Pelanggan ---</option>
                                                                             @foreach ($pelanggans as $pelanggan)
                                                                             <option value="{{$pelanggan->id}}"{{ $pelanggan->id ==  "$retur->pelanggan_id" ? "selected" : "" }}>{{ $pelanggan->nama_pelanggan }}</option>
@@ -88,12 +89,18 @@
                                                             </div>
                                                         </div>
                                                         <div id="test-l-2" class="content">
-                                                            <div style="overflow: auto; height: 41vh;" id="formbarang">
+                                                            <div style="overflow: auto; height: ;" id="formbarang">
                                                             @foreach ($retur->barangs as $returbarang)
                                                                 <div class="form-row mx-5" id="isiformbarang0">
                                                                     <div class="form-group col-md-3">
                                                                         <label for="barang_id" id="lbl">Barang</label>
-                                                                        <select required class="form-control" id="barang_id" onchange="isi(this)" name="barang_id[]">
+                                                                        <select required disabled class="form-control" id="barang_id_ui" onchange="isi(this)" name="barang_id_ui[]">
+                                                                            <option value="">--- Pilih Barang ---</option>
+                                                                            @foreach ($barangs as $barang)
+                                                                            <option value="{{$barang->id}}" {{$barang->id == $returbarang->pivot->barang_id ? "selected" : "" }}>{{ $barang->nama_barang }}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                        <select required hidden class="form-control" id="barang_id" onchange="isi(this)" name="barang_id[]">
                                                                             <option value="">--- Pilih Barang ---</option>
                                                                             @foreach ($barangs as $barang)
                                                                             <option value="{{$barang->id}}" {{$barang->id == $returbarang->pivot->barang_id ? "selected" : "" }}>{{ $barang->nama_barang }}</option>
@@ -102,7 +109,7 @@
                                                                     </div>
                                                                     <div class="form-group col-md-1">
                                                                         <label for="jumlah_barang">QTY</label>
-                                                                        <input type="number"min="0"  class="form-control" id="jumlah_barang" name="jumlah_barang[]" onfocus="startCalc(this);" onblur="stopCalc();" value="{{$returbarang->pivot->jumlah_barang}}" placeholder="-">
+                                                                        <input type="number"min="0"  max="{{$returbarang->pivot->jumlah_barang}}" class="form-control" id="jumlah_barang" name="jumlah_barang[]" onfocus="startCalc(this);" onblur="stopCalc();" value="{{$returbarang->pivot->jumlah_barang}}" placeholder="-">
                                                                     </div>
                                                                     <div class="form-group col-md-2">
                                                                         <label for="satuan_unit">Unit</label>                                                                            
@@ -115,7 +122,8 @@
                                                                             <div style="height: 38px" class="input-group-prepend">
                                                                                 <div class="input-group-text">Rp</div>
                                                                             </div>
-                                                                            <input style="height: 38px" type="number" min="0" class="form-control" id="harga" name="harga[]" onfocus="startCalc(this);" value="{{$returbarang->pivot->harga}}" onblur="stopCalc();" placeholder="-">
+                                                                            <input disabled style="height: 38px" type="number" min="0" class="form-control" id="harga_ui" name="harga_ui[]" onfocus="startCalc(this);" value="{{$returbarang->pivot->harga}}" onblur="stopCalc();" placeholder="-">
+                                                                            <input hidden style="height: 38px" type="number" min="0" class="form-control" id="harga" name="harga[]" onfocus="startCalc(this);" value="{{$returbarang->pivot->harga}}" onblur="stopCalc();" placeholder="-">
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-group col-md-3">
@@ -138,19 +146,31 @@
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <div class="d-flex mr-auto">
-                                                                    <p class="m-2">Total </p>
-                                                                    <div class="input-group mb-2">
-                                                                        <div class="input-group-prepend">
-                                                                            <div class="input-group-text">Rp</div>
+                                                                    <div class="d-flex flex-column">
+                                                                        <div class="d-flex">
+                                                                            <p class="m-2">Total </p>
+                                                                            <div class="input-group mb-2">
+                                                                                <div class="input-group-prepend">
+                                                                                    <div class="input-group-text">Rp</div>
+                                                                                </div>
+                                                                                <input style="width:26vw" type="number" min="0" name="total_harga_barang" id="total_harga_barang" disabled>
+                                                                                <input type="hidden" name="total_harga" id="total_harga">                                                                    
+                                                                            </div>
                                                                         </div>
-                                                                        <input style="width:26vw" type="number" min="0" name="total_harga_barang" id="total_harga_barang" disabled>
-                                                                        <input type="hidden" name="total_harga_barang" id="total_harga_barang">                                                                    </div>
+                                                                        <div class="d-flex justify-content-between ml-5">
+                                                                            @if($retur->diskon_rp != 0)
+                                                                                <div id="diskon_ui">Diskon : {{$retur->diskon_rp}}</div>
+                                                                            
+                                                                            @endif
+                                                                            <input type="hidden" id="diskon" value='{{$retur->diskon_rp}}' name="diskon">
+                                                                        </div> 
+                                                                    </div>
                                                                 </div>
                                                                 <a href="/penjualan/returs">
                                                                     <button type="button" class="btn btn-secondary">Batal</button>
                                                                 </a>
                                                                 <a class="btn" style="background-color:#212120; color:white" onclick="stepper.previous()">Sebelumnya</a>
-                                                                <button type="submit" class="btn" style="background-color:#212120; color:white">Tambah</button>
+                                                                <button type="submit" class="btn" style="background-color:#212120; color:white">Edit</button>
                                                             </div>
                                                         </div>
                                                     </form>
@@ -169,6 +189,28 @@
 </div>
 
 <script>
+$(document).ready(function(){
+    $.ajax({
+            url: '/penjualan/returs/' + {{$retur->id}},
+            type: 'get',
+            data: {},
+            success: function(data) {
+            console.log(data)
+            $('#total_harga').val(data.total_seluruh_rt)
+            $('#total_harga_barang').val(data.total_seluruh_rt)
+            $('#total').val(data.total_harga_rt[0])
+            var harga=document.getElementsByName("total[]");
+            console.log(harga)
+            for (var i = 1; i <= data.barangs.length - 1; i++) {
+                console.log(data.total_harga_rt[i])
+                harga[i].value = data.total_harga_rt[i];
+                }
+            },
+        error: function(jqXHR, textStatus, errorThrown) {}
+    });
+});
+
+
     var stepperNode = document.querySelector('#stepper')
     var stepper = new Stepper(document.querySelector('#stepper'))
 
@@ -247,14 +289,18 @@
             success: function(data) {
                 if (data.success == true) {
                     console.log(data)
-                    // $('#diskon').val(data.faktur.diskon)
-                    // $('#biaya_lain').val(data.faktur.biaya_lain)
+                    $('#diskon').val(data.faktur.diskon_rp)
+                    $('#diskon_rp').val(data.faktur.diskon_rp)
+                    if(data.faktur.diskon_rp != 0){
+                        $('#diskon_ui').html('Diskon : ' + data.faktur.diskon_rp)
+                    }
                     $('#penjual_id').val(data.faktur.penjual_id)
                     $('#barang_id').val(data.barangs[0].id)
                     $('#tambahbarang').detach()
                     $('#uni').attr('placeholder',data.barangs[0].pivot.unit)
                     $('#unit').val(data.barangs[0].pivot.unit)
                     $('#jumlah_barang').val(data.barangs[0].pivot.jumlah_barang)
+                    
                     $('#harga').val(data.barangs[0].pivot.harga)
                     for (var i = 1; i <= data.barangs.length - 1; i++) {
                         $("#formbarang").append($("#isiformbarang0").clone().attr('id', 'isiformbarang' + i));
@@ -332,9 +378,11 @@
             if (parseInt(arr[i].value))
                 tot += parseInt(arr[i].value);
         }
+        var diskon = $("#diskon").val();
+        console.log('diskon', diskon);
         console.log(tot)
-        document.getElementById('total_harga_barang').value = tot;
-        // document.getElementById('total_harga_keseluruhan').value = tot;
+        document.getElementById('total_harga_barang').value = tot - diskon;
+        document.getElementById('total_harga').value = tot - diskon;
         document.getElementById('akun_barang').value = tot;
     }
 

@@ -58,7 +58,7 @@
                 <div class="card-body">
                     <h5 class="text-muted">Nilai Barang di Gudang</h5>
                     <div class="metric-value d-inline-block">
-                        <h1 class="mb-1 text-primary">$5,656</h1>
+                        <h1 class="mb-1 text-primary">0</h1>
                     </div>
                     <div class="metric-label d-inline-block float-right text-danger">
                     </div>
@@ -88,40 +88,7 @@
     <!-- revenue  -->
     <!-- ============================================================== -->
     <div class="row">
-        <div class="col-xl-8 col-lg-12 col-md-8 col-sm-12 col-12">
-            <div class="card">
-                <h5 class="card-header">Revenue</h5>
-                <div class="card-body">
-                    <canvas id="revenue" width="400" height="150"></canvas>
-                </div>
-                <div class="card-body border-top">
-                    <div class="row">
-                        <div class="offset-xl-1 col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 p-3">
-                            <h4> Today's Earning: $2,800.30</h4>
-                            <p>Suspendisse potenti. Done csit amet rutrum.
-                            </p>
-                        </div>
-                        <div class="offset-xl-1 col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 p-3">
-                            <h2 class="font-weight-normal mb-3"><span>$48,325</span> </h2>
-                            <div class="mb-0 mt-3 legend-item">
-                                <span class="fa-xs text-primary mr-1 legend-title "><i
-                                        class="fa fa-fw fa-square-full"></i></span>
-                                <span class="legend-text">Current Week</span></div>
-                        </div>
-                        <div class="offset-xl-1 col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 p-3">
-                            <h2 class="font-weight-normal mb-3">
 
-                                <span>$59,567</span>
-                            </h2>
-                            <div class="text-muted mb-0 mt-3 legend-item"> <span
-                                    class="fa-xs text-secondary mr-1 legend-title"><i
-                                        class="fa fa-fw fa-square-full"></i></span><span class="legend-text">Previous
-                                    Week</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
         <!-- ============================================================== -->
         <!-- end reveune  -->
         <!-- ============================================================== -->
@@ -160,14 +127,6 @@
                 </div>
             </div>
         </div>
-        <!-- ============================================================== -->
-        <!-- end total sale  -->
-        <!-- ============================================================== -->
-    </div>
-    <div class="row">
-        <!-- ============================================================== -->
-        <!-- top selling products  -->
-        <!-- ============================================================== -->
         <div class="col-xl-7 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="card">
                 <h5 class="card-header">Top Selling Products</h5>
@@ -250,74 +209,9 @@
             </div>
         </div>
         <!-- ============================================================== -->
-        <!-- end top selling products  -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- revenue locations  -->
-        <!-- ============================================================== -->
-        <div class="col-xl-5 col-lg-12 col-md-12 col-sm-12 col-12">
-            <div class="card">
-                <h5 class="card-header">Revenue by Location</h5>
-                <div class="card-body">
-                    <div id="locationmap" style="width:100%; height:200px"></div>
-                </div>
-                <div class="card-body border-top">
-                    <div class="row">
-                        <div class="col-xl-6">
-                            <div class="sell-ratio">
-                                <h5 class="mb-1 mt-0 font-weight-normal">New York</h5>
-                                <div class="progress-w-percent">
-                                    <span class="progress-value">72k </span>
-                                    <div class="progress progress-sm">
-                                        <div class="progress-bar" role="progressbar" style="width: 72%;"
-                                            aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-6">
-                            <div class="sell-ratio">
-                                <h5 class="mb-1 mt-0 font-weight-normal">San Francisco</h5>
-                                <div class="progress-w-percent">
-                                    <span class="progress-value">39k</span>
-                                    <div class="progress progress-sm">
-                                        <div class="progress-bar" role="progressbar" style="width: 39%;"
-                                            aria-valuenow="39" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-6">
-                            <div class="sell-ratio">
-                                <h5 class="mb-1 mt-0 font-weight-normal">Sydney</h5>
-                                <div class="progress-w-percent">
-                                    <span class="progress-value">25k </span>
-                                    <div class="progress progress-sm">
-                                        <div class="progress-bar" role="progressbar" style="width: 39%;"
-                                            aria-valuenow="39" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-6">
-                            <div class="sell-ratio">
-                                <h5 class="mb-1 mt-0 font-weight-normal">Singapore</h5>
-                                <div class="progress-w-percent mb-0">
-                                    <span class="progress-value">61k </span>
-                                    <div class="progress progress-sm">
-                                        <div class="progress-bar" role="progressbar" style="width: 61%;"
-                                            aria-valuenow="61" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- ============================================================== -->
-        <!-- end revenue locations  -->
+        <!-- end total sale  -->
         <!-- ============================================================== -->
     </div>
+
 
 </div>

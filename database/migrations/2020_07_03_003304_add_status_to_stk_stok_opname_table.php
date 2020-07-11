@@ -14,7 +14,7 @@ class AddStatusToStkStokOpnameTable extends Migration
     public function up()
     {
         Schema::table('stk_stok_opname', function (Blueprint $table) {
-            $table->enum('status', ['belum diposting', 'sudah posting']);
+            $table->enum('status', ['belum posting', 'sudah posting']);
         });
     }
 

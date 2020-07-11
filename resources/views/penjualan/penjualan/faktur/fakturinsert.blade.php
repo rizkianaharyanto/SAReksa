@@ -9,14 +9,14 @@
 <div class="content">
         <div class="row">
             <div class="col-md-12">
-                <div class="">
+                <div class="card">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="card card-plain">
+                                <div class="card card-plain" style='margin-bottom:-40px'>
                                     <div class="card-body">
                                         <div class="d-flex justify-content-center">
-                                            <div id="stepper" class="bs-stepper align-self-end" style=" width:80vw; max-height:60vh; color:black;">
+                                            <div id="stepper" class="bs-stepper align-self-end" style=" width:80vw; color:#212120;">
                                                 <div class="bs-stepper-header">
                                                     <div class="step" data-target="#test-l-1">
                                                         <button type="button" class="btn step-trigger">
@@ -50,12 +50,12 @@
                                                             <input type="hidden" id="status" name="status" value="piutang">
                                                             <input type="hidden" id="akun_barang" name="akun_barang">
                                                             <input type="hidden" id="piutang" name="piutang">
-                                                            <div style="height: 58vh;overflow: auto; color:black" class="mt-2">
+                                                            <div style="height: ;overflow: auto; color:black" class="mt-2">
                                                                 <div class="form-group row mx-5 mb-5">
                                                                     <label class="col-sm-3 col-form-label" for="pelanggan_id">Pelanggan</label>
                                                                     <div class="col-sm-9">
-                                                                        <select class="form-control" id="pelanggan_id" name="pelanggan_id">
-                                                                            <option value="" >--- Pilih Pelanggan ---</option>
+                                                                        <select class="form-control" required id="pelanggan_id" name="pelanggan_id">
+                                                                            <option selected hidden disabled value="" >--- Pilih Pelanggan ---</option>
                                                                             @foreach ($pelanggans as $pelanggan)
                                                                             <option value="{{$pelanggan->id}}">{{ $pelanggan->nama_pelanggan }}</option>
                                                                             @endforeach
@@ -65,7 +65,7 @@
                                                                 <div class="form-group row mx-5 mb-5">
                                                                     <label class="col-sm-3 col-form-label" for="tanggal">Tanggal</label>
                                                                     <div class="col-sm-9">
-                                                                        <input type="date" class="form-control" id="tanggal" name="tanggal">
+                                                                        <input required type="date" class="form-control" id="tanggal" name="tanggal">
                                                                     </div>
                                                                     
                                                                 </div>
@@ -85,7 +85,7 @@
                                                                 <p class="mr-3">Pemesanan</p>
                                                                 <div class="mr-5" id="pemesanan_form" style="display: none; background-color:black">
                                                                     <select  class="form-control" id="pemesanan_id" name="pemesanan_id">
-                                                                        <option value="">--- Pilih Pemesanan ---</option>'
+                                                                        <option value="" selected hidden disabled>--- Pilih Pemesanan ---</option>'
                                                                     </select>
                                                                 </div>
                                                                 <input class="mx-2" type="radio" name="radio" onclick="checkPenerimaan(this)" />
@@ -93,12 +93,18 @@
                                                             </div>
                                                             <hr>
                                                             <div style="display:none" id="checkBarang">
-                                                                <div style="overflow: auto; height: 41vh;" id="formbarang">
+                                                                <div style="overflow: auto; height: ;" id="formbarang">
                                                                     <div class="form-row mx-5" id="isiformbarang0">
                                                                         <div class="form-group col-md-3">
                                                                             <label for="barang_id" id="lbl">Barang</label>
-                                                                            <select class="form-control" onchange="isi(this)" id="barang_id" name="barang_id[]">
-                                                                                <option value="">--- Pilih Barang ---</option>
+                                                                            <select required class="form-control" disabled onchange="isi(this)" id="barang_id_ui" name="barang_id_ui[]">
+                                                                                <option value=""  selected hidden disabled>--- Pilih Barang ---</option>
+                                                                                @foreach ($barangs as $barang)
+                                                                                <option value="{{$barang->id}}">{{ $barang->nama_barang }}</option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                            <select required class="form-control" hidden onchange="isi(this)" id="barang_id" name="barang_id[]">
+                                                                                <option value="" selected hidden disabled>--- Pilih Barang ---</option>
                                                                                 @foreach ($barangs as $barang)
                                                                                 <option value="{{$barang->id}}">{{ $barang->nama_barang }}</option>
                                                                                 @endforeach
@@ -106,20 +112,22 @@
                                                                         </div>
                                                                         <div class="form-group col-md-1">
                                                                             <label for="jumlah_barang">QTY</label>
-                                                                            <input type="number" style="height: 38px"  min="0" class="form-control" id="jumlah_barang" name="jumlah_barang[]" onfocus="startCalc(this);" onblur="stopCalc();" placeholder="-">
+                                                                            <input type="number" disabled style="height: 38px"  min="0" class="form-control" id="jumlah_barang_ui" name="jumlah_barang_ui[]" onfocus="startCalc(this);" onblur="stopCalc();disc();" placeholder="-">
+                                                                            <input type="hidden" style="height: 38px"  min="0" class="form-control" id="jumlah_barang" name="jumlah_barang[]" onfocus="startCalc(this);" onblur="stopCalc();disc();" placeholder="-">
                                                                         </div>
                                                                         <div class="form-group col-md-2">
                                                                             <label for="satuan_unit">Unit</label>
                                                                             <input type="number" style="height: 38px"  min="0" class="form-control" id="uni" disabled>
                                                                             <input type="hidden" id="unit" name="unit_barang[]">
                                                                         </div>
-                                                                        <div class="form-group col-md-2">
+                                                                        <div class="form-group col-md-3">
                                                                             <label for="harga">Harga Satuan</label>
                                                                             <div class="input-group mb-2">
                                                                                 <div style="height: 38px" class="input-group-prepend">
                                                                                     <div class="input-group-text">Rp</div>
                                                                                 </div>
-                                                                                <input style="height: 38px" type="number" min="0" class="form-control" id="harga" name="harga[]" onfocus="startCalc(this);" onblur="stopCalc();" placeholder="-">
+                                                                                <input style="height: 38px" type="number" disabled min="0" class="form-control" id="harga_ui" name="harga_ui[]" onfocus="startCalc(this);" onblur="stopCalc();disc();" placeholder="-">
+                                                                                <input style="height: 38px" type="hidden" min="0" class="form-control" id="harga" name="harga[]" onfocus="startCalc(this);" onblur="stopCalc();disc();" placeholder="-">
                                                                             </div>
                                                                         </div>
                                                                         <div class="form-group col-md-3">
@@ -131,29 +139,29 @@
                                                                                 <input style="height: 38px" type="number" min="0" class="form-control" id="total" name="total[]" disabled>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="form-group col-md-1">
+                                                                        <!-- <div class="form-group col-md-1">
                                                                             <p style="color: transparent">#</p>
-                                                                            <a onclick="hapus(this)">
+                                                                            <a onclick="hapusb(this)">
                                                                                 <i style="color:grey;" class="fas fa-trash"></i>
                                                                             </a>
-                                                                        </div>
+                                                                        </div> -->
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div style="display:none" id="checkPenerimaan">
-                                                                <div style="overflow: auto; height: 41vh;" id="formpengiriman">
+                                                                <div style="overflow: auto; height: ;" id="formpengiriman">
                                                                     <div class="form-row mx-5" id="isiformpengiriman0">
                                                                         <div class="form-group col-md-3">
                                                                             <label for="pengiriman_id">Pengiriman</label>
-                                                                            <select style="height: 43px" class="form-control" id="pengiriman_id" onchange="isipengiriman(this)" name="pengiriman_id[]" >
-                                                                                <option value="">--- Pilih Pengiriman ---</option>
+                                                                            <select style="height: 43px" class="form-control" id="pengiriman_id" onchange="isipengiriman(this)"  onblur="disc();" name="pengiriman_id[]" >
+                                                                                <option value="" selected hidden disabled>--- Pilih Pengiriman ---</option>
                                                                             </select>
                                                                         </div>
                                                                         <div class="form-group col-md-4">
                                                                             <label for="tanggal_pengiriman">Tanggal</label>
                                                                             <input type="date" class="form-control" id="tanggal_pengiriman" disabled>
                                                                             <input type="hidden" id="discpnm" name="discpnm[]">
-                                    <input type="hidden" id="biypnm" name="biypnm[]">
+                                                                            <input type="hidden" id="biypnm" name="biypnm[]">
                                                                         </div>
                                                                         <div class="form-group col-md-4">
                                                                             <label for="total">Total</label>
@@ -166,7 +174,7 @@
                                                                         </div>
                                                                         <div class="form-group col-md-1">
                                                                             <p style="color: transparent">#</p>
-                                                                            <a onclick="hapus(this)">
+                                                                            <a onclick="hapusp(this)">
                                                                                 <i style="color:grey;" class="fas fa-trash"></i>
                                                                             </a>
                                                                         </div>
@@ -196,7 +204,7 @@
                                                             </div>
                                                         </div>
                                                         <div id="test-l-3" class="content">
-                    <div style="height: 58vh;overflow:auto" class="mt-2">
+                    <div style="height: ;overflow:auto" class="mt-2">
                         <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="diskon">Diskon</label>
                             <div class="col-sm-3">
@@ -225,7 +233,8 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" min="0" class="form-control" name="biaya_lain" onchange="disc();" id="biaya_lain" placeholder="-">
+                                    <input type="number" disabled min="0" class="form-control" name="biaya_lain_ui" onchange="disc();" id="biaya_lain_ui" placeholder="-">
+                                    <input type="hidden" min="0" class="form-control" name="biaya_lain" onchange="disc();" id="biaya_lain" placeholder="-">
                                 </div>
                             </div>
                         </div>
@@ -355,6 +364,7 @@
             }
             // console.log(totp)
             document.getElementById('total_harga_barang').value = totp;
+            disc();
         })
     }
 
@@ -374,8 +384,17 @@
         }
     }
 
-    function hapus(x) {
-        if ($(x).parent().parent().attr('id') != 'isiformbarang0' || $(x).parent().parent().attr('id') != 'isiformpengiriman0') {
+    function hapusb(x) {
+        var ii = $(x).parent().parent().attr('id')
+        console.log(ii)
+        if ($(x).parent().parent().attr('id') != 'isiformbarang0') {
+            $(x).parent().parent().remove();
+        }
+    }
+    function hapusp(x) {
+        var ii = $(x).parent().parent().attr('id')
+        console.log(ii)
+        if ($(x).parent().parent().attr('id') != 'isiformpengiriman0') {
             $(x).parent().parent().remove();
         }
     }
@@ -433,23 +452,33 @@
                     $('#diskon').val(data.pemesanan.diskon)
                     $('#diskon').val(data.pemesanan.diskon)
                     $('#disko').val(data.pemesanan.diskon)
+                    $('#diskoo').val(data.pemesanan.diskon_rp)
                     $('#disk').val(data.pemesanan.diskon_rp)
+                    $('#akun_barang').val(data.subtotal_psnfak)
                     $('#total_harga_barang').val(data.subtotal_psnfak)
                     $('#total_harga_kes').val(data.total_seluruh_psnfak)
                     $('#total_harga_keseluruhan').val(data.total_seluruh_psnfak)
                     $('#biaya_lain').val(data.pemesanan.biaya_lain)
+                    $('#biaya_lain_ui').val(data.pemesanan.biaya_lain)
                     $('#barang_id').val(data.barangs[0].id)
+                    $('#barang_id_ui').val(data.barangs[0].id)
                     $('#unit').val(data.barangs[0].pivot.unit)
                     $('#uni').attr('placeholder',data.barangs[0].pivot.unit)
+                    $('#jumlah_barang_ui').val(data.barangs[0].pivot.jumlah_barang)
                     $('#jumlah_barang').val(data.barangs[0].pivot.jumlah_barang)
                     $('#harga').val(data.barangs[0].pivot.harga)
+                    $('#harga_ui').val(data.barangs[0].pivot.harga)
+                    $('#total').val(data.total_harga_psnfak[0])
                     for (var i = 1; i <= data.barangs.length - 1; i++) {
                         $("#formbarang").append($("#isiformbarang0").clone().attr('id', 'isiformbarang' + i));
                         $("#isiformbarang" + i).children().children('select').val(data.barangs[i].id)
                         $("#isiformbarang" + i).children().children('#jumlah_barang').val(data.barangs[i].pivot.jumlah_barang)
+                        $("#isiformbarang" + i).children().children('#jumlah_barang_ui').val(data.barangs[i].pivot.jumlah_barang)
                         $("#isiformbarang" + i).children().children('#unit').val(data.barangs[i].pivot.unit)
                         $("#isiformbarang" + i).children().children('#uni').attr('placeholder',data.barangs[i].pivot.unit)
+                        $("#isiformbarang" + i).children().children().children('#total').val(data.total_harga_psnfak[i])
                         $("#isiformbarang" + i).children().children().children('#harga').val(data.barangs[i].pivot.harga)
+                        $("#isiformbarang" + i).children().children().children('#harga_ui').val(data.barangs[i].pivot.harga)
                     }
                     var c = data.barangs.length
                     console.log(c)
@@ -488,6 +517,7 @@
                             biypnm += parseInt(array[i].value);
                     }
                     $('#biaya_lain').val(biypnm)
+                    $('#biaya_lain_ui').val(biypnm)
                     $('#disk').val(discpnm)
                     $('#diskon').val(0)
                     $('#disko').val(0)
@@ -569,6 +599,9 @@
             $('#total_harga_kes').val(hutang)
             $('#total_harga_keseluruhan').val(hutang)
         }
+        $("#uang_muka").attr({
+                                "max" : hutang 
+                            });
         console.log(
             'barang:', barang,
             'dis:', dis,
@@ -614,6 +647,7 @@
         }
         document.getElementById('total_harga_barang').value = tot;
         document.getElementById('total_harga_keseluruhan').value = tot;
+        
     }
 
     function isi(x) {
