@@ -30,9 +30,9 @@
     <td>{{ $barang['kuantitas_total'] !=null ? $barang['kuantitas_total'] : '-' }}</td>
     <td class="d-flex justify-content-between">
         <a id="details" data-toggle="modal" data-target="#modal" data-id="{{ $barang['id'] }}">
-        <button class="btn-info"><i  style="cursor: pointer;" class="fas fa-info-circle">
-                <span></span>
-            </i></button>
+            <button class="btn-info"><i style="cursor: pointer;" class="fas fa-info-circle">
+                    <span></span>
+                </i></button>
         </a>
     </td>
 </tr>

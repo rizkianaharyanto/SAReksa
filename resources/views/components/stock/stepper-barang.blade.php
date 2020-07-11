@@ -42,16 +42,11 @@
                                     </button>
                                 </div>
                                 <div class="line"></div>
-                                <div class="step" data-target="#test-l-3">
-                                    <button type="button" class="btn step-trigger">
-                                        <span class="bs-stepper-circle">3</span>
-                                        <span class="bs-stepper-label">Akun</span>
-                                    </button>
-                                </div>
+
                                 <div class="step" data-target="#test-l-4">
                                     <button type="button" class="btn step-trigger">
-                                        <span class="bs-stepper-circle">4</span>
-                                        <span class="bs-stepper-label">Akun</span>
+                                        <span class="bs-stepper-circle">3</span>
+                                        <span class="bs-stepper-label">Lainnya</span>
                                     </button>
                                 </div>
                             </div>
@@ -65,46 +60,49 @@
                                     </ul>
                                 </div>
                                 @endif
-                                <form method="POST" action="/stok/Management-Data/barang">
+                                <form method="POST" id="formBarang" action="/stok/Management-Data/barang"
+                                    enctype="multipart/form-data">
                                     @CSRF
                                     <div id="test-l-1" class="content">
                                         <div class="form-goup">
                                             <label for="kodeKategori">Kode Barang </label>
-                                            <input class="form-control form-control-lg" type="text" id="kodeKategori"
+                                            <input required data-parsley-trigger="focusout"
+                                                class="form-control form-control-lg" type="text" id="kodeKategori"
                                                 name="kode_barang">
                                         </div>
                                         <div class="form-group">
                                             <label for="namaKategori">Kategori Barang </label>
-                                            <select class="selectpicker" data-width="100%" name="kategori_barang"
+                                            <select required class="selectpicker"
+                                                style="background-color: rgba(231, 233, 231, 0.877)"
+                                                data-parsley-trigger="focusout" data-width="100%" name="kategori_barang"
                                                 id="namaKategori">
                                                 @foreach ($kategoriBarang as $itemCat)
-                                                <option value={{$itemCat->id}}>{{$itemCat->nama_kategori}}</option>
+                                                <option value="{{$itemCat->id}}">{{$itemCat->nama_kategori}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                         <div class="form-group">
                                             <label for="namaBarang">Nama Barang </label>
-                                            <input class="form-control form-control-lg" type="text" id="kodeKategori"
+                                            <input required class="form-control form-control-lg"
+                                                data-parsley-trigger="focusout" type="text" id="kodeKategori"
                                                 name="nama_barang">
                                         </div>
-                                        <div class="form-group">
-                                            <label for="jenisBarang">Jenis Barang</label>
-                                            <input class="form-control form-control-lg" id="jenisBarang" type="text"
-                                                name="jenis_barang">
-                                        </div>
+
                                         <div class="form-group">
                                             <label for="satuanUnit">Satuan Unit </label>
-                                            <select class="form-control" name="satuan_unit" id="satuanUnit">
+                                            <select required data-parsley-trigger="focusout"
+                                                class="form-control selectpicker" name="satuan_unit" id="satuanUnit">
                                                 @foreach ($satuanUnit as $unit)
-                                                <option value={{$unit->id}}>{{$unit->nama_satuan}}</option>
+                                                <option value="{{$unit->id}}">{{$unit->nama_satuan}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                         <div class="form-group">
                                             <label for="supplier">Supplier</label>
-                                            <select class="form-control" name="supplier_id" id="supplier">
+                                            <select data-parsley-trigger="focusout" required
+                                                class="form-control selectpicker" name="supplier_id" id="supplier">
                                                 @foreach ($gudangs as $gudang)
-                                                <option value={{$gudang->id}}>{{$gudang->kode_gudang}}</option>
+                                                <option value="{{$gudang->id}}">{{$gudang->kode_gudang}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -117,23 +115,36 @@
                                     </div>
                                     <div id="test-l-2" class="content">
                                         <div class="form-group">
-                                            <label for="hargaRetail">Harga Retail</label>
+                                            <label for="hargaRetail">Harga Beli Retail</label>
                                             <div class="input-group mb-2">
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text">Rp</div>
                                                 </div>
-                                                <input type="number" min="0" class="form-control form-control-lg"
-                                                    id="hargaRetail" placeholder="20.000" name="harga_retail">
+                                                <input required data-parsley-trigger="focusout" type="number" min="0"
+                                                    class="form-control form-control-lg" id="hargaRetail"
+                                                    placeholder="20.000" name="harga_retail">
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="hargaRetail">Harga Grosir</label>
+                                            <label for="hargaRetail">Harga Beli Grosir</label>
                                             <div class="input-group mb-2">
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text">Rp</div>
                                                 </div>
-                                                <input type="number" min="0" class="form-control form-control-lg"
-                                                    id="hargaGrosir" placeholder="20.000" name="harga_grosir">
+                                                <input required data-parsley-trigger="focusout" type="number" min="0"
+                                                    class="form-control form-control-lg" id="hargaGrosir"
+                                                    placeholder="20.000" name="harga_grosir">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="hargaJual">Harga Jual</label>
+                                            <div class="input-group mb-2">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">Rp</div>
+                                                </div>
+                                                <input required data-parsley-trigger="focusout" type="number" min="0"
+                                                    class="form-control form-control-lg" id="hargaJual"
+                                                    placeholder="20.000" name="harga_jual">
                                             </div>
                                         </div>
                                         <div class="d-flex justify-content-end">
@@ -144,36 +155,7 @@
 
                                         </div>
                                     </div>
-                                    <div id="test-l-3" class="content">
-                                        <div class="form-group">
-                                            <label for="akunHpp">Akun Hpp</label>
-                                            <input id="akunHpp" class="form-control form-control-lg" name="akun_hpp"
-                                                type="text">
-                                        </div>
-                                        <div class="form-group" for="akunPersediaan">
-                                            <label for="akunPersediaan">Akun Persediaan</label>
-                                            <input id="akunPersediaan" class="form-control form-control-lg"
-                                                name="akun_persediaan" type="text">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="akunPenjualan">Akun Penjualan</label>
-                                            <input id="akunPenjualan" class="form-control form-control-lg"
-                                                name="akun_penjualan" type="text">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="akunPembelian">Akun Pembelian</label>
-                                            <input class="form-control form-control-lg" id="akunPembelian"
-                                                name="akun_pembelian" type="text">
-                                        </div>
-                                        <div class="form-group"></div>
-                                        <div class="d-flex justify-content-end">
 
-                                            <button type="button" class="btn mr-2 btn-primary"
-                                                onclick="stepper1.previous()">Previous</button>
-                                            <button type="button" class="btn btn-primary"
-                                                onclick="stepper1.next()">Next</button>
-                                        </div>
-                                    </div>
                                     <div id="test-l-4" class="content">
                                         <div class="form-group">
                                             <label for="">Pajak</label>
@@ -190,7 +172,7 @@
                                             <button type="button" class="mr-2 btn btn-primary"
                                                 onclick="stepper1.previous()">Previous</button>
 
-                                            <button type="submit" style="" class="btn btn-dark">Submit</button>
+                                            <button type="submit" class="btn btn-dark">Submit</button>
                                         </div>
                                     </div>
                                 </form>
@@ -201,22 +183,26 @@
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bs-stepper/dist/js/bs-stepper.min.js"></script>
 
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
-    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bs-stepper/dist/js/bs-stepper.min.js"></script>
+    <script src="{{asset('vendor/stock/jquery/jquery-3.3.1.min.js')}}"></script>
+    <script src="{{asset('vendor/stock/parsley/parsley.js')}}"></script>
+    {{-- 
+
     <script src="{{asset('vendor/stock/bootstrap/js/bootstrap.bundle.js')}}"></script>
     <!-- slimscroll js-->
     <script src="{{asset('vendor/stock/slimscroll/jquery.slimscroll.js')}}"></script>
+
     <script src="{{asset('js/stock/main-js.js')}}"></script>
 
-    <script src="{{asset('vendor/stock/bootstrap-select/js/bootstrap-select.js')}}"></script>
+    <script src="{{asset('vendor/stock/bootstrap-select/js/bootstrap-select.js')}}"></script> --}}
 
-
+    <script>
+        $('#formBarang').parsley();
+    </script>
 
     <script>
         var stepper1 = new Stepper(document.querySelector('#stepper1'))

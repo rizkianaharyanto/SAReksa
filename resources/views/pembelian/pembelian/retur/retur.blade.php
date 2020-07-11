@@ -29,7 +29,7 @@
     <td>{{ $retur->total_harga }}</td>
     <td>{{ $retur->status !=null ? $retur->status  : '-' }} |
         @if ($retur->status_posting == 'sudah posting')
-            sudah posting 
+        sudah posting
         @elseif ($retur->status_posting == 'konfirmasi')
         <a href="/pembelian/ubahpsnret/{{$retur->id}}">posting</a>
         @else
@@ -40,24 +40,26 @@
         <a id="details" href="/pembelian/returshow/{{$retur->id}}">
             <button class="btn-info">
                 <i style="cursor: pointer; " class="fas fa-info-circle">
-                        <span></span>
-                    </i>
-                </button>
+                    <span></span>
+                </i>
+            </button>
         </a>
-        <!-- <a id="edit" href="/pembelian/returs/{{$retur->id}}/edit">
+        @if($retur->status_posting == null)
+        <a id="edit" href="/pembelian/returs/{{$retur->id}}/edit">
             <button class="btn-warning">
                 <i style="cursor: pointer;" class="fas fa-edit">
                     <span></span>
                 </i>
             </button>
-        </a> -->
-        <!-- <form method="POST" action="/pembelian/returs/{{$retur->id}}">
+        </a>
+        <form method="POST" action="/pembelian/returs/{{$retur->id}}">
             @method('delete')
             @csrf
             <button type="submit" class="btn-danger"><i style="cursor: pointer;" class="fas fa-trash">
                 <span></span>
             </i></button>
-        </form> -->
+        </form>
+        @endif
         <!-- <a id="delete" data-toggle="modal" data-target="#delete-{{$retur->id }}">
             <i style="cursor: pointer;" class="fas fa-trash">
                 <span></span>
@@ -85,7 +87,7 @@ $delete = "delete-".$retur->id
 
 @section('tambah')
 <a href="/pembelian/returs/create">
-<button class="btn-sm btn-info">Tambah</button>
+    <button class="btn-sm btn-info">Tambah</button>
 </a>
 
 @endsection

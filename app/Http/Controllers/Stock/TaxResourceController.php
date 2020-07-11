@@ -22,8 +22,7 @@ class TaxResourceController extends Controller
         //
       
         $allData = $this->model->all();
-        return $allData;
-        // return view('Management-Data/pajak',compact("allData"));
+        return view('stock.management-data.pajak', compact("allData"));
     }
     public function indexpembelian()
     {
@@ -44,6 +43,7 @@ class TaxResourceController extends Controller
     public function store(CreateTaxRequest $request)
     {
         $input = $request->input();
+        $input['tarif'] = $input['tarif']/100;
         $data= $this->model->create($input);
         return redirect()->back();
     }
@@ -56,7 +56,9 @@ class TaxResourceController extends Controller
     {
         //
         $input = $request->only($this->model->getModel()->fillable);
-        // return $this->model->update($input,$id);
+        $input['tarif'] = $input['tarif']/100;
+
+        $this->model->update($input, $id);
         
         return redirect()->back();
     }
@@ -65,6 +67,6 @@ class TaxResourceController extends Controller
     {
         //
         $this->model->delete($id);
-        return "Success";
+        return redirect()->back();
     }
 }

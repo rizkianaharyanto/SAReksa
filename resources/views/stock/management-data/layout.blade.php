@@ -5,7 +5,7 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('vendor/stock/datatables/css/buttons.bootstrap4.css')}}">
 <link rel="stylesheet" type="text/css" href="{{ asset('vendor/stock/datatables/css/select.bootstrap4.css')}}">
 <link rel="stylesheet" type="text/css" href="{{ asset('vendor/stock/datatables/css/fixedHeader.bootstrap4.css')}}">
-@endsection
+@endsectionP
 @section('main-content')
 <div class="row">
     <div class="row">
@@ -31,12 +31,13 @@
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0">Data Pemasok</h5>
+                <h5 class="mb-0">@yield('title')</h5>
                 @section('button-tambah-data')
 
-                <button class="btn btn-primary" data-toggle="modal" data-target="#modal">Tambah data</button>
+                <button class="btn btn-primary" style="background-color: #349eac" data-toggle="modal"
+                    data-target="#modal">Tambah
+                    data</button>
                 @show
-                <p> - Anda Dapat Mengexport ke bentuk yang anda inginkan - </p>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -70,7 +71,7 @@
     <!-- ============================================================== -->
 
 
-    
+
     @section('modal-form')
 
     <x-stock.modal>
@@ -102,5 +103,7 @@
 <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.colVis.min.js"></script>
 <script src="https://cdn.datatables.net/rowgroup/1.0.4/js/dataTables.rowGroup.min.js"></script>
 <script src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js"></script>
+<script src="{{asset('vendor/stock/bootstrap-select/js/bootstrap-select.js')}}"></script>
+
 <script src="https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"></script>
 @endsection

@@ -29,9 +29,9 @@
     <td>{{ $penerimaan->total_harga }}</td>
     <td>
         @if ($penerimaan->status == 'sudah posting')
-            sudah posting 
+        sudah posting
         @elseif ($penerimaan->status == 'selesai')
-            selesai
+        selesai
         @elseif ($penerimaan->status == 'konfirmasi')
         <a href="/pembelian/ubahpsn/{{$penerimaan->id}}">posting</a>
         @else
@@ -48,18 +48,18 @@
         </a>
         @if($penerimaan->status == null)
         <a id="edit" href="/pembelian/penerimaans/{{$penerimaan->id}}/edit">
-        <button class="btn-warning">
-            <i style="cursor: pointer;" class="fas fa-edit">
-                <span></span>
-            </i>
-        </button>
+            <button class="btn-warning">
+                <i style="cursor: pointer;" class="fas fa-edit">
+                    <span></span>
+                </i>
+            </button>
         </a>
         <form method="POST" action="/pembelian/penerimaans/{{$penerimaan->id}}">
             @method('delete')
             @csrf
             <button type="submit" class="btn-danger"><i style="cursor: pointer;" class="fas fa-trash">
-                <span></span>
-            </i></button>
+                    <span></span>
+                </i></button>
         </form>
         <!-- <a id="delete" data-toggle="modal" data-target="#delete-{{$penerimaan->id }}">
             <i style="cursor: pointer;" class="fas fa-trash">
@@ -67,7 +67,7 @@
             </i>
         </a> -->
         @endif
-        
+
     </td>
 </tr>
 
@@ -90,7 +90,7 @@ $delete = "delete-".$penerimaan->id
 
 @section('tambah')
 <a href="/pembelian/penerimaans/create">
-<button class="btn-sm btn-info">Tambah</button>
+    <button class="btn-sm btn-info">Tambah</button>
 </a>
 
 @endsection

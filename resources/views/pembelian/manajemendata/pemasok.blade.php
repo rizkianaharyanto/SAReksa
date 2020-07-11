@@ -32,19 +32,22 @@ endsection -->
     <td class="d-flex justify-content-between">
         <a id="details" data-toggle="modal" data-target="#modal" data-id="{{ $pemasok->id }}">
             <button class="btn-info"><i style="cursor: pointer;" class="fas fa-info-circle">
-                <span></span>
-            </i></button>
+                    <span></span>
+                </i></button>
         </a>
+
+        @if(auth()->user()->role->role_name == 'Admin Pembelian')
         <a id="edit" data-toggle="modal" data-target="#modal" data-id="{{ $pemasok->id }}">
             <button class="btn-warning"><i style="cursor: pointer;" class="fas fa-edit">
-                <span></span>
-            </i></button>
+                    <span></span>
+                </i></button>
         </a>
         <a id="delete" data-toggle="modal" data-target="#modal" data-id="{{ $pemasok->id }}">
             <button class="btn-danger"><i style="cursor: pointer;" class="fas fa-trash">
-                <span></span>
-            </i></button>
+                    <span></span>
+                </i></button>
         </a>
+        @endif
     </td>
 </tr>
 @endforeach
@@ -67,7 +70,7 @@ endsection -->
         var ini = $(this).data("id");
         console.log(ini);
         $.get("/pembelian/pemasoks/" + ini, function(datanya) {
-                console.log(datanya);
+            console.log(datanya);
             //     $('#nama_pemasok').html("pemasok" + datanya.pemasok.nama_pemasok);
             // });
             if (id == "details") {
@@ -126,7 +129,7 @@ endsection -->
                     '</div>' +
                     '<div class="form-group modal-footer">' +
                     '<button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>' +
-                    '<button type="submit" class="btn btn-primary">Simpan</button>' + 
+                    '<button type="submit" class="btn btn-primary">Simpan</button>' +
                     '</div>' +
                     '</form>'
                 );
@@ -153,12 +156,15 @@ endsection -->
 </script>
 @endsection
 
+
+@if(auth()->user()->role->role_name == 'Admin Pembelian')
 <!-- Tambah -->
 @section('tambah')
 <a data-toggle="modal" data-target="#modaltambah">
-<button class="btn-sm btn-info">Tambah</button>
+    <button class="btn-sm btn-info">Tambah</button>
 </a>
 @endsection
+@endif
 
 @section('judulTambah')
 <h5 class="align-self-center">Tambah Pemasok</h5>

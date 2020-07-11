@@ -10,6 +10,10 @@
 <li class="active">Ubah Penerimaan</li>
 @endsection
 
+@section('alert')
+@include('pembelian.alert')
+@endsection
+
 @section('isi')
 
 <div class="d-flex justify-content-center">
@@ -39,7 +43,7 @@
             </div>
         </div>
         <div class="bs-stepper-content">
-        <form method="POST" action="/pembelian/penerimaans/{{$penerimaan->id}}">
+            <form method="POST" action="/pembelian/penerimaans/{{$penerimaan->id}}">
                 @method('put')
                 @csrf
                 <div id="test-l-1" class="content">
@@ -53,6 +57,17 @@
                                     <option value="">--- Pilih pemasok ---</option>
                                     @foreach ($pemasoks as $pemasok)
                                     <option value="{{$pemasok->id}}" {{$pemasok->id == "$penerimaan->pemasok_id" ? "selected" : "" }}>{{ $pemasok->nama_pemasok }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row mx-5 mb-5" id="pemesanan_form">
+                            <label class="col-sm-3 col-form-label" for="pemesanan_id">Pemesanan</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" id="pemesanan_id" name="pemesanan_id">
+                                    <option value="">--- Pilih pemesanan ---</option>
+                                    @foreach ($pemesanans as $pemesanan)
+                                    <option value="{{$pemesanan->id}}" {{$pemesanan->id == "$penerimaan->pemesanan_id" ? "selected" : "" }}>{{ $pemesanan->kode_pemesanan }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -94,7 +109,7 @@
 
                 <div id="test-l-2" class="content">
                     <div style="overflow: auto; " id="formbarang">
-                    @foreach ($penerimaan->barangs as $penerimaanbarang)
+                        @foreach ($penerimaan->barangs as $penerimaanbarang)
                         <div class="form-row mx-5" id="isiformbarang0">
                             <div class="form-group col-md-3">
                                 <label for="barang_id" id="lbl">Barang</label>
@@ -167,7 +182,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">%</div>
                                     </div>
-                                    <input type="number" min="0" class="form-control" id="diskon" onchange="disc();" name="diskon"  value="{{$penerimaan->diskon}}" placeholder="-">
+                                    <input type="number" min="0" class="form-control" id="diskon" onchange="disc();" name="diskon" value="{{$penerimaan->diskon}}" placeholder="-">
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -298,7 +313,7 @@
                     $('#barang_id').val(data.barangs[0].id)
                     $('#tambahbarang').detach()
                     $('#unit').val(data.barangs[0].pivot.unit)
-                    $('#uni').attr('placeholder',data.barangs[0].pivot.unit)
+                    $('#uni').attr('placeholder', data.barangs[0].pivot.unit)
                     $('#jumlah_barang').val(data.barangs[0].pivot.barang_belum_diterima)
                     $('#harga').val(data.barangs[0].pivot.harga)
                     $('#total').val(data.total_harga_psn[0])

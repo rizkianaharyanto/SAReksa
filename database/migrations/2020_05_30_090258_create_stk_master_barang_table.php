@@ -18,7 +18,6 @@ class CreateStkMasterBarangTable extends Migration
             $table->string('kode_barang');
             $table->bigInteger('kategori_barang');
             $table->string('nama_barang');
-            $table->string('jenis_barang');
             $table->bigInteger('satuan_unit');
             $table->integer('harga_grosir');
             $table->string('item_image');
@@ -30,6 +29,7 @@ class CreateStkMasterBarangTable extends Migration
             $table->bigInteger('supplier_id');
             $table->float('nilai_barang', 10, 4)->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

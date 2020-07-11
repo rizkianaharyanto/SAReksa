@@ -62,7 +62,6 @@
         console.log('hello');
         document.getElementById("nav").classList.remove("collapsed");
     }
-
 </script>
 
 

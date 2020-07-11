@@ -14,7 +14,7 @@ class AddSelisihToStkDetailStokOpnameTable extends Migration
     public function up()
     {
         Schema::table('stk_detail_stok_opname', function (Blueprint $table) {
-            $table->integer('selisih');
+            $table->integer('selisih')->nullable();
         });
     }
 

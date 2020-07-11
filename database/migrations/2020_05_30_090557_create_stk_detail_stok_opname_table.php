@@ -17,8 +17,8 @@ class CreateStkDetailStokOpnameTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('stock_opname_id');
             $table->bigInteger('item_id');
-            $table->integer('jumlah_tercatat');
-            $table->integer('jumlah_fisik');
+            $table->integer('jumlah_tercatat')->nullable();
+            $table->integer('jumlah_fisik')->nullable();
             
             
             $table->timestamps();

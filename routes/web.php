@@ -15,11 +15,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('base');
 
 Route::prefix('pembelian')->group(function () {
-    Route::get('/', function () {
-        return view('pembelian.template.templatebaru');
+    Route::get('/', 'Pembelian\LoginController@dashboard')->middleware('auth.pembelian');
+
+    Route::get('/login', 'Pembelian\LoginController@index');
+
+    Route::prefix('auth')->group(function () {
+        Route::post('/login', 'Pembelian\LoginController@login');
+        Route::get('/logout', 'Pembelian\LoginController@logout');
     });
 
     Route::get('/ambilgudang', 'Pembelian\GudangsController@ambil');
@@ -33,6 +38,7 @@ Route::prefix('pembelian')->group(function () {
     Route::get('/postingfak/{idnya}', 'Pembelian\FaktursController@posting');
     Route::get('/ubahpsnfak/{idnya}', 'Pembelian\FaktursController@ubahpsn');
     Route::get('/postingret/{idnya}', 'Pembelian\RetursController@posting');
+    Route::get('/postingpem/{idnya}', 'Pembelian\PembayaransController@posting');
 
     //show laporan
     Route::get('/permintaans/laporan', 'Pembelian\PermintaansController@laporan');
@@ -49,7 +55,7 @@ Route::prefix('pembelian')->group(function () {
     Route::get('/pembayarans/laporanfilter', 'Pembelian\PembayaransController@laporanfilter');
     Route::get('/hutangs/laporan', 'Pembelian\HutangsController@laporan');
     Route::get('/hutangs/laporanfilter', 'Pembelian\HutangsController@laporanfilter');
-
+    
     //cetak laporan
     Route::get('/permintaans/laporanpdf', 'Pembelian\PermintaansController@cetaklaporan');
     Route::get('/pemesanans/laporanpdf', 'Pembelian\PemesanansController@cetaklaporan');
@@ -58,7 +64,7 @@ Route::prefix('pembelian')->group(function () {
     Route::get('/returs/laporanpdf', 'Pembelian\RetursController@cetaklaporan');
     Route::get('/pembayarans/laporanpdf', 'Pembelian\PembayaransController@cetaklaporan');
     Route::get('/hutangs/laporanpdf', 'Pembelian\HutangsController@cetaklaporan');
-
+    
     //show details
     Route::get('/permintaanshow/{id}', 'Pembelian\PermintaansController@show2');
     Route::get('/pemesananshow/{id}', 'Pembelian\PemesanansController@show2');
@@ -67,8 +73,9 @@ Route::prefix('pembelian')->group(function () {
     Route::get('/returshow/{id}', 'Pembelian\RetursController@show2');
     Route::get('/pembayaranshow/{id}', 'Pembelian\PembayaransController@show2');
     Route::get('/hutangshow/{id}', 'Pembelian\HutangsController@show2');
-
+    
     //cetak pdf
+    Route::get('/jurnals/filter', 'Pembelian\JurnalsController@filter');
     Route::get('/jurnals/cetak_pdf', 'Pembelian\JurnalsController@cetak_pdf');
     Route::get('/permintaans/cetak_pdf', 'Pembelian\PermintaansController@cetak_pdf');
     Route::get('/pemesanans/cetak_pdf', 'Pembelian\PemesanansController@cetak_pdf');
@@ -77,6 +84,11 @@ Route::prefix('pembelian')->group(function () {
     Route::get('/returs/cetak_pdf', 'Pembelian\RetursController@cetak_pdf');
     Route::get('/pembayarans/cetak_pdf', 'Pembelian\PembayaransController@cetak_pdf');
     Route::get('/hutangs/cetak_pdf', 'Pembelian\HutangsController@cetak_pdf');
+    
+    //stok masuk
+    Route::get('/stokmasuk', 'Pembelian\PenerimaansController@stokmasuk');
+    Route::get('/stokmasuk/{id}', 'Pembelian\PenerimaansController@stokmasukdetail');
+
 
     // Route::get('/barangs', )
     Route::resources([
@@ -94,9 +106,14 @@ Route::prefix('pembelian')->group(function () {
 });
 
 Route::prefix('stok')->group(function () {
-    Route::get('/', function () {
-        return view('stock.dashboard');
+    Route::get('/', 'Stock\DashboardController@index')->middleware('auth.stock');
+    Route::get('/login', 'Stock\LoginController@index');
+
+    Route::prefix('auth')->group(function () {
+        Route::post('/login', 'Stock\LoginController@login');
+        Route::get('/logout', 'Stock\LoginController@logout');
     });
+
     Route::get('/getstocksbywarehouse/{warehouseId}', 'Stock\ItemResourceController@getStocksByWarehouse');
     Route::get('/barangs', 'Stock\ItemResourceController@indexpembelian');
     Route::get('/gudangs', 'Stock\WarehouseController@indexpembelian');
@@ -121,8 +138,11 @@ Route::prefix('stok')->group(function () {
         ]);
         Route::get('/pemasok', 'Pembelian\PemasoksController@indexbarang');
     });
-    Route::post('/stock-opname/posting/{id}', 'Stock\StockOpnameController@posting');
+    Route::get('/stock-opname/posting/{id}', 'Stock\StockOpnameController@posting');
+    Route::get('/transfer-stock/posting/{id}', 'Stock\StockTransferController@posting');
+    Route::get('/penyesuaian-stock/posting/{id}', 'Stock\StockAdjustmentController@posting');
     
+
     Route::resources([
             'transfer-stock' => 'Stock\StockTransferController',
             'stock-opname' => 'Stock\StockOpnameController',
@@ -131,6 +151,19 @@ Route::prefix('stok')->group(function () {
     ], ['middleware' => 'web']);
     Route::get('/stokbarang/{barangId}', 'Stock\ItemStockController@getStocksTotalById');
     Route::get('/stokbarangpergudang/{barangId}', 'Stock\ItemStockController@getStocksByGudang');
+  
+    Route::group(['prefix' => '/reports', 'as' => 'reports.'], function () {
+        Route::get('/kartu-stock', ['as' => 'kartu-stock','uses' => 'Stock\KartuStockController@index']);
+        Route::get('/kartu-stock/filter', 'Stock\KartuStockController@filter');
+        Route::get('/kartu-stock/export', 'Stock\KartuStockController@export');
+        
+        //Daftar Produk
+        Route::get('/produk', ['as' => 'produk','uses' => 'Stock\KartuStockController@index']);
+        Route::get('/produk/filter', 'Stock\KartuStockController@filter');
+        Route::get('/produk/export', 'Stock\KartuStockController@export');
+    });
+
+    //DELETE AFTER
     Route::get('/token', function () {
         return csrf_token();
     });
@@ -196,14 +229,13 @@ Route::prefix('kepegawaian')->group(function () {
 
 Route::prefix('penjualan')->group(function () {
     Route::get('/', 'Penjualan\LoginController@dashboard')->middleware('auth')->name('home');
-
     Route::get('/register', 'Penjualan\LoginController@daftar')->middleware('guest');
     Route::get('/login', 'Penjualan\LoginController@login')->middleware('guest')->name('login');
     Route::get('/logout', 'Penjualan\LoginController@logout')->middleware('auth');
     Route::post('/register', 'Penjualan\LoginController@postdaftar')->middleware('guest');
-    ;
+
     Route::post('/login', 'Penjualan\LoginController@postlogin')->middleware('guest');
-    ;
+
     Route::get('/barangs', 'Stock\ItemResourceController@indexpenjualan')->middleware('auth');
     Route::get('/gudangs', 'Stock\WarehouseController@indexpenjualan')->middleware('auth');
     Route::resource('/pelanggans', 'Penjualan\PelanggansController')->middleware('auth');
@@ -216,11 +248,11 @@ Route::prefix('penjualan')->group(function () {
     Route::any('/returs/cetak_pdf', 'Penjualan\RetursController@cetak_pdf')->middleware(['auth','checkRole:retur,piutang']);
     
     //Admin Faktur
-    Route::group(['middleware' => ['auth','checkRole:penjualan']], function () {
+    Route::group(['middleware' => ['auth', 'checkRole:penjualan']], function () {
         Route::resource('/pemesanans', 'Penjualan\PemesanansController');
         Route::resource('/pengirimans', 'Penjualan\PengirimansController');
         Route::resource('/penawarans', 'Penjualan\PenawaransController');
-       
+
         Route::any('/penawarans/cetak_pdf', 'Penjualan\PenawaransController@cetak_pdf');
         Route::any('/pemesanans/cetak_pdf', 'Penjualan\PemesanansController@cetak_pdf');
         Route::any('/pengirimans/cetak_pdf', 'Penjualan\PengirimansController@cetak_pdf');
@@ -232,12 +264,12 @@ Route::prefix('penjualan')->group(function () {
     });
 
     //Admin Retur
-    Route::group(['middleware' => ['auth','checkRole:retur']], function () {
+    Route::group(['middleware' => ['auth', 'checkRole:retur']], function () {
         Route::get('/returs/{idnya}/posting', 'Penjualan\RetursController@posting');
     });
 
     //Admin Piutang
-    Route::group(['middleware' => ['auth','checkRole:piutang']], function () {
+    Route::group(['middleware' => ['auth', 'checkRole:piutang']], function () {
         Route::resource('/piutangs', 'Penjualan\PiutangsController');
         Route::get('/showpiutang/{id}', 'Penjualan\PiutangsController@showpembayaran');
         Route::resource('/pembayarans', 'Penjualan\PembayaransController');
@@ -247,7 +279,7 @@ Route::prefix('penjualan')->group(function () {
     });
 
     //Dikersi Perusahaan
-    Route::group(['middleware' => ['auth','checkRole:direksi']], function () {
+    Route::group(['middleware' => ['auth', 'checkRole:direksi']], function () {
         //show laporan
         Route::any('/laporans/penawaran', 'Penjualan\LaporansController@penawaran');
         Route::any('/laporans/pemesanan', 'Penjualan\LaporansController@pemesanan');
@@ -272,4 +304,8 @@ Route::prefix('penjualan')->group(function () {
         Route::get('/jurnals/filterpdf', 'Penjualan\JurnalsController@cetak_filter');
         Route::get('/jurnals/cetak_pdf', 'Penjualan\JurnalsController@cetak_pdf');
     });
+
+    //stok keluar
+    Route::get('/stokkeluar', 'Penjualan\PengirimansController@stokkeluar');
+    Route::get('/stokkeluar/{id}', 'Penjualan\PengirimansController@stokkeluardetail');
 });

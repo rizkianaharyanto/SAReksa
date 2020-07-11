@@ -2,12 +2,13 @@
     <div class="logo">
         <a href="" class="simple-text logo-mini">
             <div class="logo-image-small">
-                <img alt='icon' class='icon'  src="/img/penjualan/avatar.png">
+                <img alt='icon' class='icon' src="/img/penjualan/avatar.png">
             </div>
         </a>
         <a href="" class="simple-text logo-normal" style='font-size:15px'>
-            @if (auth()->user()->role == 'piutang' || auth()->user()->role == 'penjualan' || auth()->user()->role == 'retur')
-                ADMIN {{auth()->user()->role}}
+            @if (auth()->user()->role->role_name == 'piutang' || auth()->user()->role->role_name == 'penjualan' ||
+            auth()->user()->role->role_name == 'retur')
+            ADMIN {{auth()->user()->role->role_name}}
             @else
                 Manajer Penjualan
             @endif
@@ -18,7 +19,8 @@
             <li class="{{ $elementActive == 'dashboard' ? 'active' : '' }}">
                 <a href="/penjualan/">
                     <i class="">
-                        <img alt='icon' width='25px' class='icon' src="/img/penjualan/dashboard.png" style="filter:invert(100%)">
+                        <img alt='icon' width='25px' class='icon' src="/img/penjualan/dashboard.png"
+                            style="filter:invert(100%)">
                     </i>
                     <p>{{ __('Dashboard') }}</p>
                 </a>
@@ -61,11 +63,12 @@
                     </ul>
                 </div>
             </li>
-            @if (auth()->user()->role == 'penjualan')
+            @if (auth()->user()->role->role_name == 'penjualan')
             <li class="{{ $elementActive == 'penawaran' ? 'active' : '' }}">
                 <a href="/penjualan/penawarans">
                     <i class="">
-                    <img alt='icon' width='25px' class='icon' src="/img/penjualan/penawaran.png" style="filter:invert(100%)">
+                        <img alt='icon' width='25px' class='icon' src="/img/penjualan/penawaran.png"
+                            style="filter:invert(100%)">
                     </i>
                     <p>{{ __('Penawaran') }}</p>
                 </a>
@@ -73,7 +76,8 @@
             <li class="{{ $elementActive == 'pemesanan' ? 'active' : '' }}">
                 <a href="/penjualan/pemesanans">
                     <i class="">
-                    <img alt='icon' width='25px' class='icon' src="/img/penjualan/order.png" style="filter:invert(100%)">
+                        <img alt='icon' width='25px' class='icon' src="/img/penjualan/order.png"
+                            style="filter:invert(100%)">
 
                     </i>
                     <p>{{ __('Pemesanan') }}</p>
@@ -82,37 +86,42 @@
             <li class="{{ $elementActive == 'pengiriman' ? 'active' : '' }}">
                 <a href="/penjualan/pengirimans">
                     <i class="">
-                        <img alt='icon' width='25px' class='icon' src="/img/penjualan/pengiriman.png" style="filter:invert(100%)">
+                        <img alt='icon' width='25px' class='icon' src="/img/penjualan/pengiriman.png"
+                            style="filter:invert(100%)">
                     </i>
                     <p>{{ __('Pengiriman') }}</p>
                 </a>
             </li>
             @endif
-            @if (auth()->user()->role == 'piutang' || auth()->user()->role == 'penjualan' || auth()->user()->role == 'retur')
+            @if (auth()->user()->role->role_name == 'piutang' || auth()->user()->role->role_name == 'penjualan' ||
+            auth()->user()->role->role_name == 'retur')
             <li class="{{ $elementActive == 'faktur' ? 'active' : '' }}">
                 <a href="/penjualan/fakturs">
                     <i class="">
-                    <img alt='icon' width='25px' class='icon' src="/img/penjualan/faktur.png" style="filter:invert(100%)">
+                        <img alt='icon' width='25px' class='icon' src="/img/penjualan/faktur.png"
+                            style="filter:invert(100%)">
                     </i>
                     <p>{{ __('Faktur') }}</p>
                 </a>
             </li>
             @endif
-            @if (auth()->user()->role == 'piutang' || auth()->user()->role == 'retur')
+            @if (auth()->user()->role->role_name == 'piutang' || auth()->user()->role->role_name == 'retur')
             <li class="{{ $elementActive == 'retur' ? 'active' : '' }}">
                 <a href="/penjualan/returs">
                     <i class="">
-                    <img alt='icon' width='25px' class='icon' src="/img/penjualan/retur.png" style="filter:invert(100%)">
+                        <img alt='icon' width='25px' class='icon' src="/img/penjualan/retur.png"
+                            style="filter:invert(100%)">
                     </i>
                     <p>{{ __('Retur Penjualan') }}</p>
                 </a>
             </li>
             @endif
-            @if (auth()->user()->role == 'piutang')
+            @if (auth()->user()->role->role_name == 'piutang')
             <li class="{{ $elementActive == 'piutang' ? 'active' : '' }}">
                 <a href="/penjualan/piutangs">
                     <i class="">
-                    <img alt='icon' width='25px' class='icon' src="/img/penjualan/piutang.png" style="filter:invert(100%)">
+                        <img alt='icon' width='25px' class='icon' src="/img/penjualan/piutang.png"
+                            style="filter:invert(100%)">
                     </i>
                     <p>{{ __('Piutang') }}</p>
                 </a>
@@ -120,18 +129,20 @@
             <li class="{{ $elementActive == 'pembayaran' ? 'active' : '' }}">
                 <a href="/penjualan/pembayarans">
                     <i class="">
-                    <img alt='icon' width='25px' class='icon' src="/img/penjualan/pembayaran (2).png" style="filter:invert(100%)">
+                        <img alt='icon' width='25px' class='icon' src="/img/penjualan/pembayaran (2).png"
+                            style="filter:invert(100%)">
 
                     </i>
                     <p>{{ __('Pembayaran Piutang') }}</p>
                 </a>
             </li>
             @endif
-            @if (auth()->user()->role == 'direksi')
+            @if (auth()->user()->role->role_name == 'direksi')
             <li class="{{ $elementActive == 'jurnal' ? 'active' : '' }}">
                 <a href="/penjualan/jurnals">
                     <i class="">
-                    <img alt='icon' width='25px' class='icon' src="/img/penjualan/jurnal.png" style="filter:invert(100%)">
+                        <img alt='icon' width='25px' class='icon' src="/img/penjualan/jurnal.png"
+                            style="filter:invert(100%)">
                     </i>
                     <p>{{ __('Jurnal') }}</p>
                 </a>
@@ -139,7 +150,8 @@
             <li class="{{ $elementActive == 'laporan' ? 'active' : '' }}">
                 <a href="/penjualan/laporans">
                     <i class="">
-                    <img alt='icon' width='25px' class='icon' src="/img/penjualan/laporan.png" style="filter:invert(100%)">
+                        <img alt='icon' width='25px' class='icon' src="/img/penjualan/laporan.png"
+                            style="filter:invert(100%)">
                     </i>
                     <p>{{ __('Laporan') }}</p>
                 </a>
@@ -148,4 +160,3 @@
         </ul>
     </div>
 </div>
-

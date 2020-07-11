@@ -33,19 +33,22 @@ endsection -->
     <td class="d-flex justify-content-between">
         <a id="details" data-toggle="modal" data-target="#modal" data-id="{{ $pengirim->id }}" data-sup="{{ $pengirim->pemasok->nama_pemasok }}">
             <button class="btn-info"><i style="cursor: pointer;" class="fas fa-info-circle">
-                <span></span>
-            </i></button>
+                    <span></span>
+                </i></button>
         </a>
+
+        @if(auth()->user()->role->role_name == 'Admin Pembelian')
         <a id="edit" data-toggle="modal" data-target="#modal" data-id="{{ $pengirim->id }}" data-sup="{{ $pengirim->pemasok->nama_pemasok }}">
             <button class="btn-warning"><i style="cursor: pointer;" class="fas fa-edit">
-                <span></span>
-            </i></button>
+                    <span></span>
+                </i></button>
         </a>
         <a id="delete" data-toggle="modal" data-target="#modal" data-id="{{ $pengirim->id }}">
             <button class="btn-danger"><i style="cursor: pointer;" class="fas fa-trash">
-                <span></span>
-            </i></button>
+                    <span></span>
+                </i></button>
         </a>
+        @endif
     </td>
 </tr>
 @endforeach
@@ -129,7 +132,7 @@ endsection -->
                     '<select class="form-control" id="nama_pemasok"  name="pemasok_id">' +
                     '<option value="">--- Pilih pemasok ---</option>' +
                     '@foreach ($pemasoks as $pemasok)' +
-                    '<option value="{{$pemasok->id}}" {{$pemasok->id == "'+sup_id.toString()+'" ? "selected" : ""}} >{{$pemasok->nama_pemasok}}</option>' +
+                    '<option value="{{$pemasok->id}}" {{$pemasok->id == "' + sup_id.toString() + '" ? "selected" : ""}} >{{$pemasok->nama_pemasok}}</option>' +
                     '@endforeach' +
                     '</select>' +
                     '</div>' +
@@ -164,13 +167,14 @@ endsection -->
 @endsection
 
 
-
+@if(auth()->user()->role->role_name == 'Admin Pembelian')
 <!-- Tambah -->
 @section('tambah')
 <a data-toggle="modal" data-target="#modaltambah">
-<button class="btn-sm btn-info">Tambah</button>
+    <button class="btn-sm btn-info">Tambah</button>
 </a>
 @endsection
+@endif
 
 @section('judulTambah')
 <h5 class="align-self-center">Tambah Pengirim</h5>

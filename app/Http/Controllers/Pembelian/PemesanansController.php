@@ -27,25 +27,75 @@ class PemesanansController extends Controller
 
     public function laporan()
     {
+        $pemasoks = Pemasok::all();
         $pemesanans = Pemesanan::all();
+        $supplier = null;
+        $start = null;
+        $end = null;
 
-        return view('pembelian.pembelian.pemesanan.laporan-pemesanan', compact('pemesanans'));
+        return view('pembelian.pembelian.pemesanan.laporan-pemesanan', [
+            'pemesanans' => $pemesanans,
+            'pemasoks' => $pemasoks,
+            'supplier' => $supplier,
+            'start' => $start,
+            'end' => $end
+        ]);
     }
 
     public function laporanfilter(Request $date)
     {
-        $pemesanans = Pemesanan::select("pbl_pemesanans.*")
-            ->whereBetween('tanggal', [$date->start, $date->end])
-            ->get();
+        if ($date->pemasok_id == null) {
+            $pemasoks = Pemasok::all();
+            $pemesanans = Pemesanan::all();
+            $supplier = null;
+            $start = null;
+            $end = null;
+        } else {
+            $pemasoks = Pemasok::all();
+            $supplier = Pemasok::find($date->pemasok_id);
+            $start = $date->start;
+            $end = $date->end;
+            $pemesanans = Pemesanan::select("pbl_pemesanans.*")
+                ->where('pemasok_id', $date->pemasok_id)
+                ->whereBetween('tanggal', [$date->start, $date->end])
+                ->get();
+        }
 
-            return view('pembelian.pembelian.pemesanan.laporan-pemesanan', compact('pemesanans'));
+        return view('pembelian.pembelian.pemesanan.laporan-pemesanan', [
+            'pemesanans' => $pemesanans,
+            'pemasoks' => $pemasoks,
+            'supplier' => $supplier,
+            'start' => $start,
+            'end' => $end
+        ]);
     }
 
-    public function cetaklaporan()
+    public function cetaklaporan(Request $date)
     {
-        $pemesanans = Pemesanan::all();
+        if ($date->pemasok_id == null) {
+            $pemasoks = Pemasok::all();
+            $pemesanans = Pemesanan::all();
+            $supplier = null;
+            $start = null;
+            $end = null;
+        } else {
+            $pemasoks = Pemasok::all();
+            $supplier = Pemasok::find($date->pemasok_id);
+            $start = $date->start;
+            $end = $date->end;
+            $pemesanans = Pemesanan::select("pbl_pemesanans.*")
+                ->where('pemasok_id', $date->pemasok_id)
+                ->whereBetween('tanggal', [$date->start, $date->end])
+                ->get();
+        }
 
-        $pdf = PDF::loadview('pembelian.pembelian.pemesanan.cetak-laporan-pemesanan', compact('pemesanans'));
+        $pdf = PDF::loadview('pembelian.pembelian.pemesanan.cetak-laporan-pemesanan', [
+            'pemesanans' => $pemesanans,
+            'pemasoks' => $pemasoks,
+            'supplier' => $supplier,
+            'start' => $start,
+            'end' => $end
+        ]);
 
         return $pdf->download('laporan-pemesanan.pdf');
     }
@@ -76,7 +126,7 @@ class PemesanansController extends Controller
     {
         $psn = Pemesanan::max('id') + 1;
         $pemesanan = Pemesanan::create([
-            'kode_pemesanan' => 'PSN-'.$psn,
+            'kode_pemesanan' => 'PSN-' . $psn,
             'pemasok_id' => $request->pemasok_id,
             'gudang' => $request->gudang,
             'tanggal' => $request->tanggal,
@@ -132,14 +182,15 @@ class PemesanansController extends Controller
         }
 
         return response()
-        ->json(['success' => true, 'pemesanan' => $pemesanan, 'barangs' => $barangs, 'barangsfak' => $barangsfak, 'penerimaans' => $penerimaans,
-        'total_seluruh_psn' => $total_seluruh_psn,
-        'total_harga_psn' => $total_harga_psn,
-        'subtotal_psn' => $subtotal_psn,
-        'total_seluruh_psnfak' => $total_seluruh_psnfak,
-        'total_harga_psnfak' => $total_harga_psnfak,
-        'subtotal_psnfak' => $subtotal_psnfak,
-        ]);
+            ->json([
+                'success' => true, 'pemesanan' => $pemesanan, 'barangs' => $barangs, 'barangsfak' => $barangsfak, 'penerimaans' => $penerimaans,
+                'total_seluruh_psn' => $total_seluruh_psn,
+                'total_harga_psn' => $total_harga_psn,
+                'subtotal_psn' => $subtotal_psn,
+                'total_seluruh_psnfak' => $total_seluruh_psnfak,
+                'total_harga_psnfak' => $total_harga_psnfak,
+                'subtotal_psnfak' => $subtotal_psnfak,
+            ]);
     }
 
     public function show2($id)
@@ -192,7 +243,7 @@ class PemesanansController extends Controller
             'total_harga' => $total_harga,
             'subtotal' => $subtotal,
             'total_seluruh' => $total_seluruh,
-            ]);
+        ]);
 
         return $pdf->download('pemesanan.pdf');
     }
@@ -262,6 +313,7 @@ class PemesanansController extends Controller
      */
     public function destroy(Pemesanan $pemesanan)
     {
+        $pemesanan->barangs()->detach();
         Pemesanan::destroy($pemesanan->id);
 
         return redirect('/pembelian/pemesanans');

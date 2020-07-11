@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Pembelian;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Pembelian\Jurnal;
+use App\Pembelian\Pemasok;
 use PDF;
 
 class JurnalsController extends Controller
@@ -19,30 +20,95 @@ class JurnalsController extends Controller
         $jurnals = Jurnal::all()->groupBy('kode_jurnal');
         $debit = 0;
         $kredit = 0;
-        foreach (Jurnal::all() as $jurnal){
+        $transaksi= null;
+        foreach (Jurnal::all() as $jurnal) {
             $debit += $jurnal->debit;
             $kredit += $jurnal->kredit;
         }
         return view('pembelian.jurnal', [
             'jurnals' => $jurnals,
             'debit' => $debit,
-            'kredit' => $kredit
+            'kredit' => $kredit,
+            'transaksi' => $transaksi
+        ]);
+    }
+    
+    public function filter(Request $date)
+    {
+        if ($date->transaksi == null) {
+            $jurnals = Jurnal::all()->groupBy('kode_jurnal');
+            $debit = 0;
+            $kredit = 0;
+            $transaksi= null;
+            // dd($jurnals);
+            foreach (Jurnal::all() as $jurnal) {
+                $debit += $jurnal->debit;
+                $kredit += $jurnal->kredit;
+            }
+        }else{
+            $transaksi= $date->transaksi;
+            if($date->transaksi == 'Penerimaan Barang'){
+                $jurnals = Jurnal::select('pbl_jurnals.*')->where('penerimaan_id', '!=', null)->get();
+            }elseif($date->transaksi == 'Faktur'){
+                $jurnals = Jurnal::select('pbl_jurnals.*')->where('faktur_id', '!=', null)->get();
+            }elseif($date->transaksi == 'Retur'){
+                $jurnals = Jurnal::select('pbl_jurnals.*')->where('retur_id', '!=', null)->get();
+            }elseif($date->transaksi == 'Pembayaran Hutang'){
+                $jurnals = Jurnal::select('pbl_jurnals.*')->where('pembayaran_id', '!=', null)->get();
+            }
+            $debit = 0;
+            $kredit = 0;
+            foreach ($jurnals as $jurnal) {
+                $debit += $jurnal->debit;
+                $kredit += $jurnal->kredit;
+            }
+        }
+        // return gettype($jurnals);
+        // dd($debit, $kredit);
+        // dd($jurnals);
+        return view('pembelian.jurnal', [
+            'jurnals' => $jurnals,
+            'debit' => $debit,
+            'kredit' => $kredit,
+            'transaksi' => $transaksi
         ]);
     }
 
-    public function cetak_pdf()
+    public function cetak_pdf(Request $date)
     {
-        $jurnals = Jurnal::all()->groupBy('kode_jurnal');
-        $debit = 0;
-        $kredit = 0;
-        foreach (Jurnal::all() as $jurnal){
-            $debit += $jurnal->debit;
-            $kredit += $jurnal->kredit;
+        if ($date->transaksi == null) {
+            $jurnals = Jurnal::all()->groupBy('kode_jurnal');
+            $debit = 0;
+            $kredit = 0;
+            $transaksi= null;
+            // dd($jurnals);
+            foreach (Jurnal::all() as $jurnal) {
+                $debit += $jurnal->debit;
+                $kredit += $jurnal->kredit;
+            }
+        }else{
+            $transaksi= $date->transaksi;
+            if($date->transaksi == 'Penerimaan Barang'){
+                $jurnals = Jurnal::select('pbl_jurnals.*')->where('penerimaan_id', '!=', null)->get();
+            }elseif($date->transaksi == 'Faktur'){
+                $jurnals = Jurnal::select('pbl_jurnals.*')->where('faktur_id', '!=', null)->get();
+            }elseif($date->transaksi == 'Retur'){
+                $jurnals = Jurnal::select('pbl_jurnals.*')->where('retur_id', '!=', null)->get();
+            }elseif($date->transaksi == 'Pembayaran Hutang'){
+                $jurnals = Jurnal::select('pbl_jurnals.*')->where('pembayaran_id', '!=', null)->get();
+            }
+            $debit = 0;
+            $kredit = 0;
+            foreach ($jurnals as $jurnal) {
+                $debit += $jurnal->debit;
+                $kredit += $jurnal->kredit;
+            }
         }
         $pdf = PDF::loadview('pembelian.jurnal-pdf', [
             'jurnals' => $jurnals,
             'debit' => $debit,
-            'kredit' => $kredit
+            'kredit' => $kredit,
+            'transaksi' => $transaksi
         ]);
 
         return $pdf->download('pembelian.jurnal-pdf.pdf');
@@ -56,6 +122,7 @@ class JurnalsController extends Controller
      */
     public function create()
     {
+        //
     }
 
     /**
@@ -67,6 +134,7 @@ class JurnalsController extends Controller
      */
     public function store(Request $request)
     {
+        //
     }
 
     /**
@@ -78,6 +146,7 @@ class JurnalsController extends Controller
      */
     public function show($id)
     {
+        //
     }
 
     /**
@@ -89,6 +158,7 @@ class JurnalsController extends Controller
      */
     public function edit($id)
     {
+        //
     }
 
     /**
@@ -101,6 +171,7 @@ class JurnalsController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //
     }
 
     /**
@@ -112,5 +183,6 @@ class JurnalsController extends Controller
      */
     public function destroy($id)
     {
+        //
     }
 }

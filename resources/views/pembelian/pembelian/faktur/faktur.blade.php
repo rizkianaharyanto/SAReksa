@@ -27,9 +27,9 @@
     <td>{{ $faktur->pemasok->nama_pemasok }}</td>
     <td>{{ $faktur->tanggal }}</td>
     <td>{{ $faktur->total_harga }}</td>
-    <td>{{ $faktur->status !=null ? $faktur->status  : '-' }} | 
+    <td>{{ $faktur->status !=null ? $faktur->status  : '-' }} |
         @if ($faktur->status_posting == 'sudah posting')
-            sudah posting 
+        sudah posting
         @elseif ($faktur->status_posting == 'konfirmasi')
         <a href="/pembelian/ubahpsnfak/{{$faktur->id}}">posting</a>
         @else
@@ -39,30 +39,33 @@
     <td class="d-flex justify-content-between">
         <a id="details" href="/pembelian/fakturshow/{{$faktur->id}}">
             <button class="btn-info">
-    
                 <i style="cursor: pointer; " class="fas fa-info-circle">
-                        <span></span>
-                    </i>
+                    <span></span>
+                </i>
             </button>
         </a>
+        @if(auth()->user()->role->role_name == 'Admin Pembelian')
         @if($faktur->status_posting == null)
-        <!-- <a id="edit" href="/pembelian/fakturs/{{$faktur->id}}/edit">
-            <button class="btn-warning">        
+        <a id="edit" href="/pembelian/fakturs/{{$faktur->id}}/edit">
+            <button class="btn-warning">
                 <i style="cursor: pointer;" class="fas fa-edit">
                     <span></span>
                 </i>
-        </button>
+            </button>
         </a>
         <form method="POST" action="/pembelian/fakturs/{{$faktur->id}}">
             @method('delete')
             @csrf
-            <button type="submit" class="btn btn-danger">Hapus</button>
+            <button type="submit" class="btn-danger"><i style="cursor: pointer;" class="fas fa-trash">
+                    <span></span>
+                </i></button>
         </form>
-        <a id="delete" data-toggle="modal" data-target="#delete-{{$faktur->id}}">
+        <!-- <a id="delete" data-toggle="modal" data-target="#delete-{{$faktur->id}}">
             <i style="cursor: pointer;" class="fas fa-trash">
                 <span></span>
             </i>
         </a> -->
+        @endif
         @endif
     </td>
 </tr>
@@ -83,9 +86,11 @@ $delete = "delete-".$faktur->id
 
 @endsection
 
+@if(auth()->user()->role->role_name == 'Admin Pembelian')
 @section('tambah')
 <a href="/pembelian/fakturs/create">
     <button class="btn-sm btn-info">Tambah</button>
 </a>
 
 @endsection
+@endif

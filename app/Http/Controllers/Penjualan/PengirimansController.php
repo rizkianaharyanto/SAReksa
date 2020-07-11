@@ -37,6 +37,51 @@ class PengirimansController extends Controller
         return view('penjualan.penjualan.pengiriman.pengiriman', compact('pengirimans'));
     }
 
+
+// ================================================================================================
+    public function stokkeluar()
+    {
+        $pengirimans = Pengiriman::all();
+        $barangs = collect([]);
+        foreach ($pengirimans as $pengiriman) {
+            $barangs->push($pengiriman->barangs);
+        }
+        $count=$barangs->count();
+        // dd($count);
+        return view('stock.transactions.stock-keluar.index', [
+            'pengirimans' => $pengirimans,
+            'barangs' => $count,
+        ]);
+    }
+    
+    public function stokkeluardetail($id)
+    {
+        $pengiriman = Pengiriman::find($id);
+        $gudang = Gudang::find($pengiriman->gudang);
+        $barangs = $pengiriman->barangs;
+        $diskon = $pengiriman->diskon_rp;
+        $biaya_lain = $pengiriman->biaya_lain;
+        $total_seluruh = $pengiriman->total_harga;
+        $total_harga = [];
+        $subtotal = 0;
+        foreach ($barangs as $index => $barang){
+            $total_harga[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
+            $subtotal += $total_harga[$index];
+        }
+        // dd($total_harga, $total_seluruh);
+        return view('stock.transactions.stock-keluar.details', [
+            'pengiriman' => $pengiriman, 
+            'gudang' => $gudang,
+            'barangs' => $barangs,
+            'diskon' => $diskon,
+            'biaya_lain' => $biaya_lain,
+            'total_harga' => $total_harga,
+            'subtotal' => $subtotal,
+            'total_seluruh' => $total_seluruh,
+        ]);
+    }
+// ================================================================================================
+
     /**
      * Show the form for creating a new resource.
      *

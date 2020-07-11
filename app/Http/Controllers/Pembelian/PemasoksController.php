@@ -39,6 +39,7 @@ class PemasoksController extends Controller
      */
     public function create()
     {
+        //
     }
 
     /**
@@ -52,7 +53,7 @@ class PemasoksController extends Controller
     {
         $sup = Pemasok::max('id') + 1;
         $pemasok = Pemasok::create([
-            'kode_pemasok' => 'SUP-'.$sup,
+            'kode_pemasok' => 'SUP-' . $sup,
             'nama_pemasok' => $request->nama_pemasok,
             'telp_pemasok' => $request->telp_pemasok,
             'email_pemasok' => $request->email_pemasok,
@@ -91,17 +92,17 @@ class PemasoksController extends Controller
         $hutangs = $pemasok->hutangs()->where('status', 'hutang')->get();
 
         return response()
-        ->json([
-            'pemasok' => $pemasok,
-            'permintaans' => $permintaans,
-            'pemesanans' => $pemesanans,
-            'pnmpemesanans' => $pnmpemesanans,
-            'fpemesanans' => $fpemesanans,
-            'fpenerimaans' => $fpenerimaans,
-            'penerimaans' => $penerimaans,
-            'fakturs' => $fakturs,
-            'hutangs' => $hutangs,
-        ]);
+            ->json([
+                'pemasok' => $pemasok,
+                'permintaans' => $permintaans,
+                'pemesanans' => $pemesanans,
+                'pnmpemesanans' => $pnmpemesanans,
+                'fpemesanans' => $fpemesanans,
+                'fpenerimaans' => $fpenerimaans,
+                'penerimaans' => $penerimaans,
+                'fakturs' => $fakturs,
+                'hutangs' => $hutangs,
+            ]);
     }
 
     /**
@@ -113,6 +114,7 @@ class PemasoksController extends Controller
      */
     public function edit(Pemasok $pemasok)
     {
+        //
     }
 
     /**

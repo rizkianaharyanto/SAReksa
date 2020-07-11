@@ -9,6 +9,7 @@ use App\Http\Requests\Stock\CreateStockTransferRequest;
 use App\Stock\TransferStok;
 use App\Stock\Gudang;
 use App\Stock\Barang;
+use App\Stock\Ledger;
 
 class StockTransferController extends Controller
 {
@@ -44,8 +45,26 @@ class StockTransferController extends Controller
      */
     
 
-    public function posting()
+    public function posting($id)
     {
+        $transfer = TransferStok::find($id);
+        TransferStok::where('id', $transfer->id)
+            ->update(['status' => 'sudah posting']);
+        // dd($transfer->details[0]->id);
+
+        foreach ($transfer->items as $index => $barang) {
+            // dd($barang);
+            $jurnal = Ledger::create([
+                'kode_transaksi' => $transfer->kode_ref,
+                'barang_id' => $barang->id,
+                'sisa' => 0,
+                'qty_masuk' => $barang->pivot->kuantitas,
+                'nilai_masuk' => $barang->pivot->kuantitas,
+                'qty_keluar' => $barang->pivot->kuantitas,
+                'nilai_keluar' => $barang->pivot->kuantitas,
+            ]);
+        }
+        return redirect()->back();
     }
 
     /**
@@ -56,7 +75,6 @@ class StockTransferController extends Controller
      */
     public function store(StockTransferService $stockTf, CreateStockTransferRequest $req)
     {
-        //
         $input = $req->validated();
         $stockTf->make($input);
         return redirect()->back();
@@ -77,6 +95,15 @@ class StockTransferController extends Controller
         return view('stock.transactions.transfer-stock.details', compact('transferStock'));
     }
 
+    public function edit($id)
+    {
+        $transferStock = $this->service->get($id);
+        $gudangs = Gudang::all();
+        if (!$transferStock) {
+            return redirect('/stok/transfer-stock')->with('status', 'Data Transaksi tersebut tidak ditemukan');
+        }
+        return view('stock.transactions.transfer-stock.edit', compact('transferStock'), compact('gudangs'));
+    }
   
     /**
      * Update the specified resource in storage.
@@ -85,9 +112,10 @@ class StockTransferController extends Controller
      * @param  \App\StockTransfer  $stockTransfer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, StockTransfer $stockTransfer)
+    public function update(CreateStockTransferRequest $request, $id)
     {
-        //
+        $this->service->update($request->validated(), $id);
+        return redirect()->back();
     }
 
     /**
@@ -98,8 +126,15 @@ class StockTransferController extends Controller
      */
     public function destroy($id)
     {
-        //
-        $this->model->delete($id);
-        return "Success";
+        $transferStock = $this->service->get($id);
+        if (!$transferStock) {
+            return redirect('/stok/transfer-stock')->with('status', 'Data Transaksi tersebut tidak ditemukan');
+        }
+
+        if ($transferStock->status == "sudah posting") {
+            return redirect('/stok/transfer-stock')->with('status', 'Tidak Dapat Menghapus Data Transaksi yang sudah diposting');
+        }
+        $this->service->delete($id);
+        return redirect()->back();
     }
 }

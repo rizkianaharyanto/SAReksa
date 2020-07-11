@@ -3,12 +3,24 @@
 namespace App\Stock;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Barang extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'stk_master_barang';
     protected $guarded = ['id', 'created_at', 'updated_at'];
-    protected $appends = ['harga_retail','harga_grosir'];
+    protected $appends = ['harga_retail','harga_grosir','harga_jual'];
+
+    public function scopeIsActive($query)
+    {
+        return $query->where('status', 'aktif');
+    }
+    public function ledgers()
+    {
+        return $this->hasMany('App\Stock\Ledger', 'ledger_id');
+    }
     public function getHargaRetailAttribute()
     {
         $hargaRetailHistory = $this->hargaRetailHistory()->latest()->first();
@@ -18,6 +30,16 @@ class Barang extends Model
     {
         $hargaGrosirHistory = $this->hargaGrosirHistory()->latest()->first();
         return $hargaGrosirHistory ? $hargaGrosirHistory->harga_grosir : 0.0;
+    }
+    public function getHargaJualAttribute()
+    {
+        $hargaJualHistory = $this->hargaJualHistory()->latest()->first();
+        return $hargaJualHistory ? $hargaJualHistory->harga_jual : 0.0;
+    }
+   
+    public function hargaJualHistory()
+    {
+        return $this->hasMany('App\Stock\HargaJualHistory', 'item_id');
     }
     public function hargaGrosirHistory()
     {
@@ -34,27 +56,27 @@ class Barang extends Model
 
     public function unit()
     {
-        return $this->belongsTo('App\Stock\SatuanUnit', 'satuan_unit');
+        return $this->belongsTo('App\Stock\SatuanUnit', 'satuan_unit')->withTrashed();
     }
 
     public function kategori()
     {
-        return $this->belongsTo('App\Stock\KategoriBarang', 'kategori_barang');
+        return $this->belongsTo('App\Stock\KategoriBarang', 'kategori_barang')->withTrashed();
     }
 
     public function stockOpname()
     {
-        return $this->belongsToMany('App\Stock\StokOpname', 'detail_stok_opname', 'item_id', 'stock_opname_id');
+        return $this->belongsToMany('App\Stock\StokOpname', 'stk_detail_stok_opname', 'item_id', 'stock_opname_id')->withPivot('jumlah_tercatat', 'jumlah_fisik', 'selisih');
     }
 
     public function stockTransfer()
     {
-        return $this->belongsToMany('App\Stock\StokTransfer', 'detail_transfer_stok', 'item_id', 'transfer_stock_id');
+        return $this->belongsToMany('App\Stock\TransferStok', 'stk_detail_transfer_stok', 'barang_id', 'transfer_stok_id')->withPivot('kuantitas');
     }
 
     public function penyesuaianStok()
     {
-        return $this->belongsToMany('App\Stock\PenyesuaianStok', 'detail_pergerakan_stok', 'item_id', 'penyesuaian_stok_id');
+        return $this->belongsToMany('App\Stock\PenyesuaianStok', 'stk_detail_penyesuaian_stok', 'item_id', 'stock_adjustment_id')->withPivot('quantity_diff');
     }
 
     public function warehouseStocks()
@@ -77,7 +99,7 @@ class Barang extends Model
     //Pembelian
     public function pemasok()
     {
-        return $this->belongsTo('App\Pembelian\Pemasok', 'pemasok_id');
+        return $this->belongsTo('App\Pembelian\Pemasok', 'supplier_id');
     }
 
     public function permintaans()

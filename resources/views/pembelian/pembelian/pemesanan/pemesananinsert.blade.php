@@ -10,6 +10,10 @@
 <li class="active">Tambah Pemesanan</li>
 @endsection
 
+@section('alert')
+@include('pembelian.alert')
+@endsection
+
 @section('isi')
 
 <div class="d-flex justify-content-center">
@@ -117,7 +121,7 @@
                             <div class="form-group col-md-2">
                                 <label for="satuan_unit">Unit</label>
                                 <input type="number" min="0" class="form-control" id="uni" disabled>
-                                <input type="hidden" id="unit" name="unit_barang[]" >
+                                <input type="hidden" id="unit" name="unit_barang[]">
                             </div>
                             <div class="form-group col-md-2">
                                 <label for="harga">Harga Satuan</label>
@@ -310,7 +314,7 @@
                     $('#total_harga_keseluruhan').val(data.total_seluruh_pr)
                     $('#barang_id').val(data.barangs[0].id)
                     $('#unit').val(data.barangs[0].pivot.unit)
-                    $('#uni').attr('placeholder',data.barangs[0].pivot.unit)
+                    $('#uni').attr('placeholder', data.barangs[0].pivot.unit)
                     $('#jumlah_barang').val(data.barangs[0].pivot.jumlah_barang)
                     $('#harga').val(data.barangs[0].pivot.harga)
                     $('#total').val(data.total_harga_pr[0])
@@ -322,7 +326,7 @@
                         $("#isiformbarang" + i).children().children().children('#harga').val(data.barangs[i].pivot.harga)
                         $("#isiformbarang" + i).children().children().children('#total').val(data.total_harga_pr[i])
                         $("#isiformbarang" + i).children().children('#unit').val(data.barangs[i].pivot.unit)
-                        $("#isiformbarang" + i).children().children('#uni').attr('placeholder',data.barangs[i].pivot.unit)
+                        $("#isiformbarang" + i).children().children('#uni').attr('placeholder', data.barangs[i].pivot.unit)
                         $("#isiformbarang" + i).children('#status_barang').val('belum diterima')
                         // console.log(data.barangs[i].pivot.harga)
                         // $("#isiformbarang" + i).children().children('input').attr('id', 'total' + i)

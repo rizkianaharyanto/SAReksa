@@ -37,12 +37,12 @@
     <td>{{ $hutang->sisa ? $hutang->sisa : '-' }}</td>
     <td>{{ $hutang->status ? $hutang->status : '-' }}</td>
     <td class="d-flex justify-content-between">
-    <a id="details" href="/pembelian/hutangshow/{{$hutang->id}}">
+        <a id="details" href="/pembelian/hutangshow/{{$hutang->id}}">
             <button class="btn-info">
-    
+
                 <i style="cursor: pointer; " class="fas fa-info-circle">
-                        <span></span>
-                    </i>
+                    <span></span>
+                </i>
             </button>
         </a>
     </td>

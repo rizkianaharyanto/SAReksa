@@ -35,27 +35,122 @@ class PenerimaansController extends Controller
         return view('pembelian.pembelian.penerimaan.penerimaan', compact('penerimaans'));
     }
 
-    public function laporan()
+
+    public function stokmasuk()
     {
         $penerimaans = Penerimaan::all();
+        $barangs = collect([]);
+        foreach ($penerimaans as $penerimaan) {
+            $barangs->push($penerimaan->barangs);
+        }
+        $count=$barangs->count();
 
-        return view('pembelian.pembelian.penerimaan.laporan-penerimaan', compact('penerimaans'));
+        return view('stock.transactions.stock-masuk.index', [
+            'penerimaans' => $penerimaans,
+            'barangs' => $count,
+        ]);
+    }
+    public function stokmasukdetail($id)
+    {
+        $penerimaan = penerimaan::find($id);
+        $gudang = Gudang::find($penerimaan->gudang);
+        $barangs = $penerimaan->barangs;
+        $diskon = $penerimaan->diskon_rp;
+        $biaya_lain = $penerimaan->biaya_lain;
+        $total_seluruh = $penerimaan->total_harga;
+        $total_harga = [];
+        $subtotal = 0;
+        foreach ($barangs as $index => $barang) {
+            $total_harga[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
+            $subtotal += $total_harga[$index];
+        }
+        // dd($total_harga, $total_seluruh);
+        return view('stock.transactions.stock-masuk.details', [
+            'penerimaan' => $penerimaan,
+            'gudang' => $gudang,
+            'barangs' => $barangs,
+            'diskon' => $diskon,
+            'biaya_lain' => $biaya_lain,
+            'total_harga' => $total_harga,
+            'subtotal' => $subtotal,
+            'total_seluruh' => $total_seluruh,
+        ]);
+    }
+
+
+
+
+    public function laporan()
+    {
+        $pemasoks = Pemasok::all();
+        $penerimaans = penerimaan::all();
+        $supplier = null;
+        $start = null;
+        $end = null;
+
+        return view('pembelian.pembelian.penerimaan.laporan-penerimaan', [
+            'penerimaans' => $penerimaans,
+            'pemasoks' => $pemasoks,
+            'supplier' => $supplier,
+            'start' => $start,
+            'end' => $end
+        ]);
     }
 
     public function laporanfilter(Request $date)
     {
-        $penerimaans = Penerimaan::select("pbl_penerimaans.*")
-            ->whereBetween('tanggal', [$date->start, $date->end])
-            ->get();
+        if ($date->pemasok_id == null) {
+            $pemasoks = Pemasok::all();
+            $penerimaans = penerimaan::all();
+            $supplier = null;
+            $start = null;
+            $end = null;
+        } else {
+            $pemasoks = Pemasok::all();
+            $supplier = Pemasok::find($date->pemasok_id);
+            $start = $date->start;
+            $end = $date->end;
+            $penerimaans = penerimaan::select("pbl_penerimaans.*")
+                ->where('pemasok_id', $date->pemasok_id)
+                ->whereBetween('tanggal', [$date->start, $date->end])
+                ->get();
+        }
 
-            return view('pembelian.pembelian.penerimaan.laporan-penerimaan', compact('penerimaans'));
+        return view('pembelian.pembelian.penerimaan.laporan-penerimaan', [
+            'penerimaans' => $penerimaans,
+            'pemasoks' => $pemasoks,
+            'supplier' => $supplier,
+            'start' => $start,
+            'end' => $end
+        ]);
     }
 
-    public function cetaklaporan()
+    public function cetaklaporan(Request $date)
     {
-        $penerimaans = Penerimaan::all();
+        if ($date->pemasok_id == null) {
+            $pemasoks = Pemasok::all();
+            $penerimaans = penerimaan::all();
+            $supplier = null;
+            $start = null;
+            $end = null;
+        } else {
+            $pemasoks = Pemasok::all();
+            $supplier = Pemasok::find($date->pemasok_id);
+            $start = $date->start;
+            $end = $date->end;
+            $penerimaans = penerimaan::select("pbl_penerimaans.*")
+                ->where('pemasok_id', $date->pemasok_id)
+                ->whereBetween('tanggal', [$date->start, $date->end])
+                ->get();
+        }
 
-        $pdf = PDF::loadview('pembelian.pembelian.penerimaan.cetak-laporan-penerimaan', compact('penerimaans'));
+        $pdf = PDF::loadview('pembelian.pembelian.penerimaan.cetak-laporan-penerimaan', [
+            'penerimaans' => $penerimaans,
+            'pemasoks' => $pemasoks,
+            'supplier' => $supplier,
+            'start' => $start,
+            'end' => $end
+        ]);
 
         return $pdf->download('laporan-penerimaan.pdf');
     }
@@ -86,7 +181,7 @@ class PenerimaansController extends Controller
     {
         $pnm = Penerimaan::max('id') + 1;
         $penerimaan = Penerimaan::create([
-            'kode_penerimaan' => 'PNM-'.$pnm,
+            'kode_penerimaan' => 'PNM-' . $pnm,
             'pemesanan_id' => $request->pemesanan_id,
             // 'status' => $request->status,
             'pemasok_id' => $request->pemasok_id,
@@ -117,17 +212,17 @@ class PenerimaansController extends Controller
     {
         $penerimaan = Penerimaan::find($idnya);
         Penerimaan::where('id', $penerimaan->id)
-                    ->update(['status' => 'konfirmasi']);
+            ->update(['status' => 'konfirmasi']);
 
         //posting
         $no = Jurnal::max('id') + 1;
         for ($i = 1; $i < 3; ++$i) {
             $jurnal = Jurnal::create([
-            'kode_jurnal' => 'jur'.$no,
-            'penerimaan_id' => $penerimaan->id,
-            'debit' => 0,
-            'kredit' => 0,
-        ]);
+                'kode_jurnal' => 'jur' . $no,
+                'penerimaan_id' => $penerimaan->id,
+                'debit' => 0,
+                'kredit' => 0,
+            ]);
             if ($i == 1) {
                 $jurnal->update([
                     'debit' => $penerimaan->total_jenis_barang,
@@ -149,6 +244,7 @@ class PenerimaansController extends Controller
 
             //update stock
             try {
+                
                 $this->itemService->updateStocks($barang->id, $penerimaan->gudang, $b);
                 // dd("berhasil");
             } catch (\Throwable $th) {
@@ -173,14 +269,14 @@ class PenerimaansController extends Controller
             }
         }
 
-        return redirect('/pembelian/penerimaans');
+        return view('pembelian.pembelian.penerimaan.konfirmasi', ['id'=>$idnya]);
     }
 
     public function ubahpsn($idnya)
     {
         $penerimaan = Penerimaan::find($idnya);
         Penerimaan::where('id', $penerimaan->id)
-                    ->update(['status' => 'sudah posting']);
+            ->update(['status' => 'sudah posting']);
         $pemesanan = $penerimaan->pemesanan;
         $status = $pemesanan->barangs()->where('status_barang', 'belum diterima')->first();
         // dd($status);
@@ -213,10 +309,11 @@ class PenerimaansController extends Controller
         }
         // dd($barangs);
         return response()
-            ->json(['success' => true, 'penerimaan' => $penerimaan, 'barangs' => $barangs,
-            'total_seluruh_pnm' => $total_seluruh_pnm,
-            'total_harga_pnm' => $total_harga_pnm,
-            'subtotal_pnm' => $subtotal_pnm,
+            ->json([
+                'success' => true, 'penerimaan' => $penerimaan, 'barangs' => $barangs,
+                'total_seluruh_pnm' => $total_seluruh_pnm,
+                'total_harga_pnm' => $total_harga_pnm,
+                'subtotal_pnm' => $subtotal_pnm,
             ]);
     }
 
@@ -270,7 +367,7 @@ class PenerimaansController extends Controller
             'total_harga' => $total_harga,
             'subtotal' => $subtotal,
             'total_seluruh' => $total_seluruh,
-            ]);
+        ]);
 
         return $pdf->download('penerimaan.pdf');
     }
@@ -284,8 +381,11 @@ class PenerimaansController extends Controller
      */
     public function edit(Penerimaan $penerimaan)
     {
+        $pemasok= Pemasok::find($penerimaan->pemasok_id);
+        $pnmpemesanans = $pemasok->pemesanans()->whereNotIn('status', ['diterima', 'selesai'])->get();
         return view('pembelian.pembelian.penerimaan.penerimaanedit', [
             'penerimaan' => $penerimaan,
+            'pemesanans' => $pnmpemesanans,
             'pemasoks' => Pemasok::all(),
             'barangs' => Barang::all(),
             'gudangs' => Gudang::all(),
@@ -302,27 +402,29 @@ class PenerimaansController extends Controller
      */
     public function update(Request $request, Penerimaan $penerimaan)
     {
-        Penerimaan::where('id', $penerimaan->id)
+        Penerimaan::find($penerimaan->id)
             ->update([
-            // 'status' => $request->status,
-            'pemasok_id' => $request->pemasok_id,
-            'gudang' => $request->gudang,
-            'tanggal' => $request->tanggal,
-            'diskon' => $request->diskon,
-            'diskon_rp' => $request->disk,
-            'biaya_lain' => $request->biaya_lain,
-            'total_jenis_barang' => $request->akun_barang,
-            'total_harga' => $request->total_harga_keseluruhan,
-            'akun_barang' => $request->akun_barang,
+                'pemesanan_id' => $request->pemesanan_id,
+                'pemasok_id' => $request->pemasok_id,
+                'gudang' => $request->gudang,
+                'tanggal' => $request->tanggal,
+                'diskon' => $request->diskon,
+                'diskon_rp' => $request->disk,
+                'biaya_lain' => $request->biaya_lain,
+                'total_jenis_barang' => $request->akun_barang,
+                'total_harga' => $request->total_harga_keseluruhan,
+                'akun_barang' => $request->akun_barang,
             ]);
+        // dd($penerimaan);
         $penerimaan->barangs()->detach();
+        $pemesanan = $penerimaan->pemesanan;
         foreach ($request->barang_id as $index => $id) {
             $penerimaan->barangs()->attach($id, [
                 'jumlah_barang' => $request->jumlah_barang[$index],
                 'harga' => $request->harga[$index],
                 'unit' => $request->unit_barang[$index],
                 // 'pajak' => $request->pajak[$index],
-                ]);
+            ]);
         }
 
         return redirect('/pembelian/penerimaans');
@@ -337,6 +439,7 @@ class PenerimaansController extends Controller
      */
     public function destroy(Penerimaan $penerimaan)
     {
+        $penerimaan->barangs()->detach();
         Penerimaan::destroy($penerimaan->id);
 
         return redirect('/pembelian/penerimaans');

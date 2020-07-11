@@ -32,24 +32,24 @@
         <a id="details" href="/pembelian/pemesananshow/{{$pemesanan->id}}">
             <button class="btn-info">
                 <i style="cursor: pointer; " class="fas fa-info-circle">
-                        <span></span>
-                    </i>
-                </button>
+                    <span></span>
+                </i>
+            </button>
         </a>
-        @if ($pemesanan->status != 'selesai' && $pemesanan->status != 'diterima')
+        @if ($pemesanan->status == 'baru')
         <a id="edit" href="/pembelian/pemesanans/{{$pemesanan->id}}/edit">
             <button class="btn-warning">
                 <i style="cursor: pointer;" class="fas fa-edit">
-                        <span></span>
-                    </i>
-                </button>
+                    <span></span>
+                </i>
+            </button>
         </a>
         <form method="POST" action="/pembelian/pemesanans/{{$pemesanan->id}}">
             @method('delete')
             @csrf
             <button type="submit" class="btn-danger"><i style="cursor: pointer;" class="fas fa-trash">
-                <span></span>
-            </i></button>
+                    <span></span>
+                </i></button>
         </form>
         <!-- <a id="delete" data-toggle="modal" data-target="#delete-{{$pemesanan->id }}">
             <i style="cursor: pointer;" class="fas fa-trash">
@@ -78,7 +78,7 @@ $delete = "delete-".$pemesanan->id
 
 @section('tambah')
 <a href="/pembelian/pemesanans/create">
-<button class="btn-sm btn-info">Tambah</button>
+    <button class="btn-sm btn-info">Tambah</button>
 </a>
 
 @endsection

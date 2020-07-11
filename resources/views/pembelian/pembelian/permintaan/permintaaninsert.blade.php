@@ -10,8 +10,11 @@
 <li class="active">Tambah Permintaan</li>
 @endsection
 
-@section('isi')
+@section('alert')
+@include('pembelian.alert')
+@endsection
 
+@section('isi')
 <div class="d-flex justify-content-center">
     <div id="stepper" class="bs-stepper align-self-end" style=" width:70vw;color:black;">
         <div class="bs-stepper-header">
@@ -160,8 +163,8 @@
                 </div>
                 <div id="test-l-3" class="content">
                     <div style="overflow:auto" class="mt-2">
-                        
-                    <div class="form-group row mx-5 mb-5">
+
+                        <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="diskon">Diskon</label>
                             <div class="col-sm-3">
                                 <div class="input-group mb-2">

@@ -15,7 +15,7 @@ class CreateStkHargaGrosirHistoryTable extends Migration
     {
         Schema::create('stk_harga_grosir_history', function (Blueprint $table) {
             $table->id();
-            $table->float('harga_grosir');
+            $table->float('harga_grosir', 11, 2);
             $table->unsignedBigInteger('item_id');
             $table->timestamps();
         });

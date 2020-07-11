@@ -9,23 +9,23 @@
                 <a class="pt-2 d-inline-block" href="index.html">SMS REKSA</a>
 
                 <div class="float-right">
-                    <h3 class="mb-0">Invoice {{$transferStock->kode_ref}}</h3>
-                    {{$transferStock->created_at}}
+                    <h3 class="mb-0">Invoice {{$stockOpname->kode_ref}}</h3>
+                    {{$stockOpname->created_at}}
                 </div>
             </div>
             <div class="card-body">
                 <div class="row mb-4">
                     <div class="col-sm-6">
                         <h5 class="mb-3">Gudang:</h5>
-                        <h3 class="text-dark mb-1">{{$transferStock->gudang->kode_gudang}}</h3>
+                        <h3 class="text-dark mb-1">{{$stockOpname->gudang->kode_gudang}}</h3>
 
-                        <div>{{$transferStock->gudang->alamat}}</div>
-                        <div>{{$transferStock->gudang->no_telp}}</div>
+                        <div>{{$stockOpname->gudang->alamat}}</div>
+                        <div>{{$stockOpname->gudang->no_telp}}</div>
                     </div>
                     <div class="col-sm-6">
                         <h5 class="mb-3">Keterangan:</h5>
                         <h3 class="text-dark mb-1">Penanggung Jawab: <br> Anthony K. Friel</h3>
-                        <div>{{$transferStock->deskripsi}}</div>
+                        <div>{{$stockOpname->deskripsi}}</div>
                     </div>
                 </div>
                 <div class="table-responsive-sm">
@@ -44,7 +44,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($transferStock->details as $i => $item)
+                            @foreach ($stockOpname->details as $i => $item)
                             <tr>
                                 <td>{{$i+1}}</td>
                                 <td>{{$item->nama_barang}}</td>
@@ -54,12 +54,12 @@
                                 <td>{{$item->pivot->jumlah_fisik}}</td>
                                 <td>{{$item->pivot->selisih}}</td>
                                 <td>@if($item->pivot->selisih * $item->nilai_barang >= 0)
-                                    {{$item->pivot->selisih * $item->nilai_barang}}
+                                    Rp. {{number_format($item->pivot->selisih * $item->nilai_barang,2)}}
                                     @endif
                                 </td>
                                 <td>@if($item->pivot->selisih * $item->nilai_barang < 0)
-                                        {{$item->pivot->selisih * $item->nilai_barang}} @else - @endif </td> </tr>
-                                        @endforeach </tbody> </table> </div> <div class="row">
+                                        {{number_format($item->pivot->selisih * $item->nilai_barang,2)}} @else - @endif
+                                        </td> </tr> @endforeach </tbody> </table> </div> <div class="row">
                                         <div class="col-lg-4 col-sm-5">
                                         </div>
                                         <div class="col-lg-4 col-sm-5 ml-auto">
@@ -69,7 +69,7 @@
                                                         <td class="left">
                                                             <strong class="text-dark">Total Barang</strong>
                                                         </td>
-                                                        <td class="right">{{count($transferStock->details)}}</td>
+                                                        <td class="right">{{count($stockOpname->details)}}</td>
                                                     </tr>
                                                     {{-- <tr>
                                                         <td class="left">

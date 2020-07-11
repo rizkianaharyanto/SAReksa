@@ -27,28 +27,45 @@
 <tr>
     <td>{{$index+1}}</td>
     <td>{{$u->nama_satuan}}</td>
-    <td>{{\Carbon\Carbon::parse($u->created_at)->format('d-m-Y')}}</td>
-    <td>{{\Carbon\Carbon::parse($u->updated_at)->format('d-m-Y')}}</td>
+    <td class=>{{date('d-m-Y',strtotime($u->created_at))}}</td>
+    <td class=>{{date('d-m-Y',strtotime($u->updated_at))}}</td>
 
     <td id="options">
         <span id="edit-opt">
-            <a href="" data-form="Edit Data" data-toggle="modal" data-ctgid="{{$u->id}}" data-target=#modal> Edit</a>
+            <a href="" data-form="Edit Data" data-toggle="modal" data-target="#modalEdit{{$u->id}}"> Edit</a>
         </span> |
         <span id="delete-opt">
-            <a class="delete-jquery" data-toggle="modal" data-target="#modalDelete{{$u->id}}">Delete</a>
+            <a class="delete-jquery" data-toggle="modal" style="cursor: pointer"
+                data-target="#modalDelete{{$u->id}}">Delete</a>
         </span>
     </td>
+
+    @php
+    $action = '/stok/Management-Data/satuan-unit/'.$u->id;
+
+    @endphp
+
+    <td>
+
+        <x-stock.master-data.modal-edit :action="$action" :id="$u->id">
+
+            <x-slot name="content">
+                @method('PUT')
+                <label for="namaSatuan">Nama Satuan </label>
+                <input class="form-control" required value="{{$u->nama_satuan}}" type="text" name="nama_satuan"
+                    id="namaSatuan">
+
+            </x-slot>
+        </x-stock.master-data.modal-edit>
+    </td>
+
+    <x-stock.modal-stock-delete :deleteAction="$action" :id="$u->id">
+        <x-slot name="header">
+            {{$u->nama_satuan}}
+        </x-slot>
+
+    </x-stock.modal-stock-delete>
 </tr>
-@php
-$action = '/stok/Management-Data/satuan-unit/'.$u->id;
-
-@endphp
-<x-stock.modal-stock-delete :deleteAction="$action" :id="$u->id">
-    <x-slot name="header">
-        {{$u->nama_satuan}}
-    </x-slot>
-
-</x-stock.modal-stock-delete>
 @endforeach
 @endsection
 
@@ -59,7 +76,7 @@ $action = '/stok/Management-Data/satuan-unit/'.$u->id;
 @section('modal-form-action','/stok/Management-Data/satuan-unit')
 @section('modal-form-method','POST')
 <label for="namaSatuan">Nama Satuan </label>
-<input class="form-control" type="text" name="nama_satuan" id="namaSatuan">
+<input class="form-control" required="" type="text" name="nama_satuan" id="namaSatuan">
 
 @endsection
 @endsection

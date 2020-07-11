@@ -15,6 +15,7 @@
     <th>Gudang Tujuan</th>
     <th>Deskripsi</th>
     <th>Departemen</th>
+    <th>Status Transaksi</th>
     <th>Jumlah Barang</th>
     <th>Opsi</th>
 </tr>
@@ -30,6 +31,7 @@
     <td>{{ $transfer->tujuan->kode_gudang}}</td>
     <td> {{ $transfer->deskripsi }} </td>
     <td> {{ $transfer->departemen }} </td>
+    <td>{{$transfer->status}}</td>
     <td>{{count($transfer->items)}}</td>
     <td>
         <center>
@@ -40,12 +42,14 @@
                     <i class="menu-icon fas fa-ellipsis-h"></i>
                 </button>
                 <div class="dropdown-menu">
-                    <!-- Dropdown menu links -->
-                    <a class="dropdown-item" href="" data-form="Edit Data"> Edit</a>
+                    @if($transfer->status == 'belum diposting')
+                    <a class="dropdown-item" href="/stok/transfer-stock/{{$transfer->id}}/edit" data-form="Edit Data">
+                        Edit</a>
                     <a class="delete-jquery dropdown-item" data-method="delete"
-                        href="{{ route('barang.destroy', $transfer->id ) }}">Delete</a>
+                        href="/stok/transfer-stock/{{$transfer->id}}">Delete</a>
+                    <a class="dropdown-item " href="/stok/transfer-stock/posting/{{$transfer->id}}">Posting</a>
+                    @endif
                     <a class="dropdown-item " href="/stok/transfer-stock/{{$transfer->id}}">Details</a>
-                    <a class="dropdown-item " href="/stok/transfer-stock/{{$transfer->id}}">Posting</a>
 
                 </div>
             </div>
@@ -71,7 +75,7 @@
 @section('modal-form-method','POST')
 
 <label for="field1">Kode Referensi </label>
-<input class="form-control" type="text" name="kode_ref" value="TRF-{{count($allData)+1}}" id="field1">
+<input class="form-control" type="text" name="kode_ref" readonly value="TRF-{{count($allData)+1}}" id="field1">
 <label for="field2">Gudang Asal</label>
 <select class="form-control selectpicker" name="gudang_asal" id="gudang_id">
     <option value="">--- Pilih Gudang ---</option>
@@ -96,7 +100,7 @@
     <div id="isibarangs" class="d-flex m-2">
         <div class="m-3">
             <label for="field6">Barang</label>
-            <select class="form-control" name="barang_id[]" id="item_id">
+            <select class="form-control isibarangs" name="barang_id[]" id="item_id">
                 <option value="">--- Pilih Barang ---</option>
             </select>
         </div>
@@ -118,9 +122,16 @@
 @parent
 
 <script>
+    let i = 0 
     function tambah(){
-    $("#formbarang").append($("#isibarangs").clone());
-}
+         let barangInput = $("#isibarangs").clone()
+         $("#formbarang").append(barangInput);
+         barangInput.append(' <a type="button" class="m-3 pt-4" onclick="hapus(this)"><i class="fas fa-window-close" style="color: red; cursor: pointer"></i></a>')
+    }
+
+    function hapus(x){
+        $(x).parent().remove()
+    }
 
 $("#gudang_id").change(function(){
     $.ajax({
@@ -130,14 +141,86 @@ $("#gudang_id").change(function(){
         success: function(data) {
                 console.log(data)
                 console.log(data.length)
-            $('#item_id').empty()
-            $("#item_id").append('<option value="">--- Pilih Barang ---</option>')
+            $('.isibarangs').empty()
+            $(".isibarangs").append('<option value="">--- Pilih Barang ---</option>')
             for (i = 0; i < data.length; i++) {
-                $("#item_id").append('<option value="' + data[i].barang.id + '">' + data[i].barang.nama_barang + '</option>')
+                $(".isibarangs").append('<option value="' + data[i].barang.id + '">' + data[i].barang.nama_barang + '</option>')
             }
         }
     })
 })
+</script>
+<script>
+    (function() {
+
+var laravel = {
+  initialize: function() {
+    this.methodLinks = $('a[data-method]');
+
+    this.registerEvents();
+  },
+
+  registerEvents: function() {
+    this.methodLinks.on('click', this.handleMethod);
+  },
+
+  handleMethod: function(e) {
+    var link = $(this);
+    var httpMethod = link.data('method').toUpperCase();
+    var form;
+
+    // If the data-method attribute is not PUT or DELETE,
+    // then we don't know what to do. Just ignore.
+    if ( $.inArray(httpMethod, ['PUT', 'DELETE']) === - 1 ) {
+      return;
+    }
+
+    // Allow user to optionally provide data-confirm="Are you sure?"
+    if ( link.data('confirm') ) {
+      if ( ! laravel.verifyConfirm(link) ) {
+        return false;
+      }
+    }
+
+    form = laravel.createForm(link);
+    form.submit();
+
+    e.preventDefault();
+  },
+
+  verifyConfirm: function(link) {
+    return confirm(link.data('confirm'));
+  },
+
+  createForm: function(link) {
+    var form = 
+    $('<form>', {
+      'method': 'POST',
+      'action': link.attr('href')
+    });
+
+    var token = 
+    $('<input>', {
+      'type': 'hidden',
+      'name': '_token',
+        'value': '<?php echo csrf_token(); ?>' // hmmmm...
+      });
+
+    var hiddenInput =
+    $('<input>', {
+      'name': '_method',
+      'type': 'hidden',
+      'value': link.data('method')
+    });
+
+    return form.append(token, hiddenInput)
+               .appendTo('body');
+  }
+};
+
+laravel.initialize();
+
+})();
 </script>
 <script>
     const title = "@yield('title')".toLowerCase().replace('data','').trim().replace(' ','-');

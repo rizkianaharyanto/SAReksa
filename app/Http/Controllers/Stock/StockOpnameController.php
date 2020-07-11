@@ -14,6 +14,7 @@ use App\Stock\StokOpname;
 use App\Stock\Barang;
 use App\Stock\Gudang;
 use App\Stock\DetailStokOpname;
+use App\Stock\Ledger;
 
 class StockOpnameController extends Controller
 {
@@ -34,7 +35,7 @@ class StockOpnameController extends Controller
         $barangs = Barang::all();
         $gudangs = Gudang::all();
 
-        return view('stock.transactions.stock-opname.index', ['stokOp' => $stokOp, 'barangs' => $barangs, 'gudangs' =>$gudangs]);
+        return view('stock.transactions.stock-opname.index', ['stokOp' => $stokOp, 'barangs' => $barangs, 'gudangs' => $gudangs]);
     }
 
     /*
@@ -67,7 +68,7 @@ class StockOpnameController extends Controller
         // return $req;
         $opnameItems = $req->validated();
         $opnameItems = collect($opnameItems);
-        $transData = $opnameItems->except(['item_id','on_hand']);
+        $transData = $opnameItems->except(['item_id', 'on_hand']);
         $stockOp = StokOpname::findOrFail($opnameServ->makeTransJournal($transData));
 
         $itemIds = $opnameItems['item_id'];
@@ -81,7 +82,7 @@ class StockOpnameController extends Controller
                 $stockOp->details()->attach($id, [
                     'jumlah_tercatat' => $onBook,
                     'jumlah_fisik'    => $opnameItems['on_hand'][$index],
-                    'selisih'         => $opnameItems['on_hand'][$index]- $onBook
+                    'selisih'         => $opnameItems['on_hand'][$index] - $onBook
                 ]);
             }
         } catch (\Exception $e) {
@@ -101,9 +102,37 @@ class StockOpnameController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function posting(InventoryLedgerService $invLedg, ItemService $itemServ, $id)
+    public function posting($id)
     {
-        return 201;
+        $stockOpname = StokOpname::find($id);
+        StokOpname::where('id', $stockOpname->id)
+            ->update(['status' => 'sudah posting']);
+        // dd($stockOpname->details[0]->id);
+
+        foreach ($stockOpname->details as $index => $barang) {
+            // dd($barang);
+            $jurnal = Ledger::create([
+                'kode_transaksi' => $stockOpname->kode_ref,
+                'barang_id' => $barang->id,
+                'sisa' => $barang->pivot->selisih,
+                'qty_masuk' => 0,
+                'nilai_masuk' => 0,
+                'qty_keluar' => 0,
+                'nilai_keluar' => 0,
+            ]);
+            if ($barang->pivot->selisih >= 0) {
+                $jurnal->update([
+                    'qty_masuk' => $barang->pivot->selisih ,
+                    'nilai_masuk' => $barang->nilai_barang
+                ]);
+            } else {
+                $jurnal->update([
+                    'qty_keluar' => $barang->pivot->selisih * -1,
+                    'nilai_keluar' => $barang->nilai_barang
+                ]);
+            }
+        }
+        return redirect()->back();
     }
 
     /**
@@ -117,13 +146,17 @@ class StockOpnameController extends Controller
     {
         $stockOpname = StokOpname::with([
             'details'
-            ])
-        ->find($stockOpname);
+        ])->find($stockOpname)->first();
         $gudangs = Gudang::all();
 
-        // dd($stockOpname);
+        if (!$stockOpname) {
+            return redirect('/stok/stock-opname')->with('status', 'Data Transaksi tersebut tidak ditemukan');
+        }
 
-        return view('stock.transactions.stock-opname.edit', ['stockOpname' => $stockOpname, 'gudangs' =>$gudangs]);
+        if ($stockOpname->status == 'sudah posting') {
+            return redirect()->back()->with('status', 'Transaksi sudah di posting ke jurnal dan tidak bisa dihapus');
+        }
+        return view('stock.transactions.stock-opname.edit', ['stockOpname' => $stockOpname, 'gudangs' => $gudangs]);
     }
 
     /**
@@ -134,8 +167,18 @@ class StockOpnameController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(StockOpnameRequest $req, StokOpname $stockOpname)
+    public function update(StockOpnameRequest $req, $id)
     {
+        $stockOpname = $this->service->get($id);
+        if (!$stockOpname) {
+            return redirect('/stok/stock-opname')->with('status', 'Data Transaksi tersebut tidak ditemukan');
+        }
+
+        if ($stockOpname->status == 'sudah posting') {
+            return redirect()->back()->with('status', 'Transaksi sudah di posting ke jurnal dan tidak bisa dihapus');
+        }
+        $stockOpname = $this->service->update($req->validated(), $id);
+        return redirect()->route('stock-opname.index');
     }
 
     /**
@@ -149,8 +192,8 @@ class StockOpnameController extends Controller
     {
         $stockOp = StokOpname::findOrFail($id);
 
-        if ($stockOp['status'] == 'posted') {
-            // return redirect()->back()->withErrors($validator)->withInput();
+        if ($stockOp['status'] == 'sudah diposting') {
+            return redirect()->back()->with('status', 'Transaksi sudah di posting ke jurnal dan tidak bisa dihapus');
         } else {
             DB::beginTransaction();
             try {

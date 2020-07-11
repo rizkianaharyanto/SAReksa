@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PajakBarang extends Model
 {
-    protected $table = "stk_pajak_barang";
+    protected $table = "stk_pajak_master";
     protected $guarded = [];
 
     public function item()

@@ -31,6 +31,7 @@ class PengirimsController extends Controller
      */
     public function create()
     {
+        //
     }
 
     /**
@@ -44,7 +45,7 @@ class PengirimsController extends Controller
     {
         $peng = Pengirim::max('id') + 1;
         $pengirim = new Pengirim();
-        $pengirim->kode_pengirim = 'PENG-'.$peng;
+        $pengirim->kode_pengirim = 'PENG-' . $peng;
         $pengirim->nama_pengirim = $request->nama_pengirim;
         $pengirim->telp_pengirim = $request->telp_pengirim;
         $pengirim->email_pengirim = $request->email_pengirim;
@@ -77,6 +78,7 @@ class PengirimsController extends Controller
      */
     public function edit(Pengirim $pengirim)
     {
+        //
     }
 
     /**

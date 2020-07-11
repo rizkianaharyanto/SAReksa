@@ -14,4 +14,16 @@ class StockAdjustmentService
         ])->get();
         return $stockAdjustments;
     }
+
+    public function getById($id)
+    {
+        $stockAdjustment = PenyesuaianStok::with([
+            'details',
+            'gudang',
+        ])->find($id);
+
+        return $stockAdjustment;
+    }
+
+    
 }

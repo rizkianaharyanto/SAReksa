@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Pembelian\Hutang;
 use App\Pembelian\Pemasok;
 use App\Pembelian\Pembayaran;
+use App\Pembelian\Retur;
 use Illuminate\Support\Arr;
 
 use PDF;
@@ -40,19 +41,21 @@ class HutangsController extends Controller
         }
         // dd($totals);
         return view('pembelian.hutang.hutang', [
-           'pemasoks' => $pemasoks,
-           'totals' => $totals,
-           'lunass' => $lunass,
-           'sisas' => $sisas,
+            'pemasoks' => $pemasoks,
+            'totals' => $totals,
+            'lunass' => $lunass,
+            'sisas' => $sisas,
         ]);
     }
 
     public function laporan()
     {
+        $allpemasok = Pemasok::all();
         $pemasoks = Pemasok::with('hutangs')->get();
         $totals = [];
         $lunass = [];
         $sisas = [];
+        $supplier = null;
         foreach ($pemasoks as $pemasok) {
             $total = $pemasok->hutangs->sum('total_hutang');
             array_push($totals, [
@@ -73,48 +76,125 @@ class HutangsController extends Controller
             'totals' => $totals,
             'lunass' => $lunass,
             'sisas' => $sisas,
-         ]);
+            'allpemasok' => $allpemasok,
+            'supplier' => $supplier
+        ]);
     }
 
-    // public function laporanfilter(Request $date)
-    // {
-    //     $pembayarans = Pembayaran::select("pbl_pembayarans.*")
-    //         ->whereBetween('tanggal', [$date->start, $date->end])
-    //         ->get();
-
-    //         return view('pembelian.hutang.laporan-pembayaran', compact('pembayarans'));
-    // }
-
-    public function cetaklaporan()
+    public function laporanfilter(Request $date)
     {
-        $pemasoks = Pemasok::with('hutangs')->get();
-        $totals = [];
-        $lunass = [];
-        $sisas = [];
-        foreach ($pemasoks as $pemasok) {
-            $total = $pemasok->hutangs->sum('total_hutang');
-            array_push($totals, [
-                'total_hutang' => $total
+        if ($date->pemasok_id == null) {
+            $allpemasok = Pemasok::all();
+            $pemasoks = Pemasok::with('hutangs')->get();
+            $totals = [];
+            $lunass = [];
+            $sisas = [];
+            $supplier = null;
+            foreach ($pemasoks as $pemasok) {
+                $total = $pemasok->hutangs->sum('total_hutang');
+                array_push($totals, [
+                    'total_hutang' => $total
+                ]);
+                $lunas = $pemasok->hutangs->sum('lunas');
+                array_push($lunass, [
+                    'lunas' => $lunas
+                ]);
+                $sisa = $pemasok->hutangs->sum('sisa');
+                array_push($sisas, [
+                    'sisa' => $sisa
+                ]);
+            }
+
+            return view('pembelian.hutang.laporan-hutang', [
+                'pemasoks' => $pemasoks,
+                'totals' => $totals,
+                'lunass' => $lunass,
+                'sisas' => $sisas,
+                'allpemasok' => $allpemasok,
+                'supplier' => $supplier
             ]);
-            $lunas = $pemasok->hutangs->sum('lunas');
-            array_push($lunass, [
-                'lunas' => $lunas
-            ]);
-            $sisa = $pemasok->hutangs->sum('sisa');
-            array_push($sisas, [
-                'sisa' => $sisa
+        } else {
+            $allpemasok = Pemasok::all();
+            $supp = Pemasok::where('id', $date->pemasok_id)->with('hutangs')->first();
+            $totals = 0;
+            $lunass = 0;
+            $sisas = 0;
+            // dd($supp->hutangs);
+            $supplier = Pemasok::find($date->pemasok_id);
+            foreach ($supp->hutangs as $hutang) {
+                $totals += $hutang->total_hutang;
+                $lunass += $hutang->lunas;
+                $sisas += $hutang->sisa;
+            }
+            return view('pembelian.hutang.laporan-hutang', [
+                'supp' => $supp,
+                'totals' => $totals,
+                'lunass' => $lunass,
+                'sisas' => $sisas,
+                'allpemasok' => $allpemasok,
+                'supplier' => $supplier
             ]);
         }
+    }
 
+    public function cetaklaporan(Request $date)
+    {
+        if ($date->pemasok_id == null) {
+            $allpemasok = Pemasok::all();
+            $pemasoks = Pemasok::with('hutangs')->get();
+            $totals = [];
+            $lunass = [];
+            $sisas = [];
+            $supplier = null;
+            foreach ($pemasoks as $pemasok) {
+                $total = $pemasok->hutangs->sum('total_hutang');
+                array_push($totals, [
+                    'total_hutang' => $total
+                ]);
+                $lunas = $pemasok->hutangs->sum('lunas');
+                array_push($lunass, [
+                    'lunas' => $lunas
+                ]);
+                $sisa = $pemasok->hutangs->sum('sisa');
+                array_push($sisas, [
+                    'sisa' => $sisa
+                ]);
+            }
 
-        $pdf = PDF::loadview('pembelian.hutang.cetak-laporan-hutang', [
-            'pemasoks' => $pemasoks,
-            'totals' => $totals,
-            'lunass' => $lunass,
-            'sisas' => $sisas,
-         ]);
+            $pdf = PDF::loadview('pembelian.hutang.cetak-laporan-hutang', [
+                'pemasoks' => $pemasoks,
+                'totals' => $totals,
+                'lunass' => $lunass,
+                'sisas' => $sisas,
+                'allpemasok' => $allpemasok,
+                'supplier' => $supplier
+            ]);
 
-        return $pdf->download('laporan-hutang.pdf');
+            return $pdf->download('laporan-hutang.pdf');
+        } else {
+            $allpemasok = Pemasok::all();
+            $supp = Pemasok::where('id', $date->pemasok_id)->with('hutangs')->first();
+            $totals = 0;
+            $lunass = 0;
+            $sisas = 0;
+            // dd($supp->hutangs);
+            $supplier = Pemasok::find($date->pemasok_id);
+            foreach ($supp->hutangs as $hutang) {
+                $totals += $hutang->total_hutang;
+                $lunass += $hutang->lunas;
+                $sisas += $hutang->sisa;
+            }
+            $pdf = PDF::loadview('pembelian.hutang.cetak-laporan-hutang', [
+                'supp' => $supp,
+                'totals' => $totals,
+                'lunass' => $lunass,
+                'sisas' => $sisas,
+                'allpemasok' => $allpemasok,
+                'supplier' => $supplier
+            ]);
+
+            return $pdf->download('laporan-hutang.pdf');
+        }
     }
 
     /**
@@ -157,7 +237,7 @@ class HutangsController extends Controller
         $retur = $hutang->retur;
         $faktur = $hutang->faktur;
         return response()
-        ->json(['success'=> true, 'hutang' => $hutang, 'retur' => $retur, 'faktur' => $faktur]);
+            ->json(['success' => true, 'hutang' => $hutang, 'retur' => $retur, 'faktur' => $faktur]);
     }
 
     public function show2($id)
@@ -167,26 +247,52 @@ class HutangsController extends Controller
         $pembayarans = $hutang->pembayarans;
         // $total_seluruh = $pembayaran->total;
         // dd($total_harga, $total_seluruh);
+        $returs = Retur::where('hutang_id', $hutang->id)->get();
+        // dd($returs);
+        $lunas = 0;
+        foreach ($pembayarans as $pembayaran) {
+            $lunas += $pembayaran->pivot->total;
+        }
+        foreach ($returs as $retur) {
+            $lunas += $retur->total_harga;
+        }
+        $sisa = $hutang->total_hutang - $lunas;
         return view('pembelian.hutang.kartu-hutang', [
             'hutang' => $hutang,
             'pembayarans' => $pembayarans,
-            // 'total_seluruh' => $total_seluruh,
+            'returs' => $returs,
+            'lunas' => $lunas,
+            'sisa' => $sisa,
         ]);
     }
 
     public function cetak_pdf(Request $request)
     {
-        $pembayaran = Pembayaran::find($request->id);
-        $hutangs = $pembayaran->hutangs;
-        $total_seluruh = $pembayaran->total;
-        $pdf = PDF::loadview('pembelian.hutang.pembayaran-pdf', [
-            'pembayaran' => $pembayaran,
-            'hutangs' => $hutangs,
-            'total_seluruh' => $total_seluruh,
-            ]);
-            
+        $hutang = Hutang::find($request->id);
+        // dd($hutang->pembayarans);
+        $pembayarans = $hutang->pembayarans;
+        // $total_seluruh = $pembayaran->total;
+        // dd($total_harga, $total_seluruh);
+        $returs = Retur::where('hutang_id', $hutang->id)->get();
+        // dd($returs);
+        $lunas = 0;
+        foreach ($pembayarans as $pembayaran) {
+            $lunas += $pembayaran->pivot->total;
+        }
+        foreach ($returs as $retur) {
+            $lunas += $retur->total_harga;
+        }
+        $sisa = $hutang->total_hutang - $lunas;
+        $pdf = PDF::loadview('pembelian.hutang.kartu-hutang-pdf', [
+            'hutang' => $hutang,
+            'pembayarans' => $pembayarans,
+            'returs' => $returs,
+            'lunas' => $lunas,
+            'sisa' => $sisa,
+        ]);
 
-        return $pdf->download('pembayaran.pdf');
+
+        return $pdf->download('kartu-hutang.pdf');
     }
 
     /**

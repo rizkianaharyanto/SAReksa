@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\DB;
 use App\Repositories\Stock\Repository;
 use App\Stock\TransferStok;
 use App\Stock\Barang;
+use App\Stock\DetailTransferStok;
 use App\Services\Stock\ItemService;
 
 class StockTransferService
@@ -82,5 +83,102 @@ class StockTransferService
             'tujuan'
             ])->find($id);
         return $stockTransfer;
+    }
+
+    public function update($payload, $id)
+    {
+        $payload = collect($payload);
+
+        $transferStock = TransferStok::with([
+            'items',
+            'asal',
+            'tujuan'
+        ])->findOrFail($id);
+
+        $transactionPayload = $payload->except(['kode_ref','barang_id','qty']);
+        $itemPayload = $payload->only(['barang_id', 'qty']);
+
+        $from  = $transferStock['tujuan'];
+        $to = $transferStock['asal'];
+        $this->revertStockTransfer($from, $to, $itemPayload);
+        
+        $transferStock->update($transactionPayload->toArray());
+
+
+        if ($itemPayload) {
+            $this->updateStockTransferItems($transferStock, $itemPayload);
+        }
+
+        return $this->get($id);
+    }
+
+    public function revertStockTransfer($from, $to, $itemPayload)
+    {
+        DB::beginTransaction();
+        try {
+            foreach ($itemPayload->get('barang_id') as $index => $id) {
+                $qtyFrom = $this->itemServ->getStocksQtyByWhouse($from, $id);
+                $qtyDestination = $this->itemServ->getStocksQtyByWhouse($to, $id);
+
+                $qtyFrom = $qtyFrom - $itemPayload['qty'][$index];
+                $qtyDestination += $itemPayload['qty'][$index];
+
+                if ($qtyFrom >= 0) {
+                    $this->itemServ->updateStocks($id, $from, $qtyFrom);
+                    $this->itemServ->updateStocks($id, $to, $qtyDestination);
+                } else {
+                    $condition = 1;
+                }
+            }
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
+        DB::commit();
+    }
+
+    public function updateStockTransferItems(TransferStok $transferStock, $itemPayload)
+    {
+        $transferStock->items()->sync($itemPayload->get('barang_id'));
+        
+
+        foreach ($itemPayload->get('barang_id') as $index => $item) {
+            $transferredItemQty = $itemPayload['qty'][$index];
+
+            $qtyFrom = $this->itemServ->getStocksQtyByWhouse($transferStock->gudang_asal, $item);
+            $qtyDestination = $this->itemServ->getStocksQtyByWhouse($transferStock->gudang_tujuan, $item);
+
+            $qtyFrom = $qtyFrom - $itemPayload['qty'][$index];
+            $qtyDestination += $itemPayload['qty'][$index];
+
+            $itemTransferStok = DetailTransferStok::where('barang_id', $item)
+                ->where('transfer_stok_id', $transferStock->id)->first();
+
+            
+            $itemTransferStok->update([
+                'kuantitas' => $transferredItemQty,
+                
+            ]);
+
+
+            $this->itemServ->updateStocks($item, $transferStock->gudang_asal, $qtyFrom);
+            $this->itemServ->updateStocks($item, $transferStock->gudang_tujuan, $qtyDestination);
+        }
+    }
+
+    public function delete($id)
+    {
+        DB::beginTransaction();
+        try {
+            //code...
+            $transferStok = TransferStok::with('items')->find($id);
+            $transferStok->delete();
+            $transferStok->items()->detach();
+        } catch (\Throwable $th) {
+            return 0;
+        }
+        DB::commit();
+
+        return 1;
     }
 }

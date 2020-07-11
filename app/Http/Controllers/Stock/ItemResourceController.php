@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Stock;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+
 use App\Services\Stock\ItemService;
 use App\Http\Requests\Stock\CreateItemsRequest;
 use App\Stock\Barang;
@@ -21,14 +23,19 @@ class ItemResourceController extends Controller
     public function index(ItemService $item)
     {
         // $allItem = $item->all();
-        $allItem = Barang::with([
+        $allItems = Barang::with([
             'unit:id,nama_satuan',
             'kategori'
             ])->get();
+            
         $categories = KategoriBarang::all();
         $units = SatuanUnit::all();
         $gudangs = Gudang::all();
+
+        $allItem = $this->service->getAllStocksQty();
+
         return view('stock.management-data/barang', [
+            'barangDetails' => $allItems,
             'barang'=>$allItem,
             'kategoriBarang' => $categories,
             'satuanUnit' => $units,
@@ -64,7 +71,7 @@ class ItemResourceController extends Controller
     {
         //
         $input = $request->validated();
-
+        // dd($input);
         $item = $itemService->create($input);
          
         return redirect()->back();
@@ -89,6 +96,12 @@ class ItemResourceController extends Controller
     }
 
     public function getStocksByWarehouse($warehouseId)
+    {
+        $stocks = $this->service->getAllStocksByWhouse($warehouseId);
+        return $stocks;
+    }
+
+    public function getStocksByWarehouseNotNull($warehouseId)
     {
         $stocks = $this->service->getAllStocksByWhouse($warehouseId);
         return $stocks;
@@ -124,8 +137,7 @@ class ItemResourceController extends Controller
     public function destroy($id)
     {
         //
-        $itc = $this->modelName::find($id);
-        $itc->delete();
-        return "Success";
+        $this->service->delete($id);
+        return redirect()->back();
     }
 }

@@ -10,6 +10,10 @@
 <li class="active">Tambah Penerimaan</li>
 @endsection
 
+@section('alert')
+@include('pembelian.alert')
+@endsection
+
 @section('isi')
 
 <div class="d-flex justify-content-center">
@@ -304,7 +308,7 @@
                     $('#barang_id').val(data.barangs[0].id)
                     $('#tambahbarang').detach()
                     $('#unit').val(data.barangs[0].pivot.unit)
-                    $('#uni').attr('placeholder',data.barangs[0].pivot.unit)
+                    $('#uni').attr('placeholder', data.barangs[0].pivot.unit)
                     $('#jumlah_barang').val(data.barangs[0].pivot.barang_belum_diterima)
                     $('#harga').val(data.barangs[0].pivot.harga)
                     $('#total').val(data.total_harga_psn[0])

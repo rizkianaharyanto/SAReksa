@@ -16,11 +16,13 @@
                                 class="fa fa-fw fa-user-circle"></i>Dashboard</a>
 
                     </li>
+
                     <li class="nav-item">
                         <a class="nav-link" id="link-manajemen-data" href="#" data-toggle="collapse"
                             aria-expanded="false" data-target="#submenu-2" aria-controls="submenu-2"><i
                                 class="fa fa-fw fa-rocket"></i>Manajemen Data</a>
-                        <div id="submenu-2" class="collapse submenu" style="">
+
+                        <div id="submenu-2" class="collapse submenu">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
                                     <a class="nav-link" id="link-satuan-unit"
@@ -42,13 +44,12 @@
                                     <a class="nav-link" id="link-barang" href="{{ route('barang.index')}}">Barang</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Pajak</a>
+                                    <a class="nav-link" href="{{route('pajak.index')}}">Pajak</a>
                                 </li>
 
                             </ul>
                         </div>
                     </li>
-
                     <li class="nav-divider">
                         Transaksi
                     </li>
@@ -72,18 +73,44 @@
 
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-fw fa-file"></i> Stok Masuk
+                        <a class="nav-link" href="/pembelian/stokmasuk"><i class="fas fa-fw fa-file"></i> Stok Masuk
                         </a>
 
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-fw fa-file"></i> Stok Keluar
+                        <a class="nav-link" href="/penjualan/stokkeluar"><i class="fas fa-fw fa-file"></i> Stok Keluar
                         </a>
 
                     </li>
+
                     <li class="nav-divider">
                         Laporan
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('reports.kartu-stock')}}"><i class="fas fa-fw fa-file"></i>
+                            Laporan Kartu Stock
+                        </a>
+
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('reports.produk')}}"><i class="fas fa-fw fa-file"></i>
+                            Daftar Produk
+                        </a>
+
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('reports.kartu-stock')}}"><i class="fas fa-fw fa-file"></i>
+                            Produk Terjual
+                        </a>
+
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('reports.kartu-stock')}}"><i class="fas fa-fw fa-file"></i>
+                            Produk Dibeli
+                        </a>
+
+                    </li>
+
 
                 </ul>
             </div>

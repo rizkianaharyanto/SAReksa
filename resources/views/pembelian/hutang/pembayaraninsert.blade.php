@@ -10,6 +10,10 @@
 <li class="active">Tambah Pembayaran</li>
 @endsection
 
+@section('alert')
+@include('pembelian.alert')
+@endsection
+
 @section('isi')
 
 <div class="d-flex justify-content-center">
@@ -122,7 +126,7 @@
                                 <input type="hidden" name="total_harga" id="total_harga">
                             </div>
                         </div>
-                        <a href="/pembelian/hutangs">
+                        <a href="/pembelian/pembayarans">
                             <button type="button" class="btn btn-secondary">Batal</button>
                         </a>
                         <a class="btn" style="background-color:#00BFA6; color:white" onclick="stepper.previous()">Sebelumnya</a>
