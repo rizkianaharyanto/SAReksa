@@ -248,7 +248,7 @@ Route::prefix('penjualan')->group(function () {
     Route::any('/returs/cetak_pdf', 'Penjualan\RetursController@cetak_pdf')->middleware(['auth','checkRole:retur,piutang']);
     
     //Admin Faktur
-    Route::group(['middleware' => ['auth', 'checkRole:penjualan']], function () {
+    Route::group(['middleware' => ['auth', 'checkRole:7']], function () {
         Route::resource('/pemesanans', 'Penjualan\PemesanansController');
         Route::resource('/pengirimans', 'Penjualan\PengirimansController');
         Route::resource('/penawarans', 'Penjualan\PenawaransController');
