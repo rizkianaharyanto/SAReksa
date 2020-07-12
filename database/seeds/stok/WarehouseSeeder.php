@@ -12,6 +12,6 @@ class WarehouseSeeder extends Seeder
     public function run()
     {
         //
-        factory(App\Stock\Gudang::class, 5)->create();
+        factory(App\Stock\Gudang::class, 2)->create();
     }
 }

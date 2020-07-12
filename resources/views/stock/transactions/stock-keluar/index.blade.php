@@ -29,13 +29,13 @@
 
 
 @section('table-body')
-@foreach ($pengirimans as $pengiriman)
+@foreach ($pengirimans as $index => $pengiriman)
 <tr>
     <td>{{ $pengiriman->kode_pengiriman }}</td>
     <td>{{ $pengiriman->pelanggan->nama_pelanggan }}</td>
     <td>{{ $pengiriman->tanggal }}</td>
     <td>{{ $pengiriman->total_harga }}</td>
-    <td>{{ $barangs }}</td>
+    <td>{{ $barangs[$index] }}</td>
     <td class="d-flex justify-content-between">
         <a id="details" href="/penjualan/stokkeluar/{{$pengiriman->id}}">
             <button class="btn-info">
@@ -55,5 +55,10 @@
 
 <script>
     $('#tambahbutton').hide()
+    const title = "@yield('title')".toLowerCase().replace('data','').trim().replace(' ','-');
+    const idSidebarLink = `link-${title}`.trim();
+    console.log(idSidebarLink);
+    $('#link-dashboard').removeClass('active');
+    $(`#${idSidebarLink}`).addClass('active')
 </script>
 @endsection

@@ -115,7 +115,7 @@ class StockTransferController extends Controller
     public function update(CreateStockTransferRequest $request, $id)
     {
         $this->service->update($request->validated(), $id);
-        return redirect()->back();
+        return redirect('/stok/transfer-stock');
     }
 
     /**

@@ -5,7 +5,7 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('vendor/stock/datatables/css/buttons.bootstrap4.css')}}">
 <link rel="stylesheet" type="text/css" href="{{ asset('vendor/stock/datatables/css/select.bootstrap4.css')}}">
 <link rel="stylesheet" type="text/css" href="{{ asset('vendor/stock/datatables/css/fixedHeader.bootstrap4.css')}}">
-@endsectionP
+@endsection
 @section('main-content')
 <div class="row">
     <div class="row">

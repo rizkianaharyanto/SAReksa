@@ -114,7 +114,7 @@ class StockOpnameController extends Controller
             $jurnal = Ledger::create([
                 'kode_transaksi' => $stockOpname->kode_ref,
                 'barang_id' => $barang->id,
-                'sisa' => $barang->pivot->selisih,
+                'sisa' => $barang->pivot->jumlah_fisik,
                 'qty_masuk' => 0,
                 'nilai_masuk' => 0,
                 'qty_keluar' => 0,
@@ -142,11 +142,11 @@ class StockOpnameController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit(StokOpname $stockOpname)
+    public function edit($id)
     {
         $stockOpname = StokOpname::with([
             'details'
-        ])->find($stockOpname)->first();
+        ])->find($id);
         $gudangs = Gudang::all();
 
         if (!$stockOpname) {
@@ -154,7 +154,7 @@ class StockOpnameController extends Controller
         }
 
         if ($stockOpname->status == 'sudah posting') {
-            return redirect()->back()->with('status', 'Transaksi sudah di posting ke jurnal dan tidak bisa dihapus');
+            return redirect()->back()->with('status', 'Transaksi sudah di posting ke jurnal dan tidak bisa diubah');
         }
         return view('stock.transactions.stock-opname.edit', ['stockOpname' => $stockOpname, 'gudangs' => $gudangs]);
     }
@@ -175,7 +175,7 @@ class StockOpnameController extends Controller
         }
 
         if ($stockOpname->status == 'sudah posting') {
-            return redirect()->back()->with('status', 'Transaksi sudah di posting ke jurnal dan tidak bisa dihapus');
+            return redirect()->back()->with('status', 'Transaksi sudah di posting ke jurnal dan tidak bisa diubah');
         }
         $stockOpname = $this->service->update($req->validated(), $id);
         return redirect()->route('stock-opname.index');

@@ -55,7 +55,7 @@
                         <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="pemasok_id">Pemasok</label>
                             <div class="col-sm-9">
-                                <select class="form-control" id="pemasok_id" name="pemasok_id">
+                                <select required class="form-control" id="pemasok_id" name="pemasok_id">
                                     <option value="">--- Pilih pemasok ---</option>
                                     @foreach ($pemasoks as $pemasok)
                                     <option value="{{$pemasok->id}}" {{$pemasok->id == "$faktur->pemasok_id" ? "selected" : "" }}>{{ $pemasok->nama_pemasok }}</option>
@@ -66,7 +66,7 @@
                         <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="tanggal">Tanggal</label>
                             <div class="col-sm-9">
-                                <input type="date" class="form-control" id="tanggal" name="tanggal" value="{{$faktur->tanggal}}">
+                                <input type="date" required class="form-control" id="tanggal" name="tanggal" value="{{$faktur->tanggal}}">
                             </div>
                         </div>
                         <!-- <div class="form-group row mx-5 mb-5">
@@ -203,7 +203,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" min="0" class="form-control" name="biaya_lain" onchange="disc();" id="biaya_lain" placeholder="-" value="{{$faktur->biaya_lain}}">
+                                    <input type="number" required min="0" class="form-control" name="biaya_lain" onchange="disc();" id="biaya_lain" placeholder="-" value="{{$faktur->biaya_lain}}">
                                 </div>
                             </div>
                         </div>
@@ -223,7 +223,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" min="0" class="form-control" id="uang_muka" onchange="disc()" name="uang_muka" value="0" placeholder="-" value="{{$faktur->uang_muka}}">
+                                    <input type="number" required min="0" class="form-control" id="uang_muka" onchange="disc()" name="uang_muka" value="0" placeholder="-" value="{{$faktur->uang_muka}}">
                                 </div>
                             </div>
                         </div>

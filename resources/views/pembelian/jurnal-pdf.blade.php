@@ -133,6 +133,7 @@
                                                 @elseif ($jurnal->akun_id == 4) hutang
                                                 @elseif ($jurnal->akun_id == 5) potongan pembelian
                                                 @elseif ($jurnal->akun_id == 6) kas
+                                                @elseif ($jurnal->akun_id == 7) uang muka
                                                 @else -
                                                 @endif
                                             </td>

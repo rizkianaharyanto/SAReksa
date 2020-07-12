@@ -117,19 +117,19 @@ endsection -->
                     '@csrf' +
                     '<div class="form-group">' +
                     '<label for="nama_pengirim">Nama</label>' +
-                    '<input type="text" class="form-control" id="nama_pengirim" name="nama_pengirim" value="' + datanya[index].nama_pengirim + '">' +
+                    '<input type="text" required class="form-control" id="nama_pengirim" name="nama_pengirim" value="' + datanya[index].nama_pengirim + '">' +
                     '</div>' +
                     '<div class="form-group">' +
                     '<label for="telp_pengirim">Telp</label>' +
-                    '<input type="number" min="0" class="form-control" id="telp_pengirim" name="telp_pengirim" value="' + datanya[index].telp_pengirim + '">' +
+                    '<input type="number" required min="0" class="form-control" id="telp_pengirim" name="telp_pengirim" value="' + datanya[index].telp_pengirim + '">' +
                     '</div>' +
                     '<div class="form-group">' +
                     '<label for="email_pengirim">Email</label>' +
-                    '<input type="email" class="form-control" id="email_pengirim" name="email_pengirim" value="' + datanya[index].email_pengirim + '">' +
+                    '<input type="email" required class="form-control" id="email_pengirim" name="email_pengirim" value="' + datanya[index].email_pengirim + '">' +
                     '</div>' +
                     '<div class="form-group">' +
                     '<label for="nama_pemasok">pemasok</label>' +
-                    '<select class="form-control" id="nama_pemasok"  name="pemasok_id">' +
+                    '<select class="form-control" required id="nama_pemasok"  name="pemasok_id">' +
                     '<option value="">--- Pilih pemasok ---</option>' +
                     '@foreach ($pemasoks as $pemasok)' +
                     '<option value="{{$pemasok->id}}" {{$pemasok->id == "' + sup_id.toString() + '" ? "selected" : ""}} >{{$pemasok->nama_pemasok}}</option>' +
@@ -190,19 +190,19 @@ endsection -->
     </div> -->
     <div class="form-group">
         <label for="nama_pengirim">Nama Pengirim</label>
-        <input type="text" class="form-control" id="nama_pengirim" name="nama_pengirim" placeholder="">
+        <input type="text" class="form-control" required id="nama_pengirim" name="nama_pengirim" placeholder="">
     </div>
     <div class="form-group">
         <label for="telp_pengirim">Telp</label>
-        <input type="number" min="0" class="form-control" id="telp_pengirim" name="telp_pengirim" placeholder="">
+        <input type="number" min="0" required class="form-control" id="telp_pengirim" name="telp_pengirim" placeholder="">
     </div>
     <div class="form-group">
         <label for="email_pengirim">Email</label>
-        <input type="email" class="form-control" id="email_pengirim" name="email_pengirim" placeholder="">
+        <input type="email" required class="form-control" id="email_pengirim" name="email_pengirim" placeholder="">
     </div>
     <div class="form-group">
         <label for="nama_pemasok">Pemasok</label>
-        <select class="form-control" id="nama_pemasok" name="pemasok_id">
+        <select required class="form-control" id="nama_pemasok" name="pemasok_id">
             <option value="">--- Pilih Pemasok ---</option>
             @foreach ($pemasoks as $pemasok)
             <option value="{{$pemasok->id}}">{{ $pemasok->nama_pemasok }}</option>

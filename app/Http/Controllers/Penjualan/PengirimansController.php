@@ -42,11 +42,11 @@ class PengirimansController extends Controller
     public function stokkeluar()
     {
         $pengirimans = Pengiriman::all();
-        $barangs = collect([]);
+        $count = collect([]);
         foreach ($pengirimans as $pengiriman) {
-            $barangs->push($pengiriman->barangs);
+            $satu = $pengiriman->barangs->count();
+            $count->push($satu);
         }
-        $count=$barangs->count();
         // dd($count);
         return view('stock.transactions.stock-keluar.index', [
             'pengirimans' => $pengirimans,

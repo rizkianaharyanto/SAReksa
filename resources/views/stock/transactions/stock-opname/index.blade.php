@@ -9,12 +9,11 @@
 
 @section('table-header')
 <tr>
-    <th>#</th>
+    <th>Tanggal</th>
     <th>Kode Referensi</th>
     <th>Gudang</th>
     <th>Deskripsi</th>
     <th>Departemen</th>
-    <th>Tanggal</th>
     <th>Status</th>
     <th>Opsi</th>
 </tr>
@@ -24,12 +23,11 @@
 @section('table-body')
 @foreach ($stokOp as $i=> $op)
 <tr>
-    <td>{{$i+1}}</td>
+    <td>{{$op->created_at->toDateString()}}</td>
     <td>{{ $op->kode_ref }}</td>
     <td>{{ $op->gudang->kode_gudang}}</td>
     <td> {{ $op->deskripsi }} </td>
     <td> {{ $op->departemen }} </td>
-    <td>{{$op->created_at->toDateString()}}</td>
     <td>{{$op->status}}</td>
     <td>
         <center>
@@ -42,10 +40,10 @@
                 <div class="dropdown-menu">
                     <!-- Dropdown menu links -->
                     <a class="dropdown-item " href="/stok/stock-opname/{{$op->id}}">Details</a>
-                    @if($op->status == 'belum diposting')
-                    <a class="dropdown-item" href="/stok/stock-opname/{{$op->id}}/edit" data-form="Edit Data"> Edit</a>
-                    <a class="delete-jquery dropdown-item" data-method="delete"
-                        href="{{ route('barang.destroy', $op->id ) }}">Delete</a>
+                    @if($op->status != 'sudah posting')
+                    <a class="dropdown-item" href="/stok/stock-opname/{{$op->id}}/edit"> Edit</a>
+                    {{-- <a class="delete-jquery dropdown-item" data-method="delete"
+                        href="{{ route('barang.destroy', $op->id ) }}">Delete</a> --}}
                     <a class="dropdown-item " href="/stok/stock-opname/posting/{{$op->id}}">Posting</a>
                     @endif
                 </div>
@@ -55,9 +53,7 @@
 </tr>
 @endforeach
 @endsection
-@if ($errors->any())
 
-@endif
 @section('modal-form')
 @parent
 @section('modal-content')
@@ -78,19 +74,19 @@
 <input class="form-control" type="text" name="deskripsi" id="field3">
 <label for="field4">Departemen</label>
 <input class="form-control" type="text" name="departemen" id="field3">
-<label for="field4">akun_penyesuaian</label>
-<input class="form-control" type="text" name="akun_penyesuaian" id="field3">
+{{-- <label for="field4">akun_penyesuaian</label>
+<input class="form-control" type="text" name="akun_penyesuaian" id="field3"> --}}
 <div id="formbarang" class="d-flex flex-column">
-    <div id="isibarangs" class="d-flex">
+    <div class="d-flex inputbarangs">
         <div class="m-3">
             <label for="field4">Barang</label>
-            <select class="form-control  isibarangs" onchange="dropdownSelect()" name="item_id[]">
+            <select class="form-control  isibarangs" name="item_id[]">
                 <option value="">--- Pilih Barang ---</option>
             </select>
         </div>
         <div class="m-3">
             <label for="field4">Hasil Stok Opname</label>
-            <input type="number" class="form-control" name="on_hand[]">
+            <input type="number" class="form-control" min="0" name="on_hand[]">
         </div>
 
     </div>
@@ -107,16 +103,29 @@
 @parent
 
 <script>
-    function dropdownSelect() {
-        console.log($("option:selected", this).val());
-    }
+    $('#link-dashboard').removeClass('active');
 
     let i = 0
 
     function tambah() {
-        let barangInput = $("#isibarangs").clone()
-        $("#formbarang").append(barangInput);
-        barangInput.append(' <a type="button" class="m-3 pt-4" onclick="hapus(this)"><i class="fas fa-window-close" style="color: red; cursor: pointer"></i></a>')
+        let selected = $('.inputbarangs').last().find('option:selected').val();
+        let barangInput = $(".inputbarangs").last().clone()
+        barangInput.find('option').each(function (index,data){
+            if($(this).val() == selected)
+            {
+                $(this).remove();
+            }
+        });
+
+        if ($(".inputbarangs").last().is(':first-child')) {
+            $("#formbarang").append(barangInput);
+            
+            $("#formbarang").find('.inputbarangs').last().append(' <a type="button" class="m-3 pt-4" onclick="hapus(this)"><i class="fas fa-window-close" style="color: red; cursor: pointer"></i></a>');
+        }
+        else{
+            $("#formbarang").append(barangInput);
+            
+        }
     }
 
     function hapus(x) {
@@ -129,19 +138,29 @@
             retur: {},
             success: function(data) {
                 $(".isibarangs").empty();
-                $(".isibarangs").append('<option value="">--- Pilih Barang ---</option>')
+                $(".isibarangs").append('<option value="test">--- Pilih Barang ---</option>')
+                let alreadySelectedItem = null;
+                $(`.isibarangs`).change(function() {
+                    
+                    alreadySelectedItem = $(`.isibarangs`).last().find('option:selected').val();
+                })
+                    console.log(alreadySelectedItem);
                 for (i = 0; i < data.length; i++) {
-                    $(".isibarangs").append('<option value="' + data[i].barang.id + '">' + data[i].barang.nama_barang + '</option>')
+                    $(".isibarangs").append(`<option value="${data[i].barang.id}" data-kuantitas=${data[i].kuantitas} >` + data[i].barang.nama_barang + `       \t(${data[i].kuantitas})`+'</option>')
                 }
             }
         })
+    })
+
+    $(".isibarangs").change(function()  {
+        let selectedBarang = $(this).find('option:selected');
+        let kuantitasBarang = selectedBarang.data('kuantitas');
+        
     })
 </script>
 <script>
     const title = "@yield('title')".toLowerCase().replace('data', '').trim().replace(' ', '-');
     const idSidebarLink = `link-${title}`.trim();
-    console.log(idSidebarLink);
-    $('#link-dashboard').removeClass('active');
     $(`#${idSidebarLink}`).addClass('active')
 </script>
 @endsection

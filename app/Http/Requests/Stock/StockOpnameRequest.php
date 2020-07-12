@@ -28,8 +28,8 @@ class StockOpnameRequest extends FormRequest
             'gudang_id'         => 'required|integer',
             'deskripsi'         => 'string',
             'departemen'        => 'string',
-            'akun_penyesuaian'  => 'required|integer',
             'item_id'           => 'array|required|required_with:on_hand',
+            'item_id.*'         => 'required|distinct',
             'on_hand'           => 'array|required|required_with:item_id'
             //
         ];
