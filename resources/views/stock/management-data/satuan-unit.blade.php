@@ -14,7 +14,10 @@
 
     <th>Dibuat Pada</th>
     <th>Terakhir Diubah</th>
+    
+@if(auth()->user()->role->role_name == 'Admin Gudang')
     <th>Opsi</th>
+    @endif
 </tr>
 @endsection
 
@@ -30,6 +33,7 @@
     <td class=>{{date('d-m-Y',strtotime($u->created_at))}}</td>
     <td class=>{{date('d-m-Y',strtotime($u->updated_at))}}</td>
 
+    @if(auth()->user()->role->role_name == 'Admin Gudang')
     <td id="options">
         <span id="edit-opt">
             <a href="" data-form="Edit Data" data-toggle="modal" data-target="#modalEdit{{$u->id}}"> Edit</a>
@@ -39,7 +43,7 @@
                 data-target="#modalDelete{{$u->id}}">Delete</a>
         </span>
     </td>
-
+@endif
     @php
     $action = '/stok/Management-Data/satuan-unit/'.$u->id;
 

@@ -13,7 +13,7 @@ use App\Stock\Gudang;
 use App\Stock\Ledger;
 use App\Stock\PenyesuaianStok;
 use App\Stock\StokGudang;
-
+use PDF;
 class StockAdjustmentController extends Controller
 {
     private $service;
@@ -21,6 +21,7 @@ class StockAdjustmentController extends Controller
     {
         $this->service = $service;
     }
+
     public function index()
     {
         $stockAdjustments = $this->service->all();
@@ -48,6 +49,94 @@ class StockAdjustmentController extends Controller
         }
         return view('stock.transactions.penyesuaian-stok.details', compact('stockAdjustment'));
     }
+
+
+    public function laporanindex()
+    {
+        $stockAdjustments = $this->service->all();
+        $barangs = Barang::all();
+        $gudangs = Gudang::all();
+        $gudang = null;
+        $start = null;
+        $end = null;
+        return view(
+            'stock.reports.laporan-penyesuaian',
+            [
+                'stockAdjustments' => $stockAdjustments,
+                'barangs' => $barangs,
+                'gudangs' => $gudangs,
+                'gudang' => $gudang,
+                'start' => $start,
+                'end' => $end
+            ]
+        );
+    }
+
+    public function laporanfilter(Request $date)
+    {
+        if($date->start == null){
+            $stockAdjustments = $this->service->all();
+            $barangs = Barang::all();
+            $gudangs = Gudang::all();
+            $gudang = null;
+            $start = null;
+            $end = null;
+        }else{
+            $stockAdjustments = PenyesuaianStok::select("stk_penyesuaian_stok.*")
+            // ->where('gudang_id', $date->gudang)
+            ->whereBetween('created_at', [$date->start, $date->end])
+            ->get();
+            
+            $barangs = Barang::all();
+            $gudangs = Gudang::all();
+            // $gudang = $date->gudang;
+            $start = $date->start;
+            $end = $date->end;
+        }
+        return view(
+            'stock.reports.laporan-penyesuaian',
+            [
+                'stockAdjustments' => $stockAdjustments,
+                'barangs' => $barangs,
+                'gudangs' => $gudangs,
+                // 'gudang' => $gudang,
+                'start' => $start,
+                'end' => $end
+            ]
+        );
+    }
+    
+    public function laporanexport(Request $date)
+    {
+        if($date->start == null){
+            $stockAdjustments = $this->service->all();
+            $gudangs = Gudang::all();
+            $gudang = null;
+            $start = null;
+            $end = null;
+        }else{
+            $stockAdjustments = PenyesuaianStok::select("stk_penyesuaian_stok.*")
+            // ->where('gudang_id', $date->gudang)
+            ->whereBetween('created_at', [$date->start, $date->end])
+            ->get();
+            $gudangs = Gudang::all();
+            // $gudang = $date->gudang;
+            $start = $date->start;
+            $end = $date->end;
+        }
+        $pdf = PDF::loadview('stock.reports.export-penyesuaian',
+            [
+                'stockAdjustments' => $stockAdjustments,
+                'gudangs' => $gudangs,
+                // 'gudang' => $gudang,
+                'start' => $start,
+                'end' => $end
+            ]
+        );
+        
+        return $pdf->download('laporan-penyesuaian.pdf');
+    }
+
     public function store(CreateStockAdjustmentRequest $req, ItemService $itemServ)
     {
         //Make Transaction Record

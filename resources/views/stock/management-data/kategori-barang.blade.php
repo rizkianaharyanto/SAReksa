@@ -15,7 +15,10 @@
     <th>Kategori</th>
     <th>Dibuat Pada</th>
     <th>Diubah Pada</th>
+    
+@if(auth()->user()->role->role_name == 'Admin Gudang')
     <th>Opsi</th>
+    @endif
 </tr>
 @endsection
 
@@ -31,10 +34,11 @@
     <td>{{$k->nama_kategori}}</td>
     <td class=>{{date('d-m-Y',strtotime($k->created_at))}}</td>
     <td class=>{{date('d-m-Y',strtotime($k->updated_at))}}</td>
+    
+@if(auth()->user()->role->role_name == 'Admin Gudang')
     <td id="options">
         <span id="edit-opt">
-            <a href="" data-form="Edit Data" data-toggle="modal" data-ctgid="{{$k->id}}"
-                data-target="#modalEdit{{$k->id}}">
+            <a href="" data-form="Edit Data" data-toggle="modal" data-ctgid="{{$k->id}}" data-target="#modalEdit{{$k->id}}">
                 Edit</a>
         </span>
         |
@@ -42,6 +46,7 @@
             <a class="" data-toggle="modal" style="cursor: pointer" data-target="#modalDelete{{$k->id}}">Delete</a>
         </span>
     </td>
+    @endif
 
     @php
     $action = '/stok/Management-Data/kategori-barang/'.$k->id;
@@ -54,11 +59,9 @@
             <x-slot name="content">
                 @method('PUT')
                 <label for="kodeKategori">Kode Kategori </label>
-                <input class="form-control" value="{{$k->kode_kategori}}" type="text" id="field1" name="kode_kategori"
-                    required>
+                <input class="form-control" value="{{$k->kode_kategori}}" type="text" id="field1" name="kode_kategori" required>
                 <label for="namaKategori">Nama Kategori </label>
-                <input class="form-control" type="text" value="{{$k->nama_kategori}}" name="nama_kategori" id="field2"
-                    required>
+                <input class="form-control" type="text" value="{{$k->nama_kategori}}" name="nama_kategori" id="field2" required>
 
             </x-slot>
         </x-stock.master-data.modal-edit>
@@ -89,7 +92,7 @@
 @section('scripts')
 @parent
 <script>
-    const title = "@yield('title')".toLowerCase().replace('data','').trim().replace(' ','-');
+    const title = "@yield('title')".toLowerCase().replace('data', '').trim().replace(' ', '-');
     const idSidebarLink = `link-${title}`.trim();
     console.log(idSidebarLink);
     $('#link-dashboard').removeClass('active');

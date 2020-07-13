@@ -10,11 +10,12 @@ use App\Stock\TransferStok;
 use App\Stock\Gudang;
 use App\Stock\Barang;
 use App\Stock\Ledger;
+use PDF;
 
 class StockTransferController extends Controller
 {
     private $service;
-    
+
     public function __construct(StockTransferService $service)
     {
         $this->service = $service;
@@ -35,7 +36,85 @@ class StockTransferController extends Controller
             'allData' => $allData,
             'gudangs' => $gudangs,
             'barangs' => $barangs
-            ]);
+        ]);
+    }
+
+    public function laporanindex(StockTransferService $stockTf)
+    {
+        $allData = $stockTf->all();
+        $gudangs = Gudang::all();
+        $barangs = Barang::all();
+        $gudang = null;
+        $start = null;
+        $end = null;
+
+        return view('stock.reports.laporan-transfer', [
+            'allData' => $allData,
+            'gudangs' => $gudangs,
+            'barangs' => $barangs,
+            'gudang' => $gudang,
+            'start' => $start,
+            'end' => $end
+        ]);
+    }
+
+    public function laporanfilter(StockTransferService $stockTf, Request $date)
+    {
+        if ($date->start == null) {
+            $allData = $stockTf->all();
+            $gudangs = Gudang::all();
+            $barangs = Barang::all();
+            $gudang = null;
+            $start = null;
+            $end = null;
+        } else {
+            $allData = TransferStok::select("stk_transfer_stok.*")
+                // ->where('gudang_id', $date->gudang)
+                ->whereBetween('created_at', [$date->start, $date->end])
+                ->get();
+
+            $barangs = Barang::all();
+            $gudangs = Gudang::all();
+            // $gudang = $date->gudang;
+            $start = $date->start;
+            $end = $date->end;
+        }
+        return view('stock.reports.laporan-transfer', [
+            'allData' => $allData,
+            'barangs' => $barangs,
+            'gudangs' => $gudangs,
+            // 'gudang' => $gudang,
+            'start' => $start,
+            'end' => $end
+        ]);
+    }
+
+    public function laporanexport(StockTransferService $stockTf, Request $date)
+    {
+        if ($date->start == null) {
+            $allData = $stockTf->all();
+            $gudangs = Gudang::all();
+            $gudang = null;
+            $start = null;
+            $end = null;
+        } else {
+            $allData = TransferStok::select("stk_transfer_stok.*")
+                // ->where('gudang_id', $date->gudang)
+                ->whereBetween('created_at', [$date->start, $date->end])
+                ->get();
+            $gudangs = Gudang::all();
+            // $gudang = $date->gudang;
+            $start = $date->start;
+            $end = $date->end;
+        }
+        $pdf = PDF::loadview('stock.reports.export-transfer', [
+            'allData' => $allData,
+            'gudangs' => $gudangs,
+            // 'gudang' => $gudang,
+            'start' => $start,
+            'end' => $end
+        ]);
+        return $pdf->download('laporan-transfer.pdf');
     }
 
     /**
@@ -43,7 +122,7 @@ class StockTransferController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    
+
 
     public function posting($id)
     {
@@ -104,7 +183,7 @@ class StockTransferController extends Controller
         }
         return view('stock.transactions.transfer-stock.edit', compact('transferStock'), compact('gudangs'));
     }
-  
+
     /**
      * Update the specified resource in storage.
      *

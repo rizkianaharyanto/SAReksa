@@ -15,7 +15,10 @@
     <th>Nilai Pajak</th>
     <th>Dibuat Pada</th>
     <th>Terakhir Diubah</th>
+    
+@if(auth()->user()->role->role_name == 'Admin Gudang')
     <th>Opsi</th>
+    @endif
 </tr>
 @endsection
 
@@ -34,6 +37,7 @@
     <td class=>{{date('d-m-Y',strtotime($pajak->created_at))}}</td>
     <td class=>{{date('d-m-Y',strtotime($pajak->updated_at))}}</td>
 
+    @if(auth()->user()->role->role_name == 'Admin Gudang')
     <td id="options">
         <span id="edit-opt">
             <a href="" data-form="Edit Data" data-toggle="modal" data-target="#modalEdit{{$pajak->id}}"> Edit</a>
@@ -43,6 +47,7 @@
                 data-target="#modalDelete{{$pajak->id}}">Delete</a>
         </span>
     </td>
+    @endif
 
     @php
     $action = '/stok/Management-Data/pajak/'.$pajak->id;

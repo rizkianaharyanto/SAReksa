@@ -15,6 +15,7 @@ use App\Stock\Barang;
 use App\Stock\Gudang;
 use App\Stock\DetailStokOpname;
 use App\Stock\Ledger;
+use PDF;
 
 class StockOpnameController extends Controller
 {
@@ -38,6 +39,83 @@ class StockOpnameController extends Controller
         return view('stock.transactions.stock-opname.index', ['stokOp' => $stokOp, 'barangs' => $barangs, 'gudangs' => $gudangs]);
     }
 
+    public function laporanindex()
+    {
+        $stokOp = StokOpname::with('details')->get();
+        $barangs = Barang::all();
+        $gudangs = Gudang::all();
+        $gudang = null;
+        $start = null;
+        $end = null;
+
+        return view('stock.reports.laporan-opname', [
+            'stokOp' => $stokOp,
+            'barangs' => $barangs,
+            'gudangs' => $gudangs,
+            'gudang' => $gudang,
+            'start' => $start,
+            'end' => $end
+        ]);
+    }
+
+    public function laporanfilter(Request $date)
+    {
+        if($date->start == null){
+            $stokOp = StokOpname::with('details')->get();
+            $barangs = Barang::all();
+            $gudangs = Gudang::all();
+            $gudang = null;
+            $start = null;
+            $end = null;
+        }else{
+            $stokOp = StokOpname::select("stk_stok_opname.*")
+                // ->where('gudang_id', $date->gudang)
+                ->whereBetween('created_at', [$date->start, $date->end])
+                ->get();
+    
+            $barangs = Barang::all();
+            $gudangs = Gudang::all();
+            // $gudang = $date->gudang;
+            $start = $date->start;
+            $end = $date->end;
+        }
+        return view('stock.reports.laporan-opname', [
+            'stokOp' => $stokOp,
+            'barangs' => $barangs,
+            'gudangs' => $gudangs,
+            // 'gudang' => $gudang,
+            'start' => $start,
+            'end' => $end
+        ]);
+    }
+
+    public function laporanexport(Request $date)
+    {
+        if($date->start == null){
+            $stokOp = StokOpname::with('details')->get();
+            $gudangs = Gudang::all();
+            $gudang = null;
+            $start = null;
+            $end = null;
+        }else{
+            $stokOp = StokOpname::select("stk_stok_opname.*")
+                // ->where('gudang_id', $date->gudang)
+                ->whereBetween('created_at', [$date->start, $date->end])
+                ->get();
+            $gudangs = Gudang::all();
+            // $gudang = $date->gudang;
+            $start = $date->start;
+            $end = $date->end;
+        }
+        $pdf = PDF::loadview('stock.reports.export-opname', [
+            'stokOp' => $stokOp,
+            'gudangs' => $gudangs,
+            // 'gudang' => $gudang,
+            'start' => $start,
+            'end' => $end
+        ]);
+        return $pdf->download('laporan-stok_opname.pdf');
+    }
     /*
      * Show the form for creating a new resource.
      *
@@ -122,7 +200,7 @@ class StockOpnameController extends Controller
             ]);
             if ($barang->pivot->selisih >= 0) {
                 $jurnal->update([
-                    'qty_masuk' => $barang->pivot->selisih ,
+                    'qty_masuk' => $barang->pivot->selisih,
                     'nilai_masuk' => $barang->nilai_barang
                 ]);
             } else {

@@ -32,11 +32,14 @@
         <div class="card">
             <div class="card-header">
                 <h5 class="mb-0">@yield('title')</h5>
+                
                 @section('button-tambah-data')
 
+                @if(auth()->user()->role->role_name == 'Admin Gudang')
                 <button class="btn btn-primary" style="background-color: #349eac" data-toggle="modal"
                     data-target="#modal">Tambah
                     data</button>
+                    @endif
                 @show
             </div>
             <div class="card-body">

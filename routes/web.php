@@ -157,6 +157,18 @@ Route::prefix('stok')->group(function () {
         Route::get('/kartu-stock/filter', 'Stock\KartuStockController@filter');
         Route::get('/kartu-stock/export', 'Stock\KartuStockController@export');
         
+        Route::get('/laporan-penyesuaian', ['as' => 'laporan-penyesuaian','uses' => 'Stock\StockAdjustmentController@laporanindex']);
+        Route::get('/laporan-penyesuaian/filter', 'Stock\StockAdjustmentController@laporanfilter');
+        Route::get('/laporan-penyesuaian/export', 'Stock\StockAdjustmentController@laporanexport');
+        
+        Route::get('/laporan-stok-opname', ['as' => 'laporan-stok-opname','uses' => 'Stock\StockOpnameController@laporanindex']);
+        Route::get('/laporan-stok-opname/filter', 'Stock\StockOpnameController@laporanfilter');
+        Route::get('/laporan-stok-opname/export', 'Stock\StockOpnameController@laporanexport');
+        
+        Route::get('/laporan-transfer', ['as' => 'laporan-transfer','uses' => 'Stock\StockTransferController@laporanindex']);
+        Route::get('/laporan-transfer/filter', 'Stock\StockTransferController@laporanfilter');
+        Route::get('/laporan-transfer/export', 'Stock\StockTransferController@laporanexport');
+        
         //Daftar Produk
         Route::get('/produk', ['as' => 'produk','uses' => 'Stock\KartuStockController@index']);
         Route::get('/produk/filter', 'Stock\KartuStockController@filter');

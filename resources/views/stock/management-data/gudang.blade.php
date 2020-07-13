@@ -41,17 +41,17 @@
     <td>
         <div class="dropright">
 
-            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="menu-icon fas fa-ellipsis-h"></i>
             </button>
             <div class="dropdown-menu">
                 <!-- Dropdown menu links -->
-                <a href="" class="dropdown-item" data-form="Edit Data" data-toggle="modal"
-                    data-target="#modalEdit{{$w->id}}">
+                
+@if(auth()->user()->role->role_name == 'Admin Gudang')
+                <a href="" class="dropdown-item" data-form="Edit Data" data-toggle="modal" data-target="#modalEdit{{$w->id}}">
                     Edit</a>
-                <a class="delete-jquery dropdown-item" data-toggle="modal" style="cursor: pointer"
-                    data-target="#modalDelete{{$w->id}}">Delete</a>
+                <a class="delete-jquery dropdown-item" data-toggle="modal" style="cursor: pointer" data-target="#modalDelete{{$w->id}}">Delete</a>
+                @endif
                 <a class="dropdown-item " href="/stok/Management-Data/gudang/{{$w->id}}">Details</a>
 
                 <!-- <a class="delete-jquery">Delete</a> -->
@@ -67,11 +67,9 @@
             <x-slot name="content">
                 @method('PUT')
                 <label for="field1">Kode Gudang </label>
-                <input class="form-control" value="{{$w->kode_gudang}}" type="text" name="kode_gudang" id="field1"
-                    required>
+                <input class="form-control" value="{{$w->kode_gudang}}" type="text" name="kode_gudang" id="field1" required>
                 <label for="field2">Alamat </label>
-                <textarea class="form-control" type="textarea" name="alamat" id="field2" rows="5"
-                    required>{{$w->alamat}}</textarea>
+                <textarea class="form-control" type="textarea" name="alamat" id="field2" rows="5" required>{{$w->alamat}}</textarea>
                 <label for="field3">No Telpon: </label>
                 <input class="form-control" type="text" value="{{$w->no_telp}}" name="no_telp" required id="field3">
                 <label for="field4">Status</label>
@@ -134,12 +132,12 @@
     @section('scripts')
     @parent
     <script>
-        const title = "@yield('title')".toLowerCase().replace('data','').trim();
-    const idSidebarLink = `link-${title}`.trim();
-    console.log(idSidebarLink);
-    $('#link-dashboard').removeClass('active');
-    $(`#link-manajemen-data`).addClass('active');
-    $(`#${idSidebarLink}`).addClass('active')
+        const title = "@yield('title')".toLowerCase().replace('data', '').trim();
+        const idSidebarLink = `link-${title}`.trim();
+        console.log(idSidebarLink);
+        $('#link-dashboard').removeClass('active');
+        $(`#link-manajemen-data`).addClass('active');
+        $(`#${idSidebarLink}`).addClass('active')
     </script>
 
     @endsection
