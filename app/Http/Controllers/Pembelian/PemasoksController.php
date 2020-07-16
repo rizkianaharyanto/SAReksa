@@ -3,9 +3,18 @@
 namespace App\Http\Controllers\Pembelian;
 
 use App\Http\Controllers\Controller;
+use App\Pembelian\Faktur;
+use App\Pembelian\Hutang;
+use App\Pembelian\Jurnal;
 use Illuminate\Http\Request;
 use App\Pembelian\Pemasok;
+use App\Pembelian\Pembayaran;
+use App\Pembelian\Pemesanan;
+use App\Pembelian\Penerimaan;
 use App\Pembelian\Pengirim;
+use App\Pembelian\Permintaan;
+use App\Pembelian\Retur;
+use App\Stock\Barang;
 
 class PemasoksController extends Controller
 {
@@ -148,9 +157,57 @@ class PemasoksController extends Controller
     public function destroy(Pemasok $pemasok)
     {
         $pengirims = $pemasok->pengirims;
+        $permintaans = $pemasok->permintaans;
+        $pemesanans = $pemasok->pemesanans;
+        $penerimaans = $pemasok->penerimaans;
+        $fakturs = $pemasok->fakturs;
+        $returs = $pemasok->returs;
+        $hutangs = $pemasok->hutangs;
+        $pembayarans = $pemasok->pembayarans;
+        $barangs = $pemasok->barangs;
         Pemasok::destroy($pemasok->id);
         foreach ($pengirims as $pengirim) {
             Pengirim::destroy($pengirim->id);
+        }
+        foreach ($permintaans as $permintaan) {
+            Permintaan::destroy($permintaan->id);
+        }
+        foreach ($pemesanans as $pemesanan) {
+            Pemesanan::destroy($pemesanan->id);
+        }
+        foreach ($penerimaans as $penerimaan) {
+            $jurnals = Jurnal::where('penerimaan_id', $penerimaan->id)->get('id');
+            foreach ($jurnals as $jurnal) {
+                Jurnal::destroy($jurnal->id);
+            }
+            Penerimaan::destroy($penerimaan->id);
+        }
+        foreach ($fakturs as $faktur) {
+            $jurnals = Jurnal::where('faktur_id', $faktur->id)->get('id');
+            foreach ($jurnals as $jurnal) {
+                Jurnal::destroy($jurnal->id);
+            }
+            Faktur::destroy($faktur->id);
+        }
+        foreach ($returs as $retur) {
+            $jurnals = Jurnal::where('retur_id', $retur->id)->get('id');
+            foreach ($jurnals as $jurnal) {
+                Jurnal::destroy($jurnal->id);
+            }
+            Retur::destroy($retur->id);
+        }
+        foreach ($hutangs as $hutang) {
+            Hutang::destroy($hutang->id);
+        }
+        foreach ($pembayarans as $pembayaran) {
+            $jurnals = Jurnal::where('pembayaran_id', $pembayaran->id)->get('id');
+            foreach ($jurnals as $jurnal) {
+                Jurnal::destroy($jurnal->id);
+            }
+            Pembayaran::destroy($pembayaran->id);
+        }
+        foreach ($barangs as $barang) {
+            Barang::destroy($barang->id);
         }
 
         return redirect('/pembelian/pemasoks');

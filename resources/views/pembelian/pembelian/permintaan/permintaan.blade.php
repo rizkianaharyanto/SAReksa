@@ -34,6 +34,7 @@
                 </i>
             </button>
         </a>
+        @if($permintaan->status == 'baru')
         <a id="edit" href="/pembelian/permintaans/{{$permintaan->id}}/edit">
             <button class="btn-warning"><i style="cursor: pointer;" class="fas fa-edit">
                     <span></span>
@@ -46,6 +47,7 @@
                     <span></span>
                 </i></button>
         </form>
+        @endif
         <!-- <a id="delete" data-toggle="modal" data-target="#delete-{{$permintaan->id }}">
             <i style="cursor: pointer;" class="fas fa-trash">
                 <span></span>

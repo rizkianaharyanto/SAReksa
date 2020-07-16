@@ -66,5 +66,6 @@ class Kernel extends HttpKernel
         'checkRole' => \App\Http\Middleware\CheckRole::class,
         'auth.stock' => \App\Http\Middleware\AuthStock::class,
         'auth.pembelian' => \App\Http\Middleware\AuthPembelian::class,
+        'checkPembelian' => \App\Http\Middleware\CheckRolePembelian::class,
     ];
 }

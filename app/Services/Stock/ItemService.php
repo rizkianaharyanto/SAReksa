@@ -87,10 +87,11 @@ class ItemService
     public function getStocksQty($itemId)
     {
         $theItem = Barang::find($itemId);
-        $Barang = Barang::find($itemId)->warehouseStocks();
+        $Barang = Barang::find($itemId);
         $qtySum = 0;
         // return $Barang;
-        foreach ($Barang as $i) {
+        foreach ($Barang->warehouseStocks as $i) {
+            // dd($i->pivot->kuantitas);
             $qtySum += $i->pivot->kuantitas;
         }
         return [

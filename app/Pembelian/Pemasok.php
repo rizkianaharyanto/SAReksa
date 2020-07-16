@@ -52,6 +52,6 @@ class Pemasok extends Model
 
     public function barangs()
     {
-        return $this->hasMany('App\Stock\Barang');
+        return $this->hasMany('App\Stock\Barang', 'supplier_id');
     }
 }

@@ -179,7 +179,7 @@
                     <li><a href="/pembelian/hutangs"> <i class="menu-icon fa fa-file-invoice-dollar"></i>Hutang</a></li>
                     <li><a href="/pembelian/pembayarans"> <i class="menu-icon fa fa-hand-holding-usd"></i>Pembayaran Hutang</a></li>
                     @endif
-                    @if(auth()->user()->role->role_name == 'Direksi Perusahaan')
+                    @if(auth()->user()->role->role_name == 'Manager Pembelian')
                     <h3 class="menu-title">Laporan & Jurnal</h3><!-- /.menu-title -->
                     <li class="menu-item-has-children dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-file"></i>Laporan</a>

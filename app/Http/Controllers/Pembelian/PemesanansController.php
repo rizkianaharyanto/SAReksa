@@ -139,6 +139,10 @@ class PemesanansController extends Controller
             'status' => $request->status,
         ]);
 
+        if ($request->permintaan_id) {
+            Permintaan::where('id', $request->permintaan_id)->update(['status' => 'sudah dipesan']);
+        }
+
         foreach ($request->barang_id as $index => $id) {
             $pemesanan->barangs()->attach($id, [
                 'jumlah_barang' => $request->jumlah_barang[$index],
@@ -289,6 +293,10 @@ class PemesanansController extends Controller
                 'permintaan_id' => $request->permintaan_id,
                 'status' => $request->status,
             ]);
+
+            if($request->permintaan_id){
+                Permintaan::where('id', $request->permintaan_id)->update(['status' => 'sudah dipesan']);
+            }
         $pemesanan->barangs()->detach();
         foreach ($request->barang_id as $index => $id) {
             $pemesanan->barangs()->attach($id, [
