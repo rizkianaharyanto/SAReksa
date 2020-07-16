@@ -37,9 +37,9 @@ Route::prefix('pembelian')->group(function () {
     
     Route::resource('/pemasoks', 'Pembelian\PemasoksController')->middleware('auth.pembelian');
     Route::resource('/pengirims', 'Pembelian\PengirimsController')->middleware('auth.pembelian');
-    Route::resource('/fakturs', 'Pembelian\FaktursController')->middleware('auth.pembelian');
-    Route::get('/fakturshow/{id}', 'Pembelian\FaktursController@show2')->middleware('auth.pembelian');
-    Route::get('/fakturs/cetak_pdf', 'Pembelian\FaktursController@cetak_pdf')->middleware('auth.pembelian');
+    Route::resource('/fakturs', 'Pembelian\FaktursController')->middleware('auth.pembelian')->middleware(['auth.pembelian', 'checkPembelian:Admin Pembelian,Admin Retur Pembelian,Admin Utang']);;
+    Route::get('/fakturshow/{id}', 'Pembelian\FaktursController@show2')->middleware('auth.pembelian')->middleware(['auth.pembelian', 'checkPembelian:Admin Pembelian,Admin Retur Pembelian,Admin Utang']);;
+    Route::get('/fakturs/cetak_pdf', 'Pembelian\FaktursController@cetak_pdf')->middleware('auth.pembelian')->middleware(['auth.pembelian', 'checkPembelian:Admin Pembelian,Admin Retur Pembelian,Admin Utang']);;
     
     Route::group(['middleware' => ['auth.pembelian', 'checkPembelian:Admin Pembelian']], function () {
         Route::resource('/pemesanans', 'Pembelian\PemesanansController');

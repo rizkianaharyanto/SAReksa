@@ -170,7 +170,7 @@
 <!--/.col-->
 @endif
 
-@if(auth()->user()->role->role_name == 'Direksi Perusahaan')
+@if(auth()->user()->role->role_name == 'Manager Pembelian')
 <div class="col-sm-6 col-lg-3">
     <div class="card text-white bg-flat-color-1">
         <div class="card-body">
