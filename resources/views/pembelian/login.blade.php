@@ -111,13 +111,15 @@
         <div class="container">
             <div class="login-content">
                 <div class="login-logo">
-
-                    <h1 style="color: white">Login</h1>
+                    <h1 style="color: white" class="mb-5">SISTEM MANAJEMEN PEMBELIAN</h1>
                     <!-- <a href="index.html"> -->
                     <!-- <img class="align-content" src="images/logo.png" alt=""> -->
                     <!-- </a> -->
                 </div>
                 <div class="login-form">
+                    <center>
+                        <h3 class="mb-3">Login</h3>
+                    </center>
                     <form method="POST" action="/pembelian/auth/login">
                         @csrf
                         <div class="form-group">

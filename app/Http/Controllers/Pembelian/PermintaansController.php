@@ -134,6 +134,7 @@ class PermintaansController extends Controller
             'biaya_lain' => $request->biaya_lain,
             'total_jenis_barang' => 3,
             'total_harga' => $request->total_harga_keseluruhan,
+            'status' => 'baru'
         ]);
 
         foreach ($request->barang_id as $index => $id) {
@@ -278,6 +279,7 @@ class PermintaansController extends Controller
                 'biaya_lain' => $request->biaya_lain,
                 'total_jenis_barang' => 3,
                 'total_harga' => $request->total_harga_keseluruhan,
+                'status' => 'baru'
             ]);
         $permintaan->barangs()->detach();
         foreach ($request->barang_id as $index => $id) {

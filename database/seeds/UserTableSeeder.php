@@ -45,8 +45,8 @@ class UserTableSeeder extends Seeder
             "role_id"   => '5'
         ]);
         User::create([
-            'name'      => "Direksi Perusahaan",
-            'email'     => "direksi@gmail.com",
+            'name'      => "Manager Pembelian",
+            'email'     => "manager@gmail.com",
             "password"  => Hash::make('test'),
             "role_id"   => '6'
         ]);
@@ -82,7 +82,7 @@ class UserTableSeeder extends Seeder
             'updated_at'    => Carbon::now('WIB')
         ]);
         DB::table('roles')->insert([
-            'role_name'     => 'Direksi Perusahaan',
+            'role_name'     => 'Manager Pembelian',
             'departemen'    => 'pembelian',
             'created_at'    => Carbon::now('WIB'),
             'updated_at'    => Carbon::now('WIB')

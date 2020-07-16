@@ -62,7 +62,7 @@
                         <div class="form-group row mx-5 mb-5" id="permintaan_form" style="display: none">
                             <label class="col-sm-3 col-form-label" for="permintaan_id">Permintaan</label>
                             <div class="col-sm-9">
-                                <select required class="form-control" id="permintaan_id" name="permintaan_id">
+                                <select class="form-control" id="permintaan_id" name="permintaan_id">
                                     <option value="">--- Pilih Permintaan ---</option>
                                 </select>
                             </div>

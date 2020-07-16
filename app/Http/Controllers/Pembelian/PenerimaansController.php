@@ -244,9 +244,16 @@ class PenerimaansController extends Controller
             $belum_diterima = $a - $b;
 
             //update stock
+            // dd($gud);
+            $qty = $this->itemService->getStocksQtyByWhouse($penerimaan->gudang, $barang->id);
             try {
-                
-                $this->itemService->updateStocks($barang->id, $penerimaan->gudang, $b);
+                if ($qty){
+                    // dd($qty);
+                    $qty += $b;
+                }else{
+                    $qty = $b;
+                }
+                $this->itemService->updateStocks($barang->id, $penerimaan->gudang, $qty);
                 // dd("berhasil");
             } catch (\Throwable $th) {
                 dd('Gagal');

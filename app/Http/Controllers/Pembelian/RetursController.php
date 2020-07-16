@@ -177,36 +177,25 @@ class RetursController extends Controller
     public function posting($idnya)
     {
         $retur = Retur::find($idnya);
-        // foreach ($retur->barangs as $index => $barang) {
-        //     $b = $barang->pivot->jumlah_barang;
-        //     //update stock
-        //     $this->itemService->getAllStocksQty($barang->id);
-        //     $gudangnya=$barang->warehouseStocks;
-        //     while ($b > 0) {
-        //         foreach ($gudangnya as $gud) {
-        //             try {
-        //                 // dd($gud);
-        //                 $qty = $this->itemService->getStocksByWhouse($barang->id, $gud->id)->kuantitas;
-        //                 if ($qty > 0) {
-        //                     if ($qty >= $b) {
-        //                         $this->itemService->updateStocks($barang->id, $gud->id, $b * -1);
-        //                         $b = 0;
-        //                     } else {
-        //                         $b = $b - $qty;
-        //                         $this->itemService->updateStocks($barang->id, $gud->id, $b * -1);
-        //                     }
-        //                     // dd("berhasil");
-        //                 } else {
-        //                     $b = $b;
-        //                     $this->itemService->updateStocks($barang->id, $gud->id, 0);
-        //                 }
-        //                 // dd("berhasil");
-        //             } catch (\Throwable $th) {
-        //                 dd('Gagal');
-        //             }
-        //         }
-        //     }
-        // }
+        foreach ($retur->barangs as $index => $barang) {
+            $b = $barang->pivot->jumlah_barang;
+            //update stock
+            $this->itemService->getAllStocksQty($barang->id);
+            $gudangnya = $barang->warehouseStocks;
+            // foreach ($gudangnya as $gud) {
+                $gud = $gudangnya[0];
+                try {
+                    $qty = $gud->pivot->kuantitas - $b;
+                    $this->itemService->updateStocks($barang->id, $gud->id, $qty);
+                    // $qty = $b * -1;
+                    // $this->itemService->updateStocks($barang->id, $gud->id, $qty);
+                    // $b = 0;
+                    // dd("berhasil");
+                } catch (\Throwable $th) {
+                    dd('Gagal');
+                }
+            // }
+        }
 
         $hutang = Hutang::where('faktur_id', $retur->faktur_id)->first();
         // dd($hutang);
@@ -252,14 +241,12 @@ class RetursController extends Controller
                     'kredit' => $retur->total_jenis_barang,
                     'akun_id' => 1, //barang
                 ]);
-            }
-            elseif ($i == 2) {
+            } elseif ($i == 2) {
                 $jurnal->update([
-                'debit' => $retur->uang_muka,
-                'akun_id' => 7, //biayalain
-            ]);
-            } 
-            elseif ($i == 3) {
+                    'debit' => $retur->uang_muka,
+                    'akun_id' => 7, //biayalain
+                ]);
+            } elseif ($i == 3) {
                 $jurnal->update([
                     'debit' => $retur->total_harga,
                     'akun_id' => 4, //hutang

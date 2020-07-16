@@ -65,8 +65,8 @@
                     '<input type="text" id="kategori_barang" name="kategori_barang" class="form-control" placeholder="' + datanya.kategori_barang + '">' +
                     '</div>' +
                     '<div class="form-group">' +
-                    '<label for="jenis_barang">Jenis Barang</label>' +
-                    '<input type="text" id="jenis_barang" jenis="jenis_barang" class="form-control" placeholder="' + datanya.jenis_barang + '">' +
+                    '<label for="nama_barang">Nama Barang</label>' +
+                    '<input type="text" id="nama_barang" name="nama_barang" class="form-control" placeholder="' + datanya.nama_barang + '">' +
                     '</div>' +
                     '<div class="form-group">' +
                     '<label for="harga_retail">Harga retail</label>' +
