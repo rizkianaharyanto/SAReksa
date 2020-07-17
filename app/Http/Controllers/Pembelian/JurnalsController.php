@@ -35,6 +35,7 @@ class JurnalsController extends Controller
     
     public function filter(Request $date)
     {
+        // dd($date->transaksi);
         if ($date->transaksi == null) {
             $jurnals = Jurnal::all()->groupBy('kode_jurnal');
             $debit = 0;

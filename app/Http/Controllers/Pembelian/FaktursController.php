@@ -48,21 +48,42 @@ class FaktursController extends Controller
 
     public function laporanfilter(Request $date)
     {
+        // dd($date);
         if ($date->pemasok_id == null) {
-            $pemasoks = Pemasok::all();
-            $fakturs = faktur::all();
-            $supplier = null;
-            $start = null;
-            $end = null;
+            if ($date->start == null) {
+                $pemasoks = Pemasok::all();
+                $fakturs = faktur::all();
+                $supplier = null;
+                $start = null;
+                $end = null;
+            } else {
+                $pemasoks = Pemasok::all();
+                $fakturs = faktur::select("pbl_fakturs.*")
+                    ->whereBetween('tanggal', [$date->start, $date->end])
+                    ->get();
+                $supplier = null;
+                $start = $date->start;
+                $end = $date->end;
+            }
         } else {
-            $pemasoks = Pemasok::all();
-            $supplier = Pemasok::find($date->pemasok_id);
-            $start = $date->start;
-            $end = $date->end;
-            $fakturs = faktur::select("pbl_fakturs.*")
-                ->where('pemasok_id', $date->pemasok_id)
-                ->whereBetween('tanggal', [$date->start, $date->end])
-                ->get();
+            if ($date->start == null) {
+                $pemasoks = Pemasok::all();
+                $supplier = Pemasok::find($date->pemasok_id);
+                $start = null;
+                $end = null;
+                $fakturs = faktur::select("pbl_fakturs.*")
+                    ->where('pemasok_id', $date->pemasok_id)
+                    ->get();
+            } else {
+                $pemasoks = Pemasok::all();
+                $supplier = Pemasok::find($date->pemasok_id);
+                $start = $date->start;
+                $end = $date->end;
+                $fakturs = faktur::select("pbl_fakturs.*")
+                    ->where('pemasok_id', $date->pemasok_id)
+                    ->whereBetween('tanggal', [$date->start, $date->end])
+                    ->get();
+            }
         }
 
         return view('pembelian.pembelian.faktur.laporan-faktur', [
@@ -77,20 +98,40 @@ class FaktursController extends Controller
     public function cetaklaporan(Request $date)
     {
         if ($date->pemasok_id == null) {
-            $pemasoks = Pemasok::all();
-            $fakturs = faktur::all();
-            $supplier = null;
-            $start = null;
-            $end = null;
+            if ($date->start == null) {
+                $pemasoks = Pemasok::all();
+                $fakturs = faktur::all();
+                $supplier = null;
+                $start = null;
+                $end = null;
+            } else {
+                $pemasoks = Pemasok::all();
+                $fakturs = faktur::select("pbl_fakturs.*")
+                    ->whereBetween('tanggal', [$date->start, $date->end])
+                    ->get();
+                $supplier = null;
+                $start = $date->start;
+                $end = $date->end;
+            }
         } else {
-            $pemasoks = Pemasok::all();
-            $supplier = Pemasok::find($date->pemasok_id);
-            $start = $date->start;
-            $end = $date->end;
-            $fakturs = faktur::select("pbl_fakturs.*")
-                ->where('pemasok_id', $date->pemasok_id)
-                ->whereBetween('tanggal', [$date->start, $date->end])
-                ->get();
+            if ($date->start == null) {
+                $pemasoks = Pemasok::all();
+                $supplier = Pemasok::find($date->pemasok_id);
+                $start = null;
+                $end = null;
+                $fakturs = faktur::select("pbl_fakturs.*")
+                    ->where('pemasok_id', $date->pemasok_id)
+                    ->get();
+            } else {
+                $pemasoks = Pemasok::all();
+                $supplier = Pemasok::find($date->pemasok_id);
+                $start = $date->start;
+                $end = $date->end;
+                $fakturs = faktur::select("pbl_fakturs.*")
+                    ->where('pemasok_id', $date->pemasok_id)
+                    ->whereBetween('tanggal', [$date->start, $date->end])
+                    ->get();
+            }
         }
 
         $pdf = PDF::loadview('pembelian.pembelian.faktur.cetak-laporan-faktur', [
@@ -159,6 +200,7 @@ class FaktursController extends Controller
                 'pemasok_id' => $faktur->pemasok_id,
                 'total_hutang' => $request->hutang,
                 'sisa' => $request->hutang,
+                'tanggal' => $request->tanggal,
                 'faktur_id' => $faktur->id,
                 'status' => 'hutang',
             ]);
@@ -395,10 +437,10 @@ class FaktursController extends Controller
     public function update(Request $request, Faktur $faktur)
     {
         // dd($request);
-            Pemesanan::find($faktur->pemesanan_id)->update(['status' => 'diterima']);
-            $pemesanan = Pemesanan::find($faktur->pemesanan_id)->id;
-            Penerimaan::where('pemesanan_id', $pemesanan)->update(['status' => 'sudah posting']);
-            // dd($pemesanan, $coba);
+        Pemesanan::find($faktur->pemesanan_id)->update(['status' => 'diterima']);
+        $pemesanan = Pemesanan::find($faktur->pemesanan_id)->id;
+        Penerimaan::where('pemesanan_id', $pemesanan)->update(['status' => 'sudah posting']);
+        // dd($pemesanan, $coba);
 
         Faktur::where('id', $faktur->id)->update([
             'pemesanan_id' => $request->pemesanan_id,
@@ -420,15 +462,17 @@ class FaktursController extends Controller
                 'pemasok_id' => $faktur->pemasok_id,
                 'total_hutang' => $request->hutang,
                 'sisa' => $request->hutang,
+                'tanggal' => $request->tanggal,
                 'faktur_id' => $faktur->id,
                 'status' => 'hutang',
             ]);
-        }else if ($request->status == 'lunas') {
+        } else if ($request->status == 'lunas') {
             Hutang::where('faktur_id', $faktur->id)->update([
                 'pemasok_id' => $faktur->pemasok_id,
                 'total_hutang' => $request->hutang,
                 'lunas' => $request->hutang,
                 'sisa' => 0,
+                'tanggal' => $request->tanggal,
                 'faktur_id' => $faktur->id,
                 'status' => 'lunas',
             ]);
@@ -464,13 +508,13 @@ class FaktursController extends Controller
      */
     public function destroy(Faktur $faktur)
     {
-        if($faktur->pemesanan_id){
+        if ($faktur->pemesanan_id) {
             Pemesanan::find($faktur->pemesanan_id)->update(['status' => 'diterima']);
             $pemesanan = Pemesanan::find($faktur->pemesanan_id)->id;
             Penerimaan::where('pemesanan_id', $pemesanan)->update(['status' => 'sudah posting']);
-        }else{
-            $penerimaans= Penerimaan::where('faktur_id',  $faktur->id)->get();
-            foreach($penerimaans as $penerimaan){
+        } else {
+            $penerimaans = Penerimaan::where('faktur_id',  $faktur->id)->get();
+            foreach ($penerimaans as $penerimaan) {
                 Penerimaan::find($penerimaan->id)->update(['status' => 'sudah posting']);
             }
         }

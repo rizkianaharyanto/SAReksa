@@ -42,13 +42,13 @@
                         </div>
                         <div class="card-body">
                             @if($supplier == null)
-                            @foreach ($fakturs as $faktur)
                             <div style="margin-bottom :10vh;">
-                                <h5 class="mb-3">{{ $faktur->kode_faktur }} - {{ $faktur->pemasok->nama_pemasok }}</h5>
                                 <div class="table-responsive-sm">
                                     <table class="table table-sm table-striped">
                                         <thead>
                                             <tr>
+                                                <th>Kode Faktur</th>
+                                                <th>pemasok</th>
                                                 <th>Tanggal</th>
                                                 <th>Diskon</th>
                                                 <th>Biaya Lain</th>
@@ -58,7 +58,10 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            @foreach ($fakturs as $faktur)
                                             <tr>
+                                                <td>{{ $faktur->kode_faktur }}</td>
+                                                <td>{{ $faktur->pemasok->nama_pemasok }}</td>
                                                 <td>{{ $faktur->tanggal }}</td>
                                                 <td>{{ $faktur->diskon_rp }}</td>
                                                 <td>{{ $faktur->biaya_lain }}</td>
@@ -66,35 +69,11 @@
                                                 <td>{{ $faktur->total_harga }}</td>
                                                 <td>{{ $faktur->status !=null ? $faktur->status  : '-' }}</td>
                                             </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="table-responsive-sm mb-5">
-                                    <table class="table table-sm table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>Nama Barang</th>
-                                                <th>QTY</th>
-                                                <th>Unit</th>
-                                                <th>Harga</th>
-                                                <th>Total</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($faktur->barangs as $index => $barang)
-                                            <tr>
-                                                <td>{{$barang->nama_barang ? $barang->nama_barang : '-' }}</td>
-                                                <td>{{$barang->pivot->jumlah_barang ? $barang->pivot->jumlah_barang : '-' }}</td>
-                                                <td>{{ $barang->pivot->unit ? $barang->pivot->unit : '-' }}</td>
-                                                <td>{{ $barang->pivot->harga ? $barang->pivot->harga : '-' }}</td>
-                                                <td>{{$barang->pivot->jumlah_barang * $barang->pivot->harga }}</td>
-                                            </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
-                            @endforeach
                             @else
                             <div class="row mb-4">
                                 <div class="col-sm-6 ">
@@ -106,14 +85,11 @@
                             </div>
 
                             <input type="hidden" name="pemasok_id" value="{{$supplier->id}}">
-                            @foreach ($fakturs as $faktur)
-                            <div class="d-flex justify-content-between">
-                                <h5 class="mb-3">Kode faktur : {{ $faktur->kode_faktur }}</h5>
-                            </div>
                             <div class="table-responsive-sm">
                                 <table class="table table-sm table-striped">
                                     <thead>
                                         <tr>
+                                            <th>Kode Faktur</th>
                                             <th>Tanggal</th>
                                             <th>Diskon</th>
                                             <th>Biaya Lain</th>
@@ -123,7 +99,9 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @foreach ($fakturs as $faktur)
                                         <tr>
+                                            <td>{{ $faktur->kode_faktur }}</td>
                                             <td>{{ $faktur->tanggal }}</td>
                                             <td>{{ $faktur->diskon_rp }}</td>
                                             <td>{{ $faktur->biaya_lain }}</td>
@@ -131,34 +109,10 @@
                                             <td>{{ $faktur->total_harga }}</td>
                                             <td>{{ $faktur->status !=null ? $faktur->status  : '-' }}</td>
                                         </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="table-responsive-sm mb-5">
-                                <table class="table table-sm table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Nama Barang</th>
-                                            <th>QTY</th>
-                                            <th>Unit</th>
-                                            <th>Harga</th>
-                                            <th>Total</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($faktur->barangs as $index => $barang)
-                                        <tr>
-                                            <td>{{$barang->nama_barang ? $barang->nama_barang : '-' }}</td>
-                                            <td>{{$barang->pivot->jumlah_barang ? $barang->pivot->jumlah_barang : '-' }}</td>
-                                            <td>{{ $barang->pivot->unit ? $barang->pivot->unit : '-' }}</td>
-                                            <td>{{ $barang->pivot->harga ? $barang->pivot->harga : '-' }}</td>
-                                            <td>{{$barang->pivot->jumlah_barang * $barang->pivot->harga }}</td>
-                                        </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
                             </div>
-                            @endforeach
                             @endif
                         </div>
                     </div>

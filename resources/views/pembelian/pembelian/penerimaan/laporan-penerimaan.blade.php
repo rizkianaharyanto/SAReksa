@@ -12,7 +12,7 @@
 
 @section('isi')
 <div class=" mx-5 dt-buttons">
-    <form class="d-flex" action="/pembelian/penerimaans/laporanfilter" method="get">
+    <form class="d-flex" action="/pembelian/penerimaan/laporanfilter" method="get">
         @csrf
         <select class="form-control m-2" name="pemasok_id" id="">
             <option value="">--- Pilih Pemasok ---</option>
@@ -26,7 +26,7 @@
     </form>
 </div>
 
-<form action="/pembelian/penerimaans/laporanpdf">
+<form action="/pembelian/penerimaan/laporanpdf">
     @csrf
     <input type="hidden" name="start" value="{{$start}}">
     <input type="hidden" name="end" value="{{$end}}">
@@ -49,13 +49,13 @@
                 </div>
                 <div class="card-body">
                     @if($supplier == null)
-                    @foreach ($penerimaans as $penerimaan)
                     <div style="margin-bottom :10vh;">
-                        <h5 class="mb-3" style="opacity: 80%">{{ $penerimaan->kode_penerimaan }} - {{ $penerimaan->pemasok->nama_pemasok }}</h5>
                         <div class="table-responsive-sm">
                             <table class="table table-sm table-striped">
                                 <thead>
                                     <tr>
+                                        <th>Kode Penerimaan</th>
+                                        <th>pemasok</th>
                                         <th>Tanggal</th>
                                         <th>Diskon</th>
                                         <th>Biaya Lain</th>
@@ -64,42 +64,21 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @foreach ($penerimaans as $penerimaan)
                                     <tr>
+                                        <td>{{ $penerimaan->kode_penerimaan }}</td>
+                                        <td>{{ $penerimaan->pemasok->nama_pemasok }}</td>
                                         <td>{{ $penerimaan->tanggal }}</td>
                                         <td>{{ $penerimaan->diskon_rp }}</td>
                                         <td>{{ $penerimaan->biaya_lain }}</td>
                                         <td>{{ $penerimaan->total_harga }}</td>
                                         <td>{{ $penerimaan->status !=null ? $penerimaan->status  : '-' }}</td>
                                     </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="table-responsive-sm mb-5">
-                            <table class="table table-sm table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Nama Barang</th>
-                                        <th>QTY</th>
-                                        <th>Unit</th>
-                                        <th>Harga</th>
-                                        <th>Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($penerimaan->barangs as $index => $barang)
-                                    <tr>
-                                        <td>{{$barang->nama_barang ? $barang->nama_barang : '-' }}</td>
-                                        <td>{{$barang->pivot->jumlah_barang ? $barang->pivot->jumlah_barang : '-' }}</td>
-                                        <td>{{ $barang->pivot->unit ? $barang->pivot->unit : '-' }}</td>
-                                        <td>{{ $barang->pivot->harga ? $barang->pivot->harga : '-' }}</td>
-                                        <td>{{$barang->pivot->jumlah_barang * $barang->pivot->harga }}</td>
-                                    </tr>
                                     @endforeach
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    @endforeach
                     @else
                     <div class="row mb-4">
                         <div class="col-sm-6 ">
@@ -111,14 +90,12 @@
                     </div>
 
                     <input type="hidden" name="pemasok_id" value="{{$supplier->id}}">
-                    @foreach ($penerimaans as $penerimaan)
-                    <div class="d-flex justify-content-between">
-                        <h5 class="mb-3" style="opacity: 80%">Kode penerimaan : {{ $penerimaan->kode_penerimaan }}</h5>
-                    </div>
+
                     <div class="table-responsive-sm">
                         <table class="table table-sm table-striped">
                             <thead>
                                 <tr>
+                                    <th>Kode Penerimaan</th>
                                     <th>Tanggal</th>
                                     <th>Diskon</th>
                                     <th>Biaya Lain</th>
@@ -127,41 +104,19 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach ($penerimaans as $penerimaan)
                                 <tr>
+                                    <td>{{ $penerimaan->kode_penerimaan }}</td>
                                     <td>{{ $penerimaan->tanggal }}</td>
                                     <td>{{ $penerimaan->diskon_rp }}</td>
                                     <td>{{ $penerimaan->biaya_lain }}</td>
                                     <td>{{ $penerimaan->total_harga }}</td>
                                     <td>{{ $penerimaan->status !=null ? $penerimaan->status  : '-' }}</td>
                                 </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="table-responsive-sm mb-5">
-                        <table class="table table-sm table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Nama Barang</th>
-                                    <th>QTY</th>
-                                    <th>Unit</th>
-                                    <th>Harga</th>
-                                    <th>Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($penerimaan->barangs as $index => $barang)
-                                <tr>
-                                    <td>{{$barang->nama_barang ? $barang->nama_barang : '-' }}</td>
-                                    <td>{{$barang->pivot->jumlah_barang ? $barang->pivot->jumlah_barang : '-' }}</td>
-                                    <td>{{ $barang->pivot->unit ? $barang->pivot->unit : '-' }}</td>
-                                    <td>{{ $barang->pivot->harga ? $barang->pivot->harga : '-' }}</td>
-                                    <td>{{$barang->pivot->jumlah_barang * $barang->pivot->harga }}</td>
-                                </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
-                    @endforeach
                     @endif
                 </div>
             </div>

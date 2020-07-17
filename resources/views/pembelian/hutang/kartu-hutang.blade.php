@@ -5,8 +5,7 @@
 @section('halaman', 'Kartu Hutang')
 
 @section('path')
-<li><a href="#">Transaksi</a></li>
-<li><a href="/pembelian/hutangs">Hutang</a></li>
+<li><a href="/pembelian/hutangs">Hutang Pemasok</a></li>
 <li><a href="/pembelian/hutangs/{{$hutang->pemasok->id}}">Hutang Details</a></li>
 <li class="active">Kartu Hutang</li>
 @endsection

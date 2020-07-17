@@ -101,20 +101,40 @@ class PenerimaansController extends Controller
     public function laporanfilter(Request $date)
     {
         if ($date->pemasok_id == null) {
-            $pemasoks = Pemasok::all();
-            $penerimaans = penerimaan::all();
-            $supplier = null;
-            $start = null;
-            $end = null;
+            if ($date->start == null) {
+                $pemasoks = Pemasok::all();
+                $penerimaans = penerimaan::all();
+                $supplier = null;
+                $start = null;
+                $end = null;
+            } else {
+                $pemasoks = Pemasok::all();
+                $penerimaans = penerimaan::select("pbl_penerimaans.*")
+                    ->whereBetween('tanggal', [$date->start, $date->end])
+                    ->get();
+                $supplier = null;
+                $start = $date->start;
+                $end = $date->end;
+            }
         } else {
-            $pemasoks = Pemasok::all();
-            $supplier = Pemasok::find($date->pemasok_id);
-            $start = $date->start;
-            $end = $date->end;
-            $penerimaans = penerimaan::select("pbl_penerimaans.*")
-                ->where('pemasok_id', $date->pemasok_id)
-                ->whereBetween('tanggal', [$date->start, $date->end])
-                ->get();
+            if ($date->start == null) {
+                $pemasoks = Pemasok::all();
+                $supplier = Pemasok::find($date->pemasok_id);
+                $start = null;
+                $end = null;
+                $penerimaans = penerimaan::select("pbl_penerimaans.*")
+                    ->where('pemasok_id', $date->pemasok_id)
+                    ->get();
+            } else {
+                $pemasoks = Pemasok::all();
+                $supplier = Pemasok::find($date->pemasok_id);
+                $start = $date->start;
+                $end = $date->end;
+                $penerimaans = penerimaan::select("pbl_penerimaans.*")
+                    ->where('pemasok_id', $date->pemasok_id)
+                    ->whereBetween('tanggal', [$date->start, $date->end])
+                    ->get();
+            }
         }
 
         return view('pembelian.pembelian.penerimaan.laporan-penerimaan', [
@@ -129,20 +149,40 @@ class PenerimaansController extends Controller
     public function cetaklaporan(Request $date)
     {
         if ($date->pemasok_id == null) {
-            $pemasoks = Pemasok::all();
-            $penerimaans = penerimaan::all();
-            $supplier = null;
-            $start = null;
-            $end = null;
+            if ($date->start == null) {
+                $pemasoks = Pemasok::all();
+                $penerimaans = penerimaan::all();
+                $supplier = null;
+                $start = null;
+                $end = null;
+            } else {
+                $pemasoks = Pemasok::all();
+                $penerimaans = penerimaan::select("pbl_penerimaans.*")
+                    ->whereBetween('tanggal', [$date->start, $date->end])
+                    ->get();
+                $supplier = null;
+                $start = $date->start;
+                $end = $date->end;
+            }
         } else {
-            $pemasoks = Pemasok::all();
-            $supplier = Pemasok::find($date->pemasok_id);
-            $start = $date->start;
-            $end = $date->end;
-            $penerimaans = penerimaan::select("pbl_penerimaans.*")
-                ->where('pemasok_id', $date->pemasok_id)
-                ->whereBetween('tanggal', [$date->start, $date->end])
-                ->get();
+            if ($date->start == null) {
+                $pemasoks = Pemasok::all();
+                $supplier = Pemasok::find($date->pemasok_id);
+                $start = null;
+                $end = null;
+                $penerimaans = penerimaan::select("pbl_penerimaans.*")
+                    ->where('pemasok_id', $date->pemasok_id)
+                    ->get();
+            } else {
+                $pemasoks = Pemasok::all();
+                $supplier = Pemasok::find($date->pemasok_id);
+                $start = $date->start;
+                $end = $date->end;
+                $penerimaans = penerimaan::select("pbl_penerimaans.*")
+                    ->where('pemasok_id', $date->pemasok_id)
+                    ->whereBetween('tanggal', [$date->start, $date->end])
+                    ->get();
+            }
         }
 
         $pdf = PDF::loadview('pembelian.pembelian.penerimaan.cetak-laporan-penerimaan', [
@@ -247,10 +287,10 @@ class PenerimaansController extends Controller
             // dd($gud);
             $qty = $this->itemService->getStocksQtyByWhouse($penerimaan->gudang, $barang->id);
             try {
-                if ($qty){
+                if ($qty) {
                     // dd($qty);
                     $qty += $b;
-                }else{
+                } else {
                     $qty = $b;
                 }
                 $this->itemService->updateStocks($barang->id, $penerimaan->gudang, $qty);
@@ -277,7 +317,7 @@ class PenerimaansController extends Controller
             }
         }
 
-        return view('pembelian.pembelian.penerimaan.konfirmasi', ['id'=>$idnya]);
+        return view('pembelian.pembelian.penerimaan.konfirmasi', ['id' => $idnya]);
     }
 
     public function ubahpsn($idnya)
@@ -389,7 +429,7 @@ class PenerimaansController extends Controller
      */
     public function edit(Penerimaan $penerimaan)
     {
-        $pemasok= Pemasok::find($penerimaan->pemasok_id);
+        $pemasok = Pemasok::find($penerimaan->pemasok_id);
         $pnmpemesanans = $pemasok->pemesanans()->whereNotIn('status', ['diterima', 'selesai'])->get();
         return view('pembelian.pembelian.penerimaan.penerimaanedit', [
             'penerimaan' => $penerimaan,

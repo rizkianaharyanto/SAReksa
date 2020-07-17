@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Support\Facades\Auth;
 
 use Closure;
 
@@ -17,6 +16,7 @@ class CheckRolePembelian
      */
     public function handle($request, Closure $next,...$roles)
     {
+        // dd($request->user()->role->role_name,$roles);
         if(in_array($request->user()->role->role_name,$roles)){
             return $next($request);
         }

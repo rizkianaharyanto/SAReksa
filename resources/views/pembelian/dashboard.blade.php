@@ -151,7 +151,7 @@
         <div class="card-body">
             <p class="text-light">Hutang</p>
             <div class="stat-widget-one mb-2 d-flex justify-content-center">
-                <div class="stat-icon dib"><a href="/pembelian/hutangs"><i class="fa fa-file-invoice-dollar text-light border-light"></i></a></div>
+                <div class="stat-icon dib"><a href="/pembelian/hutang-bagi"><i class="fa fa-file-invoice-dollar text-light border-light"></i></a></div>
             </div>
         </div>
     </div>

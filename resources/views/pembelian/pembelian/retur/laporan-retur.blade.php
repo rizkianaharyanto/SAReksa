@@ -13,7 +13,7 @@
 @section('isi')
 
 <div class=" mx-5">
-    <form class="d-flex" action="/pembelian/returs/laporanfilter" method="get">
+    <form class="d-flex" action="/pembelian/retur/laporanfilter" method="get">
         @csrf
         <select class="form-control m-2" name="pemasok_id" id="">
             <option value="">--- Pilih Pemasok ---</option>
@@ -27,7 +27,7 @@
     </form>
 </div>
 
-<form action="/pembelian/returs/laporanpdf">
+<form action="/pembelian/retur/laporanpdf">
     @csrf
     <input type="hidden" name="start" value="{{$start}}">
     <input type="hidden" name="end" value="{{$end}}">
@@ -50,55 +50,34 @@
                 </div>
                 <div class="card-body">
                     @if($supplier == null)
-                    @foreach ($returs as $retur)
                     <div style="margin-bottom :10vh;">
-                        <h5 class="mb-3" style="opacity: 80%">{{ $retur->kode_retur }} - {{ $retur->pemasok->nama_pemasok }}</h5>
                         <div class="table-responsive-sm">
                             <table class="table table-sm table-striped">
                                 <thead>
                                     <tr>
+                                        <th>Kode Retur</th>
+                                        <th>pemasok</th>
                                         <th>Tanggal</th>
                                         <th>Diskon</th>
                                         <th>Total</th>
-                                        <th>Status</th>
+                                        <!-- <th>Status</th> -->
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @foreach ($returs as $retur)
                                     <tr>
+                                        <td>{{ $retur->kode_retur }}</td>
+                                        <td>{{ $retur->pemasok->nama_pemasok }}</td>
                                         <td>{{ $retur->tanggal }}</td>
                                         <td>{{ $retur->diskon_rp }}</td>
                                         <td>{{ $retur->total_harga }}</td>
-                                        <td>{{ $retur->status !=null ? $retur->status  : '-' }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="table-responsive-sm mb-5">
-                            <table class="table table-sm table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Nama Barang</th>
-                                        <th>QTY</th>
-                                        <th>Unit</th>
-                                        <th>Harga</th>
-                                        <th>Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($retur->barangs as $index => $barang)
-                                    <tr>
-                                        <td>{{$barang->nama_barang ? $barang->nama_barang : '-' }}</td>
-                                        <td>{{$barang->pivot->jumlah_barang ? $barang->pivot->jumlah_barang : '-' }}</td>
-                                        <td>{{ $barang->pivot->unit ? $barang->pivot->unit : '-' }}</td>
-                                        <td>{{ $barang->pivot->harga ? $barang->pivot->harga : '-' }}</td>
-                                        <td>{{$barang->pivot->jumlah_barang * $barang->pivot->harga }}</td>
+                                        <!-- <td>{{ $retur->status !=null ? $retur->status  : '-' }}</td> -->
                                     </tr>
                                     @endforeach
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    @endforeach
                     @else
                     <div class="row mb-4">
                         <div class="col-sm-6 ">
@@ -110,55 +89,31 @@
                     </div>
 
                     <input type="hidden" name="pemasok_id" value="{{$supplier->id}}">
-                    @foreach ($returs as $retur)
-                    <div class="d-flex justify-content-between">
-                        <h5 class="mb-3" style="opacity: 80%">Kode retur : {{ $retur->kode_retur }}</h5>
-                    </div>
+
                     <div class="table-responsive-sm">
                         <table class="table table-sm table-striped">
                             <thead>
                                 <tr>
+                                    <th>Kode Retur</th>
                                     <th>Tanggal</th>
                                     <th>Diskon</th>
                                     <th>Total</th>
-                                    <th>Status</th>
+                                    <!-- <th>Status</th> -->
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach ($returs as $retur)
                                 <tr>
+                                    <td>{{ $retur->kode_retur }}</td>
                                     <td>{{ $retur->tanggal }}</td>
                                     <td>{{ $retur->diskon_rp }}</td>
                                     <td>{{ $retur->total_harga }}</td>
-                                    <td>{{ $retur->status !=null ? $retur->status  : '-' }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="table-responsive-sm mb-5">
-                        <table class="table table-sm table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Nama Barang</th>
-                                    <th>QTY</th>
-                                    <th>Unit</th>
-                                    <th>Harga</th>
-                                    <th>Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($retur->barangs as $index => $barang)
-                                <tr>
-                                    <td>{{$barang->nama_barang ? $barang->nama_barang : '-' }}</td>
-                                    <td>{{$barang->pivot->jumlah_barang ? $barang->pivot->jumlah_barang : '-' }}</td>
-                                    <td>{{ $barang->pivot->unit ? $barang->pivot->unit : '-' }}</td>
-                                    <td>{{ $barang->pivot->harga ? $barang->pivot->harga : '-' }}</td>
-                                    <td>{{$barang->pivot->jumlah_barang * $barang->pivot->harga }}</td>
+                                    <!-- <td>{{ $retur->status !=null ? $retur->status  : '-' }}</td> -->
                                 </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
-                    @endforeach
                     @endif
                 </div>
             </div>

@@ -44,20 +44,40 @@ class PermintaansController extends Controller
     public function laporanfilter(Request $date)
     {
         if ($date->pemasok_id == null) {
-            $pemasoks = Pemasok::all();
-            $permintaans = permintaan::all();
-            $supplier = null;
-            $start = null;
-            $end = null;
+            if ($date->start == null) {
+                $pemasoks = Pemasok::all();
+                $permintaans = permintaan::all();
+                $supplier = null;
+                $start = null;
+                $end = null;
+            } else {
+                $pemasoks = Pemasok::all();
+                $permintaans = permintaan::select("pbl_permintaans.*")
+                    ->whereBetween('tanggal', [$date->start, $date->end])
+                    ->get();
+                $supplier = null;
+                $start = $date->start;
+                $end = $date->end;
+            }
         } else {
-            $pemasoks = Pemasok::all();
-            $supplier = Pemasok::find($date->pemasok_id);
-            $start = $date->start;
-            $end = $date->end;
-            $permintaans = permintaan::select("pbl_permintaans.*")
-                ->where('pemasok_id', $date->pemasok_id)
-                ->whereBetween('tanggal', [$date->start, $date->end])
-                ->get();
+            if ($date->start == null) {
+                $pemasoks = Pemasok::all();
+                $supplier = Pemasok::find($date->pemasok_id);
+                $start = null;
+                $end = null;
+                $permintaans = permintaan::select("pbl_permintaans.*")
+                    ->where('pemasok_id', $date->pemasok_id)
+                    ->get();
+            } else {
+                $pemasoks = Pemasok::all();
+                $supplier = Pemasok::find($date->pemasok_id);
+                $start = $date->start;
+                $end = $date->end;
+                $permintaans = permintaan::select("pbl_permintaans.*")
+                    ->where('pemasok_id', $date->pemasok_id)
+                    ->whereBetween('tanggal', [$date->start, $date->end])
+                    ->get();
+            }
         }
 
         return view('pembelian.pembelian.permintaan.laporan-permintaan', [
@@ -72,20 +92,40 @@ class PermintaansController extends Controller
     public function cetaklaporan(Request $date)
     {
         if ($date->pemasok_id == null) {
-            $pemasoks = Pemasok::all();
-            $permintaans = permintaan::all();
-            $supplier = null;
-            $start = null;
-            $end = null;
+            if ($date->start == null) {
+                $pemasoks = Pemasok::all();
+                $permintaans = permintaan::all();
+                $supplier = null;
+                $start = null;
+                $end = null;
+            } else {
+                $pemasoks = Pemasok::all();
+                $permintaans = permintaan::select("pbl_permintaans.*")
+                    ->whereBetween('tanggal', [$date->start, $date->end])
+                    ->get();
+                $supplier = null;
+                $start = $date->start;
+                $end = $date->end;
+            }
         } else {
-            $pemasoks = Pemasok::all();
-            $supplier = Pemasok::find($date->pemasok_id);
-            $start = $date->start;
-            $end = $date->end;
-            $permintaans = permintaan::select("pbl_permintaans.*")
-                ->where('pemasok_id', $date->pemasok_id)
-                ->whereBetween('tanggal', [$date->start, $date->end])
-                ->get();
+            if ($date->start == null) {
+                $pemasoks = Pemasok::all();
+                $supplier = Pemasok::find($date->pemasok_id);
+                $start = null;
+                $end = null;
+                $permintaans = permintaan::select("pbl_permintaans.*")
+                    ->where('pemasok_id', $date->pemasok_id)
+                    ->get();
+            } else {
+                $pemasoks = Pemasok::all();
+                $supplier = Pemasok::find($date->pemasok_id);
+                $start = $date->start;
+                $end = $date->end;
+                $permintaans = permintaan::select("pbl_permintaans.*")
+                    ->where('pemasok_id', $date->pemasok_id)
+                    ->whereBetween('tanggal', [$date->start, $date->end])
+                    ->get();
+            }
         }
 
         $pdf = PDF::loadview('pembelian.pembelian.permintaan.cetak-laporan-permintaan', [

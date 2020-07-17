@@ -64,20 +64,40 @@ class RetursController extends Controller
     public function laporanfilter(Request $date)
     {
         if ($date->pemasok_id == null) {
-            $pemasoks = Pemasok::all();
-            $returs = retur::all();
-            $supplier = null;
-            $start = null;
-            $end = null;
+            if ($date->start == null) {
+                $pemasoks = Pemasok::all();
+                $returs = retur::all();
+                $supplier = null;
+                $start = null;
+                $end = null;
+            } else {
+                $pemasoks = Pemasok::all();
+                $returs = retur::select("pbl_returs.*")
+                    ->whereBetween('tanggal', [$date->start, $date->end])
+                    ->get();
+                $supplier = null;
+                $start = $date->start;
+                $end = $date->end;
+            }
         } else {
-            $pemasoks = Pemasok::all();
-            $supplier = Pemasok::find($date->pemasok_id);
-            $start = $date->start;
-            $end = $date->end;
-            $returs = retur::select("pbl_returs.*")
-                ->where('pemasok_id', $date->pemasok_id)
-                ->whereBetween('tanggal', [$date->start, $date->end])
-                ->get();
+            if($date->start == null){
+                $pemasoks = Pemasok::all();
+                $supplier = Pemasok::find($date->pemasok_id);
+                $start = null;
+                $end = null;
+                $returs = retur::select("pbl_returs.*")
+                    ->where('pemasok_id', $date->pemasok_id)
+                    ->get();
+            }else{
+                $pemasoks = Pemasok::all();
+                $supplier = Pemasok::find($date->pemasok_id);
+                $start = $date->start;
+                $end = $date->end;
+                $returs = retur::select("pbl_returs.*")
+                    ->where('pemasok_id', $date->pemasok_id)
+                    ->whereBetween('tanggal', [$date->start, $date->end])
+                    ->get();
+            }
         }
 
         return view('pembelian.pembelian.retur.laporan-retur', [
@@ -92,20 +112,40 @@ class RetursController extends Controller
     public function cetaklaporan(Request $date)
     {
         if ($date->pemasok_id == null) {
-            $pemasoks = Pemasok::all();
-            $returs = retur::all();
-            $supplier = null;
-            $start = null;
-            $end = null;
+            if ($date->start == null) {
+                $pemasoks = Pemasok::all();
+                $returs = retur::all();
+                $supplier = null;
+                $start = null;
+                $end = null;
+            } else {
+                $pemasoks = Pemasok::all();
+                $returs = retur::select("pbl_returs.*")
+                    ->whereBetween('tanggal', [$date->start, $date->end])
+                    ->get();
+                $supplier = null;
+                $start = $date->start;
+                $end = $date->end;
+            }
         } else {
-            $pemasoks = Pemasok::all();
-            $supplier = Pemasok::find($date->pemasok_id);
-            $start = $date->start;
-            $end = $date->end;
-            $returs = retur::select("pbl_returs.*")
-                ->where('pemasok_id', $date->pemasok_id)
-                ->whereBetween('tanggal', [$date->start, $date->end])
-                ->get();
+            if($date->start == null){
+                $pemasoks = Pemasok::all();
+                $supplier = Pemasok::find($date->pemasok_id);
+                $start = null;
+                $end = null;
+                $returs = retur::select("pbl_returs.*")
+                    ->where('pemasok_id', $date->pemasok_id)
+                    ->get();
+            }else{
+                $pemasoks = Pemasok::all();
+                $supplier = Pemasok::find($date->pemasok_id);
+                $start = $date->start;
+                $end = $date->end;
+                $returs = retur::select("pbl_returs.*")
+                    ->where('pemasok_id', $date->pemasok_id)
+                    ->whereBetween('tanggal', [$date->start, $date->end])
+                    ->get();
+            }
         }
 
         $pdf = PDF::loadview('pembelian.pembelian.retur.cetak-laporan-retur', [
@@ -183,17 +223,17 @@ class RetursController extends Controller
             $this->itemService->getAllStocksQty($barang->id);
             $gudangnya = $barang->warehouseStocks;
             // foreach ($gudangnya as $gud) {
-                $gud = $gudangnya[0];
-                try {
-                    $qty = $gud->pivot->kuantitas - $b;
-                    $this->itemService->updateStocks($barang->id, $gud->id, $qty);
-                    // $qty = $b * -1;
-                    // $this->itemService->updateStocks($barang->id, $gud->id, $qty);
-                    // $b = 0;
-                    // dd("berhasil");
-                } catch (\Throwable $th) {
-                    dd('Gagal');
-                }
+            $gud = $gudangnya[0];
+            try {
+                $qty = $gud->pivot->kuantitas - $b;
+                $this->itemService->updateStocks($barang->id, $gud->id, $qty);
+                // $qty = $b * -1;
+                // $this->itemService->updateStocks($barang->id, $gud->id, $qty);
+                // $b = 0;
+                // dd("berhasil");
+            } catch (\Throwable $th) {
+                dd('Gagal');
+            }
             // }
         }
 

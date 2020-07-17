@@ -45,20 +45,40 @@ class PembayaransController extends Controller
     public function laporanfilter(Request $date)
     {
         if ($date->pemasok_id == null) {
-            $pemasoks = Pemasok::all();
-            $pembayarans = Pembayaran::all();
-            $supplier = null;
-            $start = null;
-            $end = null;
+            if ($date->start == null) {
+                $pemasoks = Pemasok::all();
+                $pembayarans = Pembayaran::all();
+                $supplier = null;
+                $start = null;
+                $end = null;
+            } else {
+                $pemasoks = Pemasok::all();
+                $pembayarans = Pembayaran::select("pbl_pembayarans.*")
+                    ->whereBetween('tanggal', [$date->start, $date->end])
+                    ->get();
+                $supplier = null;
+                $start = $date->start;
+                $end = $date->end;
+            }
         } else {
-            $pemasoks = Pemasok::all();
-            $supplier = Pemasok::find($date->pemasok_id);
-            $start = $date->start;
-            $end = $date->end;
-            $pembayarans = Pembayaran::select("pbl_pembayarans.*")
-                ->where('pemasok_id', $date->pemasok_id)
-                ->whereBetween('tanggal', [$date->start, $date->end])
-                ->get();
+            if ($date->start == null) {
+                $pemasoks = Pemasok::all();
+                $supplier = Pemasok::find($date->pemasok_id);
+                $start = null;
+                $end = null;
+                $pembayarans = Pembayaran::select("pbl_pembayarans.*")
+                    ->where('pemasok_id', $date->pemasok_id)
+                    ->get();
+            }else{
+                $pemasoks = Pemasok::all();
+                $supplier = Pemasok::find($date->pemasok_id);
+                $start = $date->start;
+                $end = $date->end;
+                $pembayarans = Pembayaran::select("pbl_pembayarans.*")
+                    ->where('pemasok_id', $date->pemasok_id)
+                    ->whereBetween('tanggal', [$date->start, $date->end])
+                    ->get();
+            }
         }
         return view('pembelian.hutang.laporan-pembayaran', [
             'pembayarans' => $pembayarans,
@@ -71,21 +91,42 @@ class PembayaransController extends Controller
 
     public function cetaklaporan(Request $date)
     {
+        
         if ($date->pemasok_id == null) {
-            $pemasoks = Pemasok::all();
-            $pembayarans = Pembayaran::all();
-            $supplier = null;
-            $start = null;
-            $end = null;
+            if ($date->start == null) {
+                $pemasoks = Pemasok::all();
+                $pembayarans = Pembayaran::all();
+                $supplier = null;
+                $start = null;
+                $end = null;
+            } else {
+                $pemasoks = Pemasok::all();
+                $pembayarans = Pembayaran::select("pbl_pembayarans.*")
+                    ->whereBetween('tanggal', [$date->start, $date->end])
+                    ->get();
+                $supplier = null;
+                $start = $date->start;
+                $end = $date->end;
+            }
         } else {
-            $pemasoks = Pemasok::all();
-            $supplier = Pemasok::find($date->pemasok_id);
-            $start = $date->start;
-            $end = $date->end;
-            $pembayarans = Pembayaran::select("pbl_pembayarans.*")
-                ->where('pemasok_id', $date->pemasok_id)
-                ->whereBetween('tanggal', [$date->start, $date->end])
-                ->get();
+            if ($date->start == null) {
+                $pemasoks = Pemasok::all();
+                $supplier = Pemasok::find($date->pemasok_id);
+                $start = null;
+                $end = null;
+                $pembayarans = Pembayaran::select("pbl_pembayarans.*")
+                    ->where('pemasok_id', $date->pemasok_id)
+                    ->get();
+            }else{
+                $pemasoks = Pemasok::all();
+                $supplier = Pemasok::find($date->pemasok_id);
+                $start = $date->start;
+                $end = $date->end;
+                $pembayarans = Pembayaran::select("pbl_pembayarans.*")
+                    ->where('pemasok_id', $date->pemasok_id)
+                    ->whereBetween('tanggal', [$date->start, $date->end])
+                    ->get();
+            }
         }
         $pdf = PDF::loadview('pembelian.hutang.cetak-laporan-pembayaran', [
             'pembayarans' => $pembayarans,

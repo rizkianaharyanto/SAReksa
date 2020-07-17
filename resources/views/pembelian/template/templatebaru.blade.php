@@ -176,7 +176,7 @@
                     <h3 class="menu-title">Transaksi</h3><!-- /.menu-title -->
                     <li><a href="/pembelian/fakturs"> <i class="menu-icon fa fa-clipboard-check"></i>Faktur</a></li>
                     <h3 class="menu-title">Hutang</h3><!-- /.menu-title -->
-                    <li><a href="/pembelian/hutangs"> <i class="menu-icon fa fa-file-invoice-dollar"></i>Hutang</a></li>
+                    <li><a href="/pembelian/hutang-bagi"> <i class="menu-icon fa fa-file-invoice-dollar"></i>Hutang</a></li>
                     <li><a href="/pembelian/pembayarans"> <i class="menu-icon fa fa-hand-holding-usd"></i>Pembayaran Hutang</a></li>
                     @endif
                     @if(auth()->user()->role->role_name == 'Manager Pembelian')
@@ -184,13 +184,13 @@
                     <li class="menu-item-has-children dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-file"></i>Laporan</a>
                         <ul class="sub-menu children dropdown-menu">
-                            <li><a href="/pembelian/permintaans/laporan">Laporan Permintaan</a></li>
-                            <li><a href="/pembelian/pemesanans/laporan">Laporan Pemesanan</a></li>
-                            <li><a href="/pembelian/penerimaans/laporan">Laporan Penerimaan</a></li>
-                            <li><a href="/pembelian/fakturs/laporan">Laporan Faktur</a></li>
-                            <li><a href="/pembelian/returs/laporan">Laporan Retur</a></li>
-                            <li><a href="/pembelian/pembayarans/laporan">Laporan Pembayaran</a></li>
-                            <li><a href="/pembelian/hutangs/laporan">Laporan Hutang</a></li>
+                            <li><a href="/pembelian/permintaan/laporan">Laporan Permintaan</a></li>
+                            <li><a href="/pembelian/pemesanan/laporan">Laporan Pemesanan</a></li>
+                            <li><a href="/pembelian/penerimaan/laporan">Laporan Penerimaan</a></li>
+                            <li><a href="/pembelian/faktur/laporan">Laporan Faktur</a></li>
+                            <li><a href="/pembelian/retur/laporan">Laporan Retur</a></li>
+                            <li><a href="/pembelian/pembayaran/laporan">Laporan Pembayaran</a></li>
+                            <li><a href="/pembelian/hutang/laporan">Laporan Hutang</a></li>
                         </ul>
                     </li>
                     <li><a href="/pembelian/jurnals"> <i class="menu-icon fa fa-file-alt"></i>Jurnal</a></li>

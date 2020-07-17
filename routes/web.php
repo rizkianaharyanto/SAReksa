@@ -34,89 +34,95 @@ Route::prefix('pembelian')->group(function () {
 
     Route::get('/stokmasuk', 'Pembelian\PenerimaansController@stokmasuk');
     Route::get('/stokmasuk/{id}', 'Pembelian\PenerimaansController@stokmasukdetail');
-    
+
     Route::resource('/pemasoks', 'Pembelian\PemasoksController')->middleware('auth.pembelian');
     Route::resource('/pengirims', 'Pembelian\PengirimsController')->middleware('auth.pembelian');
-    Route::resource('/fakturs', 'Pembelian\FaktursController')->middleware('auth.pembelian')->middleware(['auth.pembelian', 'checkPembelian:Admin Pembelian,Admin Retur Pembelian,Admin Utang']);;
-    Route::get('/fakturshow/{id}', 'Pembelian\FaktursController@show2')->middleware('auth.pembelian')->middleware(['auth.pembelian', 'checkPembelian:Admin Pembelian,Admin Retur Pembelian,Admin Utang']);;
-    Route::get('/fakturs/cetak_pdf', 'Pembelian\FaktursController@cetak_pdf')->middleware('auth.pembelian')->middleware(['auth.pembelian', 'checkPembelian:Admin Pembelian,Admin Retur Pembelian,Admin Utang']);;
-    
+    Route::resource('/fakturs', 'Pembelian\FaktursController')->middleware(['auth.pembelian', 'checkPembelian:Admin Pembelian,Admin Retur Pembelian,Admin Utang']);
+    Route::get('/fakturshow/{id}', 'Pembelian\FaktursController@show2')->middleware(['auth.pembelian', 'checkPembelian:Admin Pembelian,Admin Retur Pembelian,Admin Utang']);
+    Route::get('/fakturs/cetak_pdf', 'Pembelian\FaktursController@cetak_pdf')->middleware(['auth.pembelian', 'checkPembelian:Admin Pembelian,Admin Retur Pembelian,Admin Utang']);
+
     Route::group(['middleware' => ['auth.pembelian', 'checkPembelian:Admin Pembelian']], function () {
         Route::resource('/pemesanans', 'Pembelian\PemesanansController');
         Route::resource('/penerimaans', 'Pembelian\PenerimaansController');
         Route::resource('/permintaans', 'Pembelian\PermintaansController');
-        
+
         Route::get('/permintaanshow/{id}', 'Pembelian\PermintaansController@show2');
         Route::get('/pemesananshow/{id}', 'Pembelian\PemesanansController@show2');
         Route::get('/penerimaanshow/{id}', 'Pembelian\PenerimaansController@show2');
-        
+
         Route::get('/permintaans/cetak_pdf', 'Pembelian\PermintaansController@cetak_pdf');
         Route::get('/pemesanans/cetak_pdf', 'Pembelian\PemesanansController@cetak_pdf');
         Route::get('/penerimaans/cetak_pdf', 'Pembelian\PenerimaansController@cetak_pdf');
-        
+
         Route::get('/postingpnm/{idnya}', 'Pembelian\PenerimaansController@posting');
         Route::get('/ubahpsn/{idnya}', 'Pembelian\PenerimaansController@ubahpsn');
         Route::get('/postingfak/{idnya}', 'Pembelian\FaktursController@posting');
         Route::get('/ubahpsnfak/{idnya}', 'Pembelian\FaktursController@ubahpsn');
     });
-    
-    
+
+
     Route::group(['middleware' => ['auth.pembelian', 'checkPembelian:Admin Retur Pembelian']], function () {
         Route::resource('/returs', 'Pembelian\RetursController');
-        
-        Route::get('/returshow/{id}', 'Pembelian\RetursController@show2')->middleware('auth.pembelian');
-        
-        Route::get('/returs/cetak_pdf', 'Pembelian\RetursController@cetak_pdf')->middleware('auth.pembelian');
-        
-        Route::get('/postingret/{idnya}', 'Pembelian\RetursController@posting')->middleware('auth.pembelian');
+
+        Route::get('/returshow/{id}', 'Pembelian\RetursController@show2');
+
+        Route::get('/returs/cetak_pdf', 'Pembelian\RetursController@cetak_pdf');
+
+        Route::get('/postingret/{idnya}', 'Pembelian\RetursController@posting');
     });
-    
-    
+
+
     Route::group(['middleware' => ['auth.pembelian', 'checkPembelian:Admin Utang']], function () {
         Route::resource('/hutangs', 'Pembelian\HutangsController');
         Route::resource('/pembayarans', 'Pembelian\PembayaransController');
-        
-        Route::get('/pembayaranshow/{id}', 'Pembelian\PembayaransController@show2')->middleware('auth.pembelian');
-        Route::get('/hutangshow/{id}', 'Pembelian\HutangsController@show2')->middleware('auth.pembelian');
-        
-        Route::get('/pembayarans/cetak_pdf', 'Pembelian\PembayaransController@cetak_pdf')->middleware('auth.pembelian');
-        Route::get('/hutangs/cetak_pdf', 'Pembelian\HutangsController@cetak_pdf')->middleware('auth.pembelian');
-        
-        Route::get('/postingpem/{idnya}', 'Pembelian\PembayaransController@posting')->middleware('auth.pembelian');
+
+        Route::get('/hutang-bagi', function () {
+            return view('pembelian.hutang.hutang-bagi');
+        });
+        Route::get('/hutangs-faktur', 'Pembelian\HutangsController@fakturindex');
+        Route::post('/hutangs-filter', 'Pembelian\HutangsController@filter');
+
+        Route::get('/pembayaranshow/{id}', 'Pembelian\PembayaransController@show2');
+        Route::get('/hutangshow/{id}', 'Pembelian\HutangsController@show2');
+
+        Route::get('/pembayarans/cetak_pdf', 'Pembelian\PembayaransController@cetak_pdf');
+        Route::get('/hutangs/cetak_pdf', 'Pembelian\HutangsController@cetak_pdf');
+
+        Route::get('/postingpem/{idnya}', 'Pembelian\PembayaransController@posting');
     });
 
 
     Route::group(['middleware' => ['auth.pembelian', 'checkPembelian:Manager Pembelian']], function () {
         Route::resource('/jurnals', 'Pembelian\JurnalsController');
-        
-        Route::get('/jurnals/filter', 'Pembelian\JurnalsController@filter');
-        Route::get('/jurnals/cetak_pdf', 'Pembelian\JurnalsController@cetak_pdf');
+
+        Route::get('/jurnal/filter', 'Pembelian\JurnalsController@filter');
+        Route::get('/jurnal/cetak_pdf', 'Pembelian\JurnalsController@cetak_pdf');
         //show laporan
-        Route::get('/permintaans/laporan', 'Pembelian\PermintaansController@laporan');
-        Route::get('/permintaans/laporanfilter', 'Pembelian\PermintaansController@laporanfilter');
-        Route::get('/pemesanans/laporan', 'Pembelian\PemesanansController@laporan');
-        Route::get('/pemesanans/laporanfilter', 'Pembelian\PemesanansController@laporanfilter');
-        Route::get('/penerimaans/laporan', 'Pembelian\PenerimaansController@laporan');
-        Route::get('/penerimaans/laporanfilter', 'Pembelian\PenerimaansController@laporanfilter');
-        Route::get('/fakturs/laporan', 'Pembelian\FaktursController@laporan');
-        Route::get('/fakturs/laporanfilter', 'Pembelian\FaktursController@laporanfilter');
-        Route::get('/returs/laporan', 'Pembelian\RetursController@laporan');
-            Route::get('/returs/laporanfilter', 'Pembelian\RetursController@laporanfilter');
-            Route::get('/pembayarans/laporan', 'Pembelian\PembayaransController@laporan');
-            Route::get('/pembayarans/laporanfilter', 'Pembelian\PembayaransController@laporanfilter');
-            Route::get('/hutangs/laporan', 'Pembelian\HutangsController@laporan');
-            Route::get('/hutangs/laporanfilter', 'Pembelian\HutangsController@laporanfilter');
-            
-            //cetak laporan
-            Route::get('/permintaans/laporanpdf', 'Pembelian\PermintaansController@cetaklaporan');
-            Route::get('/pemesanans/laporanpdf', 'Pembelian\PemesanansController@cetaklaporan');
-            Route::get('/penerimaans/laporanpdf', 'Pembelian\PenerimaansController@cetaklaporan');
-            Route::get('/fakturs/laporanpdf', 'Pembelian\FaktursController@cetaklaporan');
-            Route::get('/returs/laporanpdf', 'Pembelian\RetursController@cetaklaporan');
-            Route::get('/pembayarans/laporanpdf', 'Pembelian\PembayaransController@cetaklaporan');
-            Route::get('/hutangs/laporanpdf', 'Pembelian\HutangsController@cetaklaporan');
-        });
-        // Route::resources([
+        Route::get('/permintaan/laporan', 'Pembelian\PermintaansController@laporan');
+        Route::get('/permintaan/laporanfilter', 'Pembelian\PermintaansController@laporanfilter');
+        Route::get('/pemesanan/laporan', 'Pembelian\PemesanansController@laporan');
+        Route::get('/pemesanan/laporanfilter', 'Pembelian\PemesanansController@laporanfilter');
+        Route::get('/penerimaan/laporan', 'Pembelian\PenerimaansController@laporan');
+        Route::get('/penerimaan/laporanfilter', 'Pembelian\PenerimaansController@laporanfilter');
+        Route::get('/faktur/laporan', 'Pembelian\FaktursController@laporan');
+        Route::get('/faktur/laporanfilter', 'Pembelian\FaktursController@laporanfilter');
+        Route::get('/retur/laporan', 'Pembelian\RetursController@laporan');
+        Route::get('/retur/laporanfilter', 'Pembelian\RetursController@laporanfilter');
+        Route::get('/pembayaran/laporan', 'Pembelian\PembayaransController@laporan');
+        Route::get('/pembayaran/laporanfilter', 'Pembelian\PembayaransController@laporanfilter');
+        Route::get('/hutang/laporan', 'Pembelian\HutangsController@laporan');
+        Route::get('/hutang/laporanfilter', 'Pembelian\HutangsController@laporanfilter');
+
+        //cetak laporan
+        Route::get('/permintaan/laporanpdf', 'Pembelian\PermintaansController@cetaklaporan');
+        Route::get('/pemesanan/laporanpdf', 'Pembelian\PemesanansController@cetaklaporan');
+        Route::get('/penerimaan/laporanpdf', 'Pembelian\PenerimaansController@cetaklaporan');
+        Route::get('/faktur/laporanpdf', 'Pembelian\FaktursController@cetaklaporan');
+        Route::get('/retur/laporanpdf', 'Pembelian\RetursController@cetaklaporan');
+        Route::get('/pembayaran/laporanpdf', 'Pembelian\PembayaransController@cetaklaporan');
+        Route::get('/hutang/laporanpdf', 'Pembelian\HutangsController@cetaklaporan');
+    });
+    // Route::resources([
     //     'pemasoks' => 'Pembelian\PemasoksController',
     //     'pengirims' => 'Pembelian\PengirimsController',
     //     'jurnals' => 'Pembelian\JurnalsController',
@@ -181,19 +187,19 @@ Route::prefix('stok')->group(function () {
         Route::get('/kartu-stock', ['as' => 'kartu-stock', 'uses' => 'Stock\KartuStockController@index']);
         Route::get('/kartu-stock/filter', 'Stock\KartuStockController@filter');
         Route::get('/kartu-stock/export', 'Stock\KartuStockController@export');
-        
-        Route::get('/laporan-penyesuaian', ['as' => 'laporan-penyesuaian','uses' => 'Stock\StockAdjustmentController@laporanindex']);
+
+        Route::get('/laporan-penyesuaian', ['as' => 'laporan-penyesuaian', 'uses' => 'Stock\StockAdjustmentController@laporanindex']);
         Route::get('/laporan-penyesuaian/filter', 'Stock\StockAdjustmentController@laporanfilter');
         Route::get('/laporan-penyesuaian/export', 'Stock\StockAdjustmentController@laporanexport');
-        
-        Route::get('/laporan-stok-opname', ['as' => 'laporan-stok-opname','uses' => 'Stock\StockOpnameController@laporanindex']);
+
+        Route::get('/laporan-stok-opname', ['as' => 'laporan-stok-opname', 'uses' => 'Stock\StockOpnameController@laporanindex']);
         Route::get('/laporan-stok-opname/filter', 'Stock\StockOpnameController@laporanfilter');
         Route::get('/laporan-stok-opname/export', 'Stock\StockOpnameController@laporanexport');
-        
-        Route::get('/laporan-transfer', ['as' => 'laporan-transfer','uses' => 'Stock\StockTransferController@laporanindex']);
+
+        Route::get('/laporan-transfer', ['as' => 'laporan-transfer', 'uses' => 'Stock\StockTransferController@laporanindex']);
         Route::get('/laporan-transfer/filter', 'Stock\StockTransferController@laporanfilter');
         Route::get('/laporan-transfer/export', 'Stock\StockTransferController@laporanexport');
-        
+
 
         //Daftar Produk
         Route::get('/produk', ['as' => 'produk', 'uses' => 'Stock\KartuStockController@index']);

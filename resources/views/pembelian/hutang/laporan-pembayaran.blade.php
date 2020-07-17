@@ -12,7 +12,7 @@
 
 @section('isi')
 <div class=" mx-5 dt-buttons">
-    <form class="d-flex" action="/pembelian/pembayarans/laporanfilter" method="get">
+    <form class="d-flex" action="/pembelian/pembayaran/laporanfilter" method="get">
         @csrf
         <select class="form-control m-2" name="pemasok_id" id="">
             <option value="">--- Pilih Pemasok ---</option>
@@ -26,7 +26,7 @@
     </form>
 </div>
 
-<form action="/pembelian/pembayarans/laporanpdf">
+<form action="/pembelian/pembayaran/laporanpdf">
     @csrf
     <input type="hidden" name="start" value="{{$start}}">
     <input type="hidden" name="end" value="{{$end}}">
@@ -49,49 +49,32 @@
                 </div>
                 <div class="card-body">
                     @if($supplier == null)
-                    @foreach ($pembayarans as $pembayaran)
                     <div style="margin-bottom :10vh;">
-                        <h5 class="mb-3" style="opacity: 80%">{{ $pembayaran->kode_pembayaran }} - {{ $pembayaran->pemasok->nama_pemasok }}</h5>
                         <div class="table-responsive-sm">
                             <table class="table table-sm table-striped">
                                 <thead>
                                     <tr>
+                                        <th>Kode Pembayaran</th>
+                                        <th>Supplier</th>
                                         <th>Tanggal</th>
                                         <th>Total</th>
                                         <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @foreach ($pembayarans as $pembayaran)
                                     <tr>
+                                        <td>{{ $pembayaran->kode_pembayaran }}</td>
+                                        <td>{{ $pembayaran->pemasok->nama_pemasok }}</td>
                                         <td>{{ $pembayaran->tanggal }}</td>
                                         <td>{{ $pembayaran->total }}</td>
                                         <td>{{ $pembayaran->status !=null ? $pembayaran->status  : '-' }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="table-responsive-sm mb-5">
-                            <table class="table table-sm table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Kode Hutang</th>
-                                        <th>Kode Transaksi</th>
-                                        <th>Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($pembayaran->hutangs as $index => $hutang)
-                                    <tr>
-                                        <td>{{$hutang->kode_hutang ? $hutang->kode_hutang : '-' }}</td>
-                                        <td>{{$hutang->faktur->kode_faktur ? $hutang->faktur->kode_faktur : '-' }}</td>
-                                        <td>{{ $hutang->pivot->total ? $hutang->pivot->total : '-' }}</td>
                                     </tr>
                                     @endforeach
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    @endforeach
                     @else
                     <div class="row mb-4">
                         <div class="col-sm-6 ">
@@ -103,49 +86,30 @@
                     </div>
 
                     <input type="hidden" name="pemasok_id" value="{{$supplier->id}}">
-                    @foreach ($pembayarans as $pembayaran)
-                    <div class="d-flex justify-content-between">
-                        <h5 class="mb-3" style="opacity: 80%">Kode pembayaran : {{ $pembayaran->kode_pembayaran }}</h5>
-                    </div>
+
                     <div class="table-responsive-sm">
                         <table class="table table-sm table-striped">
                             <thead>
                                 <tr>
+                                    <th>Kode Pembayaran</th>
                                     <th>Tanggal</th>
                                     <th>Total</th>
                                     <th>Status</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach ($pembayarans as $pembayaran)
                                 <tr>
+                                    <td>{{ $pembayaran->kode_pembayaran }}</td>
                                     <td>{{ $pembayaran->tanggal }}</td>
                                     <td>{{ $pembayaran->total }}</td>
                                     <td>{{ $pembayaran->status !=null ? $pembayaran->status  : '-' }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="table-responsive-sm mb-5">
-                        <table class="table table-sm table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Kode Hutang</th>
-                                    <th>Kode Transaksi</th>
-                                    <th>Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($pembayaran->hutangs as $index => $hutang)
-                                <tr>
-                                    <td>{{$hutang->kode_hutang ? $hutang->kode_hutang : '-' }}</td>
-                                    <td>{{$hutang->faktur->kode_faktur ? $hutang->faktur->kode_faktur : '-' }}</td>
-                                    <td>{{ $hutang->pivot->total ? $hutang->pivot->total : '-' }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
-                    @endforeach
+
                     @endif
                 </div>
             </div>

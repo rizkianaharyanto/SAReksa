@@ -5,8 +5,8 @@
 @section('halaman', 'Hutang')
 
 @section('path')
-<li><a href="#">Hutang</a></li>
-<li class="active">Hutang</li>
+<li><a href="/pembelian/hutang-bagi">Hutang</a></li>
+<li class="active">Hutang Pemasok</li>
 @endsection
 
 @section('thead')

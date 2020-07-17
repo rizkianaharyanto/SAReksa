@@ -11,7 +11,7 @@
 
 @section('isi')
 <div class=" mx-5">
-    <form class="d-flex" action="/pembelian/jurnals/filter" method="get">
+    <form class="d-flex" action="/pembelian/jurnal/filter" method="get">
         @csrf
         <select class="form-control m-2" name="transaksi" id="">
             <option value="">--- Pilih Transaksi ---</option>
@@ -24,7 +24,7 @@
     </form>
 </div>
 
-<form action="/pembelian/jurnals/cetak_pdf">
+<form action="/pembelian/jurnal/cetak_pdf">
     @csrf
     <input type="hidden" name="transaksi" value="{{$transaksi}}">
     <div class="d-flex justify-content-end mx-5">
