@@ -273,6 +273,7 @@ class RetursController extends Controller
             $jurnal = Jurnal::create([
                 'kode_jurnal' => 'jur' . $no,
                 'retur_id' => $retur->id,
+                'tanggal' => $retur->tanggal,
                 'debit' => 0,
                 'kredit' => 0,
             ]);

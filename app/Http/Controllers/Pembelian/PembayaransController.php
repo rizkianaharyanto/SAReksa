@@ -179,6 +179,7 @@ class PembayaransController extends Controller
             $jurnal = Jurnal::create([
                 'kode_jurnal' => 'jur' . $no,
                 'pembayaran_id' => $pembayaran->id,
+                'tanggal' => $request->tanggal,
                 'debit' => 0,
                 'kredit' => 0,
             ]);
@@ -354,6 +355,7 @@ class PembayaransController extends Controller
             $jurnal = Jurnal::create([
                 'kode_jurnal' => 'jur' . $no,
                 'pembayaran_id' => $pembayaran->id,
+                'tanggal' => $request->tanggal,
                 'debit' => 0,
                 'kredit' => 0,
             ]);

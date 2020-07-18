@@ -261,6 +261,7 @@ class PenerimaansController extends Controller
             $jurnal = Jurnal::create([
                 'kode_jurnal' => 'jur' . $no,
                 'penerimaan_id' => $penerimaan->id,
+                'tanggal' => $penerimaan->tanggal,
                 'debit' => 0,
                 'kredit' => 0,
             ]);

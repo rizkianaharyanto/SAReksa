@@ -20,12 +20,16 @@
             <option value="Retur">Retur</option>
             <option value="Pembayaran Hutang">Pembayaran Hutang</option>
         </select>
+        <input class="form-control m-2" type="date" name="start">
+        <input class="form-control m-2" type="date" name="end">
         <button class="btn btn-outline-info m-2" type="submit">Filter</button>
     </form>
 </div>
 
 <form action="/pembelian/jurnal/cetak_pdf">
     @csrf
+    <input type="hidden" name="start" value="{{$start}}">
+    <input type="hidden" name="end" value="{{$end}}">
     <input type="hidden" name="transaksi" value="{{$transaksi}}">
     <div class="d-flex justify-content-end mx-5">
         <button class="btn btn-outline-info m-2 "><a class="px-2" id="pdf" target="_blank">Export PDF </a></button>
@@ -66,12 +70,7 @@
                                 <tr>
                                     @if ($loop->first)
                                     <td rowspan="{{$loop->count}}">
-                                        @if ($index->penerimaan_id !=null){{$index->penerimaan->tanggal}}
-                                        @elseif ($index->faktur_id !=null){{$index->faktur->tanggal}}
-                                        @elseif ($index->retur_id !=null){{$index->retur->tanggal}}
-                                        @elseif ($index->pembayaran_id !=null){{$index->pembayaran->tanggal}}
-                                        @else -
-                                        @endif
+                                        {{$index->tanggal}}
                                     </td>
                                     <td rowspan="{{$loop->count}}" class="p-2">
                                         @if ($index->penerimaan_id !=null){{$index->penerimaan->kode_penerimaan}} - penerimaan barang
@@ -114,12 +113,7 @@
                                 @else
                                 <tr>
                                     <td>
-                                        @if ($jurnal->penerimaan_id !=null){{$jurnal->penerimaan->tanggal}}
-                                        @elseif ($jurnal->faktur_id !=null){{$jurnal->faktur->tanggal}}
-                                        @elseif ($jurnal->retur_id !=null){{$jurnal->retur->tanggal}}
-                                        @elseif ($jurnal->pembayaran_id !=null){{$jurnal->pembayaran->tanggal}}
-                                        @else -
-                                        @endif
+                                        {{$jurnal->tanggal}}
                                     </td>
                                     <td class="p-2">
                                         @if ($jurnal->penerimaan_id !=null){{$jurnal->penerimaan->kode_penerimaan}} - penerimaan barang

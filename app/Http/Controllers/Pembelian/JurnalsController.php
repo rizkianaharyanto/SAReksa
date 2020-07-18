@@ -21,6 +21,8 @@ class JurnalsController extends Controller
         $debit = 0;
         $kredit = 0;
         $transaksi= null;
+        $start = null;
+        $end = null;
         foreach (Jurnal::all() as $jurnal) {
             $debit += $jurnal->debit;
             $kredit += $jurnal->kredit;
@@ -29,49 +31,88 @@ class JurnalsController extends Controller
             'jurnals' => $jurnals,
             'debit' => $debit,
             'kredit' => $kredit,
-            'transaksi' => $transaksi
+            'transaksi' => $transaksi,
+            'start' => $start,
+            'end' => $end
         ]);
     }
     
     public function filter(Request $date)
     {
-        // dd($date->transaksi);
         if ($date->transaksi == null) {
-            $jurnals = Jurnal::all()->groupBy('kode_jurnal');
-            $debit = 0;
-            $kredit = 0;
-            $transaksi= null;
-            // dd($jurnals);
-            foreach (Jurnal::all() as $jurnal) {
-                $debit += $jurnal->debit;
-                $kredit += $jurnal->kredit;
+            if($date->start == null){
+                $jurnals = Jurnal::all()->groupBy('kode_jurnal');
+                $debit = 0;
+                $kredit = 0;
+                $transaksi= null;
+                $start = null;
+                $end = null;
+                foreach (Jurnal::all() as $jurnal) {
+                    $debit += $jurnal->debit;
+                    $kredit += $jurnal->kredit;
+                }
+            }else{
+                $jurnals = Jurnal::select("pbl_jurnals.*")->whereBetween('tanggal', [$date->start, $date->end])->get()->groupBy('kode_jurnal');
+                // dd($jurnals);
+                $debit = 0;
+                $kredit = 0;
+                $transaksi= null;
+                $start = $date->start;
+                $end = $date->end;
+                foreach (Jurnal::all() as $jurnal) {
+                    $debit += $jurnal->debit;
+                    $kredit += $jurnal->kredit;
+                }
             }
         }else{
-            $transaksi= $date->transaksi;
-            if($date->transaksi == 'Penerimaan Barang'){
-                $jurnals = Jurnal::select('pbl_jurnals.*')->where('penerimaan_id', '!=', null)->get();
-            }elseif($date->transaksi == 'Faktur'){
-                $jurnals = Jurnal::select('pbl_jurnals.*')->where('faktur_id', '!=', null)->get();
-            }elseif($date->transaksi == 'Retur'){
-                $jurnals = Jurnal::select('pbl_jurnals.*')->where('retur_id', '!=', null)->get();
-            }elseif($date->transaksi == 'Pembayaran Hutang'){
-                $jurnals = Jurnal::select('pbl_jurnals.*')->where('pembayaran_id', '!=', null)->get();
-            }
-            $debit = 0;
-            $kredit = 0;
-            foreach ($jurnals as $jurnal) {
-                $debit += $jurnal->debit;
-                $kredit += $jurnal->kredit;
+            if($date->start == null){
+                $transaksi= $date->transaksi;
+                if($date->transaksi == 'Penerimaan Barang'){
+                    $jurnals = Jurnal::select('pbl_jurnals.*')->where('penerimaan_id', '!=', null)->get();
+                }elseif($date->transaksi == 'Faktur'){
+                    $jurnals = Jurnal::select('pbl_jurnals.*')->where('faktur_id', '!=', null)->get();
+                }elseif($date->transaksi == 'Retur'){
+                    $jurnals = Jurnal::select('pbl_jurnals.*')->where('retur_id', '!=', null)->get();
+                }elseif($date->transaksi == 'Pembayaran Hutang'){
+                    $jurnals = Jurnal::select('pbl_jurnals.*')->where('pembayaran_id', '!=', null)->get();
+                }
+                $debit = 0;
+                $kredit = 0;
+                $start = null;
+                $end = null;
+                foreach ($jurnals as $jurnal) {
+                    $debit += $jurnal->debit;
+                    $kredit += $jurnal->kredit;
+                }
+            }else{
+                $transaksi= $date->transaksi;
+                if($date->transaksi == 'Penerimaan Barang'){
+                    $jurnals = Jurnal::select('pbl_jurnals.*')->where('penerimaan_id', '!=', null)->whereBetween('tanggal', [$date->start, $date->end])->get();
+                    // dd($jurnals);
+                }elseif($date->transaksi == 'Faktur'){
+                    $jurnals = Jurnal::select('pbl_jurnals.*')->where('faktur_id', '!=', null)->whereBetween('tanggal', [$date->start, $date->end])->get();
+                }elseif($date->transaksi == 'Retur'){
+                    $jurnals = Jurnal::select('pbl_jurnals.*')->where('retur_id', '!=', null)->whereBetween('tanggal', [$date->start, $date->end])->get();
+                }elseif($date->transaksi == 'Pembayaran Hutang'){
+                    $jurnals = Jurnal::select('pbl_jurnals.*')->where('pembayaran_id', '!=', null)->whereBetween('tanggal', [$date->start, $date->end])->get();
+                }
+                $debit = 0;
+                $kredit = 0;
+                $start = $date->start;
+                $end = $date->end;
+                foreach ($jurnals as $jurnal) {
+                    $debit += $jurnal->debit;
+                    $kredit += $jurnal->kredit;
+                }
             }
         }
-        // return gettype($jurnals);
-        // dd($debit, $kredit);
-        // dd($jurnals);
         return view('pembelian.jurnal', [
             'jurnals' => $jurnals,
             'debit' => $debit,
             'kredit' => $kredit,
-            'transaksi' => $transaksi
+            'transaksi' => $transaksi,
+            'start' => $start,
+            'end' => $end
         ]);
     }
 

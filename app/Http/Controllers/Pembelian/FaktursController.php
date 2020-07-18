@@ -258,6 +258,7 @@ class FaktursController extends Controller
                 $jurnal = Jurnal::create([
                     'kode_jurnal' => 'jur' . $no,
                     'faktur_id' => $faktur->id,
+                    'tanggal' => $faktur->tanggal,
                     'debit' => 0,
                     'kredit' => 0,
                 ]);
@@ -289,6 +290,7 @@ class FaktursController extends Controller
                 $jurnal = Jurnal::create([
                     'kode_jurnal' => 'jur' . $no,
                     'faktur_id' => $faktur->id,
+                    'tanggal' => $faktur->tanggal,
                     'debit' => 0,
                     'kredit' => 0,
                 ]);
