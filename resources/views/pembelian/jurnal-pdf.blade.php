@@ -90,16 +90,16 @@
                                                 @else -
                                                 @endif
                                             </td>
-                                            <td class="p-2" name="debit[]">{{ $index->debit != 0 ? $index->debit : '-' }}</td>
-                                            <td class="p-2" name="kredit[]">{{ $index->kredit != 0 ? $index->kredit : '-' }}</td>
+                                            <td class="p-2" name="debit[]">@currency($index->debit)</td>
+                                            <td class="p-2" name="kredit[]">@currency($index->kredit)</td>
                                         </tr>
                                         @endif
                                         @endforeach
                                         @endforeach
                                         <tr>
                                             <td colspan="3">Total</td>
-                                            <td>{{$debit}}</td>
-                                            <td>{{$kredit}}</td>
+                                            <td>@currency($debit)</td>
+                                            <td>@currency($kredit)</td>
                                         </tr>
                                     </tbody>
                                     @else
@@ -137,15 +137,15 @@
                                                 @else -
                                                 @endif
                                             </td>
-                                            <td class="p-2" name="debit[]">{{ $jurnal->debit != 0 ? $jurnal->debit : '-' }}</td>
-                                            <td class="p-2" name="kredit[]">{{ $jurnal->kredit != 0 ? $jurnal->kredit : '-' }}</td>
+                                            <td class="p-2" name="debit[]">@currency($jurnal->debit)</td>
+                                            <td class="p-2" name="kredit[]">@currency($jurnal->kredit)</td>
                                         </tr>
                                         @endif
                                         @endforeach
                                         <tr>
                                             <td colspan="3">Total</td>
-                                            <td>{{$debit}}</td>
-                                            <td>{{$kredit}}</td>
+                                            <td>@currency($debit)</td>
+                                            <td>@currency($kredit)</td>
                                         </tr>
                                     </tbody>
                                     @endif

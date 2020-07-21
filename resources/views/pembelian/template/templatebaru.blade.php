@@ -176,7 +176,14 @@
                     <h3 class="menu-title">Transaksi</h3><!-- /.menu-title -->
                     <li><a href="/pembelian/fakturs"> <i class="menu-icon fa fa-clipboard-check"></i>Faktur</a></li>
                     <h3 class="menu-title">Hutang</h3><!-- /.menu-title -->
-                    <li><a href="/pembelian/hutang-bagi"> <i class="menu-icon fa fa-file-invoice-dollar"></i>Hutang</a></li>
+                    <!-- <li><a href="/pembelian/hutang-bagi"> <i class="menu-icon fa fa-file-invoice-dollar"></i>Hutang</a></li> -->
+                    <li class="menu-item-has-children dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-database"></i>Hutang</a>
+                        <ul class="sub-menu children dropdown-menu">
+                            <li><a href="/pembelian/hutangs">Berdasarkan Pemasok</a></li>
+                            <li><a href="/pembelian/hutangs-faktur">Berdasarkan Faktur</a></li>
+                        </ul>
+                    </li>
                     <li><a href="/pembelian/pembayarans"> <i class="menu-icon fa fa-hand-holding-usd"></i>Pembayaran Hutang</a></li>
                     @endif
                     @if(auth()->user()->role->role_name == 'Manager Pembelian')

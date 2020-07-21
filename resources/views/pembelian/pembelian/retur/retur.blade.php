@@ -27,7 +27,7 @@
     <td>{{ $retur->pemasok->nama_pemasok }}</td>
     <td>{{ $retur->tanggal }}</td>
     <td>{{ $retur->total_harga }}</td>
-    <td>{{ $retur->status !=null ? $retur->status  : '-' }} |
+    <td>
         @if ($retur->status_posting == 'sudah posting')
         sudah posting
         @elseif ($retur->status_posting == 'konfirmasi')
