@@ -11,7 +11,7 @@
 @endsection
 
 @section('isi')
-<form action="/pembelian/pemesanans/cetak_pdf">
+<form action="/pembelian/pemesanan/cetak_pdf">
     <div class="d-flex justify-content-end mx-5">
         <!-- <a class="px-2" href="">Export Excel | </a> -->
         <button class="btn btn-light"><a class="px-2" id="pdf" target="_blank">Export PDF</a></button>
@@ -64,8 +64,8 @@
                                     <td>{{$barang->pivot->jumlah_barang ? $barang->pivot->jumlah_barang : '-' }}</td>
                                     <td>{{ $barang->pivot->unit ? $barang->pivot->unit : '-' }}</td>
                                     <td>{{ $barang->pivot->status_barang ? $barang->pivot->status_barang : '-' }}</td>
-                                    <td>{{ $barang->pivot->harga ? $barang->pivot->harga : '-' }}</td>
-                                    <td>{{$total_harga[$index]}}</td>
+                                    <td>@currency($barang->pivot->harga)</td>
+                                    <td>@currency($total_harga[$index])</td>
                                 </tr>
                                 @endforeach
 
@@ -82,26 +82,26 @@
                                         <td class="left">
                                             <strong class="text-dark">Subtotal</strong>
                                         </td>
-                                        <td class="right">{{$subtotal}}</td>
+                                        <td class="right">@currency($subtotal)</td>
                                     </tr>
                                     <tr>
                                         <td class="left">
                                             <strong class="text-dark">Diskon</strong>
                                         </td>
-                                        <td class="right">{{$diskon}}</td>
+                                        <td class="right">@currency($diskon)</td>
                                     </tr>
                                     <tr>
                                         <td class="left">
                                             <strong class="text-dark">Biaya Lain</strong>
                                         </td>
-                                        <td class="right">{{$biaya_lain}}</td>
+                                        <td class="right">@currency($biaya_lain)</td>
                                     </tr>
                                     <tr>
                                         <td class="left">
                                             <strong class="text-dark">Total</strong>
                                         </td>
                                         <td class="right">
-                                            <strong class="text-dark">{{$total_seluruh}}</strong>
+                                            <strong class="text-dark">@currency($total_seluruh)</strong>
                                         </td>
                                     </tr>
                                 </tbody>

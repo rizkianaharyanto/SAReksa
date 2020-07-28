@@ -69,8 +69,8 @@
                                                     @endif
                                                 </td>
                                                 <td>{{ $hutang->status ? $hutang->status : '-' }}</td>
-                                                <td>{{ $hutang->lunas ? $hutang->lunas : '-' }}</td>
-                                                <td>{{ $hutang->sisa ? $hutang->sisa : '-' }}</td>
+                                                <td>@currency($hutang->lunas)</td>
+                                                <td>@currency($hutang->sisa)</td>
                                             </tr>
                                             @endforeach
                                         </tbody>
@@ -111,8 +111,8 @@
                                                 @endif
                                             </td>
                                             <td>{{ $hutang->status ? $hutang->status : '-' }}</td>
-                                            <td>{{ $hutang->lunas ? $hutang->lunas : '-' }}</td>
-                                            <td>{{ $hutang->sisa ? $hutang->sisa : '-' }}</td>
+                                            <td>@currency($hutang->lunas)</td>
+                                            <td>@currency($hutang->sisa)</td>
                                         </tr>
                                         @endforeach
                                         <!-- <tr>

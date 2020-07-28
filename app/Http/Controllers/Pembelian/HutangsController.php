@@ -175,13 +175,16 @@ class HutangsController extends Controller
                 $end = $date->end;
             }
         }
-        return view('pembelian.hutang.laporan-hutang', [
+        $pdf = PDF::loadview('pembelian.hutang.cetak-laporan-hutang', [
             'hutangs' => $hutangs,
             'allpemasok' => $allpemasok,
             'supplier' => $supplier,
             'start' => $start,
             'end' => $end
         ]);
+
+
+        return $pdf->download('laporan-hutang.pdf');
     }
 
     /**

@@ -70,10 +70,10 @@
                                         <td>{{ $faktur->kode_faktur }}</td>
                                         <td>{{ $faktur->pemasok->nama_pemasok }}</td>
                                         <td>{{ $faktur->tanggal }}</td>
-                                        <td>{{ $faktur->diskon_rp }}</td>
-                                        <td>{{ $faktur->biaya_lain }}</td>
-                                        <td>{{ $faktur->uang_muka }}</td>
-                                        <td>{{ $faktur->total_harga }}</td>
+                                        <td>@currency($faktur->diskon_rp)</td>
+                                        <td>@currency($faktur->biaya_lain)</td>
+                                        <td>@currency($faktur->uang_muka)</td>
+                                        <td>@currency($faktur->total_harga)</td>
                                         <td>{{ $faktur->status !=null ? $faktur->status  : '-' }}</td>
                                     </tr>
                                     @endforeach
@@ -110,10 +110,10 @@
                                 <tr>
                                     <td>{{ $faktur->kode_faktur }}</td>
                                     <td>{{ $faktur->tanggal }}</td>
-                                    <td>{{ $faktur->diskon_rp }}</td>
-                                    <td>{{ $faktur->biaya_lain }}</td>
-                                    <td>{{ $faktur->uang_muka }}</td>
-                                    <td>{{ $faktur->total_harga }}</td>
+                                    <td>@currency($faktur->diskon_rp)</td>
+                                    <td>@currency($faktur->biaya_lain)</td>
+                                    <td>@currency($faktur->uang_muka)</td>
+                                    <td>@currency($faktur->total_harga)</td>
                                     <td>{{ $faktur->status !=null ? $faktur->status  : '-' }}</td>
                                 </tr>
                                 @endforeach

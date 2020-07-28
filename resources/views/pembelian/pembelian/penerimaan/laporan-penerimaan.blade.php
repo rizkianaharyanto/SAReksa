@@ -69,9 +69,9 @@
                                         <td>{{ $penerimaan->kode_penerimaan }}</td>
                                         <td>{{ $penerimaan->pemasok->nama_pemasok }}</td>
                                         <td>{{ $penerimaan->tanggal }}</td>
-                                        <td>{{ $penerimaan->diskon_rp }}</td>
-                                        <td>{{ $penerimaan->biaya_lain }}</td>
-                                        <td>{{ $penerimaan->total_harga }}</td>
+                                        <td>@currency($penerimaan->diskon_rp)</td>
+                                        <td>@currency($penerimaan->biaya_lain)</td>
+                                        <td>@currency($penerimaan->total_harga)</td>
                                         <td>{{ $penerimaan->status !=null ? $penerimaan->status  : '-' }}</td>
                                     </tr>
                                     @endforeach
@@ -108,9 +108,9 @@
                                 <tr>
                                     <td>{{ $penerimaan->kode_penerimaan }}</td>
                                     <td>{{ $penerimaan->tanggal }}</td>
-                                    <td>{{ $penerimaan->diskon_rp }}</td>
-                                    <td>{{ $penerimaan->biaya_lain }}</td>
-                                    <td>{{ $penerimaan->total_harga }}</td>
+                                    <td>@currency($penerimaan->diskon_rp)</td>
+                                    <td>@currency($penerimaan->biaya_lain)</td>
+                                    <td>@currency($penerimaan->total_harga)</td>
                                     <td>{{ $penerimaan->status !=null ? $penerimaan->status  : '-' }}</td>
                                 </tr>
                                 @endforeach

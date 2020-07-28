@@ -68,7 +68,7 @@
                                         <tr>
                                             <td>{{$hutang->kode_hutang ? $hutang->kode_hutang : '-' }}</td>
                                             <td>{{$hutang->faktur->kode_faktur ? $hutang->faktur->kode_faktur : '-' }}</td>
-                                            <td>{{ $hutang->pivot->total ? $hutang->pivot->total : '-' }}</td>
+                                            <td>@currency( $hutang->pivot->total)</td>
                                         </tr>
                                         @endforeach
                                     </tbody>
@@ -85,7 +85,7 @@
                                                     <strong class="text-dark">Total</strong>
                                                 </td>
                                                 <td class="right">
-                                                    <strong class="text-dark">{{$total_seluruh}}</strong>
+                                                    <strong class="text-dark">@currency($total_seluruh)</strong>
                                                 </td>
                                             </tr>
                                         </tbody>

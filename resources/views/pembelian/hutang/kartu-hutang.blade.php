@@ -11,7 +11,7 @@
 @endsection
 
 @section('isi')
-<form action="/pembelian/hutangs/cetak_pdf">
+<form action="/pembelian/hutang/cetak_pdf">
     <div class="d-flex justify-content-end mx-5">
         <!-- <a class="px-2" href="">Export Excel | </a> -->
         <button class="btn btn-light"><a class="px-2" id="pdf" target="_blank">Export PDF</a></button>
@@ -61,7 +61,7 @@
                                     <td>{{$hutang->faktur->kode_faktur ? $hutang->faktur->kode_faktur  : '-' }}</td>
                                     <td>{{$hutang->faktur->tanggal ? $hutang->faktur->tanggal : '-' }}</td>
                                     <td></td>
-                                    <td>{{ $hutang->total_hutang ? $hutang->total_hutang : '-' }}</td>
+                                    <td>@currency( $hutang->total_hutang)</td>
                                     <td></td>
                                 </tr>
                                 @foreach ($pembayarans as $index => $pembayaran)
@@ -74,7 +74,7 @@
                                     @endif
                                     <td>{{$pembayaran->kode_pembayaran ? $pembayaran->kode_pembayaran  : '-' }}</td>
                                     <td>{{$pembayaran->tanggal ? $pembayaran->tanggal : '-' }}</td>
-                                    <td>{{ $pembayaran->pivot->total ? $pembayaran->pivot->total : '-' }}</td>
+                                    <td>@currency( $pembayaran->pivot->total)</td>
                                     <td></td>
                                     <td></td>
                                 </tr>
@@ -89,16 +89,16 @@
                                     @endif
                                     <td>{{$retur->kode_retur ? $retur->kode_retur : '-' }}</td>
                                     <td>{{$retur->tanggal ? $retur->tanggal : '-' }}</td>
-                                    <td>{{ $retur->total_harga ? $retur->total_harga : '-' }}</td>
+                                    <td>@currency($retur->total_harga)</td>
                                     <td></td>
                                     <td></td>
                                 </tr>
                                 @endforeach
                                 <tr>
                                     <td colspan="3">Total</td>
-                                    <td>{{ $lunas ?? '-' }}</td>
-                                    <td>{{ $hutang->total_hutang ? $hutang->total_hutang : '-' }}</td>
-                                    <td>{{ $sisa ?? '-' }}</td>
+                                    <td>@currency( $lunas)</td>
+                                    <td>@currency( $hutang->total_hutang)</td>
+                                    <td>@currency( $sisa)</td>
                                 </tr>
                             </tbody>
                         </table>

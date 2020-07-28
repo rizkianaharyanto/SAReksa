@@ -26,7 +26,7 @@
     <td>{{ $penerimaan->kode_penerimaan }}</td>
     <td>{{ $penerimaan->pemasok->nama_pemasok }}</td>
     <td>{{ $penerimaan->tanggal }}</td>
-    <td>{{ $penerimaan->total_harga }}</td>
+    <td>@currency($penerimaan->total_harga)</td>
     <td>
         @if ($penerimaan->status == 'sudah posting')
         sudah posting

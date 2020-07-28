@@ -26,7 +26,7 @@
     <td>{{ $retur->kode_retur }}</td>
     <td>{{ $retur->pemasok->nama_pemasok }}</td>
     <td>{{ $retur->tanggal }}</td>
-    <td>{{ $retur->total_harga }}</td>
+    <td>@currency($retur->total_harga)</td>
     <td>
         @if ($retur->status_posting == 'sudah posting')
         sudah posting

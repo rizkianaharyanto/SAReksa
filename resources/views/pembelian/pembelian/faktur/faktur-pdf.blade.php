@@ -71,8 +71,8 @@
                                             <td>{{$barang->nama_barang ? $barang->nama_barang : '-' }}</td>
                                             <td>{{$barang->pivot->jumlah_barang ? $barang->pivot->jumlah_barang : '-' }}</td>
                                             <td>{{ $barang->pivot->unit ? $barang->pivot->unit : '-' }}</td>
-                                            <td>{{ $barang->pivot->harga ? $barang->pivot->harga : '-' }}</td>
-                                            <td>{{$total_harga[$index]}}</td>
+                                            <td>@currency($barang->pivot->harga)</td>
+                                            <td>@currency($total_harga[$index])</td>
                                         </tr>
                                         @endforeach
                                     </tbody>
@@ -88,32 +88,32 @@
                                                 <td class="left">
                                                     <strong class="text-dark">Subtotal</strong>
                                                 </td>
-                                                <td class="right">{{$subtotal}}</td>
+                                                <td class="right">@currency($subtotal)</td>
                                             </tr>
                                             <tr>
                                                 <td class="left">
                                                     <strong class="text-dark">Diskon</strong>
                                                 </td>
-                                                <td class="right">{{$diskon}}</td>
+                                                <td class="right">@currency($diskon)</td>
                                             </tr>
                                             <tr>
                                                 <td class="left">
                                                     <strong class="text-dark">Biaya Lain</strong>
                                                 </td>
-                                                <td class="right">{{$biaya_lain}}</td>
+                                                <td class="right">@currency($biaya_lain)</td>
                                             </tr>
                                             <tr>
                                                 <td class="left">
                                                     <strong class="text-dark">Uang Muka</strong>
                                                 </td>
-                                                <td class="right">{{$uang_muka}}</td>
+                                                <td class="right">@currency($uang_muka)</td>
                                             </tr>
                                             <tr>
                                                 <td class="left">
                                                     <strong class="text-dark">Total</strong>
                                                 </td>
                                                 <td class="right">
-                                                    <strong class="text-dark">{{$total_seluruh}}</strong>
+                                                    <strong class="text-dark">@currency($total_seluruh)</strong>
                                                 </td>
                                             </tr>
                                         </tbody>

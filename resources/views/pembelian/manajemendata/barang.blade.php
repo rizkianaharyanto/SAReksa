@@ -25,7 +25,7 @@
 <tr>
     <td>{{ $barang['kode_barang']}}</td>
     <td>{{ $barang['nama_barang']}}</td>
-    <td>{{ $barang['harga_retail'] }}</td>
+    <td>@currency($barang['harga_retail'])</td>
     <!-- <td>{{ $barang['harga_grosir'] }}</td> -->
     <td>{{ $barang['kuantitas_total'] !=null ? $barang['kuantitas_total'] : '-' }}</td>
     <td class="d-flex justify-content-between">

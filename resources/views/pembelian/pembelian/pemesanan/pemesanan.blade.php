@@ -26,7 +26,7 @@
     <td>{{ $pemesanan->kode_pemesanan }}</td>
     <td>{{ $pemesanan->pemasok->nama_pemasok }}</td>
     <td>{{ $pemesanan->tanggal }}</td>
-    <td>{{ $pemesanan->total_harga }}</td>
+    <td>@currency($pemesanan->total_harga)</td>
     <td>{{ $pemesanan->status !=null ? $pemesanan->status  : '-' }}</td>
     <td class="d-flex justify-content-between">
         <a id="details" href="/pembelian/pemesananshow/{{$pemesanan->id}}">

@@ -61,8 +61,8 @@
                                                 <td>{{ $retur->kode_retur }}</td>
                                                 <td>{{ $retur->pemasok->nama_pemasok }}</td>
                                                 <td>{{ $retur->tanggal }}</td>
-                                                <td>{{ $retur->diskon_rp }}</td>
-                                                <td>{{ $retur->total_harga }}</td>
+                                                <td>@currency($retur->diskon_rp)</td>
+                                                <td>@currency($retur->total_harga)</td>
                                                 <!-- <td>{{ $retur->status !=null ? $retur->status  : '-' }}</td> -->
                                             </tr>
                                             @endforeach
@@ -98,8 +98,8 @@
                                         <tr>
                                             <td>{{ $retur->kode_retur }}</td>
                                             <td>{{ $retur->tanggal }}</td>
-                                            <td>{{ $retur->diskon_rp }}</td>
-                                            <td>{{ $retur->total_harga }}</td>
+                                            <td>@currency($retur->diskon_rp)</td>
+                                            <td>@currency($retur->total_harga)</td>
                                             <!-- <td>{{ $retur->status !=null ? $retur->status  : '-' }}</td> -->
                                         </tr>
                                         @endforeach

@@ -25,7 +25,7 @@
     <td>{{ $permintaan->kode_permintaan }}</td>
     <td>{{ $permintaan->pemasok->nama_pemasok }}</td>
     <td>{{ $permintaan->tanggal }}</td>
-    <td>{{ $permintaan->total_harga }}</td>
+    <td>@currency($permintaan->total_harga)</td>
     <td class="d-flex justify-content-between">
         <a id="details" href="/pembelian/permintaanshow/{{$permintaan->id}}">
             <button class="btn-info">

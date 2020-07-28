@@ -33,8 +33,8 @@
         @else -
         @endif
     </td>
-    <td>{{ $hutang->lunas ? $hutang->lunas : '-' }}</td>
-    <td>{{ $hutang->sisa ? $hutang->sisa : '-' }}</td>
+    <td>@currency($hutang->lunas)</td>
+    <td>@currency($hutang->sisa)</td>
     <td>{{ $hutang->status ? $hutang->status : '-' }}</td>
     <td class="d-flex justify-content-between">
         <a id="details" href="/pembelian/hutangshow/{{$hutang->id}}">

@@ -26,9 +26,9 @@
 @else
 <tr>
     <td>{{ $pemasok->nama_pemasok }}</td>
-    <td>{{ $totals[$index]['total_hutang']}}</td>
-    <td>{{ $lunass[$index]['lunas']}}</td>
-    <td>{{ $sisas[$index]['sisa']}}</td>
+    <td>@currency($totals[$index]['total_hutang'])</td>
+    <td>@currency($lunass[$index]['lunas'])</td>
+    <td>@currency($sisas[$index]['sisa'])</td>
     <td class="d-flex justify-content-between">
         <a href="/pembelian/hutangs/{{$pemasok->id}}">
             <button class="btn-outline-info">

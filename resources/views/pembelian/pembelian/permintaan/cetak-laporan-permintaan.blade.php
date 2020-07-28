@@ -61,9 +61,9 @@
                                                 <td>{{ $permintaan->kode_permintaan }}</td>
                                                 <td>{{ $permintaan->pemasok->nama_pemasok }}</td>
                                                 <td>{{ $permintaan->tanggal }}</td>
-                                                <td>{{ $permintaan->diskon_rp }}</td>
-                                                <td>{{ $permintaan->biaya_lain }}</td>
-                                                <td>{{ $permintaan->total_harga }}</td>
+                                                <td>@currency($permintaan->diskon_rp)</td>
+                                                <td>@currency($permintaan->biaya_lain)</td>
+                                                <td>@currency($permintaan->total_harga)</td>
                                             </tr>
                                             @endforeach
                                         </tbody>
@@ -98,9 +98,9 @@
                                         <tr>
                                             <td>{{ $permintaan->kode_permintaan }}</td>
                                             <td>{{ $permintaan->tanggal }}</td>
-                                            <td>{{ $permintaan->diskon_rp }}</td>
-                                            <td>{{ $permintaan->biaya_lain }}</td>
-                                            <td>{{ $permintaan->total_harga }}</td>
+                                            <td>@currency($permintaan->diskon_rp)</td>
+                                            <td>@currency($permintaan->biaya_lain)</td>
+                                            <td>@currency($permintaan->total_harga)</td>
                                         </tr>
                                         @endforeach
                                     </tbody>

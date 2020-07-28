@@ -39,7 +39,7 @@ Route::prefix('pembelian')->group(function () {
     Route::resource('/pengirims', 'Pembelian\PengirimsController')->middleware('auth.pembelian');
     Route::resource('/fakturs', 'Pembelian\FaktursController')->middleware(['auth.pembelian', 'checkPembelian:Admin Pembelian,Admin Retur Pembelian,Admin Utang']);
     Route::get('/fakturshow/{id}', 'Pembelian\FaktursController@show2')->middleware(['auth.pembelian', 'checkPembelian:Admin Pembelian,Admin Retur Pembelian,Admin Utang']);
-    Route::get('/fakturs/cetak_pdf', 'Pembelian\FaktursController@cetak_pdf')->middleware(['auth.pembelian', 'checkPembelian:Admin Pembelian,Admin Retur Pembelian,Admin Utang']);
+    Route::get('/faktur/cetak_pdf', 'Pembelian\FaktursController@cetak_pdf')->middleware(['auth.pembelian', 'checkPembelian:Admin Pembelian,Admin Retur Pembelian,Admin Utang']);
 
     Route::group(['middleware' => ['auth.pembelian', 'checkPembelian:Admin Pembelian']], function () {
         Route::resource('/pemesanans', 'Pembelian\PemesanansController');
@@ -50,9 +50,9 @@ Route::prefix('pembelian')->group(function () {
         Route::get('/pemesananshow/{id}', 'Pembelian\PemesanansController@show2');
         Route::get('/penerimaanshow/{id}', 'Pembelian\PenerimaansController@show2');
 
-        Route::get('/permintaans/cetak_pdf', 'Pembelian\PermintaansController@cetak_pdf');
-        Route::get('/pemesanans/cetak_pdf', 'Pembelian\PemesanansController@cetak_pdf');
-        Route::get('/penerimaans/cetak_pdf', 'Pembelian\PenerimaansController@cetak_pdf');
+        Route::get('/permintaan/cetak_pdf', 'Pembelian\PermintaansController@cetak_pdf');
+        Route::get('/pemesanan/cetak_pdf', 'Pembelian\PemesanansController@cetak_pdf');
+        Route::get('/penerimaan/cetak_pdf', 'Pembelian\PenerimaansController@cetak_pdf');
 
         Route::get('/postingpnm/{idnya}', 'Pembelian\PenerimaansController@posting');
         Route::get('/ubahpsn/{idnya}', 'Pembelian\PenerimaansController@ubahpsn');
@@ -66,7 +66,7 @@ Route::prefix('pembelian')->group(function () {
 
         Route::get('/returshow/{id}', 'Pembelian\RetursController@show2');
 
-        Route::get('/returs/cetak_pdf', 'Pembelian\RetursController@cetak_pdf');
+        Route::get('/retur/cetak_pdf', 'Pembelian\RetursController@cetak_pdf');
 
         Route::get('/postingret/{idnya}', 'Pembelian\RetursController@posting');
     });
@@ -85,8 +85,8 @@ Route::prefix('pembelian')->group(function () {
         Route::get('/pembayaranshow/{id}', 'Pembelian\PembayaransController@show2');
         Route::get('/hutangshow/{id}', 'Pembelian\HutangsController@show2');
 
-        Route::get('/pembayarans/cetak_pdf', 'Pembelian\PembayaransController@cetak_pdf');
-        Route::get('/hutangs/cetak_pdf', 'Pembelian\HutangsController@cetak_pdf');
+        Route::get('/pembayaran/cetak_pdf', 'Pembelian\PembayaransController@cetak_pdf');
+        Route::get('/hutang/cetak_pdf', 'Pembelian\HutangsController@cetak_pdf');
 
         Route::get('/postingpem/{idnya}', 'Pembelian\PembayaransController@posting');
     });

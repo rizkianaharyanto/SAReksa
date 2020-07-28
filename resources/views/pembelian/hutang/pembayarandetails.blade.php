@@ -11,7 +11,7 @@
 @endsection
 
 @section('isi')
-<form action="/pembelian/pembayarans/cetak_pdf">
+<form action="/pembelian/pembayaran/cetak_pdf">
     <div class="d-flex justify-content-end mx-5">
         <!-- <a class="px-2" href="">Export Excel | </a> -->
         <button class="btn btn-light"><a class="px-2" id="pdf" target="_blank">Export PDF</a></button>
@@ -58,7 +58,7 @@
                                 <tr>
                                     <td>{{$hutang->kode_hutang ? $hutang->kode_hutang : '-' }}</td>
                                     <td>{{$hutang->faktur->kode_faktur ? $hutang->faktur->kode_faktur : '-' }}</td>
-                                    <td>{{ $hutang->pivot->total ? $hutang->pivot->total : '-' }}</td>
+                                    <td>@currency( $hutang->pivot->total)</td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -75,7 +75,7 @@
                                             <strong class="text-dark">Total</strong>
                                         </td>
                                         <td class="right">
-                                            <strong class="text-dark">{{$total_seluruh}}</strong>
+                                            <strong class="text-dark">@currency($total_seluruh)</strong>
                                         </td>
                                     </tr>
                                 </tbody>

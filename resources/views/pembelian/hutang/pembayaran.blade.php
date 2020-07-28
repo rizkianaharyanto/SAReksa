@@ -26,7 +26,7 @@
     <td>{{ $pembayaran->kode_pembayaran }}</td>
     <td>{{ $pembayaran->pemasok->nama_pemasok }}</td>
     <td>{{ $pembayaran->tanggal }}</td>
-    <td>{{ $pembayaran->total }}</td>
+    <td>@currency($pembayaran->total)</td>
     <td>@if ($pembayaran->status)
         {{ $pembayaran->status }}
         @else
