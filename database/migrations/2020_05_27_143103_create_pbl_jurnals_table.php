@@ -18,6 +18,7 @@ class CreatePblJurnalsTable extends Migration
             $table->string('kode_jurnal');
             $table->integer('debit');
             $table->integer('kredit');
+            $table->date('tanggal')->nullable();
             $table->timestamps();
             //fk
             $table->bigInteger('akun_id')->nullable();

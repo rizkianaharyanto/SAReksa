@@ -20,6 +20,7 @@ class CreateStkGudangTable extends Migration
             $table->text('no_telp');
             $table->enum('status', ['tidak aktif','aktif']);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -19,6 +19,7 @@ class CreatePblHutangsTable extends Migration
             $table->integer('total_hutang');
             $table->integer('total_lunas');
             $table->integer('total_sisa');
+            $table->date('tanggal')->nullable();
             $table->timestamps();
             $table->string('transaction_type')->nullable();
             //fk

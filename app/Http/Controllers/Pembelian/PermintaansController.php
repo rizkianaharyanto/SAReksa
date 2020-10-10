@@ -24,6 +24,121 @@ class PermintaansController extends Controller
         return view('pembelian.pembelian.permintaan.permintaan', compact('permintaans'));
     }
 
+    public function laporan()
+    {
+        $pemasoks = Pemasok::all();
+        $permintaans = permintaan::all();
+        $supplier = null;
+        $start = null;
+        $end = null;
+
+        return view('pembelian.pembelian.permintaan.laporan-permintaan', [
+            'permintaans' => $permintaans,
+            'pemasoks' => $pemasoks,
+            'supplier' => $supplier,
+            'start' => $start,
+            'end' => $end
+        ]);
+    }
+
+    public function laporanfilter(Request $date)
+    {
+        if ($date->pemasok_id == null) {
+            if ($date->start == null) {
+                $pemasoks = Pemasok::all();
+                $permintaans = permintaan::all();
+                $supplier = null;
+                $start = null;
+                $end = null;
+            } else {
+                $pemasoks = Pemasok::all();
+                $permintaans = permintaan::select("pbl_permintaans.*")
+                    ->whereBetween('tanggal', [$date->start, $date->end])
+                    ->get();
+                $supplier = null;
+                $start = $date->start;
+                $end = $date->end;
+            }
+        } else {
+            if ($date->start == null) {
+                $pemasoks = Pemasok::all();
+                $supplier = Pemasok::find($date->pemasok_id);
+                $start = null;
+                $end = null;
+                $permintaans = permintaan::select("pbl_permintaans.*")
+                    ->where('pemasok_id', $date->pemasok_id)
+                    ->get();
+            } else {
+                $pemasoks = Pemasok::all();
+                $supplier = Pemasok::find($date->pemasok_id);
+                $start = $date->start;
+                $end = $date->end;
+                $permintaans = permintaan::select("pbl_permintaans.*")
+                    ->where('pemasok_id', $date->pemasok_id)
+                    ->whereBetween('tanggal', [$date->start, $date->end])
+                    ->get();
+            }
+        }
+
+        return view('pembelian.pembelian.permintaan.laporan-permintaan', [
+            'permintaans' => $permintaans,
+            'pemasoks' => $pemasoks,
+            'supplier' => $supplier,
+            'start' => $start,
+            'end' => $end
+        ]);
+    }
+
+    public function cetaklaporan(Request $date)
+    {
+        if ($date->pemasok_id == null) {
+            if ($date->start == null) {
+                $pemasoks = Pemasok::all();
+                $permintaans = permintaan::all();
+                $supplier = null;
+                $start = null;
+                $end = null;
+            } else {
+                $pemasoks = Pemasok::all();
+                $permintaans = permintaan::select("pbl_permintaans.*")
+                    ->whereBetween('tanggal', [$date->start, $date->end])
+                    ->get();
+                $supplier = null;
+                $start = $date->start;
+                $end = $date->end;
+            }
+        } else {
+            if ($date->start == null) {
+                $pemasoks = Pemasok::all();
+                $supplier = Pemasok::find($date->pemasok_id);
+                $start = null;
+                $end = null;
+                $permintaans = permintaan::select("pbl_permintaans.*")
+                    ->where('pemasok_id', $date->pemasok_id)
+                    ->get();
+            } else {
+                $pemasoks = Pemasok::all();
+                $supplier = Pemasok::find($date->pemasok_id);
+                $start = $date->start;
+                $end = $date->end;
+                $permintaans = permintaan::select("pbl_permintaans.*")
+                    ->where('pemasok_id', $date->pemasok_id)
+                    ->whereBetween('tanggal', [$date->start, $date->end])
+                    ->get();
+            }
+        }
+
+        $pdf = PDF::loadview('pembelian.pembelian.permintaan.cetak-laporan-permintaan', [
+            'permintaans' => $permintaans,
+            'pemasoks' => $pemasoks,
+            'supplier' => $supplier,
+            'start' => $start,
+            'end' => $end
+        ]);
+
+        return $pdf->download('laporan-permintaan.pdf');
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -50,7 +165,7 @@ class PermintaansController extends Controller
     {
         $pr = Permintaan::max('id') + 1;
         $permintaan = Permintaan::create([
-            'kode_permintaan' => 'PR-'.$pr,
+            'kode_permintaan' => 'PR-' . $pr,
             'pemasok_id' => $request->pemasok_id,
             'gudang' => $request->gudang,
             'tanggal' => $request->tanggal,
@@ -59,6 +174,7 @@ class PermintaansController extends Controller
             'biaya_lain' => $request->biaya_lain,
             'total_jenis_barang' => 3,
             'total_harga' => $request->total_harga_keseluruhan,
+            'status' => 'baru'
         ]);
 
         foreach ($request->barang_id as $index => $id) {
@@ -84,9 +200,21 @@ class PermintaansController extends Controller
     {
         $permintaan = Permintaan::find($id);
         $barangs = $permintaan->barangs;
+        $total_seluruh_pr = $permintaan->total_harga;
+        $total_harga_pr = [];
+        $subtotal_pr = 0;
+        foreach ($barangs as $index => $barang) {
+            $total_harga_pr[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
+            $subtotal_pr += $total_harga_pr[$index];
+        }
         // $unit = $barangs->unit;
         return response()
-        ->json(['success' => true, 'permintaan' => $permintaan, 'barangs' => $barangs]);
+            ->json([
+                'success' => true, 'permintaan' => $permintaan, 'barangs' => $barangs,
+                'total_seluruh_pr' => $total_seluruh_pr,
+                'total_harga_pr' => $total_harga_pr,
+                'subtotal_pr' => $subtotal_pr,
+            ]);
     }
 
     public function show2($id)
@@ -139,9 +267,19 @@ class PermintaansController extends Controller
             'total_harga' => $total_harga,
             'subtotal' => $subtotal,
             'total_seluruh' => $total_seluruh,
-            ]);
+        ]);
 
         return $pdf->download('permintaan.pdf');
+        // return view('pembelian.pembelian.permintaan.permintaan-pdf', [
+        //     'permintaan' => $permintaan,
+        //     'gudang' => $gudang,
+        //     'barangs' => $barangs,
+        //     'diskon' => $diskon,
+        //     'biaya_lain' => $biaya_lain,
+        //     'total_harga' => $total_harga,
+        //     'subtotal' => $subtotal,
+        //     'total_seluruh' => $total_seluruh,
+        //     ]);
     }
 
     /**
@@ -181,6 +319,7 @@ class PermintaansController extends Controller
                 'biaya_lain' => $request->biaya_lain,
                 'total_jenis_barang' => 3,
                 'total_harga' => $request->total_harga_keseluruhan,
+                'status' => 'baru'
             ]);
         $permintaan->barangs()->detach();
         foreach ($request->barang_id as $index => $id) {
@@ -204,6 +343,7 @@ class PermintaansController extends Controller
      */
     public function destroy(Permintaan $permintaan)
     {
+        $permintaan->barangs()->detach();
         Permintaan::destroy($permintaan->id);
 
         return redirect('/pembelian/permintaans');

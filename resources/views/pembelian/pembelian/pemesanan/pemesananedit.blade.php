@@ -1,13 +1,23 @@
-@extends('pembelian.template.template')
+@extends('pembelian.template.templatebaru')
 
-@section('judul', 'edit')
+@section('judul', 'Ubah Pemesanan')
 
-@section('halaman', 'Edit Pesanan')
+@section('halaman', 'Ubah Pemesanan')
+
+@section('path')
+<li><a href="#">Transaksi</a></li>
+<li><a href="/pembelian/pemesanans">Pemesanan</a></li>
+<li class="active">Ubah Pemesanan</li>
+@endsection
+
+@section('alert')
+@include('pembelian.alert')
+@endsection
 
 @section('isi')
 
 <div class="d-flex justify-content-center">
-    <div id="stepper" class="bs-stepper align-self-end" style=" width:80vw; max-height:60vh; color:black;">
+    <div id="stepper" class="bs-stepper align-self-end" style=" width:70vw; color:black;">
         <div class="bs-stepper-header">
             <div class="step" data-target="#test-l-1">
                 <button type="button" class="btn step-trigger">
@@ -37,12 +47,14 @@
                 @method('put')
                 @csrf
                 <div id="test-l-1" class="content">
+
+                    <input type="hidden" id="status" name="status" value="baru">
                     <input type="hidden" id="kode_pemesanan" name="kode_pemesanan" placeholder="" value="{{$pemesanan->kode_pemesanan}}">
-                    <div style="height: 58vh;overflow: auto; color:black" class="mt-2">
+                    <div style="overflow: auto; color:black" class="mt-2">
                         <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="pemasok_id">pemasok</label>
                             <div class="col-sm-9">
-                                <select class="form-control" id="pemasok_id" name="pemasok_id">
+                                <select required class="form-control" id="pemasok_id" name="pemasok_id">
                                     <option value="">--- Pilih Pemasok ---</option>
                                     @foreach ($pemasoks as $pemasok)
                                     <option value="{{$pemasok->id}}" {{$pemasok->id == "$pemesanan->pemasok_id" ? "selected" : "" }}>{{ $pemasok->nama_pemasok }}</option>
@@ -53,7 +65,7 @@
                         <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="gudang">Gudang</label>
                             <div class="col-sm-9">
-                                <select class="form-control" id="gudang" name="gudang">
+                                <select required class="form-control" id="gudang" name="gudang">
                                     <option value="">--- Pilih Gudang ---</option>
                                     @foreach ($gudangs as $gudang)
                                     <option value="{{$gudang->id}}" {{$gudang->id == "$pemesanan->gudang" ? "selected" : "" }}>{{ $gudang->kode_gudang }}</option>
@@ -64,10 +76,10 @@
                         <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="tanggal">Tanggal</label>
                             <div class="col-sm-9">
-                                <input type="date" class="form-control" id="tanggal" name="tanggal" value="{{$pemesanan->tanggal}}">
+                                <input required type="date" class="form-control" id="tanggal" name="tanggal" value="{{$pemesanan->tanggal}}">
                             </div>
                         </div>
-                        <div class="form-group row mx-5 mb-5">
+                        <!-- <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="mata-uang">Mata Uang</label>
                             <div class="col-sm-9">
                                 <select class="form-control" id="mata-uang" name="mata_uang">
@@ -75,7 +87,7 @@
                                     <option value="">IDR</option>
                                 </select>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="modal-footer">
                         <a href="/pembelian/pemesanans">
@@ -86,12 +98,12 @@
                 </div>
 
                 <div id="test-l-2" class="content">
-                    <div style="overflow: auto; height: 52vh;" id="formbarang">
+                    <div style="overflow: auto; " id="formbarang">
                         @foreach ($pemesanan->barangs as $pemesananbarang)
                         <div class="form-row mx-5" id="isiformbarang0">
                             <div class="form-group col-md-3">
                                 <label for="nama_barang" id="lbl">Barang</label>
-                                <select class="form-control" onchange="isi(this)" id="barang_id" name="barang_id[]">
+                                <select required class="form-control" onchange="isi(this)" id="barang_id" name="barang_id[]">
                                     <option value="">--- Pilih Barang ---</option>
                                     @foreach ($barangs as $barang)
                                     <option value="{{$barang->id}}" {{$barang->id == $pemesananbarang->pivot->barang_id ? "selected" : "" }}>{{ $barang->nama_barang }}</option>
@@ -100,7 +112,7 @@
                             </div>
                             <div class="form-group col-md-1">
                                 <label for="jumlah_barang">QTY</label>
-                                <input type="number" class="form-control" id="jumlah_barang" name="jumlah_barang[]" onfocus="startCalc(this);" onblur="stopCalc();" placeholder="-" value="{{$pemesananbarang->pivot->jumlah_barang}}">
+                                <input required type="number" min="0" class="form-control" id="jumlah_barang" name="jumlah_barang[]" onfocus="startCalc(this);" onblur="stopCalc();" placeholder="-" value="{{$pemesananbarang->pivot->jumlah_barang}}">
                             </div>
                             <div class="form-group col-md-1">
                                 <label for="satuan_unit">Unit</label>
@@ -113,7 +125,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" class="form-control" id="harga" name="harga[]" onfocus="startCalc(this);" onblur="stopCalc();" value="{{$pemesananbarang->pivot->harga}}" placeholder="-">
+                                    <input required type="number" min="0" class="form-control" id="harga" name="harga[]" onfocus="startCalc(this);" onblur="stopCalc();" value="{{$pemesananbarang->pivot->harga}}" placeholder="-">
                                 </div>
                             </div>
                             <div class="form-group col-md-3">
@@ -122,9 +134,10 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" class="form-control" id="total" name="total[]" disabled>
+                                    <input type="number" required min="0" class="form-control" id="total" name="total[]" disabled>
                                 </div>
                             </div>
+                            <input type="hidden" id="status_barang" name="status_barang[]" value="{{$pemesananbarang->pivot->status_barang}}">
                             <div class="form-group col-md-1">
                                 <p style="color: transparent">#</p>
                                 <a onclick="hapus(this)">
@@ -146,7 +159,7 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Rp</div>
                                 </div>
-                                <input style="width:26vw" type="number" name="total_harga_barang" id="total_harga_barang" disabled>
+                                <input style="width:26vw" type="number" min="0" name="total_harga_barang" id="total_harga_barang" disabled>
                             </div>
                         </div>
                         <a href="/pembelian/pemesanans">
@@ -157,15 +170,23 @@
                     </div>
                 </div>
                 <div id="test-l-3" class="content">
-                    <div style="height: 58vh;overflow:auto" class="mt-2">
+                    <div style="overflow:auto" class="mt-2">
                         <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="diskon">Diskon</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-3">
                                 <div class="input-group mb-2">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">%</div>
                                     </div>
-                                    <input type="number" class="form-control" id="diskon" onchange="disc();" name="diskon"  value="{{$pemesanan->diskon}}" placeholder="-">
+                                    <input type="number" min="0" required class="form-control" id="diskon" onchange="disc();" name="diskon" value="{{$pemesanan->diskon}}" placeholder="-">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="input-group mb-2">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Rp</div>
+                                    </div>
+                                    <input type="number" min="0" required class="form-control" id="disk" onchange="disc();" name="disk" placeholder="-">
                                 </div>
                             </div>
                         </div>
@@ -176,11 +197,11 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input type="number" class="form-control" name="biaya_lain" onchange="disc();" id="biaya_lain" value="{{$pemesanan->biaya_lain}}" placeholder="-">
+                                    <input type="number" min="0" required class="form-control" name="biaya_lain" onchange="disc();" id="biaya_lain" value="{{$pemesanan->biaya_lain}}" placeholder="-">
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group row mx-5 mb-5">
+                        <!-- <div class="form-group row mx-5 mb-5">
                             <label class="col-sm-3 col-form-label" for="termin_pembayaran">Termin Pembayaran</label>
                             <div class="col-sm-9">
                                 <select class="form-control" id="termin_pembayaran" name="termin_pembayaran">
@@ -188,7 +209,7 @@
                                     <option value="">0 % 0 Net 0</option>
                                 </select>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="form-group row m-5 d-flex justify-content-end">
                             <label class="col-sm-3 col-form-label" for="total_harga_keseluruhan">Total</label>
                             <div class="col-sm-9">
@@ -196,7 +217,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                     </div>
-                                    <input style="width:26vw" type="number" value="{{$pemesanan->total_harga}}" id="total_harga_kes" disabled>
+                                    <input style="width:26vw" type="number" min="0" value="{{$pemesanan->total_harga}}" id="total_harga_kes" disabled>
                                     <input type="hidden" name="total_harga_keseluruhan" value="{{$pemesanan->total_harga}}" id="total_harga_keseluruhan">
                                 </div>
                             </div>
@@ -283,20 +304,26 @@
                     // $('#mata_uang').val(data.permintaan.mata_uang)
                     // $('#status').val('baru')
                     $('#diskon').val(data.permintaan.diskon)
+                    $('#disk').val(data.permintaan.diskon_rp)
                     $('#biaya_lain').val(data.permintaan.biaya_lain)
+                    $('#total_harga_barang').val(data.subtotal_pr)
+                    $('#total_harga_kes').val(data.total_seluruh_pr)
+                    $('#total_harga_keseluruhan').val(data.total_seluruh_pr)
                     $('#barang_id').val(data.barangs[0].id)
                     $('#unit').val(data.barangs[0].pivot.unit)
-                    $('#uni').attr('placeholder',data.barangs[0].pivot.unit)
+                    $('#uni').attr('placeholder', data.barangs[0].pivot.unit)
                     $('#jumlah_barang').val(data.barangs[0].pivot.jumlah_barang)
                     $('#harga').val(data.barangs[0].pivot.harga)
+                    $('#total').val(data.total_harga_pr[0])
                     $('#status_barang').val('belum diterima')
                     for (var i = 1; i <= data.barangs.length - 1; i++) {
                         $("#formbarang").append($("#isiformbarang0").clone().attr('id', 'isiformbarang' + i));
                         $("#isiformbarang" + i).children().children('select').val(data.barangs[i].id)
                         $("#isiformbarang" + i).children().children('#jumlah_barang').val(data.barangs[i].pivot.jumlah_barang)
                         $("#isiformbarang" + i).children().children().children('#harga').val(data.barangs[i].pivot.harga)
+                        $("#isiformbarang" + i).children().children().children('#total').val(data.total_harga_pr[i])
                         $("#isiformbarang" + i).children().children('#unit').val(data.barangs[i].pivot.unit)
-                        $("#isiformbarang" + i).children().children('#uni').attr('placeholder',data.barangs[i].pivot.unit)
+                        $("#isiformbarang" + i).children().children('#uni').attr('placeholder', data.barangs[i].pivot.unit)
                         $("#isiformbarang" + i).children('#status_barang').val('belum diterima')
                         // console.log(data.barangs[i].pivot.harga)
                         // $("#isiformbarang" + i).children().children('input').attr('id', 'total' + i)
@@ -322,18 +349,28 @@
     });
 
     function disc() {
-        dis = $('#diskon').val() / 100;
+        dis = parseInt($('#diskon').val()) / 100;
         biy = parseInt($('#biaya_lain').val());
-        akhir = parseInt($('#total_harga_barang').val())
-        akhir1 = akhir - (akhir * dis)
-        akhir2 = akhir1 + biy
-        if (akhir2) {
-            $('#total_harga_kes').val(akhir2)
-            $('#total_harga_keseluruhan').val(akhir2)
-        } else {
-            $('#total_harga_kes').val(akhir1)
-            $('#total_harga_keseluruhan').val(akhir1)
+        dp = 0
+        barang = parseInt($('#total_harga_barang').val())
+        $('#akun_barang').val(barang)
+        diskon = (barang * dis)
+        $('#disk').val(diskon)
+        barangafterdiskon = barang - diskon
+        hutang = barangafterdiskon + biy - dp
+        $('#hutang').val(hutang)
+        if (hutang) {
+            $('#total_harga_kes').val(hutang)
+            $('#total_harga_keseluruhan').val(hutang)
         }
+        console.log(
+            'barang:', barang,
+            'dis:', dis,
+            'diskon:', diskon,
+            'hutang:', hutang,
+            'biaya:', biy,
+            'dp:', dp,
+        )
     }
 
 

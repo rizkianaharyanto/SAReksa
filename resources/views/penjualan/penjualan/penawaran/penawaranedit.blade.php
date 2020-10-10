@@ -10,14 +10,14 @@
 <div class="content">
         <div class="row">
             <div class="col-md-12">
-                <div class="">
+                <div class="card">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="card card-plain">
+                                <div class="card card-plain" style='margin-bottom:-40px'>
                                     <div class="card-body">
                                         <div class="d-flex justify-content-center">
-                                            <div id="stepper" class="bs-stepper align-self-end" style=" width:80vw; max-height:60vh; color:#212120;">
+                                            <div id="stepper" class="bs-stepper align-self-end" style=" width:80vw; max-height:; color:#212120;">
                                                 <div class="bs-stepper-header">
                                                     <div class="step" data-target="#test-l-1">
                                                         <button type="button" class="btn step-trigger">
@@ -48,12 +48,12 @@
                                                         @csrf
                                                         <div id="test-l-1" class="content">
                                                         <input type="hidden" id="kode_penawaran" name="kode_penawaran" placeholder="" value="{{$penawaran->kode_penawaran}}">
-                                                            <div style="height: 58vh;overflow: auto; color:#212120" class="mt-2">
+                                                            <div style="height: ;overflow: auto; color:#212120" class="mt-2">
                                                                 <div class="form-group row mx-5 mb-5">
                                                                     <label class="col-sm-3 col-form-label" for="pelanggan_id">Pelanggan</label>
                                                                     <div class="col-sm-9">
                                                                         <select class="form-control" id="pelanggan_id" name="pelanggan_id">
-                                                                            <option value="">--- Pilih Pelanggan ---</option>
+                                                                            <option value="" disabled selected hidden>--- Pilih Pelanggan ---</option>
                                                                             @foreach ($pelanggans as $pelanggan)
                                                                             <option value="{{$pelanggan->id}}" {{ $pelanggan->id ==  "$penawaran->pelanggan_id" ? "selected" : "" }}>{{ $pelanggan->nama_pelanggan }} </option>
                                                                             @endforeach
@@ -64,7 +64,7 @@
                                                                     <label class="col-sm-3 col-form-label" for="penjual_id">Sales</label>
                                                                     <div class="col-sm-9">
                                                                         <select class="form-control" id="penjual_id" name="penjual_id">
-                                                                            <option value="">--- Pilih Sales ---</option>
+                                                                            <option value="" disabled selected hidden>--- Pilih Sales ---</option>
                                                                             @foreach ($penjuals as $penjual)
                                                                             <option value="{{$penjual->id}}" {{ $penjual->id ==  "$penawaran->penjual_id" ? "selected" : "" }}>{{ $penjual->nama_penjual }} </option>
                                                                             @endforeach
@@ -75,7 +75,7 @@
                                                                     <label class="col-sm-3 col-form-label" for="gudang">Gudang</label>
                                                                     <div class="col-sm-9">
                                                                         <select class="form-control" id="gudang" name="gudang">
-                                                                            <option value="">--- Pilih Gudang ---</option>
+                                                                            <option value="" disabled selected hidden>--- Pilih Gudang ---</option>
                                                                             @foreach ($gudangs as $gudang)
                                                                             <option value="{{$gudang->id}}" {{$gudang->id == "$penawaran->gudang" ? "selected" : "" }}>{{ $gudang->kode_gudang }}</option>
                                                                             @endforeach
@@ -88,15 +88,7 @@
                                                                         <input type="date" class="form-control" id="tanggal" name="tanggal" value="{{$penawaran->tanggal}}">
                                                                     </div>
                                                                 </div>
-                                                                <div class="form-group row mx-5 mb-5">
-                                                                    <label class="col-sm-3 col-form-label" for="mata-uang">Mata Uang</label>
-                                                                    <div class="col-sm-9">
-                                                                        <select class="form-control" id="mata-uang" name="mata_uang">
-                                                                            <option value="">--- Pilih Mata Uang ---</option>
-                                                                            <option selected value="">IDR</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
+                                                                
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <a href="/penjualan/penawarans">
@@ -107,13 +99,13 @@
                                                         </div>
 
                                                         <div id="test-l-2" class="content">
-                                                            <div style="overflow: auto; height: 52vh;" id="formbarang">
+                                                            <div style="overflow: auto; height: ;" id="formbarang">
                                                             @foreach ($penawaran->barangs as $penawaranbarang)
                                                                 <div class="form-row mx-5" id="isiformbarang">
                                                                     <div class="col-md-3">
                                                                         <label for="barang_id" id="lbl">Barang</label>
                                                                         <select class="form-control" onchange="isi(this)" id="barang_id" name="barang_id[]">
-                                                                            <option value="">--- Pilih Barang ---</option>
+                                                                            <option value="" disabled selected hidden>--- Pilih Barang ---</option>
                                                                             @foreach ($barangs as $barang)
                                                                             <option value="{{$barang->id}}" {{$barang->id == $penawaranbarang->pivot->barang_id ? "selected" : "" }}>{{ $barang->nama_barang }}</option>
                                                                             @endforeach
@@ -121,29 +113,29 @@
                                                                     </div>
                                                                     <div class="col-md-1">
                                                                         <label for="jumlah_barang">QTY</label>
-                                                                        <input type="number" class="form-control" id="jumlah_barang" name="jumlah_barang[]" onfocus="startCalc(this);" onblur="stopCalc();" value="{{$penawaranbarang->pivot->jumlah_barang}}" placeholder="-">
+                                                                        <input type="number" style="height: 38px" num="0" class="form-control" id="jumlah_barang" name="jumlah_barang[]" onfocus="startCalc(this);" onblur="stopCalc();disc();" value="{{$penawaranbarang->pivot->jumlah_barang}}" placeholder="-">
                                                                     </div>
                                                                     <div class="col-md-2">
                                                                         <label for="satuan_unit">Unit</label>
-                                                                        <input type="text" class="form-control" placeholder="{{$penawaranbarang->pivot->unit}}" id="uni" disabled>
+                                                                        <input type="text"style="height: 38px"  class="form-control" placeholder="{{$penawaranbarang->pivot->unit}}" id="uni" disabled>
                                                                         <input type="hidden" value="{{$penawaranbarang->pivot->unit}}" id="unit" name="unit_barang[]">
                                                                     </div>
                                                                     <div class="col-md-2">
                                                                         <label for="harga">Harga Satuan</label>
                                                                         <div class="input-group mb-2">
-                                                                            <div class="input-group-prepend">
+                                                                            <div style="height: 38px" class="input-group-prepend">
                                                                                 <div class="input-group-text">Rp</div>
                                                                             </div>
-                                                                            <input type="number" class="form-control" id="harga" name="harga[]" onfocus="startCalc(this);" onblur="stopCalc();" value="{{$penawaranbarang->pivot->harga}}"  placeholder="-">
+                                                                            <input style="height: 38px" type="number" num="0" class="form-control" id="harga" name="harga[]" onfocus="startCalc(this);" onblur="stopCalc();disc();" value="{{$penawaranbarang->pivot->harga}}"  placeholder="-">
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-3">
                                                                         <label for="total">Total</label>
                                                                         <div class="input-group mb-2">
-                                                                            <div class="input-group-prepend">
+                                                                            <div style="height: 38px" class="input-group-prepend">
                                                                                 <div class="input-group-text">Rp</div>
                                                                             </div>
-                                                                            <input type="number" class="form-control" id="total" name="total[]" disabled>
+                                                                            <input style="height: 38px" type="number" num="0" class="form-control" id="total" name="total[]" disabled>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-1">
@@ -167,7 +159,7 @@
                                                                         <div class="input-group-prepend">
                                                                             <div class="input-group-text">Rp</div>
                                                                         </div>
-                                                                        <input style="width:26vw" type="number" name="total_harga_barang" id="total_harga_barang" disabled>
+                                                                        <input style="width:26vw" type="number" num="0" name="total_harga_barang" id="total_harga_barang" disabled>
                                                                     </div>
                                                                 </div>
                                                                 <a href="/penjualan/penawarans">
@@ -178,17 +170,25 @@
                                                             </div>
                                                         </div>
                                                         <div id="test-l-3" class="content">
-                                                            <div style="height: 58vh;overflow:auto" class="mt-2">
+                                                            <div style="height: ;overflow:auto" class="mt-2">
                                                                 <div class="form-group row mx-5 mb-5">
                                                                     <label class="col-sm-3 col-form-label" for="diskon">Diskon</label>
-                                                                    <div class="col-sm-9">
+                                                                    <div class="col-sm-3">
                                                                         <div class="input-group mb-2">
                                                                             <div class="input-group-prepend">
                                                                                 <div class="input-group-text">%</div>
                                                                             </div>
-                                                                            <input type="number" class="form-control" id="diskon"  name="diskon" value="{{$penawaran->diskon}}" onchange="disc();" name="diskon"   placeholder="-">
+                                                                            <input type="number" num="0" max="100" class="form-control" id="diskon"  name="diskon" value="{{$penawaran->diskon}}" max='100' min='0' onchange="disc();" name="diskon"   placeholder="-">
                                                                         </div>
                                                                     </div>
+                                                                    <div class="col-sm-6">
+                                                                    <div class="input-group mb-2">
+                                                                        <div class="input-group-prepend">
+                                                                            <div class="input-group-text">Rp</div>
+                                                                        </div>
+                                                                        <input type="number" num="0" class="form-control" id="disk" onchange="disc();" name="disk" value="{{$penawaran->diskon_rp}}"  placeholder="-">
+                                                                    </div>
+                                                                </div>
                                                                 </div>
                                                                 <div class="form-group row mx-5 mb-5">
                                                                     <label class="col-sm-3 col-form-label" for="biaya_lain">Biaya lain</label>
@@ -197,17 +197,8 @@
                                                                             <div class="input-group-prepend">
                                                                                 <div class="input-group-text">Rp</div>
                                                                             </div>
-                                                                            <input type="number" class="form-control" name="biaya_lain"  id="biaya_lain"  value="{{$penawaran->biaya_lain}}"  placeholder="-">
+                                                                            <input type="number" num="0" class="form-control" name="biaya_lain"  id="biaya_lain" onchange="disc();"  value="{{$penawaran->biaya_lain}}"  placeholder="-">
                                                                         </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group row mx-5 mb-5">
-                                                                    <label class="col-sm-3 col-form-label" for="termin_pembayaran">Termin Pembayaran</label>
-                                                                    <div class="col-sm-9">
-                                                                        <select class="form-control" id="termin_pembayaran" name="termin_pembayaran">
-                                                                            <option value="">--- Pilih Termin ---</option>
-                                                                            <option value="" selected>0 % 0 Net 0</option>
-                                                                        </select>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group row m-5 d-flex justify-content-end">
@@ -217,8 +208,8 @@
                                                                             <div class="input-group-prepend">
                                                                                 <div class="input-group-text">Rp</div>
                                                                             </div>
-                                                                            <input style="width:26vw" type="number" id="total_harga_kes" disabled>
-                                                                            <input type="hidden" name="total_harga_keseluruhan" id="total_harga_keseluruhan">
+                                                                            <input style="width:26vw" type="number" num="0" value="{{$penawaran->total_harga}}" id="total_harga_kes" disabled>
+                                                                            <input type="hidden" name="total_harga_keseluruhan" value="{{$penawaran->total_harga}}"  id="total_harga_keseluruhan">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -247,6 +238,28 @@
 </div>
 
 <script>
+
+$(document).ready(function(){
+    $.ajax({
+            url: '/penjualan/penawarans/' + {{$penawaran->id}},
+            type: 'get',
+            data: {},
+            success: function(data) {
+            console.log(data)
+            $('#total_harga_barang').val(data.subtotal_pr)
+            $('#total').val(data.total_harga_pr[0])
+            var harga=document.getElementsByName("total[]");
+            console.log(harga);
+            for (var i = 1; i <= data.barangs.length - 1; i++) {
+                console.log(data.total_harga_pr[i])
+                harga[i].value = data.total_harga_pr[i];
+                }
+            },
+        error: function(jqXHR, textStatus, errorThrown) {}
+    });
+});
+
+
     var stepperNode = document.querySelector('#stepper')
     var stepper = new Stepper(document.querySelector('#stepper'))
 
@@ -272,10 +285,13 @@
     $('#tambahbarang').click(function() {
         // console.log(i)
         $("#formbarang").append($("#isiformbarang").clone().attr('id', 'isiformbarang' + (i + 1)));
-        $(document.querySelectorAll("#isiformbarang1")).children().children().children().css({
+        $("#isiformbarang" + (i+1)).children().children('#jumlah_barang').val("-");
+        $("#isiformbarang" + (i+1)).children().children().children('#total').val('-');
+        $(document.querySelectorAll("#isiformbarang"+ (i + 1))).children().children().children().css({
             'color': 'black',
             'cursor': 'pointer'
         })
+        i++;
         // $("#isiformbarang" + i).attr('id', 'isiformbarang' + (i + 1))
         // $("#delete" + i).attr({
         //     'id': 'delete' + (i + 1),
@@ -290,18 +306,28 @@
         }
     }
     function disc() {
-        dis = $('#diskon').val() / 100;
+        dis = parseInt($('#diskon').val()) / 100;
         biy = parseInt($('#biaya_lain').val());
-        akhir = parseInt($('#total_harga_barang').val())
-        akhir1 = akhir - (akhir * dis)
-        akhir2 = akhir1 + biy
-        if (akhir2) {
-            $('#total_harga_kes').val(akhir2)
-            $('#total_harga_keseluruhan').val(akhir2)
-        } else {
-            $('#total_harga_kes').val(akhir1)
-            $('#total_harga_keseluruhan').val(akhir1)
+        dp = 0
+        barang = parseInt($('#total_harga_barang').val())
+        $('#akun_barang').val(barang)
+        diskon = parseInt(barang * dis)
+        $('#disk').val(diskon)
+        barangafterdiskon = barang - diskon
+        hutang = barangafterdiskon + biy - dp
+        $('#hutang').val(hutang)
+        if (hutang) {
+            $('#total_harga_kes').val(hutang)
+            $('#total_harga_keseluruhan').val(hutang)
         }
+        console.log(
+            'barang:', barang,
+            'dis:', dis,
+            'diskon:', diskon,
+            'hutang:', hutang,
+            'biaya:', biy,
+            'dp:', dp,
+        )
     }
 
     function startCalc(x) {

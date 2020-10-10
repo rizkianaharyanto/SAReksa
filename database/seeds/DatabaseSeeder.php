@@ -21,6 +21,12 @@ class DatabaseSeeder extends Seeder
             // kepegawaian
             PtkpSeeder::class,
             PphSeeder::class,
+
+            //generall
+            UserTableSeeder::class,
+            SupplierSeeder::class,
+
+            // PenerimaanSeeder::class,
         ]);
     }
 }

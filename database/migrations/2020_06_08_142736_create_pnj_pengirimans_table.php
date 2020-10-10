@@ -22,7 +22,7 @@ class CreatePnjPengirimansTable extends Migration
             $table->integer('total_harga');
             $table->double('diskon', 8, 3);
             $table->integer('biaya_lain');
-            $table->enum('status', ['sudah posting', 'terkirim', 'dalam pengiriman'])->nullable();
+            $table->enum('status', ['sudah posting', 'terkirim', 'dalam pengiriman','selesai'])->nullable();
             $table->integer('diskon_rp')->nullable();
             $table->timestamps();
             $table->softDeletes();

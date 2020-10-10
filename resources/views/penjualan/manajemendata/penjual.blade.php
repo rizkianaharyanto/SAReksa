@@ -22,21 +22,23 @@
     <td>{{ $penjual->nama_penjual }}</td>
     <td>{{ $penjual->telp_penjual }}</td>
     <td class="d-flex justify-content-between">
-        <a id="details" data-toggle="modal" data-target="#modal" data-id="{{ $penjual->id }}" >
+        <a title="Details" id="details" data-toggle="modal" data-target="#modal" data-id="{{ $penjual->id }}" >
             <i style="cursor: pointer;" class="fas fa-info-circle">
                 <span></span>
             </i>
         </a>
-        <a id="edit" data-toggle="modal" data-target="#modal" data-id="{{ $penjual->id }}" >
+        @if (auth()->user()->role == 'penjualan')
+        <a title="Edit" id="edit" data-toggle="modal" data-target="#modal" data-id="{{ $penjual->id }}" >
             <i style="cursor: pointer;" class="fas fa-edit">
                 <span></span>
             </i>
         </a>
-        <a id="delete" data-toggle="modal" data-target="#modal" data-id="{{ $penjual->id }}">
+        <a title="Delete" id="delete" data-toggle="modal" data-target="#modal" data-id="{{ $penjual->id }}">
             <i style="cursor: pointer;" class="fas fa-trash">
                 <span></span>
             </i>
         </a>
+        @endif
     </td>
 </tr>
 @endforeach
@@ -74,7 +76,7 @@
                     '<fieldset class="detail-modal" disabled>' +
                     '<div class="form-group">' +
                     '<label for="telp_penjual">Telp</label>' +
-                    '<input type="number" class="form-control" id="telp_penjual" name="telp_penjual" placeholder="' + datanya[index].telp_penjual + '">' +
+                    '<input type="number" min="0"  class="form-control" id="telp_penjual" name="telp_penjual" placeholder="' + datanya[index].telp_penjual + '">' +
                     '</div>' +
                     '<div class="form-group">' +
                     '<label for="email_penjual">Email</label>' +
@@ -97,24 +99,24 @@
                     '<h5 class="align-self-center">Edit Sales ' + datanya[index].nama_penjual + '</h5>'
                 );
                 $('#bodymodal').html(
-                    '<form method="POST" action="/penjualan/penjuals/' + datanya[index].id + '">' +
+                    '<form autocomplete="off" method="POST" action="/penjualan/penjuals/' + datanya[index].id + '">' +
                     '@method("patch")' +
                     '@csrf' +
                     '<div class="form-group">' +
                     '<label for="nama_penjual">Nama</label>' +
-                    '<input type="text" class="form-control" id="nama_penjual" name="nama_penjual" value="' + datanya[index].nama_penjual + '">' +
+                    '<input required type="text" class="form-control" id="nama_penjual" name="nama_penjual" value="' + datanya[index].nama_penjual + '">' +
                     '</div>' +
                     '<div class="form-group">' +
                     '<label for="telp_penjual">Telp</label>' +
-                    '<input type="number" class="form-control" id="telp_penjual" name="telp_penjual" value="' + datanya[index].telp_penjual + '">' +
+                    '<input  required type="number" min="0" class="form-control" id="telp_penjual" name="telp_penjual" value="' + datanya[index].telp_penjual + '"oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="13">' +
                     '</div>' +
                     '<div class="form-group">' +
                     '<label for="email_penjual">Email</label>' +
-                    '<input type="email" class="form-control" id="email_penjual" name="email_penjual" value="' + datanya[index].email_penjual + '">' +
+                    '<input required type="email" class="form-control" id="email_penjual" name="email_penjual" value="' + datanya[index].email_penjual + '">' +
                     '</div>' +
                     '<div class="form-group">' +
                     '<label for="alamat_penjual">Alamat</label>' +
-                    '<input type="text" class="form-control" id="alamat_penjual" value="' + datanya[index].alamat_penjual + '" name="alamat_penjual">' +
+                    '<input required type="text" class="form-control" id="alamat_penjual" value="' + datanya[index].alamat_penjual + '" name="alamat_penjual">' +
                     '</div>' +
                     '<div class="form-group modal-footer">' +
                     '<button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>' +
@@ -150,11 +152,13 @@
 
 <!-- Tambah -->
 @section('tambah')
+@if (auth()->user()->role == 'penjualan')
+
 <a data-toggle="modal" data-target="#modaltambah">
-    <i id="tambah" class="fas fa-plus mr-4" style="font-size:30px;color:#212120; cursor: pointer;">
-        <span></span>
-    </i>
+<a data-toggle="modal" data-target="#modaltambah" class="btn" style="background-color:#212120; color:white" >Tambah</a>
+        
 </a>
+@endif
 @endsection
 
 @section('judulTambah')
@@ -163,27 +167,28 @@
 
 @section('bodyTambah')
 
-<form method="POST" action="/penjualan/penjuals">
+<form method="POST" action="/penjualan/penjuals" autocomplete="off">
     @csrf
     <div class="form-group d-inline-flex">
         <i class="fas fa-user-circle mr-4" style="font-size:50px;color:#212120;"></i>
-        <input type="file" class="form-control-file align-self-center" id="foto">
     </div>
     <div class="form-group">
         <label for="nama_penjual">Nama penjual</label>
-        <input type="text" class="form-control" id="nama_penjual" name="nama_penjual" placeholder="">
+        <input required type="text" class="form-control" id="nama_penjual" name="nama_penjual" placeholder="">
     </div>
     <div class="form-group">
         <label for="telp_penjual">Telp</label>
-        <input type="number" class="form-control" id="telp_penjual" name="telp_penjual" placeholder="">
+        <input required type="number" min="0" class="form-control" id="telp_penjual" name="telp_penjual" placeholder="" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+    type = "number"
+    maxlength = "13">
     </div>
     <div class="form-group">
         <label for="email_penjual">Email</label>
-        <input type="email" class="form-control" id="email_penjual" name="email_penjual" placeholder="">
+        <input required type="email" class="form-control" id="email_penjual" name="email_penjual" placeholder="">
     </div>
     <div class="form-group">
         <label for="alamat_penjual">Alamat</label>
-        <input type="text" class="form-control" id="alamat_penjual" name="alamat_penjual" placeholder="">
+        <input required type="text" class="form-control" id="alamat_penjual" name="alamat_penjual" placeholder="">
     </div>
 
     @endsection

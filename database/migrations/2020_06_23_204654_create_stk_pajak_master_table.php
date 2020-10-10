@@ -16,6 +16,7 @@ class CreateStkPajakMasterTable extends Migration
         Schema::create('stk_pajak_master', function (Blueprint $table) {
             $table->id();
             $table->string('jenis_pajak');
+            $table->string('deskripsi')->nullable();
             $table->float('tarif');
             $table->timestamps();
         });

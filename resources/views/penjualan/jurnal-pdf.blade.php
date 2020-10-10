@@ -20,6 +20,7 @@
     <div class="page">
 	<center class="mb-4">
 		<h5>Jurnal Transaksi Penjualan Reksa Karya</h4>
+        <h5>{{$periode ?? ''}} {{$bulan ?? ''}} {{$tahun ?? ''}}</h5>
 	</center>
 
 	<table class="table table-sm table-striped table-bordered">
@@ -39,6 +40,7 @@
                             @if ($loop->first)
                             <td rowspan="{{$loop->count}}" >
                                     @if ($index->pengiriman_id !=null){{$index->pengiriman->tanggal}}
+                                    @elseif ($index->faktur_id !=null){{$index->faktur->tanggal}}
                                     @elseif ($index->retur_id !=null){{$index->retur->tanggal}}
                                     @elseif ($index->pembayaran_id !=null){{$index->pembayaran->tanggal}}
                                     @else -
@@ -47,11 +49,12 @@
                             <td rowspan="{{$loop->count}}" >
                                     @if ($index->pengiriman_id !=null){{$index->pengiriman->kode_pengiriman}} 
                                     <br>- pengiriman barang
+                                    @elseif ($index->faktur_id !=null){{$index->faktur->kode_faktur}} 
                                     <br>- faktur penjualan
                                     @elseif ($index->retur_id !=null){{$index->retur->kode_retur}} 
                                     <br>- retur penjualan
                                     @elseif ($index->pembayaran_id !=null){{$index->pembayaran->kode_pembayaran}} 
-                                    <br>- pembayaran hutang
+                                    <br>- pembayaran piutang
                                     @else -
                                     @endif
                             </td>
@@ -60,7 +63,7 @@
                                 @if ($index->akun_id == 1) barang
                                 @elseif ($index->akun_id == 2) barang belum ditagih
                                 @elseif ($index->akun_id == 3) biaya lain
-                                @elseif ($index->akun_id == 4) hutang
+                                @elseif ($index->akun_id == 4) piutang
                                 @elseif ($index->akun_id == 5) potongan penjualan
                                 @elseif ($index->akun_id == 6) kas
                                 @else -

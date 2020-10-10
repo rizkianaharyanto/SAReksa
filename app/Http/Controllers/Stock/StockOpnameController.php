@@ -2,18 +2,29 @@
 
 namespace App\Http\Controllers\Stock;
 
-use Illuminate\Support\Arr;
 use App\Http\Controllers\Controller;
-use App\Stock\StokOpname;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+use App\Http\Requests\Stock\StockOpnameRequest;
 use App\Services\Stock\ItemService;
 use App\Services\Stock\StockOpnameService;
-use Illuminate\Http\Request;
 use App\Services\Stock\InventoryLedgerService;
-use Illuminate\Support\Facades\DB;
-use App\Http\Requests\Stock\StockOpnameRequest;
+use App\Stock\StokOpname;
+use App\Stock\Barang;
+use App\Stock\Gudang;
+use App\Stock\DetailStokOpname;
+use App\Stock\Ledger;
+use PDF;
 
 class StockOpnameController extends Controller
 {
+    private $service;
+
+    public function __construct(StockOpnameService $stockService)
+    {
+        $this->service = $stockService;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -21,12 +32,90 @@ class StockOpnameController extends Controller
      */
     public function index()
     {
-        //
-        $stokOp = StokOpname::all();
-        
-        return view('stock.transactions/stock-opname', compact('stokOp'));
+        $stokOp = StokOpname::with('details')->get();
+        $barangs = Barang::all();
+        $gudangs = Gudang::all();
+
+        return view('stock.transactions.stock-opname.index', ['stokOp' => $stokOp, 'barangs' => $barangs, 'gudangs' => $gudangs]);
     }
 
+    public function laporanindex()
+    {
+        $stokOp = StokOpname::with('details')->get();
+        $barangs = Barang::all();
+        $gudangs = Gudang::all();
+        $gudang = null;
+        $start = null;
+        $end = null;
+
+        return view('stock.reports.laporan-opname', [
+            'stokOp' => $stokOp,
+            'barangs' => $barangs,
+            'gudangs' => $gudangs,
+            'gudang' => $gudang,
+            'start' => $start,
+            'end' => $end
+        ]);
+    }
+
+    public function laporanfilter(Request $date)
+    {
+        if($date->start == null){
+            $stokOp = StokOpname::with('details')->get();
+            $barangs = Barang::all();
+            $gudangs = Gudang::all();
+            $gudang = null;
+            $start = null;
+            $end = null;
+        }else{
+            $stokOp = StokOpname::select("stk_stok_opname.*")
+                // ->where('gudang_id', $date->gudang)
+                ->whereBetween('created_at', [$date->start, $date->end])
+                ->get();
+    
+            $barangs = Barang::all();
+            $gudangs = Gudang::all();
+            // $gudang = $date->gudang;
+            $start = $date->start;
+            $end = $date->end;
+        }
+        return view('stock.reports.laporan-opname', [
+            'stokOp' => $stokOp,
+            'barangs' => $barangs,
+            'gudangs' => $gudangs,
+            // 'gudang' => $gudang,
+            'start' => $start,
+            'end' => $end
+        ]);
+    }
+
+    public function laporanexport(Request $date)
+    {
+        if($date->start == null){
+            $stokOp = StokOpname::with('details')->get();
+            $gudangs = Gudang::all();
+            $gudang = null;
+            $start = null;
+            $end = null;
+        }else{
+            $stokOp = StokOpname::select("stk_stok_opname.*")
+                // ->where('gudang_id', $date->gudang)
+                ->whereBetween('created_at', [$date->start, $date->end])
+                ->get();
+            $gudangs = Gudang::all();
+            // $gudang = $date->gudang;
+            $start = $date->start;
+            $end = $date->end;
+        }
+        $pdf = PDF::loadview('stock.reports.export-opname', [
+            'stokOp' => $stokOp,
+            'gudangs' => $gudangs,
+            // 'gudang' => $gudang,
+            'start' => $start,
+            'end' => $end
+        ]);
+        return $pdf->download('laporan-stok_opname.pdf');
+    }
     /*
      * Show the form for creating a new resource.
      *
@@ -34,37 +123,44 @@ class StockOpnameController extends Controller
      */
     public function create()
     {
-        //
+    }
+
+    public function show($id)
+    {
+        $stockOpname = $this->service->get($id);
+        if (!$stockOpname) {
+            return redirect('/stok/stock-opname')->with('status', 'Data Transaksi tersebut tidak ditemukan');
+        }
+        return view('stock.transactions.stock-opname.details', compact('stockOpname'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(StockOpnameService $opnameServ, ItemService $itemServ, StockOpnameRequest $req)
     {
-        //
-
+        // return $req;
         $opnameItems = $req->validated();
-
-        $transData = Arr::except($opnameItems, ['item_id', 'on_hand']);
-        // return $transData;
+        $opnameItems = collect($opnameItems);
+        $transData = $opnameItems->except(['item_id', 'on_hand']);
         $stockOp = StokOpname::findOrFail($opnameServ->makeTransJournal($transData));
-        //  $opnameServ->makeTransJournal($transData);
 
-        $itemId = $opnameItems['item_id'];
+        $itemIds = $opnameItems['item_id'];
         $whouseId = $opnameItems['gudang_id'];
         DB::beginTransaction();
         try {
-            foreach ($itemId as $index => $id) {
+            foreach ($itemIds as $index => $id) {
                 $onBook = $itemServ->getStocksQtyByWhouse($opnameItems['gudang_id'], $id);
                 $itemServ->updateStocks($id, $whouseId, $opnameItems['on_hand'][$index]);
 
                 $stockOp->details()->attach($id, [
                     'jumlah_tercatat' => $onBook,
-                    'jumlah_fisik'    => $opnameItems['on_hand'][$index]
+                    'jumlah_fisik'    => $opnameItems['on_hand'][$index],
+                    'selisih'         => $opnameItems['on_hand'][$index] - $onBook
                 ]);
             }
         } catch (\Exception $e) {
@@ -74,63 +170,112 @@ class StockOpnameController extends Controller
         }
         DB::commit();
 
-
-
-        return $stockOp;
+        return redirect()->back();
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\StockOpname  $stockOpname
+     * @param \App\StockOpname $stockOpname
+     *
      * @return \Illuminate\Http\Response
      */
-    public function posting(InventoryLedgerService $invLedg, ItemService $itemServ, $id)
+    public function posting($id)
     {
-        return 201;
+        $stockOpname = StokOpname::find($id);
+        StokOpname::where('id', $stockOpname->id)
+            ->update(['status' => 'sudah posting']);
+        // dd($stockOpname->details[0]->id);
+
+        foreach ($stockOpname->details as $index => $barang) {
+            // dd($barang);
+            $jurnal = Ledger::create([
+                'kode_transaksi' => $stockOpname->kode_ref,
+                'barang_id' => $barang->id,
+                'sisa' => $barang->pivot->jumlah_fisik,
+                'qty_masuk' => 0,
+                'nilai_masuk' => 0,
+                'qty_keluar' => 0,
+                'nilai_keluar' => 0,
+            ]);
+            if ($barang->pivot->selisih >= 0) {
+                $jurnal->update([
+                    'qty_masuk' => $barang->pivot->selisih,
+                    'nilai_masuk' => $barang->nilai_barang
+                ]);
+            } else {
+                $jurnal->update([
+                    'qty_keluar' => $barang->pivot->selisih * -1,
+                    'nilai_keluar' => $barang->nilai_barang
+                ]);
+            }
+        }
+        return redirect()->back();
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\StockOpname  $stockOpname
+     * @param \App\StockOpname $stockOpname
+     *
      * @return \Illuminate\Http\Response
      */
-    public function edit(StokOpname $stockOpname)
+    public function edit($id)
     {
-        //
+        $stockOpname = StokOpname::with([
+            'details'
+        ])->find($id);
+        $gudangs = Gudang::all();
+
+        if (!$stockOpname) {
+            return redirect('/stok/stock-opname')->with('status', 'Data Transaksi tersebut tidak ditemukan');
+        }
+
+        if ($stockOpname->status == 'sudah posting') {
+            return redirect()->back()->with('status', 'Transaksi sudah di posting ke jurnal dan tidak bisa diubah');
+        }
+        return view('stock.transactions.stock-opname.edit', ['stockOpname' => $stockOpname, 'gudangs' => $gudangs]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\StockOpname  $stockOpname
+     * @param \Illuminate\Http\Request $request
+     * @param \App\StockOpname         $stockOpname
+     *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, StokOpname $stockOpname)
+    public function update(StockOpnameRequest $req, $id)
     {
-        //
+        $stockOpname = $this->service->get($id);
+        if (!$stockOpname) {
+            return redirect('/stok/stock-opname')->with('status', 'Data Transaksi tersebut tidak ditemukan');
+        }
+
+        if ($stockOpname->status == 'sudah posting') {
+            return redirect()->back()->with('status', 'Transaksi sudah di posting ke jurnal dan tidak bisa diubah');
+        }
+        $stockOpname = $this->service->update($req->validated(), $id);
+        return redirect()->route('stock-opname.index');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\StockOpname  $stockOpname
+     * @param \App\StockOpname $stockOpname
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(ItemService $itemServ, $id)
     {
-        //
-
         $stockOp = StokOpname::findOrFail($id);
 
-        if ($stockOp['status'] == 'posted') {
-            // return redirect()->back()->withErrors($validator)->withInput();
+        if ($stockOp['status'] == 'sudah diposting') {
+            return redirect()->back()->with('status', 'Transaksi sudah di posting ke jurnal dan tidak bisa dihapus');
         } else {
             DB::beginTransaction();
             try {
-                $recordedData =  $stockOp->with('details')->get()->first()->details;
+                $recordedData = $stockOp->with('details')->get()->first()->details;
                 foreach ($recordedData as $i => $data) {
                     $stock = $itemServ->getStocksQtyByWhouse($stockOp->gudang_id, $data->id);
 

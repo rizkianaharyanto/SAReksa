@@ -4,6 +4,11 @@
 
 @section('halaman', 'Retur Pembelian')
 
+@section('path')
+<li><a href="#">Transaksi</a></li>
+<li class="active">Retur</li>
+@endsection
+
 @section('thead')
 <tr>
     <th>Kode Retur</th>
@@ -19,12 +24,12 @@
 @foreach ($returs as $retur)
 <tr>
     <td>{{ $retur->kode_retur }}</td>
-    <td>pemasok</td>
+    <td>{{ $retur->pemasok->nama_pemasok }}</td>
     <td>{{ $retur->tanggal }}</td>
-    <td>{{ $retur->total_harga }}</td>
-    <td>{{ $retur->status !=null ? $retur->status  : '-' }} |
+    <td>@currency($retur->total_harga)</td>
+    <td>
         @if ($retur->status_posting == 'sudah posting')
-            sudah posting 
+        sudah posting
         @elseif ($retur->status_posting == 'konfirmasi')
         <a href="/pembelian/ubahpsnret/{{$retur->id}}">posting</a>
         @else
@@ -33,15 +38,28 @@
     </td>
     <td class="d-flex justify-content-between">
         <a id="details" href="/pembelian/returshow/{{$retur->id}}">
-            <i style="cursor: pointer; " class="fas fa-info-circle">
-                <span></span>
-            </i>
+            <button class="btn-info">
+                <i style="cursor: pointer; " class="fas fa-info-circle">
+                    <span></span>
+                </i>
+            </button>
         </a>
-        <!-- <a id="edit" href="/pembelian/returs/{{$retur->id}}/edit">
-            <i style="cursor: pointer;" class="fas fa-edit">
+        @if($retur->status_posting == null)
+        <a id="edit" href="/pembelian/returs/{{$retur->id}}/edit">
+            <button class="btn-warning">
+                <i style="cursor: pointer;" class="fas fa-edit">
+                    <span></span>
+                </i>
+            </button>
+        </a>
+        <form method="POST" action="/pembelian/returs/{{$retur->id}}">
+            @method('delete')
+            @csrf
+            <button type="submit" class="btn-danger"><i style="cursor: pointer;" class="fas fa-trash">
                 <span></span>
-            </i>
-        </a> -->
+            </i></button>
+        </form>
+        @endif
         <!-- <a id="delete" data-toggle="modal" data-target="#delete-{{$retur->id }}">
             <i style="cursor: pointer;" class="fas fa-trash">
                 <span></span>
@@ -69,8 +87,7 @@ $delete = "delete-".$retur->id
 
 @section('tambah')
 <a href="/pembelian/returs/create">
-    <i class="fas fa-plus mr-4" style="font-size:30px;color:#00BFA6; cursor: pointer;">
-        <span></span>
-    </i>
+    <button class="btn-sm btn-info">Tambah</button>
 </a>
+
 @endsection

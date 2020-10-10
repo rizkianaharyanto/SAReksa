@@ -15,8 +15,8 @@ class CreateStkDetailTransferStokTable extends Migration
     {
         Schema::create('stk_detail_transfer_stok', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('transfer_stok_id');
-            $table->bigInteger('barang_id');
+            $table->unsignedBigInteger('transfer_stok_id');
+            $table->unsignedBigInteger('barang_id');
             $table->integer('kuantitas');
         });
     }

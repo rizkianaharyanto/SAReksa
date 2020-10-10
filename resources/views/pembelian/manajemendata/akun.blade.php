@@ -4,6 +4,11 @@
 
 @section('halaman', 'Akun')
 
+@section('path')
+<li><a href="#">Manajemen Data</a></li>
+<li class="active">Data Akun</li>
+@endsection
+
 @section('thead')
 <tr>
     <th>Kode Akun</th>
@@ -21,9 +26,9 @@
     <td>{{ $akun->tipe_akun }}</td>
     <td class="d-flex justify-content-center">
         <a id="details" data-toggle="modal" data-target="#modal" data-id="{{ $akun->id }}">
-            <i onmouseover="tulisan()" style="cursor: pointer;" class="fas fa-info-circle">
-                <span></span>
-            </i>
+            <button class="btn-info"><i style="cursor: pointer;" class="fas fa-info-circle">
+                    <span></span>
+                </i></button>
         </a>
     </td>
 </tr>

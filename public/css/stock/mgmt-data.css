@@ -93,14 +93,21 @@ h5 {
   margin: 1.5em 1em 0 0;
   padding: 1em;
 }
-
-input[type=search] {
+#table_id_filter input{
   background-color: #424852;
   padding-right: 4em;
   margin: 1.5em 1.5em;
   border: 2px solid #0DD3DC;
   border-radius: 50px;
 }
+#table_id_filter input:focus{
+  background-color: #424852;
+  padding-right: 4em;
+  margin: 1.5em 1.5em;
+  border: 2px solid #0DD3DC;
+  border-radius: 50px;
+}
+
 
 #table_id_paginate {
   display: inline-block;

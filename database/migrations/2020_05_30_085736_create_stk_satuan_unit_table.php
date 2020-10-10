@@ -18,6 +18,7 @@ class CreateStkSatuanUnitTable extends Migration
             $table->string('kode_satuan')->nullable();
             $table->string('nama_satuan');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

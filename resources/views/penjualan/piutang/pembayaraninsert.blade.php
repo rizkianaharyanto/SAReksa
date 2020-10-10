@@ -9,14 +9,14 @@
 <div class="content">
         <div class="row">
             <div class="col-md-12">
-                <div class="">
+                <div class="card">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-12" style='margin-bottom:-40px'>
                                 <div class="card card-plain">
                                     <div class="card-body">
                                         <div class="d-flex justify-content-center">
-                                            <div id="stepper" class="bs-stepper align-self-end" style=" width:80vw; max-height:60vh; color:black;">
+                                            <div id="stepper" class="bs-stepper align-self-end" style=" width:80vw; max-height:; color:black;">
                                                 <div class="bs-stepper-header">
                                                     <div class="step" data-target="#test-l-1">
                                                         <button type="button" class="btn step-trigger">
@@ -39,11 +39,11 @@
                                                         @csrf
                                                         <div id="test-l-1" class="content">
                                                             <input type="hidden" id="status" name="status">
-                                                            <div style="height: 58vh;overflow: auto; color:black" class="mt-2">
+                                                            <div style="height: ;overflow: auto; color:black" class="mt-2">
                                                                 <div class="form-group row mx-5 mb-5">
                                                                     <label class="col-sm-3 col-form-label" for="pelanggan_id">Pelanggan</label>
                                                                     <div class="col-sm-9">
-                                                                        <select class="form-control" id="pelanggan_id" name="pelanggan_id">
+                                                                        <select required class="form-control" id="pelanggan_id" name="pelanggan_id">
                                                                             <option value="">--- Pilih Pelanggan ---</option>
                                                                             @foreach ($pelanggans as $pelanggan)
                                                                             <option value="{{$pelanggan->id}}">{{ $pelanggan->nama_pelanggan }}</option>
@@ -54,16 +54,7 @@
                                                                 <div class="form-group row mx-5 mb-5">
                                                                     <label class="col-sm-3 col-form-label" for="tanggal">Tanggal</label>
                                                                     <div class="col-sm-9">
-                                                                        <input type="date" class="form-control" id="tanggal" name="tanggal">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group row mx-5 mb-5">
-                                                                    <label class="col-sm-3 col-form-label" for="mata-uang">Mata Uang</label>
-                                                                    <div class="col-sm-9">
-                                                                        <select class="form-control" id="mata_uang" name="mata_uang">
-                                                                            <option value="">--- Pilih Mata Uang ---</option>
-                                                                            <option value="">IDR</option>
-                                                                        </select>
+                                                                        <input required type="date" class="form-control" id="tanggal" name="tanggal">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -75,29 +66,25 @@
                                                             </div>
                                                         </div>
                                                         <div id="test-l-2" class="content">
-                                                            <div style="overflow: auto; height: 52vh;" id="formpiutang">
+                                                            <div style="overflow: auto; height: ;" id="formpiutang">
                                                                 <div class="form-row mx-5" id="isiformpiutang0">
                                                                     <div class="form-group col-md-3">
                                                                         <label for="piutang_id" id="lbl">Piutang</label>
-                                                                        <select class="form-control" onchange="isi(this)" onclick="hitung()" id="piutang_id" name="piutang_id[]">
+                                                                        <select required style="height: 43px" class="form-control" onchange="isi(this)" onclick="hitung()" onblur="hitung()" id="piutang_id" name="piutang_id[]">
                                                                             <option value="">--- Pilih Piutang ---</option>
                                                                         </select>
                                                                     </div>
-                                                                    <div class="form-group col-md-3">
+                                                                    <div class="form-group col-md-4">
                                                                         <label for="tanggal_piutang">Tanggal</label>
-                                                                        <input type="date" class="form-control" id="tanggal_piutang" disabled>
+                                                                        <input required type="date" class="form-control" id="tanggal_piutang" disabled>
                                                                     </div>
-                                                                    <div class="form-group col-md-2">
-                                                                        <label for="mata_uang">Mata Uang</label>
-                                                                        <input type="number" class="form-control" id="mata_uang" disabled>
-                                                                    </div>
-                                                                    <div class="form-group col-md-3">
+                                                                    <div class="form-group col-md-4">
                                                                         <label for="total">Total</label>
                                                                         <div class="input-group mb-2">
-                                                                            <div class="input-group-prepend">
+                                                                            <div style="height: 43px" class="input-group-prepend">
                                                                                 <div class="input-group-text">Rp</div>
                                                                             </div>
-                                                                            <input type="number" class="form-control" id="total" name="total[]" disabled>
+                                                                            <input style="height: 43px" type="number" min='0' class="form-control" id="total" name="total[]" onclick="hitung()" onchange="hitung()"  >
                                                                             <input type="hidden" id="total_piutang" name="total_piutang[]">
                                                                         </div>
                                                                     </div>
@@ -246,8 +233,11 @@
                 } else if (data.retur) {
                     $(x).parent().parent().children().children('#tanggal_piutang').val(data.retur.tanggal)
                 }
-                $(x).parent().parent().children().children().children('#total').val(data.piutang.total_piutang)
-                $(x).parent().parent().children().children().children('#total_piutang').val(data.piutang.total_piutang)
+                $(x).parent().parent().children().children().children('#total').val(data.piutang.sisa)
+                $(x).parent().parent().children().children().children('#total').attr({
+                                                                                                    "max" : data.piutang.sisa
+                                                                                                });
+                $(x).parent().parent().children().children().children('#total_piutang').val(data.piutang.sisa)
             }
         })
     }

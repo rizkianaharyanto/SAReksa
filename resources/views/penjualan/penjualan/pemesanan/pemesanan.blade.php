@@ -6,6 +6,7 @@
 @section('menu', 'Pemesanan')
 
 @section('thead')
+
 <tr>
     <th>Kode Penawaran</th>
     <th>Pelanggan</th>
@@ -25,21 +26,23 @@
     <td>{{ $pemesanan->total_harga }}</td>
     <td>{{ $pemesanan->status !=null ? $pemesanan->status  : '-' }}</td>
     <td class="d-flex justify-content-between">
-        <a id="details" href="/penjualan/pemesanandetails/{{$pemesanan->id}}">
+        <a title="Details" id="details" href="/penjualan/pemesanandetails/{{$pemesanan->id}}">
             <i style="cursor: pointer;color:#212120 " class="fas fa-info-circle">
                 <span></span>
             </i>
         </a>
-        <a id="edit" href="/penjualan/pemesanans/{{$pemesanan->id}}/edit">
+        @if ($pemesanan->status == 'baru')
+        <a title="Edit" id="edit" href="/penjualan/pemesanans/{{$pemesanan->id}}/edit">
             <i style="cursor: pointer;color:#212120" class="fas fa-edit">
                 <span></span>
             </i>
         </a>
-        <a id="delete" data-toggle="modal" data-target="#delete-{{$pemesanan->id }}">
+        <a title="Delete" id="delete" data-toggle="modal" data-target="#delete-{{$pemesanan->id }}">
             <i style="cursor: pointer; color:#212120" class="fas fa-trash">
                 <span></span>
             </i>
         </a>
+        @endif
     </td>
 </tr>
 
@@ -61,8 +64,8 @@ $delete = "delete-".$pemesanan->id
 
 @section('tambah')
 <a href="/penjualan/pemesanans/create">
-    <i class="fas fa-plus mr-4" style="font-size:30px;color:#212120; cursor: pointer;">
-        <span></span>
-    </i>
+<a href="/penjualan/pemesanans/create" class="btn" style="background-color:#212120; color:white" >Tambah</a>
+
 </a>
 @endsection
+

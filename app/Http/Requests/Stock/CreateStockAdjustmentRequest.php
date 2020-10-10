@@ -26,9 +26,10 @@ class CreateStockAdjustmentRequest extends FormRequest
         return [
             //
             'warehouse_id'          => 'required|numeric',
-            'akun_persediaan'       => 'required|integer',
+            'akun_penyesuaian'      => 'required|integer',
             'deskripsi'             => 'nullable',
             'item_id'               => 'required|array',
+            'item_id.*'             => 'required|distinct',
             'quantity_diff'         => 'required|array',
         ];
     }

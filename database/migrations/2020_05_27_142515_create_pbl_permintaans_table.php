@@ -23,6 +23,7 @@ class CreatePblPermintaansTable extends Migration
             $table->double('diskon', 8, 3);
             $table->integer('biaya_lain');
             $table->timestamps();
+            $table->enum('status', ['baru','sudah dipesan'])->nullable();
             //fk
             $table->bigInteger('pemasok_id')->nullable();
         });

@@ -11,7 +11,7 @@
     <th>Pelanggan</th>
     <th>Tanggal</th>
     <th>Total</th>
-    <th>Status</th>
+    <th>Posting</th>
     <th style="column-width: 80px">Aksi</th>
 </tr>
 @endsection
@@ -23,28 +23,46 @@
     <td>{{ $retur->pelanggan->nama_pelanggan }}</td>
     <td>{{ $retur->tanggal }}</td>
     <td>{{ $retur->total_harga }}</td>
-    <td>{{ $retur->status !=null ? $retur->status  : '-' }}</td>
+    <td>
+        @if($retur->status_posting == 'belum posting')Belum
+        @else Sudah
+        @endif
+    </td>
     <td class="d-flex justify-content-between">
-        <a id="details" href="/penjualan/returdetails/{{$retur->id}}">
+        <a title="Details"id="details" href="/penjualan/returdetails/{{$retur->id}}">
             <i style="cursor: pointer;color:#212120 " class="fas fa-info-circle">
                 <span></span>
             </i>
         </a>
-        <a id="edit" href="/penjualan/returs/{{$retur->id}}/edit">
+        @if (auth()->user()->role == 'retur')
+        @if($retur->status_posting == 'belum posting')
+        <a title="Edit"id="edit" href="/penjualan/returs/{{$retur->id}}/edit">
             <i style="cursor: pointer;color:#212120" class="fas fa-edit">
                 <span></span>
             </i>
         </a>
-        <a id="delete" data-toggle="modal" data-target="#delete-{{$retur->id }}">
+        <a title="Posting" id="posting"   title='Posting' data-toggle="modal" data-target="#posting-{{$retur->id }}">
+        <i onmouseover="" style="cursor: pointer;color: #212120" class="fas fa-file-upload" title='Posting'>
+                <span></span>
+            </i>
+        </a>
+        @endif
+        @if($retur->status_posting == 'belum posting')
+        <a title="Delete"id="delete" data-toggle="modal" data-target="#delete-{{$retur->id }}">
             <i style="cursor: pointer;color:#212120" class="fas fa-trash">
                 <span></span>
             </i>
         </a>
+        @endif
+        @endif
     </td>
 </tr>
 
 @php
 $delete = "delete-".$retur->id
+@endphp
+@php
+$posting = "posting-".$retur->id
 @endphp
 
 <x-modal :id="$delete">
@@ -56,14 +74,22 @@ $delete = "delete-".$retur->id
     </x-slot>
 </x-modal>
 
+<x-modal :id="$posting">
+    <x-slot name="title">
+        <h5 class="align-self-center">Posting retur {{$retur->kode_retur}}</h5>
+    </x-slot>
+    <x-slot name="body">
+        <x-penjualan.retur-posting :id="$retur->id" />
+    </x-slot>
+</x-modal>
 @endforeach
 @endsection
 
 
 @section('tambah')
+@if (auth()->user()->role == 'retur')
 <a href="/penjualan/returs/create">
-    <i class="fas fa-plus mr-4" style="font-size:30px;color:#212120; cursor: pointer;">
-        <span></span>
-    </i>
+<a href="/penjualan/returs/create" class="btn" style="background-color:#212120; color:white" >Tambah</a>
 </a>
+@endif
 @endsection

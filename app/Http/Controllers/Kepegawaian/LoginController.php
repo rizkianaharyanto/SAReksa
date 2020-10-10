@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Kepegawaian;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Crypt;
 use App\Kepegawaian\User;
@@ -11,9 +12,9 @@ class LoginController extends Controller
 {
     //
 
-    public function index(Request $request){
-        
-        if($request->session()->has('token_distrib')){
+    public function index(Request $request)
+    {
+        if ($request->session()->has('token_distrib')) {
             return redirect('/');
         }
         return view('kepegawaian.login');
@@ -61,5 +62,4 @@ class LoginController extends Controller
         $request->session()->forget('token_distrib');
         return redirect('kepegawaian/login');
     }
-
 }

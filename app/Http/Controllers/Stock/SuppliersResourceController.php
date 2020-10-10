@@ -17,7 +17,7 @@ class SuppliersResourceController extends Controller
       
         $model = new $this->modelName;
         $allData = $model->all();
-        return view('stock.Management-Data/pemasok', compact("allData"));
+        return view('stock.management-data/pemasok', compact("allData"));
     }
 
     /**

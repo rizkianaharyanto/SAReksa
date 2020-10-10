@@ -19,17 +19,28 @@ class PiutangsController extends Controller
     public function index()
     {
         $pelanggans = Pelanggan::with('piutangs')->get();
-        $totals = [];   
+        $totals = [];
+        $lunass = [];
+        $sisas = [];
         foreach ($pelanggans as $pelanggan) {
             $total = $pelanggan->piutangs->sum('total_piutang');
             array_push($totals, [
                 'total_piutang' => $total
             ]);
+            $lunas = $pelanggan->piutangs->sum('lunas');
+            array_push($lunass, [
+                'lunas' => $lunas
+            ]);
+            $sisa = $pelanggan->piutangs->sum('sisa');
+            array_push($sisas, [
+                'sisa' => $sisa
+            ]);
         }
-        // dd($totals);
         return view('penjualan.piutang.piutang', [
            'pelanggans' => $pelanggans,
            'totals' => $totals,
+           'lunass' => $lunass,
+           'sisas' => $sisas,
         ]);
     }
 
@@ -63,7 +74,6 @@ class PiutangsController extends Controller
     public function show($id)
     {
         $piutangs = Piutang::get()->where('pelanggan_id', $id);
-        // dd($piutangs);
         return view('penjualan.piutang.piutangdetails', ['piutangs' => $piutangs]);
     }
 

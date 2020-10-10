@@ -42,6 +42,9 @@ class PelanggansController extends Controller
      */
     public function store(Request $request)
     {
+        
+        session()->flash('message', 'Pelanggan berhasil ditambahkan');
+        session()->flash('status', 'tambah');
         $sup = Pelanggan::max('id') + 1;
         $pelanggan = Pelanggan::create([
             'kode_pelanggan' => 'PEL-'.$sup,
@@ -68,23 +71,27 @@ class PelanggansController extends Controller
         $pengirimans = $pelanggan->pengirimans;
         $fakturs = $pelanggan->fakturs;
         $piutangs = $pelanggan->piutangs;
-        $piutangmasih = null;
-        $pemesananpengiriman = null;
-        $pemesananfaktur = null;
+        $piutangmasih = array();
+        $pemesananpengiriman = array();
+        $pemesananfaktur = array();
+        $pengirimanfaktur = array();
+        $fakturretur = array();
+        $fakturet = $pelanggan->fakturs()->where('status', 'piutang')->where('status_posting', 'sudah posting')->get();
 
-
+        // dd($fakturet);
         $i=0;
         foreach($piutangs as $piutangs){
-            if($piutangs->total_piutang != 0){
+            if($piutangs->status == 'piutang'){
                 $piutangmasih[$i] = $piutangs;
                 $i++;
             }
         }
+        
         $k=0;
 
         $j=0;
         foreach($pemesanans as $pemesanans){
-            if($pemesanans->status != 'terkirim'){
+            if($pemesanans->status == 'baru' || $pemesanans->status == 'terkirim sebagian'){
                 $pemesananpengiriman[$j] = $pemesanans;
                 $j++;
             }
@@ -93,6 +100,52 @@ class PelanggansController extends Controller
                 $k++;
             }
         }
+        $l=0;
+        foreach($pengirimans as $pengirimans){
+            if($pengirimans->status == 'sudah posting'){
+                $pengirimanfaktur[$l] = $pengirimans;
+                $l++;
+            }
+        }
+        $idr = array();
+        $m=0;
+        $z=0;
+        foreach($pelanggan->returs as $returan){
+            $idr[$z] = $returan->faktur_id;
+            $z++;
+        }
+        // dd($idr);
+        $z=0;
+        foreach($fakturs as $fakturs){
+            if($fakturs->status_posting == 'sudah posting'){
+                if($idr){
+                    foreach($idr as $idrs){
+                        if($fakturs->id != $idrs){
+                            $fakturretur[$m] = $fakturs;
+                            $m++;                    
+                        }                    
+                    }
+                }
+                else{
+                    $fakturretur[$m] = $fakturs;
+                            $m++; 
+                }
+                // if($idr){
+                //     foreach($idr as $idr){
+                //         if($fakturs->id != $idr){
+                //             $fakturretur[$m] = $fakturs;
+                //             $m++;
+                //         }
+                //     }
+                // }
+                // else{
+                //     $fakturretur[$m] = $fakturs;
+                // $m++;
+                // }
+                
+            }
+        }
+        
         // for ($i = 0 ; $i < count($piutang) ; i++) {
         //     if ($piutang[i]->total_piutang != 0){
         //         $piutangmasih[i] = $piutang[i];
@@ -104,9 +157,12 @@ class PelanggansController extends Controller
             'pelanggan' => $pelanggan, 
             'penawarans' => $penawarans, 
             'pemesanans' => $pemesananpengiriman, 
-            'pemesananfakturs' => $pemesananfaktur, 
+            'pemesananfakturs' => $pemesananfaktur,
+            'pengirimanfakturs' => $pengirimanfaktur,  
             'pengirimans'=> $pengirimans,
             'fakturs'=> $fakturs,
+            'fakturet'=> $fakturet,
+            'fakturreturs' => $fakturretur,
             'piutangs' => $piutangmasih,
         ]);
     }
@@ -131,6 +187,9 @@ class PelanggansController extends Controller
      */
     public function update(Request $request, Pelanggan $pelanggan)
     {
+        
+        session()->flash('message', 'Pelanggan berhasil diubah');
+        session()->flash('status', 'tambah');
         Pelanggan::where('id', $pelanggan->id)
             ->update([
                 'nama_pelanggan' => $request->nama_pelanggan,
@@ -150,6 +209,8 @@ class PelanggansController extends Controller
      */
     public function destroy(Pelanggan $pelanggan)
     {
+        session()->flash('message', 'Pelanggan berhasil dihapus');
+        session()->flash('status', 'hapus');
         Pelanggan::destroy($pelanggan->id);
         return redirect('/penjualan/pelanggans');
         // return $pelanggan;

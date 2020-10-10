@@ -24,6 +24,7 @@ class CreatePnjRetursTable extends Migration
             $table->integer('biaya_lain');
             $table->integer('diskon_rp')->nullable();
             $table->enum('status', ['lunas', 'piutang'])->nullable();
+            $table->enum('status_posting', ['belum posting', 'sudah posting'])->nullable();
             $table->timestamps();
             $table->softDeletes();
             //fk

@@ -20,6 +20,11 @@ class Pengiriman extends Model
         return $this->belongsTo('App\Penjualan\Pemesanan');
     }
 
+    public function faktur()
+    {
+        return $this->belongsTo('App\Penjualan\Faktur');
+    }
+
     public function penjual()
     {
         return $this->belongsTo('App\Penjualan\Penjual');

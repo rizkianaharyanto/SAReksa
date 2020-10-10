@@ -25,13 +25,15 @@ class CreateStockTransferRequest extends FormRequest
     {
         return [
             //
-            'kode_transfer' => 'required',
+            'kode_ref'      => 'required|string',
             'gudang_asal'   => 'required|numeric',
             'gudang_tujuan' => 'required|numeric',
-            'item_id'       => 'required|array',
+            'barang_id'       => 'required|array',
+            'barang_id.*'   => 'required|distinct',
             'qty'           => 'required|array',
             'deskripsi'     => '',
-            'departemen'    => 'required|string'
+            'departemen'    => 'required|string',
+            'akun_penyesuaian' => 'required|numeric'
         ];
     }
 }

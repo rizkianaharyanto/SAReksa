@@ -4,6 +4,11 @@
 
 @section('halaman', 'Pemesanan')
 
+@section('path')
+<li><a href="#">Transaksi</a></li>
+<li class="active">Pemesanan</li>
+@endsection
+
 @section('thead')
 <tr>
     <th>Kode Pemesanan</th>
@@ -21,25 +26,36 @@
     <td>{{ $pemesanan->kode_pemesanan }}</td>
     <td>{{ $pemesanan->pemasok->nama_pemasok }}</td>
     <td>{{ $pemesanan->tanggal }}</td>
-    <td>{{ $pemesanan->total_harga }}</td>
+    <td>@currency($pemesanan->total_harga)</td>
     <td>{{ $pemesanan->status !=null ? $pemesanan->status  : '-' }}</td>
     <td class="d-flex justify-content-between">
         <a id="details" href="/pembelian/pemesananshow/{{$pemesanan->id}}">
-            <i style="cursor: pointer; " class="fas fa-info-circle">
-                <span></span>
-            </i>
+            <button class="btn-info">
+                <i style="cursor: pointer; " class="fas fa-info-circle">
+                    <span></span>
+                </i>
+            </button>
         </a>
-        @if ($pemesanan->status != 'selesai' && $pemesanan->status != 'diterima')
+        @if ($pemesanan->status == 'baru')
         <a id="edit" href="/pembelian/pemesanans/{{$pemesanan->id}}/edit">
-            <i style="cursor: pointer;" class="fas fa-edit">
-                <span></span>
-            </i>
+            <button class="btn-warning">
+                <i style="cursor: pointer;" class="fas fa-edit">
+                    <span></span>
+                </i>
+            </button>
         </a>
-        <a id="delete" data-toggle="modal" data-target="#delete-{{$pemesanan->id }}">
+        <form method="POST" action="/pembelian/pemesanans/{{$pemesanan->id}}">
+            @method('delete')
+            @csrf
+            <button type="submit" class="btn-danger"><i style="cursor: pointer;" class="fas fa-trash">
+                    <span></span>
+                </i></button>
+        </form>
+        <!-- <a id="delete" data-toggle="modal" data-target="#delete-{{$pemesanan->id }}">
             <i style="cursor: pointer;" class="fas fa-trash">
                 <span></span>
             </i>
-        </a>
+        </a> -->
         @endif
     </td>
 </tr>
@@ -62,8 +78,7 @@ $delete = "delete-".$pemesanan->id
 
 @section('tambah')
 <a href="/pembelian/pemesanans/create">
-    <i class="fas fa-plus mr-4" style="font-size:30px;color:#00BFA6; cursor: pointer;">
-        <span></span>
-    </i>
+    <button class="btn-sm btn-info">Tambah</button>
 </a>
+
 @endsection

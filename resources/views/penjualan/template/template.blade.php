@@ -26,6 +26,7 @@ The above copyright notice and this permission notice shall be included in all c
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/v4-shims.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
     <title>
         {{ __('Sistem Informasi Penjualan') }}
@@ -38,6 +39,8 @@ The above copyright notice and this permission notice shall be included in all c
     <!-- CSS Files -->
     <link href="/css/penjualan/bootstrap.min.css" rel="stylesheet" />
     <link href="/css/penjualan/paper-dashboard.css" rel="stylesheet" />
+    <link href="/css/penjualan/invoice.css" rel="stylesheet" />
+
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
@@ -50,7 +53,18 @@ The above copyright notice and this permission notice shall be included in all c
 
     <link href="https://cdn.jsdelivr.net/npm/bs-stepper/dist/css/bs-stepper.min.css" rel="stylesheet">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bs-stepper/dist/js/bs-stepper.min.js"></script>
-
+    <style>
+    /* input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+    margin: 0; 
+    } */
+    input[type=date]::-webkit-inner-spin-button, 
+    input[type=date]::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+    margin: 0; 
+    }
+</style>
 
 </head>
 

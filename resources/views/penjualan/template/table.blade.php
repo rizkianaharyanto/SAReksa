@@ -14,14 +14,14 @@
                                 <div class="card card-plain">
                                     <div class="card-body">
                                       <div class="d-flex justify-content-center" style="position: relative; color:#212120; margin-top:-2.5%;">
-                                        <div style="position: ">
-                                          <div class='d-flex justify-content-end' style='style=z-index: 1;; padding-bottom:1%;'>
+                                        <div >
+                                          <div class='d-flex justify-content-end' style='z-index: 1; padding-bottom:1%;'>
                                             @yield('tambah')
-                                            <a data-toggle="modal" data-target="#modalFilter">
+                                            <!-- <a data-toggle="modal" data-target="#modalFilter">
                                               <i id="tambah" onmouseover="tulisan()" class="fas fa-filter mr-4" style="font-size:25px;color:#212120;cursor: pointer;">
                                                 <span></span>
                                               </i>
-                                            </a>
+                                            </a> -->
                                           </div>
                                           <table id="table_id" class="table table-hover" style="width: 75vw">
                                             <thead style="background-color: #212120; color:white;">
@@ -83,11 +83,45 @@
     </div>
   </div>
 </div>
-    
+
+<!-- Notif -->
+<script>
+    $(document).ready(function() {
+    var message = '{{ Session::get('message')}}';
+    console.log('')
+    })
+
+    var message = '{{ Session::get('message')}}';
+    var status = '{{ Session::get('status')}}';
+    if(message){
+      $(document).ready(function() {
+        console.log(message)
+        $.notify({
+        icon: "fa fa-check",
+        type: 'success',
+        message: message
+      },{
+          timer: 200,
+          placement: {
+              from: 'top',
+              align: 'right'
+          },
+          template: '<div class="alert alert-success alert-with-icon alert-dismissible fade show" data-notify="container">' +
+                    '<button type="button" aria-hidden="true" class="close" data-dismiss="alert" aria-label="Close">'+
+                    '<i class="fa fa-remove fa-5x"></i>'+
+                    '</button>'+
+                    '<span data-notify="icon" class="{0}"></span>'+
+                    '<span data-notify="message">{2}</span>'+
+                  '</div>'
+        });
+      });
+      
+    }    
+</script>
+
 <script>
   $(document).ready(function() {
     $('#table_id').DataTable({
-      "scrollY": "60vh",
       "scrollCollapse": true,
     });
     $('.dataTables_length').addClass('bs-select');

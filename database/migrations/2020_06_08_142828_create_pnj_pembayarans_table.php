@@ -18,6 +18,7 @@ class CreatePnjPembayaransTable extends Migration
             $table->string('kode_pembayaran');
             $table->integer('total');
             $table->date('tanggal');
+            $table->enum('status_posting', ['belum posting', 'sudah posting'])->nullable();
             $table->timestamps();
             //fk
             $table->bigInteger('pelanggan_id')->nullable();

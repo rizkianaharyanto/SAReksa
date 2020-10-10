@@ -17,6 +17,7 @@ use PDF;
 class PenerimaansController extends Controller
 {
     private $itemService;
+
     /**
      * Display a listing of the resource.
      *
@@ -26,11 +27,173 @@ class PenerimaansController extends Controller
     {
         $this->itemService = $itemService;
     }
+
     public function index()
     {
         $penerimaans = Penerimaan::all();
 
         return view('pembelian.pembelian.penerimaan.penerimaan', compact('penerimaans'));
+    }
+
+
+    public function stokmasuk()
+    {
+        $penerimaans = Penerimaan::all();
+        $count = collect([]);
+        foreach ($penerimaans as $penerimaan) {
+            $satu = $penerimaan->barangs->count();
+            $count->push($satu);
+        }
+        // dd($count);
+
+        return view('stock.transactions.stock-masuk.index', [
+            'penerimaans' => $penerimaans,
+            'barangs' => $count,
+        ]);
+    }
+    public function stokmasukdetail($id)
+    {
+        $penerimaan = penerimaan::find($id);
+        $gudang = Gudang::find($penerimaan->gudang);
+        $barangs = $penerimaan->barangs;
+        $diskon = $penerimaan->diskon_rp;
+        $biaya_lain = $penerimaan->biaya_lain;
+        $total_seluruh = $penerimaan->total_harga;
+        $total_harga = [];
+        $subtotal = 0;
+        foreach ($barangs as $index => $barang) {
+            $total_harga[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
+            $subtotal += $total_harga[$index];
+        }
+        // dd($total_harga, $total_seluruh);
+        return view('stock.transactions.stock-masuk.details', [
+            'penerimaan' => $penerimaan,
+            'gudang' => $gudang,
+            'barangs' => $barangs,
+            'diskon' => $diskon,
+            'biaya_lain' => $biaya_lain,
+            'total_harga' => $total_harga,
+            'subtotal' => $subtotal,
+            'total_seluruh' => $total_seluruh,
+        ]);
+    }
+
+
+
+
+    public function laporan()
+    {
+        $pemasoks = Pemasok::all();
+        $penerimaans = penerimaan::all();
+        $supplier = null;
+        $start = null;
+        $end = null;
+
+        return view('pembelian.pembelian.penerimaan.laporan-penerimaan', [
+            'penerimaans' => $penerimaans,
+            'pemasoks' => $pemasoks,
+            'supplier' => $supplier,
+            'start' => $start,
+            'end' => $end
+        ]);
+    }
+
+    public function laporanfilter(Request $date)
+    {
+        if ($date->pemasok_id == null) {
+            if ($date->start == null) {
+                $pemasoks = Pemasok::all();
+                $penerimaans = penerimaan::all();
+                $supplier = null;
+                $start = null;
+                $end = null;
+            } else {
+                $pemasoks = Pemasok::all();
+                $penerimaans = penerimaan::select("pbl_penerimaans.*")
+                    ->whereBetween('tanggal', [$date->start, $date->end])
+                    ->get();
+                $supplier = null;
+                $start = $date->start;
+                $end = $date->end;
+            }
+        } else {
+            if ($date->start == null) {
+                $pemasoks = Pemasok::all();
+                $supplier = Pemasok::find($date->pemasok_id);
+                $start = null;
+                $end = null;
+                $penerimaans = penerimaan::select("pbl_penerimaans.*")
+                    ->where('pemasok_id', $date->pemasok_id)
+                    ->get();
+            } else {
+                $pemasoks = Pemasok::all();
+                $supplier = Pemasok::find($date->pemasok_id);
+                $start = $date->start;
+                $end = $date->end;
+                $penerimaans = penerimaan::select("pbl_penerimaans.*")
+                    ->where('pemasok_id', $date->pemasok_id)
+                    ->whereBetween('tanggal', [$date->start, $date->end])
+                    ->get();
+            }
+        }
+
+        return view('pembelian.pembelian.penerimaan.laporan-penerimaan', [
+            'penerimaans' => $penerimaans,
+            'pemasoks' => $pemasoks,
+            'supplier' => $supplier,
+            'start' => $start,
+            'end' => $end
+        ]);
+    }
+
+    public function cetaklaporan(Request $date)
+    {
+        if ($date->pemasok_id == null) {
+            if ($date->start == null) {
+                $pemasoks = Pemasok::all();
+                $penerimaans = penerimaan::all();
+                $supplier = null;
+                $start = null;
+                $end = null;
+            } else {
+                $pemasoks = Pemasok::all();
+                $penerimaans = penerimaan::select("pbl_penerimaans.*")
+                    ->whereBetween('tanggal', [$date->start, $date->end])
+                    ->get();
+                $supplier = null;
+                $start = $date->start;
+                $end = $date->end;
+            }
+        } else {
+            if ($date->start == null) {
+                $pemasoks = Pemasok::all();
+                $supplier = Pemasok::find($date->pemasok_id);
+                $start = null;
+                $end = null;
+                $penerimaans = penerimaan::select("pbl_penerimaans.*")
+                    ->where('pemasok_id', $date->pemasok_id)
+                    ->get();
+            } else {
+                $pemasoks = Pemasok::all();
+                $supplier = Pemasok::find($date->pemasok_id);
+                $start = $date->start;
+                $end = $date->end;
+                $penerimaans = penerimaan::select("pbl_penerimaans.*")
+                    ->where('pemasok_id', $date->pemasok_id)
+                    ->whereBetween('tanggal', [$date->start, $date->end])
+                    ->get();
+            }
+        }
+
+        $pdf = PDF::loadview('pembelian.pembelian.penerimaan.cetak-laporan-penerimaan', [
+            'penerimaans' => $penerimaans,
+            'pemasoks' => $pemasoks,
+            'supplier' => $supplier,
+            'start' => $start,
+            'end' => $end
+        ]);
+
+        return $pdf->download('laporan-penerimaan.pdf');
     }
 
     /**
@@ -59,7 +222,7 @@ class PenerimaansController extends Controller
     {
         $pnm = Penerimaan::max('id') + 1;
         $penerimaan = Penerimaan::create([
-            'kode_penerimaan' => 'PNM-'.$pnm,
+            'kode_penerimaan' => 'PNM-' . $pnm,
             'pemesanan_id' => $request->pemesanan_id,
             // 'status' => $request->status,
             'pemasok_id' => $request->pemasok_id,
@@ -70,6 +233,7 @@ class PenerimaansController extends Controller
             'biaya_lain' => $request->biaya_lain,
             'total_jenis_barang' => $request->akun_barang,
             'total_harga' => $request->total_harga_keseluruhan,
+            'akun_barang' => $request->akun_barang,
         ]);
 
         $pemesanan = $penerimaan->pemesanan;
@@ -89,19 +253,18 @@ class PenerimaansController extends Controller
     {
         $penerimaan = Penerimaan::find($idnya);
         Penerimaan::where('id', $penerimaan->id)
-                    ->update(['status' => 'konfirmasi']);
-
+            ->update(['status' => 'konfirmasi']);
 
         //posting
-
         $no = Jurnal::max('id') + 1;
         for ($i = 1; $i < 3; ++$i) {
             $jurnal = Jurnal::create([
-            'kode_jurnal' => 'jur'.$no,
-            'penerimaan_id' => $penerimaan->id,
-            'debit' => 0,
-            'kredit' => 0,
-        ]);
+                'kode_jurnal' => 'jur' . $no,
+                'penerimaan_id' => $penerimaan->id,
+                'tanggal' => $penerimaan->tanggal,
+                'debit' => 0,
+                'kredit' => 0,
+            ]);
             if ($i == 1) {
                 $jurnal->update([
                     'debit' => $penerimaan->total_jenis_barang,
@@ -122,19 +285,27 @@ class PenerimaansController extends Controller
             $belum_diterima = $a - $b;
 
             //update stock
+            // dd($gud);
+            $qty = $this->itemService->getStocksQtyByWhouse($penerimaan->gudang, $barang->id);
             try {
-                $this->itemService->updateStocks($barang->id,$penerimaan->gudang,$b);
+                if ($qty) {
+                    // dd($qty);
+                    $qty += $b;
+                } else {
+                    $qty = $b;
+                }
+                $this->itemService->updateStocks($barang->id, $penerimaan->gudang, $qty);
                 // dd("berhasil");
             } catch (\Throwable $th) {
-                dd("Gagal");
+                dd('Gagal');
             }
 
             //update harga barang
             try {
                 HargaRetailHistory::create([
-                    'item_id'  => $barang->id,
-                    'harga_retail' => $barang->pivot->harga
-                ]);               
+                    'item_id' => $barang->id,
+                    'harga_retail' => $barang->pivot->harga,
+                ]);
             } catch (\Throwable $th) {
                 throw $th;
             }
@@ -147,14 +318,14 @@ class PenerimaansController extends Controller
             }
         }
 
-        return redirect('/pembelian/penerimaans');
+        return view('pembelian.pembelian.penerimaan.konfirmasi', ['id' => $idnya]);
     }
 
     public function ubahpsn($idnya)
     {
         $penerimaan = Penerimaan::find($idnya);
         Penerimaan::where('id', $penerimaan->id)
-                    ->update(['status' => 'sudah posting']);
+            ->update(['status' => 'sudah posting']);
         $pemesanan = $penerimaan->pemesanan;
         $status = $pemesanan->barangs()->where('status_barang', 'belum diterima')->first();
         // dd($status);
@@ -163,6 +334,7 @@ class PenerimaansController extends Controller
         } else {
             $pemesanan->update(array('status' => 'diterima'));
         }
+
         return redirect('/pembelian/penerimaans');
     }
 
@@ -177,9 +349,21 @@ class PenerimaansController extends Controller
     {
         $penerimaan = Penerimaan::find($id);
         $barangs = $penerimaan->barangs;
+        $total_seluruh_pnm = $penerimaan->total_harga;
+        $total_harga_pnm = [];
+        $subtotal_pnm = 0;
+        foreach ($barangs as $index => $barang) {
+            $total_harga_pnm[$index] = $barang->pivot->jumlah_barang * $barang->pivot->harga;
+            $subtotal_pnm += $total_harga_pnm[$index];
+        }
         // dd($barangs);
         return response()
-            ->json(['success' => true, 'penerimaan' => $penerimaan, 'barangs' => $barangs]);
+            ->json([
+                'success' => true, 'penerimaan' => $penerimaan, 'barangs' => $barangs,
+                'total_seluruh_pnm' => $total_seluruh_pnm,
+                'total_harga_pnm' => $total_harga_pnm,
+                'subtotal_pnm' => $subtotal_pnm,
+            ]);
     }
 
     public function show2($id)
@@ -232,7 +416,7 @@ class PenerimaansController extends Controller
             'total_harga' => $total_harga,
             'subtotal' => $subtotal,
             'total_seluruh' => $total_seluruh,
-            ]);
+        ]);
 
         return $pdf->download('penerimaan.pdf');
     }
@@ -246,8 +430,11 @@ class PenerimaansController extends Controller
      */
     public function edit(Penerimaan $penerimaan)
     {
+        $pemasok = Pemasok::find($penerimaan->pemasok_id);
+        $pnmpemesanans = $pemasok->pemesanans()->whereNotIn('status', ['diterima', 'selesai'])->get();
         return view('pembelian.pembelian.penerimaan.penerimaanedit', [
             'penerimaan' => $penerimaan,
+            'pemesanans' => $pnmpemesanans,
             'pemasoks' => Pemasok::all(),
             'barangs' => Barang::all(),
             'gudangs' => Gudang::all(),
@@ -264,26 +451,29 @@ class PenerimaansController extends Controller
      */
     public function update(Request $request, Penerimaan $penerimaan)
     {
-        Penerimaan::where('id', $penerimaan->id)
+        Penerimaan::find($penerimaan->id)
             ->update([
-            // 'status' => $request->status,
-            'pemasok_id' => $request->pemasok_id,
-            'gudang' => $request->gudang,
-            'tanggal' => $request->tanggal,
-            'diskon' => $request->diskon,
-            'diskon_rp' => $request->disk,
-            'biaya_lain' => $request->biaya_lain,
-            'total_jenis_barang' => $request->akun_barang,
-            'total_harga' => $request->total_harga_keseluruhan,
+                'pemesanan_id' => $request->pemesanan_id,
+                'pemasok_id' => $request->pemasok_id,
+                'gudang' => $request->gudang,
+                'tanggal' => $request->tanggal,
+                'diskon' => $request->diskon,
+                'diskon_rp' => $request->disk,
+                'biaya_lain' => $request->biaya_lain,
+                'total_jenis_barang' => $request->akun_barang,
+                'total_harga' => $request->total_harga_keseluruhan,
+                'akun_barang' => $request->akun_barang,
             ]);
+        // dd($penerimaan);
         $penerimaan->barangs()->detach();
+        $pemesanan = $penerimaan->pemesanan;
         foreach ($request->barang_id as $index => $id) {
             $penerimaan->barangs()->attach($id, [
                 'jumlah_barang' => $request->jumlah_barang[$index],
                 'harga' => $request->harga[$index],
                 'unit' => $request->unit_barang[$index],
                 // 'pajak' => $request->pajak[$index],
-                ]);
+            ]);
         }
 
         return redirect('/pembelian/penerimaans');
@@ -298,6 +488,7 @@ class PenerimaansController extends Controller
      */
     public function destroy(Penerimaan $penerimaan)
     {
+        $penerimaan->barangs()->detach();
         Penerimaan::destroy($penerimaan->id);
 
         return redirect('/pembelian/penerimaans');

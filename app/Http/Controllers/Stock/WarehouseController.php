@@ -20,7 +20,7 @@ class WarehouseController extends Controller
         //
       
         $allData = $this->model->all();
-        return view('stock.Management-Data/gudang', compact("allData"));
+        return view('stock.management-data/gudang', compact("allData"));
     }
 
     public function indexpembelian()
@@ -44,13 +44,14 @@ class WarehouseController extends Controller
 
     public function show($id)
     {
-        //
+        $gudangs = Gudang::with(['items'])->findOrFail($id);
+        return view('stock.management-data.detail-gudang', compact('gudangs'));
     }
     public function update(Request $request, $id)
     {
         //
         $input = $request->only($this->model->getModel()->fillable);
-       
+        $this->model->update($input, $id);
         return redirect()->back();
     }
 
@@ -58,6 +59,6 @@ class WarehouseController extends Controller
     {
         //
         $this->model->delete($id);
-        return "Success";
+        return redirect()->back();
     }
 }
