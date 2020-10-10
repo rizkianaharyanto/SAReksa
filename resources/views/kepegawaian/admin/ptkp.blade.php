@@ -15,8 +15,8 @@
   </div>
 @endif
 
-<div>
-  <table id="table_id" class="table table-hover">
+<div class="table-responsive">
+  <table id="dataTable" class="table table-hover shadow">
       <thead style="background-color: #4b4b4b; color:white;">
           <tr>
               <th>No</th>
@@ -26,14 +26,14 @@
               <th style="alignment:justify, width:50px">Aksi</th>
           </tr>
       </thead>
-      <tbody style=" color:white;">
+      <tbody style=" background-color: white ">
         @foreach($ptkps as $indexKey => $ptkp)
 
           <tr>
               <td>{{ $indexKey+1 }}</td>
               <td>{{ $ptkp->status_ptkp }}</td>
               <td>{{ $ptkp->keterangan }}</td>
-              <td>Rp {{ $ptkp->gaji_minimal }}</td>
+              <td>Rp {{ number_format($ptkp->gaji_minimal) }}</td>
               <td>
                 <a href="ptkp/{{$ptkp->id}}">
                   <button class="btn btn-success">Ubah</button>
@@ -76,7 +76,7 @@
 
 <script>
   $(document).ready( function () {
-      $('#table_id').DataTable();
+      $('#dataTable').DataTable();
   } );
 </script>
 

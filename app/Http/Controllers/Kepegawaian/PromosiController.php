@@ -17,26 +17,22 @@ class PromosiController extends Controller
     public function index(Request $request)
     {
         //
+        if($request->session()->has('token_distrib')){
+            
+        }else{
+            return redirect('/kepegawaian/login');
+        }
         $pegawais = Pegawai::all();
-        // $pegawais = Pegawai::with(['jabatans' => function ($q) {
-        //     $q->orderBy('pivot_tanggal', 'asc');
-        // }])->first();
-
-        // $pegawais = Pegawai::first();
-        // $jabatans = $pegawais->jabatans()->orderBy('pivot_tanggal', 'asc')->get();
-
-        // dd($jabatans);
-
-        $request->session()->put('page','jabatan');
-        $request->session()->put('title','Jabatan - Promosi History');
+        $request->session()->put('page','promosi');
+        $request->session()->put('title','Jabatan - Sejarah');
         return view('kepegawaian.jabatan.promosi', compact('pegawais'));
     }
 
     public function tambah(Request $request){
         $pegawais = Pegawai::orderBy('kode_pegawai', 'asc')->get();;
         $jabatans = Jabatan::orderBy('nama_jabatan', 'asc')->get();;
-        $request->session()->put('page','jabatan');
-        $request->session()->put('title','Jabatan - Promosi - Tambah');
+        $request->session()->put('page','promosi');
+        $request->session()->put('title','Jabatan - Sejarah - Tambah');
         return view('kepegawaian.jabatan.promosi.tambah', compact('pegawais','jabatans'));
     }
 
@@ -63,10 +59,11 @@ class PromosiController extends Controller
             'pegawai_id' => 'required',
             'jabatan_id' => 'required',
             'tanggal' => 'required',
+            'keterangan' => 'required',
         ]);
         $pegawai = Pegawai::find($request->pegawai_id);
         $jabatan = Jabatan::find($request->jabatan_id);
-        $pegawai->jabatans()->attach($jabatan->id,['tanggal'=>$request->tanggal]);
+        $pegawai->jabatans()->attach($jabatan->id,['tanggal'=>$request->tanggal,'keterangan' => $request->keterangan]);
         return redirect('kepegawaian/jabatan/promosi')->with('status','Promosi jabatan baru berhasil');
     }
 

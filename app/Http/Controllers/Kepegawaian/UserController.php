@@ -18,6 +18,11 @@ class UserController extends Controller
     public function index(Request $request)
     {
         //
+        if($request->session()->has('token_distrib')){
+            
+        }else{
+            return redirect('/kepegawaian/login');
+        }
         $users = User::all();
         $request->session()->put('page','pengguna');
         $request->session()->put('title','Pengguna');
@@ -114,5 +119,19 @@ class UserController extends Controller
     public function tambah()
     {
         return view('kepegawaian.pengguna.tambah');
+    }
+
+    public function reset(Request $request, $id)
+    {
+        $request->validate([
+            'password' => 'required|min:8',
+        ]);
+
+        $password = Crypt::encryptString($request->password);
+        
+        $user = User::find($id);
+        $user->password = $password;
+        $user->save();
+        return redirect('kepegawaian/pengguna')->with('status','Password berhasil diubah');
     }
 }

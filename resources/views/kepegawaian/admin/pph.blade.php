@@ -16,7 +16,7 @@
 @endif
 
 <div>
-  <table id="table_id" class="table table-hover">
+  <table id="table_id" class="table table-hover shadow">
       <thead style="background-color: #4b4b4b; color:white;">
           <tr>
               <th>No</th>
@@ -26,13 +26,13 @@
               <th style="alignment:justify, width:50px">Aksi</th>
           </tr>
       </thead>
-      <tbody style=" color:white;">
+      <tbody style="background-color: white ">
         @foreach($pphs as $indexKey => $pph)
 
           <tr>
               <td>{{ $indexKey+1 }}</td>
-              <td>{{ $pph->batas_minimal }}</td>
-              <td>{{ $pph->batas_maksimal }}</td>
+              <td>{{ number_format($pph->batas_minimal) }}</td>
+              <td>{{ number_format($pph->batas_maksimal) }}</td>
               <td>{{ $pph->persentase }}%</td>
               <td>
                 <a href="pph/{{$pph->id}}">
@@ -73,5 +73,10 @@
   </table>
 </div>
 
+<script>
+  $(document).ready( function () {
+      $('#table_id').DataTable();
+  } );
+</script>
 
 @endsection

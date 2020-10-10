@@ -15,17 +15,17 @@
   </div>
 @endif
 
-<div>
-  <table id="table_id" class="table table-hover">
+<div >
+  <table id="table_id" class="table table-hover shadow-lg">
       <thead style="background-color: #4b4b4b; color:white;">
           <tr>
               <th>No</th>
               <th>Akun</th>
               <th>Keterangan</th>
-              <th style="alignment:justify, width:50px">Aksi</th>
+              <th style="alignment:justify">Aksi</th>
           </tr>
       </thead>
-      <tbody style=" color:white;">
+      <tbody style=" background-color: white">
         @foreach($akuns as $indexKey => $akun)
 
           <tr>
@@ -70,6 +70,19 @@
       </tbody>
   </table>
 </div>
+
+
+<script>
+  $(document).ready(function() {
+    $('#table_id').DataTable({
+      "scrollY": "60vh",
+      "scrollCollapse": true,
+    });
+    $('.dataTables_length').addClass('bs-select');
+  });
+
+  
+</script>
 
 
 @endsection

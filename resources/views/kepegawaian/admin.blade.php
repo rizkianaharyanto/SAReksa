@@ -2,26 +2,20 @@
 
 @section('content')
    <a href="admin/pph">
-    <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addBarangModal">
-      <i class="fas fa-plus-square mr-1"></i>
+    <button type="button" class="btn btn-secondary mb-3" data-toggle="modal" data-target="#addBarangModal"><i class="fas fa-hand-holding-usd"></i>
       PPH 21
     </button>
-  </a>
+  </a><br>
   <a href="admin/ptkp">
-    <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addBarangModal">
-      <i class="fas fa-plus-square mr-1"></i>
+    <button type="button" class="btn btn-secondary mb-3" data-toggle="modal" data-target="#addBarangModal"><i class="fas fa-funnel-dollar"></i> 
       PTKP
     </button>
-  </a>
+  </a><br>
   <a href="admin/akun">
-    <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addBarangModal">
-      <i class="fas fa-plus-square mr-1"></i>
+    <button type="button" class="btn btn-secondary mb-3" data-toggle="modal" data-target="#addBarangModal"><i class="fas fa-wallet"></i>
       Akun Beban
     </button>
   </a>
-  
-
-  </div>
 
 @endsection
 

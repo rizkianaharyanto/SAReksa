@@ -14,10 +14,17 @@ class PtkpController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
+        if($request->session()->has('token_distrib')){
+            
+        }else{
+            return redirect('/kepegawaian/login');
+        }
         $ptkps = Ptkp::all();
+        $request->session()->put('title','Admin - PTKP');
+        $request->session()->put('page','ptkp');
         return view('kepegawaian.admin.ptkp',compact('ptkps'));
     }
 
@@ -56,9 +63,10 @@ class PtkpController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Ptkp $ptkp)
+    public function show(Ptkp $ptkp, Request $request)
     {
         //
+        $request->session()->put('title','Admin - PTKP - ubah');
         return view('kepegawaian.admin.ptkp.edit',compact('ptkp'));
     }
 

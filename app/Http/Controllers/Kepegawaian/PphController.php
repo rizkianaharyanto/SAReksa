@@ -16,8 +16,14 @@ class PphController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request){
+        // if($request->session()->has('token_distrib')){
+            
+        // }else{
+        //     return redirect('/kepegawaian/login');
+        // }
         $pphs = Pph::all();
-        $request->session()->put('title','Admin - PPH');
+        $request->session()->put('page','pph');
+        $request->session()->put('title','Admin - PPh 21');
         return view('kepegawaian.admin.pph',compact('pphs'));
     }
 
@@ -46,7 +52,7 @@ class PphController extends Controller
             'persentase' => 'required|numeric',
         ]);
         Pph::create($request->all());
-        return redirect('kepegawaian/admin/pph')->with('status','PPH berhasil ditambahkan');
+        return redirect('kepegawaian/admin/pph')->with('status','PPh 21 berhasil ditambahkan');
     }
 
     /**
@@ -59,7 +65,7 @@ class PphController extends Controller
     {
         //
         // return $pph;
-        $request->session()->put('title','Admin - PPH - Ubah');
+        $request->session()->put('title','Admin - PPh 21 - Ubah');
         return view('kepegawaian.admin.pph.edit',compact('pph'));
     }
 
@@ -95,7 +101,7 @@ class PphController extends Controller
         $pph->batas_maksimal = $request->batas_maksimal;
         $pph->persentase = $request->persentase;
         $pph->save();
-        return redirect('kepegawaian/admin/pph')->with('status','PPH berhasil diubah');
+        return redirect('kepegawaian/admin/pph')->with('status','PPh 21 berhasil diubah');
         
     }
 
@@ -111,12 +117,12 @@ class PphController extends Controller
     	$pph = Pph::find($id);
     	$pph->delete();
  
-        return redirect('kepegawaian/admin/pph')->with('status','PPH berhasil dihapus');
+        return redirect('kepegawaian/admin/pph')->with('status','PPh 21 berhasil dihapus');
     }
 
     public function tambah(Request $request)
     {
-        $request->session()->put('title','Admin - PPH - Tambah');
+        $request->session()->put('title','Admin - PPh 21 - Tambah');
         return view('kepegawaian.admin.pph.tambah');
     }
 }

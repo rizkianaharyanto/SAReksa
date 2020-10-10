@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateKpgTunjanganTable extends Migration
+class AddSoftDeleteToKpgPtkpsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,9 @@ class CreateKpgTunjanganTable extends Migration
      */
     public function up()
     {
-        Schema::create('kpg_tunjangans', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('nama_tunjangan');
-            $table->bigInteger('akun_id');
-            $table->timestamps();
+        Schema::table('kpg_ptkps', function (Blueprint $table) {
+            //
+            $table->softDeletes();
         });
     }
 
@@ -28,6 +26,8 @@ class CreateKpgTunjanganTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kpg_tunjangans');
+        Schema::table('kpg_ptkps', function (Blueprint $table) {
+            //
+        });
     }
 }

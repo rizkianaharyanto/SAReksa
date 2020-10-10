@@ -12,6 +12,11 @@ class JabatanController extends Controller
 {
     //
     public function index(Request $request){
+        if($request->session()->has('token_distrib')){
+            
+        }else{
+            return redirect('/kepegawaian/login');
+        }
         $jabatans = Jabatan::all();
         $request->session()->put('page','jabatan');
         $request->session()->put('title','Jabatan');
@@ -46,6 +51,16 @@ class JabatanController extends Controller
         $jabatans = Jabatan::all();
         $request->session()->put('page','jabatan');
         return view('kepegawaian.jabatan',compact('jabatans'));
+    }
+
+
+    public function destroy($id)
+    {
+        //
+    	$jabatan = Jabatan::find($id);
+    	$jabatan->delete();
+ 
+        return redirect('kepegawaian/jabatan')->with('status','Jabatan berhasil dihapus');
     }
 
 }

@@ -4,7 +4,7 @@
    <a href="promosi/tambah">
     <button type="button" class="btn btn-primary mb-3">
       <i class="fas fa-plus-square mr-1"></i>
-      Promosikan Pegawai
+      Ubah Jabatan Pegawai
     </button>
   </a>
 
@@ -15,20 +15,21 @@
 @endif
 
 <div>
-  <table id="table_id" class="table table-hover">
+  <table id="table_id" class="table shadow">
       <thead style="background-color: #4b4b4b; color:white;">
           <tr>
               <th>No</th>
               <th>Nama</th>
               <th>Jabatan</th>
               <th>Tanggal Promosi</th>
+              <th>Keterangan</th>
           </tr>
       </thead>
-      <tbody style=" color:white;">
-        @foreach($pegawais as $pgw)
+      <tbody style=" background-color:white ">
+        @foreach($pegawais as $index => $pgw)
 
           <tr>
-              <td>{{ $pgw->id }}</td>
+              <td>{{ $index+1 }}</td>
               <td>{{ $pgw->nama }}</td>
               <td>
                 @foreach( $pgw->jabatans as $indexKey => $jbt )
@@ -37,7 +38,12 @@
               </td>
               <td>
                 @foreach( $pgw->jabatans as $indexKey => $jbt )
-                    {{ $jbt->pivot->tanggal }} <br>
+                    {{ \Carbon\Carbon::parse($jbt->pivot->tanggal)->format('d-m-Y') }} <br>
+                @endforeach
+              </td>
+              <td>
+                @foreach( $pgw->jabatans as $indexKey => $jbt )
+                    {{ $jbt->pivot->keterangan }} <br>
                 @endforeach
               </td>
           </tr>

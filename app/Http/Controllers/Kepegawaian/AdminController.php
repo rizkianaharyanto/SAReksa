@@ -10,6 +10,11 @@ class AdminController extends Controller
     //
     public function index(Request $request){
 
+        // if($request->session()->has('token_distrib')){
+            
+        // }else{
+        //     return redirect('/kepegawaian/login');
+        // }
         $request->session()->put('page','admin');
         $request->session()->put('title','Admin');
         return view('kepegawaian.admin');

@@ -15,8 +15,14 @@ class AkunController extends Controller
      */
     public function index(Request $request)
     {
+        if($request->session()->has('token_distrib')){
+            
+        }else{
+            return redirect('/kepegawaian/login');
+        }
         //
         $akuns = Akun::all();
+        $request->session()->put('page','akun');
         $request->session()->put('title','Admin - Akun');
         return view('kepegawaian.admin.akun',compact('akuns'));
     }
@@ -57,7 +63,6 @@ class AkunController extends Controller
     public function show(Akun $akun, Request $request)
     {
         //
-
         $request->session()->put('title','Admin - Akun - Ubah');
         return view('kepegawaian.admin.akun.edit',compact('akun'));
     }

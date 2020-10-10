@@ -15,11 +15,12 @@ class CreateKpgPenggajiansTable extends Migration
     {
         Schema::create('kpg_penggajians', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('pegawai_id');
-            $table->string('nama');
-            $table->integer('jumlah');
-            $table->integer('gaji');
-            $table->integer('pajak');
+            $table->string('pegawai_id');
+            $table->string('jumlah');
+            $table->string('gaji');
+            $table->string('pajak');
+            $table->string('status');
+            $table->date('tanggal');
             $table->timestamps();
         });
     }

@@ -109,6 +109,11 @@ Route::prefix('stok')->group(function () {
 Route::prefix('kepegawaian')->group(function () {
     Route::get('/', 'Kepegawaian\DashboardController@index');
 
+
+    Route::get('/login','Kepegawaian\LoginController@index');
+    Route::get('/logout','Kepegawaian\LoginController@logout');
+    Route::post('/logincheck','Kepegawaian\LoginController@logincheck');
+
     //PPH
     Route::get('/admin/pph/tambah','Kepegawaian\PphController@tambah');
     Route::post('/admin/pph/store','Kepegawaian\PphController@store');
@@ -130,9 +135,28 @@ Route::prefix('kepegawaian')->group(function () {
     Route::get('/admin/akun/{akun}','Kepegawaian\AkunController@show');
     Route::put('/admin/akun/{akun}','Kepegawaian\AkunController@update');
 
+    //Tunjangan
+    Route::get('/penggajian/tunjangan/tambah','Kepegawaian\TunjanganController@tambah');
+    Route::post('/penggajian/tunjangan/store','Kepegawaian\TunjanganController@store');
+    Route::get('/penggajian/tunjangan/hapus/{tunjangan}','Kepegawaian\TunjanganController@destroy');
+    Route::get('/penggajian/tunjangan/{tunjangan}','Kepegawaian\TunjanganController@show');
+    Route::put('/penggajian/tunjangan/{tunjangan}','Kepegawaian\TunjanganController@update');
+
+    //Penggajian
+    Route::get('/penggajian/terima/{penggajian}','Kepegawaian\PenggajianController@terima');
+    Route::get('/penggajian/tolak/{penggajian}','Kepegawaian\PenggajianController@tolak');
+    Route::get('/penggajian/ditolak','Kepegawaian\PenggajianController@ditolak');
+    Route::get('/penggajian/tunjangan','Kepegawaian\PenggajianController@index');
+    Route::get('/penggajian/tambah','Kepegawaian\PenggajianController@tambah');
+    Route::post('/penggajian/store','Kepegawaian\PenggajianController@store');
+    Route::get('/penggajian/hapus/{penggajian}','Kepegawaian\PenggajianController@destroy');
+    Route::put('/penggajian/edit/{penggajian}','Kepegawaian\PenggajianController@update');
+    Route::get('/penggajian/{penggajian}','Kepegawaian\PenggajianController@show');
+
     //User pengguna
     Route::get('/pengguna/tambah','Kepegawaian\UserController@tambah');
     Route::post('/pengguna/store','Kepegawaian\UserController@store');
+    Route::put('/pengguna/reset/{id}','Kepegawaian\UserController@reset');
     Route::get('/pengguna/hapus/{id}','Kepegawaian\UserController@destroy');
     Route::get('/pengguna/{id}','Kepegawaian\UserController@show');
     Route::put('/pengguna/{id}','Kepegawaian\UserController@update');
@@ -147,9 +171,17 @@ Route::prefix('kepegawaian')->group(function () {
 
     Route::get('pegawai/tambah', 'Kepegawaian\PegawaiController@tambah');
     Route::post('pegawai/add', 'Kepegawaian\PegawaiController@add');
+    Route::get('pegawai/hapus/{id}', 'Kepegawaian\PegawaiController@destroy');
     
     
     Route::post('jabatan/add', 'Kepegawaian\JabatanController@add');
+    Route::get('jabatan/hapus/{id}', 'Kepegawaian\JabatanController@destroy');
+
+    Route::post('/laporan/bulanan','Kepegawaian\LaporanController@bulanan');
+    Route::get('/laporan/periode','Kepegawaian\LaporanController@bulanini');
+    Route::get('/laporan/slip/{id}','Kepegawaian\LaporanController@slip');
+    Route::get('/laporan/bulanan/{id}','Kepegawaian\LaporanController@satupegawai');
+    Route::post('/laporan/pegawai','Kepegawaian\LaporanController@pegawai');
 
     // Route::get('/', )
     Route::resources([
@@ -161,6 +193,7 @@ Route::prefix('kepegawaian')->group(function () {
         'jabatan' => 'Kepegawaian\JabatanController',
         'laporan' => 'Kepegawaian\LaporanController',
         'pegawai' => 'Kepegawaian\PegawaiController',
+        'penggajian/tunjangan' => 'Kepegawaian\TunjanganController',
         'penggajian' => 'Kepegawaian\PenggajianController',
         'pengguna' => 'Kepegawaian\UserController',
     ]);

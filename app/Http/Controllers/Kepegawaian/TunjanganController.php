@@ -17,7 +17,13 @@ class TunjanganController extends Controller
     public function index(Request $request)
     {
         //
+        if($request->session()->has('token_distrib')){
+            
+        }else{
+            return redirect('/kepegawaian/login');
+        }
         $tunjangans = Tunjangan::all();
+        $request->session()->put('page','tunjangan');
         $request->session()->put('title','Penggajian - Tunjangan');
         return view('kepegawaian.penggajian.tunjangan',compact('tunjangans'));
     }
@@ -48,7 +54,7 @@ class TunjanganController extends Controller
         Tunjangan::create($request->all());
         
 
-        return redirect('kepegawaian/penggajian/tunjangan')->with('status','Tambah pegawai berhasil');
+        return redirect('kepegawaian/penggajian/tunjangan')->with('status','Tambah tunjangan berhasil');
     }
 
     /**
@@ -57,9 +63,12 @@ class TunjanganController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Tunjangan $tunjangan, Request $request)
     {
         //
+        $akuns = Akun::orderBy('nama_akun', 'asc')->get();;
+        $request->session()->put('title','Penggajian - Ubah');
+        return view('kepegawaian.penggajian.tunjangan.edit',compact('tunjangan','akuns'));
     }
 
     /**
@@ -83,6 +92,16 @@ class TunjanganController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $request->validate([
+            'nama_tunjangan' => 'required',
+            'akun_id' => 'required',
+        ]);
+        $tunjangan = Tunjangan::find($id);
+        $tunjangan->nama_tunjangan = $request->nama_tunjangan;
+        $tunjangan->akun_id = $request->akun_id;
+        $tunjangan->save();
+        return redirect('kepegawaian/penggajian/tunjangan')->with('status','Tunjangan berhasil diubah');
+
     }
 
     /**
@@ -94,5 +113,15 @@ class TunjanganController extends Controller
     public function destroy($id)
     {
         //
+    	$tunjangan = Tunjangan::find($id);
+    	$tunjangan->delete();
+ 
+        return redirect('kepegawaian/penggajian/tunjangan')->with('status','Tunjangan berhasil dihapus');
+    }
+
+    public function tambah(Request $request){
+        $akuns = Akun::orderBy('nama_akun', 'asc')->get();;
+        $request->session()->put('title','Penggajian - Tunjangan - Tambah');
+        return view('kepegawaian.penggajian.tunjangan.tambah', compact('akuns'));
     }
 }

@@ -18,6 +18,7 @@ class CreateKpgNaikJabatansTable extends Migration
             // fk
             $table->bigInteger('pegawai_id');
             $table->bigInteger('jabatan_id');
+            $table->string('keterangan');
             $table->date('tanggal');
             $table->timestamps();
         });
